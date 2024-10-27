@@ -4,6 +4,7 @@ import { CorporateComponent } from './private/profile/corp/corp.component';
 import { HomeComponent } from '@app/views/uits/public/home/home.component';
 import { CustomPageComponent } from '@app/views/uits/public/custom-page/custom-page.component';
 import { PersonalComponent } from './private/profile/personal/personal.component'; // Импорт компонента Personal
+import { EventsComponent } from './private/profile/events/events.component';
 
 const routes: Routes = [
 
@@ -24,7 +25,7 @@ const routes: Routes = [
       .then(m => m.ScientificActivitiesModule)
   },
   {
-    path: '',
+    path: 'corp',
     component: CorporateComponent, 
     children: [
       {
@@ -34,11 +35,15 @@ const routes: Routes = [
       {
         path: 'personal', // Изменяем 'profile' на 'personal'
         component: PersonalComponent, // Подключаем PersonalComponent напрямую
+      },
+      {
+        path: 'calendar',
+        component: EventsComponent,
       }
     ]
   },
   {
-    path: '**', redirectTo: '' 
+    path: '**', redirectTo: 'corp' 
   }
 ];
 

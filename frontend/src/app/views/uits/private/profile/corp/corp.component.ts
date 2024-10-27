@@ -11,7 +11,7 @@ interface CorporateMenu {
 }
 
 @Component({
-  selector: 'corporate-portal',
+  selector: 'corp',
   templateUrl: './corp.component.html',
   styleUrls: ['./corp.component.css'],
 })
@@ -28,17 +28,17 @@ export class CorporateComponent implements OnInit {
     this.authService.profile$.pipe(
       map(profile => {
         const userPermissions = getUserPermissions(profile);
-        if (userPermissions.includes(Permission.MODERATOR) || userPermissions.includes(Permission.SUPERUSER)) {
+        if (userPermissions.includes(Permission.MODERATOR) ) {
           this.corporateMenu = [
-            { title: 'Профиль', route: '/corp/profile' },
+            { title: 'Профиль', route: '/corp/personal' },
             { title: 'Модульные журналы', route: '/corp/modular_journals' },
             { title: 'Статистика модульных журналов', route: '/corp/statistics' },
             { title: 'Календарь событий', route: '/corp/calendar' },
           ];
-        } else if (userPermissions.includes(Permission.TEACHER)) {
+        } else if (userPermissions.includes(Permission.TEACHER) || userPermissions.includes(Permission.SUPERUSER)) {
           this.isTeacher = true;
           this.corporateMenu = [
-            { title: 'Профиль', route: '/corp/profile' },
+            { title: 'Профиль', route: '/corp/personal' },
             { title: 'Публикации', route: '/corp/publications' },
             { title: 'Достижения', route: '/corp/achievements' },
             { title: 'Модульные журналы', route: '/corp/modular_journals' },

@@ -36,7 +36,7 @@ import { ChangeDetectorRef } from '@angular/core'; // Импортируем Cha
     }
   
     updateMenuVisibility(): void {
-      this.isProfilePage = this.router.url.startsWith('/profile');
+      this.isProfilePage = this.router.url.startsWith('/corp');
       if (this.isProfilePage) {
           console.log('Корпоративный портал: скрываем меню');
           this.menu = [];

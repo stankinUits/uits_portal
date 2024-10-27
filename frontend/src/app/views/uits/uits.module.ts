@@ -12,6 +12,8 @@ import { LatestAnnouncementsComponent } from './public/home/components/latest-an
 import {LayoutModule} from "@app/layout/layout.module";
 import { CustomPageComponent } from './public/custom-page/custom-page.component';
 import { CorporateComponent } from './private/profile/corp/corp.component';
+import { PersonalComponent } from './private/profile/personal/personal.component';
+import { EventsComponent } from './private/profile/events/events.component';
 
 
 @NgModule({
@@ -21,6 +23,8 @@ import { CorporateComponent } from './private/profile/corp/corp.component';
     LatestNewsComponent,
     LatestAnnouncementsComponent,
     CustomPageComponent,
+    PersonalComponent,
+    EventsComponent
   ],
   imports: [
     CommonModule,
