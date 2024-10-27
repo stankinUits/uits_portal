@@ -6,6 +6,7 @@ import { CustomPageComponent } from '@app/views/uits/public/custom-page/custom-p
 import { PersonalComponent } from './private/profile/personal/personal.component'; // Импорт компонента Personal
 import { EventsComponent } from './private/profile/events/events.component';
 
+
 const routes: Routes = [
 
   {
@@ -33,8 +34,8 @@ const routes: Routes = [
         component: CustomPageComponent
       },
       {
-        path: 'personal', // Изменяем 'profile' на 'personal'
-        component: PersonalComponent, // Подключаем PersonalComponent напрямую
+        path: 'personal', 
+        component: PersonalComponent, 
       },
       {
         path: 'calendar',

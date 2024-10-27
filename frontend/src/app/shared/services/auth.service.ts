@@ -78,4 +78,11 @@ export class AuthService {
       return (profile.isTeacher || profile.isSuperuser) && !profile.isAnonymous
     }));
   }
+
+  updateProfile(profileData: any): Observable<any> {
+    return this.http.put('/api/profile', profileData); // Обновите URL на соответствующий вашему API
+  }
+  
 }
+
+

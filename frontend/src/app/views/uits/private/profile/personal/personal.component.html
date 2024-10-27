@@ -1,93 +1,105 @@
 <div class="mb-4 d-md-flex align-items-center justify-content-between">
   <div>
-    <h4>{{ 'Информация об аккаунте'  }}</h4>
+    <h4>{{ 'Информация об аккаунте' }}</h4>
     <p>{{ 'Здесь находится информация об авторизованном пользователе' }}</p>
   </div>
 </div>
+
 <div class="row">
   <div class="col" style="max-width: 200px;">
     <div>
       <div class="mb-3">
-        <img class="img-fluid w-100 rounded" [src]="(authService.profile$ ) ?? defaultAvatar"
-             alt="avater">
+        <img class="img-fluid w-100 rounded" 
+             [src]="(authService.profile$ | async)?.avatar || defaultAvatar" 
+             alt="avatar">
       </div>
-
     </div>
   </div>
+  
   <div class="col-md">
-
     <table class="table" *ngIf="(authService.profile$ | async) as person">
       <tbody>
-      <tr>
-        <th class="py-4">Имя пользователя</th>
-        <td class="py-4">{{ person.username }}</td>
-      </tr>
-      <tr *ngIf="person.isStaff">
-        <th class="py-4">Пароль</th>
-        <td class="py-4"><a class="text-primary" href="/admin/password_change">Изменить пароль</a></td>
-      </tr>
-      <tr>
-        <th class="py-4">Электронная почта</th>
-        <td class="py-4">{{ person.email }}</td>
-      </tr>
-      <tr>
-        <th class="py-4">Фамилия Имя</th>
-        <td class="py-4">{{ person.lastName }} {{ person.firstName }}</td>
-      </tr>
-      <tr *ngIf="person.isModerator || person.isSuperuser">
-        <th class="py-4">Уровень доступа</th>
-        <td class="py-4" *ngIf="person.isModerator && !person.isSuperuser">Модератор</td>
-        <td class="py-4" *ngIf="person.isSuperuser">Суперпользователь</td>
-      </tr>
-      <tr>
-        <th class="py-4">Интеграция</th>
-        <td class="py-4 d-flex flex-column gap-3" [ngSwitch]="hideIntegrationCode">
-          <div [ngSwitch]="hideIntegrationCode">
-          <span *ngSwitchCase="false">
-          {{ person.telegramCode }}
-          </span>
-            <span *ngSwitchCase="true" class="user-select-none">
-            ************
-          </span>
-            <i class="feather icon-copy cursor-pointer"
-               (click)="copyCode(person.telegramCode)"
-            ></i>
-            <i
-              class="feather ms-1 cursor-pointer"
-              [ngClass]="{
-          'icon-eye': !hideIntegrationCode,
-          'icon-eye-off': hideIntegrationCode
-          }"
-
-              (click)="toggleViewIntegrationCode()"
-            ></i>
-          </div>
-          <div>
-            <div *ngIf="person.telegramUser">
-              <span class="user-select-none">Привязан к: </span><a
-              href="https://t.me/{{person.telegramUser.username}}">@{{ person.telegramUser.username }}</a>
-              <i class="feather icon-x cursor-pointer font-size-lg ms-2"
-                 style="color: red;"
-                 (click)="openModal(deleteIntegrationConfirmModal)"
-              ></i>
+        <tr>
+          <th class="py-4">Имя пользователя</th>
+          <td class="py-4">{{ person.username }}</td>
+        </tr>
+        <tr *ngIf="person.isStaff">
+          <th class="py-4">Пароль</th>
+          <td class="py-4"><a class="text-primary" href="/admin/password_change">Изменить пароль</a></td>
+        </tr>
+        <tr>
+          <th class="py-4">Электронная почта</th>
+          <td class="py-4">{{ person.email }}</td>
+        </tr>
+        <tr>
+          <th class="py-4">Фамилия Имя</th>
+          <td class="py-4">{{ person.lastName }} {{ person.firstName }}</td>
+        </tr>
+        <tr *ngIf="person.isModerator || person.isSuperuser">
+          <th class="py-4">Уровень доступа</th>
+          <td class="py-4" *ngIf="person.isModerator && !person.isSuperuser">Модератор</td>
+          <td class="py-4" *ngIf="person.isSuperuser">Суперпользователь</td>
+        </tr>
+        <tr>
+          <th class="py-4">Интеграция</th>
+          <td class="py-4 d-flex flex-column gap-3" [ngSwitch]="hideIntegrationCode">
+            <div [ngSwitch]="hideIntegrationCode">
+              <span *ngSwitchCase="false">{{ person.telegramCode }}</span>
+              <span *ngSwitchCase="true" class="user-select-none">************</span>
+              <i class="feather icon-copy cursor-pointer" (click)="copyCode(person.telegramCode)"></i>
+              <i class="feather ms-1 cursor-pointer" 
+                 [ngClass]="{ 'icon-eye': !hideIntegrationCode, 'icon-eye-off': hideIntegrationCode }"
+                 (click)="toggleViewIntegrationCode()"></i>
             </div>
-            <div *ngIf="person.telegramUser === null" >
-              <img class="me-1" ngSrc="assets/images/telegram_16px.png" alt="telegram" width="16" height="16"> <a href="https://t.me/uits_notify_bot" tooltip="Для привязки профиля к телеграм пришлите этому боту код">@uits_notify_bot</a>
+            <div>
+              <div *ngIf="person.telegramUser">
+                <span class="user-select-none">Привязан к: </span>
+                <a href="https://t.me/{{person.telegramUser.username}}">@{{ person.telegramUser.username }}</a>
+                <i class="feather icon-x cursor-pointer font-size-lg ms-2" style="color: red;" 
+                   (click)="openModal(deleteIntegrationConfirmModal)"></i>
+              </div>
+              <div *ngIf="!person.telegramUser">
+                <img class="me-1" src="assets/images/telegram_16px.png" alt="telegram" width="16" height="16"> 
+                <a href="https://t.me/uits_notify_bot" tooltip="Для привязки профиля к телеграм пришлите этому боту код">@uits_notify_bot</a>
+              </div>
             </div>
-          </div>
-        </td>
-      </tr>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>
 </div>
 
+<!-- Кнопка редактирования профиля -->
+<div class="text-end mt-4">
+  <button class="btn btn-primary" (click)="openEditProfileModal()">Редактировать профиль</button>
+</div>
 
-<ng-template
-  bsModal
-  #deleteIntegrationConfirmModal>
+<!-- Модальное окно редактирования профиля -->
+<ng-template #editProfileModal bsModal>
   <div class="modal-header">
-    <h5 class="modal-title" id="exampleModalLabel">Хотите удалить интеграцию с телеграм?</h5>
+    <h5 class="modal-title">Редактировать профиль</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closeModal()"></button>
+  </div>
+  <div class="modal-body">
+    <form (ngSubmit)="saveProfile()">
+      <div class="mb-3">
+        <label for="name">Имя:</label>
+        <input id="name" [(ngModel)]="userProfile.name" name="name" required class="form-control">
+      </div>
+      <div class="mb-3">
+        <label for="email">Email:</label>
+        <input id="email" [(ngModel)]="userProfile.email" name="email" required class="form-control">
+      </div>
+      <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+    </form>
+  </div>
+</ng-template>
+
+<!-- Модальное окно подтверждения удаления интеграции -->
+<ng-template #deleteIntegrationConfirmModal>
+  <div class="modal-header">
+    <h5 class="modal-title">Хотите удалить интеграцию с телеграм?</h5>
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closeModal()"></button>
   </div>
   <div class="modal-footer">
