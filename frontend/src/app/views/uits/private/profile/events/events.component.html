@@ -208,8 +208,9 @@
           formControlName="assignedUsers"
           [multiple]="true"
           bindValue="pk"
+          [closeOnSelect]="false"
         >
-          <ng-template ng-label-tmp let-item="item">
+          <ng-template ng-label-tmp let-item="item" let-clear="clear">
             {{ (item.lastName) ? item.lastName + " " + item.firstName : item.username }}
             <button type="button" class="btn btn-link p-0 ml-1" (click)="clear(item)">
               <svg width="12" height="12" viewBox="2 3 20 20" fill="none" stroke="currentColor" stroke-width="2" class="align-middle">
