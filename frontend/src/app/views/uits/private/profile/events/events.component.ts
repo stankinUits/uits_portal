@@ -53,6 +53,13 @@ export class EventsComponent implements OnInit {
   // event id chosen for notification modal
   confirmNotificationEventId = null;
 
+  // Modal window for confirmation
+@ ViewChild("yesNoModal") yesNoModal: TemplateRef<any>;
+  yesNoModalNotify: BsModalRef;
+  // vars for confirmation of deleting
+  yesNoModalEventId = null;
+
+
 
   getEvents(): Observable<CalendarEvent<CalendarUserEventMeta>[]> {
     return this.events$;
@@ -226,6 +233,27 @@ export class EventsComponent implements OnInit {
       this.resetForm()
     })
   }
+
+  showYesNoModal(id: number){
+    this.yesNoModalEventId = id;
+    this.yesNoModalNotify = this.modalService.show(this.yesNoModal, {id: 10, class: 'second '});
+  }
+
+  yesNoModalConfirm(id:number) {
+    this.telegramService.userEventNotify(this.yesNoModalEventId).subscribe(ok => {
+      this.alertService.add("Событие удалено. Уведомление отправлено", 'success');
+      this.yesNoModalNotify.hide();
+      this.deleteEvent(this.yesNoModalEventId);
+    }, err => {
+      this.alertService.add("Ошибка... Что то пошло не так", 'danger');
+      this.yesNoModalNotify.hide();
+    })
+  }
+
+  yesNoModaldecline() {
+    this.yesNoModalNotify.hide();
+  }
+
 
   deleteEvent(id: number) {
     console.log(id)
