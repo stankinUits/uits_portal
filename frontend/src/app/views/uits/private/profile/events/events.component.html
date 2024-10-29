@@ -132,6 +132,21 @@
   </accordion>
 </ng-template>
 
+<!-- yesNoModal template -->
+<ng-template #yesNoModal>
+  <div class="modal-header">
+    <h4 class="modal-title">Подтверджение удаления</h4>
+  </div>
+  <div class="modal-body">
+    <p>
+      Уверены что хотите удалить событие и отправить уведомление об удалении пользователям?
+      Его увидят все привязанные к событию пользователи, у которых есть интеграция с аккаунтом Telegram
+    </p>
+    <button type="button" class="btn btn-default" (click)="yesNoModalConfirm()">Подтвердить</button>
+    <button type="button" class="btn btn-primary" (click)="yesNoModaldecline()">Отмена</button>
+  </div>
+</ng-template>
+
 <!-- create/edit form modal -->
 <ng-template #eventModal>
   <div class="modal-header">
@@ -226,7 +241,7 @@
                                                                                 alt="telegram" width="16" height="16">
           Уведомление
         </button>
-        <button class="btn btn-danger me-3" (click)="deleteEvent(formGroup.value.id)" type="button">Удалить</button>
+        <button class="btn btn-danger me-3" (click)="showYesNoModal(formGroup.value.id)" type="button">Удалить</button>
         <button class="btn btn-primary" type="submit">Изменить</button>
       </div>
     </form>
