@@ -41,12 +41,13 @@ def telegram_webhook_service(update: Update):
 
 # Create your views here.
 @csrf_exempt
-def telegram_webhook(request):
+def telegram_webhook(request, secret_token):
     if request.method == 'POST':
-        secret_token = request.headers.get('X-Telegram-Bot-Api-Secret-Token', None)
-        if secret_token != settings.TELEGRAM_BOT.get('WEBHOOK_SECRET'):
-            print(secret_token, settings.TELEGRAM_BOT.get('WEBHOOK_SECRET'))
+        # Проверка секретного токена
+        if secret_token != settings.TELEGRAM_BOT['WEBHOOK_SECRET']:
             return HttpResponseForbidden()
+
+        # Обработка обновления от Telegram
         update_json_string = request.body.decode('utf-8')
         update = telebot.types.Update.de_json(update_json_string)
         threading.Thread(target=telegram_webhook_service, args=(update,)).start()

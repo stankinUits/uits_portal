@@ -25,6 +25,7 @@ urlpatterns = [
     path('api/department/', include('department.urls')),
     path('api/editable-pages/', include('editable_pages.urls')),
     path('api/telegram/', include('tg_bot.urls')),
+    path('api/events/', include('events.urls')),
 ]
 
 if settings.DEBUG:
