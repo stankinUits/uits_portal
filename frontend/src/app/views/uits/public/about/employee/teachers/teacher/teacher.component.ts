@@ -5,6 +5,8 @@ import {BehaviorSubject} from "rxjs";
 import {EmployeeService} from "@app/views/uits/public/about/employee/employee.service";
 import {AVATAR_DEFAULT_URL} from "@app/configs/app.config";
 import {TeacherDegree, TeacherRank} from "@app/views/uits/public/about/employee/teachers/teachers.models";
+import { PagesConfig } from '@app/configs/pages.config';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-teacher',
@@ -63,10 +65,18 @@ export class TeacherComponent implements OnInit {
     return this.teacher$.getValue().bio;
   }
   
-  constructor(private route: ActivatedRoute, private employeeService: EmployeeService) {
+  constructor(
+    private route: ActivatedRoute, 
+    private employeeService: EmployeeService,
+    private router: Router,
+  ) {
     this.teacher$ = new BehaviorSubject(null);
   }
   
+  goToSchedule(id: number){
+    this.router.navigate([PagesConfig.about.employee.schedule, this.id])
+  }
+
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.id = +params['id'];
