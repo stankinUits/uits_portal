@@ -58,7 +58,7 @@ class CustomDateFormatter extends CalendarNativeDateFormatter {
   }
 
 }
-//test
+
 @NgModule({
   declarations: [
     ContactsComponent,
