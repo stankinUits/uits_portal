@@ -2,3 +2,6 @@
 #*.env
 postgres.env
 postgres_data
+.venv
+venv
+.vscode

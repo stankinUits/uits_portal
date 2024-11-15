@@ -40,6 +40,7 @@ import {MarkdownModule} from "ngx-markdown";
 import {LayoutModule} from "@app/layout/layout.module";
 import {CreateButtonComponent} from "@app/shared/components/create-button/create-button.component";
 import {PaginationModule} from "ngx-bootstrap/pagination";
+import { DisciplinesComponent } from './employee/teachers/teacher/components/disciplines/disciplines.component';
 
 registerLocaleData(localeRu);
 
@@ -57,7 +58,7 @@ class CustomDateFormatter extends CalendarNativeDateFormatter {
   }
 
 }
-
+//test
 @NgModule({
   declarations: [
     ContactsComponent,
@@ -75,6 +76,7 @@ class CustomDateFormatter extends CalendarNativeDateFormatter {
     AnnouncementPostComponent,
     TeacherComponent,
     ScheduleComponent,
+    DisciplinesComponent
   ],
   exports: [
     PostActionsComponent,

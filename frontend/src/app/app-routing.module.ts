@@ -7,6 +7,7 @@ import { AppLayoutComponent } from './layout/app-layout/app-layout-component';
 import { AUTH_LAYOUT_ROUTES } from './routes/auth-layout.routes';
 import { APP_LAYOUT_ROUTES } from './routes/app-layout.routes';
 
+
 const appRoutes: Routes = [
     {
         path: '',
