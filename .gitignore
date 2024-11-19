@@ -1,4 +1,4 @@
 .idea
-#*.env
+*.env
 postgres.env
 postgres_data
