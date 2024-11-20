@@ -1,13 +1,25 @@
-<div class="mb-4">
+
+<div class="contacts-container mb-4">
   <ng-container [ngTemplateOutlet]="titlePage"></ng-container>
-  <app-editable-content
-    page="contacts"
-  ></app-editable-content>
 
+  <div class="contacts-map-info">
+    <iframe src="https://yandex.ru/map-widget/v1/?ll=37.593088%2C55.789498&z=12" frameborder="0"></iframe>
+
+    <div class="contact-info">
+      <h2>Наш адрес</h2>
+      <p>Волковский пер., 3А, Москва, Россия, 127055</p>
+      <h2>Кабинет</h2>
+      <p>303, 304</p>
+      <h2>Телефон</h2>
+      <p>+7 (495) 973-39-13 (внутр. 5-31)</p>
+      <h2>Соц. сети</h2>
+      <div class="social-icons">
+        <a href="https://vk.com/msut_stankin" target="_blank"><img src="assets/images/icons8-vk.svg" alt="VK"></a>
+   
+      </div>
+    </div>
+  </div>
 </div>
-
-
-<!-- templates -->
 
 <ng-template #titlePage>
   <h1 class="mb-3">Контакты</h1>
