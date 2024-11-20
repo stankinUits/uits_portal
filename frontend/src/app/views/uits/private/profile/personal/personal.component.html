@@ -70,12 +70,10 @@
   </div>
 </div>
 
-<!-- Кнопка редактирования профиля -->
 <div class="text-end mt-4">
   <button class="btn btn-primary" (click)="openEditProfileModal()">Редактировать профиль</button>
 </div>
 
-<!-- Модальное окно редактирования профиля -->
 <ng-template #editProfileModal bsModal>
   <div class="modal-header">
     <h5 class="modal-title">Редактировать профиль</h5>
@@ -84,8 +82,8 @@
   <div class="modal-body">
     <form (ngSubmit)="saveProfile()">
       <div class="mb-3">
-        <label for="name">Имя:</label>
-        <input id="name" [(ngModel)]="userProfile.name" name="name" required class="form-control">
+        <label for="username">Имя пользователя:</label>
+        <input id="username" [(ngModel)]="userProfile.username" name="username" required class="form-control">
       </div>
       <div class="mb-3">
         <label for="email">Email:</label>
@@ -96,7 +94,6 @@
   </div>
 </ng-template>
 
-<!-- Модальное окно подтверждения удаления интеграции -->
 <ng-template #deleteIntegrationConfirmModal>
   <div class="modal-header">
     <h5 class="modal-title">Хотите удалить интеграцию с телеграм?</h5>

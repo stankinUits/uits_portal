@@ -34,7 +34,7 @@ const routes: Routes = [
         component: CustomPageComponent
       },
       {
-        path: 'personal', 
+        path: 'profile', 
         component: PersonalComponent, 
       },
       {
@@ -43,9 +43,7 @@ const routes: Routes = [
       }
     ]
   },
-  {
-    path: '**', redirectTo: 'corp' 
-  }
+
 ];
 
 @NgModule({

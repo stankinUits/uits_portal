@@ -32,7 +32,7 @@ export class CorporateComponent implements OnInit {
         const userPermissions = getUserPermissions(profile);
         if (userPermissions.includes(Permission.MODERATOR)) {
           this.corporateMenu = [
-            { title: 'Профиль', route: '/corp/personal', icon: 'icon-user', key: 'Аккаунт' },
+            { title: 'Профиль', route: '/corp/profile', icon: 'icon-user', key: 'Аккаунт' },
             { title: 'Модульные журналы', route: '/corp/modular_journals', icon: 'icon-journal', key: 'Журнал' },
             { title: 'Статистика модульных журналов', route: '/corp/statistics', icon: 'icon-stats', key: 'Статистика' },
             { title: 'Календарь событий', route: '/corp/calendar', icon: 'icon-calendar', key: 'Календарь событий' },
@@ -40,14 +40,12 @@ export class CorporateComponent implements OnInit {
         } else if (userPermissions.includes(Permission.TEACHER) || userPermissions.includes(Permission.SUPERUSER)) {
           this.isTeacher = true;
           this.corporateMenu = [
-            { title: 'Профиль', route: '/corp/personal', icon: 'icon-user', key: 'Аккаунт' },
+            { title: 'Профиль', route: '/corp/profile', icon: 'icon-user', key: 'Аккаунт' },
             { title: 'Публикации', route: '/corp/publications', icon: 'icon-publications', key: 'Публикации' },
             { title: 'Достижения', route: '/corp/achievements', icon: 'icon-achievements', key: 'Достижения' },
             { title: 'Модульные журналы', route: '/corp/modular_journals', icon: 'icon-journal', key: 'Журнал' },
             { title: 'Календарь событий', route: '/corp/calendar', icon: 'icon-calendar', key: 'Календарь событий' },
           ];
-        } else {
-          this.router.navigate(['/home']); // Редирект если нет доступа
         }
       })
     ).subscribe();
@@ -59,6 +57,6 @@ export class CorporateComponent implements OnInit {
 
   // Метод для проверки, находится ли пользователь на корпоративной странице
   isCorporateRoute(): boolean {
-    return this.router.url.startsWith('/corp'); // Проверка, начинается ли URL с '/corp'
+    return this.router.url.startsWith('/corp');
   }
 }

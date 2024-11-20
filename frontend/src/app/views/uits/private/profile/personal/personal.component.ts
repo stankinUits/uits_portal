@@ -2,8 +2,6 @@ import { Component, EventEmitter, OnInit, Output, TemplateRef, ViewChild } from 
 import { SafeUrl } from '@angular/platform-browser';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { ApiConfig } from '@app/configs/api.config';
-import { HttpClient } from '@angular/common/http';
 import { AuthService } from '@app/shared/services/auth.service';
 import { Profile } from '@app/shared/types/models/auth';
 import { AVATAR_DEFAULT_URL } from '@app/configs/app.config';
@@ -29,18 +27,16 @@ export class PersonalComponent implements OnInit {
   @ViewChild('deleteIntegrationConfirmModal') deleteIntegrationConfirmModal: TemplateRef<any>;
   @ViewChild('editProfileModal') editProfileModal: TemplateRef<any>;
   modalRef: BsModalRef;
-  
-  userProfile: PersonalInfo = { username: '', email: '' };
 
+  userProfile: PersonalInfo = { username: '', email: '' }; 
   constructor(
     public authService: AuthService,
     private clipboard: Clipboard,
-    private modalService: BsModalService,
-    private http: HttpClient
+    private modalService: BsModalService
   ) { }
 
   ngOnInit() {
-    this.loadUserProfile();
+    this.loadUserProfile(); 
   }
 
   loadUserProfile() {
@@ -52,52 +48,57 @@ export class PersonalComponent implements OnInit {
     });
   }
 
+  openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template, { class: 'modal-dialog-centered' });
+  }
+
+  closeModal() {
+    this.modalRef?.hide();
+  }
+
+  openEditProfileModal() {
+    this.modalRef = this.modalService.show(this.editProfileModal, { class: 'modal-dialog-centered' });
+  }
+  saveProfile() {
+    const profileUpdate = {
+      username: this.userProfile.username,
+      email: this.userProfile.email
+    };
+
+
+    setTimeout(() => {
+      console.log('Мок: профиль успешно обновлен:', profileUpdate);
+
+      const updatedProfile: Profile = {
+        ...this.authService.profile$.getValue(),
+        ...profileUpdate 
+      };
+
+      this.authService.profile$.next(updatedProfile);
+
+
+      this.closeModal();
+    }, 500);
+
+    // Реальный вызов будет выглядеть так:
+    // this.authService.updateProfile(profileUpdate).subscribe({
+    //   next: (updatedProfile) => {
+    //     console.log('Профиль успешно обновлен:', updatedProfile);
+    //     this.closeModal();
+    //     this.loadUserProfile(); // Загружаем обновлённый профиль
+    //   },
+    //   error: (err) => {
+    //     console.error('Ошибка при обновлении профиля:', err);
+    //   }
+    // });
+  }
+
   toggleViewIntegrationCode() {
     this.hideIntegrationCode = !this.hideIntegrationCode;
   }
 
   copyCode(telegramCode: string) {
     this.clipboard.copy(telegramCode);
-  }
-
-  openModal(template: TemplateRef<any>) {
-    this.modalRef = this.modalService.show(template, { class: 'modal-dialog-centered' });
-  }
-
-  closeModal() {
-    this.modalRef.hide();
-  }
-
-  deleteIntegration() {
-    this.http.delete(`${ApiConfig.telegram.user}/${this.authService.profile$.getValue().telegramUser.id}`).subscribe({
-      next: () => {
-        this.authService.retrieveProfile().subscribe(() => {
-          this.closeModal();
-        });
-      }
-    });
-  }
-
-  openEditProfileModal() {
-    this.modalRef = this.modalService.show(this.editProfileModal, { class: 'modal-dialog-centered' });
-  }
-
-  saveProfile() {
-    // Логика для сохранения профиля
-    const profileUpdate = {
-      username: this.userProfile.username,
-      email: this.userProfile.email
-    };
-
-    this.authService.updateProfile(profileUpdate).subscribe({
-      next: () => {
-        console.log('Профиль успешно обновлен');
-        this.closeModal();
-        this.loadUserProfile(); // Обновляем данные профиля
-      },
-      error: (err) => {
-        console.error('Ошибка при обновлении профиля:', err);
-      }
-    });
+  
   }
 }
