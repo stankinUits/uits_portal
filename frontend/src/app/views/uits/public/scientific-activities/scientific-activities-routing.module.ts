@@ -1,6 +1,8 @@
-import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { AchievementDetailComponent } from './achievement-detail/achievement-detail.component';
+import { AchievementListComponent } from './achievement-list/achievement-list.component';
+import { NgModule } from '@angular/core';
 
 const routes: Routes = [
 
@@ -11,6 +13,8 @@ const routes: Routes = [
   // { path: 'conferences', component: ConferencesComponent},
   // { path: 'publications', component: PublicationsComponent},
   // { path: 'scientific-work', component: ScientificWorkComponent},
+  { path: 'achievements', component: AchievementListComponent },
+  { path: 'achievements/:id', component: AchievementDetailComponent }
 
 ];
 

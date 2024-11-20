@@ -1,0 +1,26 @@
+<div class="achievement-detail">
+    <button class="go-back-btn" (click)="goBack()">
+        <span class="arrow">&#8592;</span> Вернуться назад
+    </button>
+    <div class="achievement-image">
+        <img [src]="achievement?.image" alt="Achievement Image" />
+    </div>
+
+    <div class="achievement-content">
+        <h1>{{ achievement?.title }}</h1>
+
+        <div class="achievement-description">
+            <p>{{ achievement?.description }}</p>
+            <div [innerHTML]="achievement?.content"></div>
+        </div>
+
+        <div class="achievement-footer">
+            <div *ngIf="achievement?.teacher">
+                <strong>Преподаватель:</strong> {{ achievement?.teacher }}
+            </div>
+            <div>
+                <strong>Дата создания:</strong> {{ achievement?.created_at | date: 'dd.MM.yyyy' }}
+            </div>
+        </div>
+    </div>
+</div>

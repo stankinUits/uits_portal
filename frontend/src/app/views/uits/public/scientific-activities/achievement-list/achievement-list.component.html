@@ -1,0 +1,26 @@
+<div class="achievement-list">
+    <div class="achievement-item" *ngFor="let achievement of achievements" (click)="onSelectAchievement(achievement)">
+        <div class="achievement-image">
+            <img [src]="achievement.image" alt="Achievement Image" />
+        </div>
+        <div class="achievement-content">
+            <div class="achievement-title">
+                {{ achievement.title }}
+            </div>
+            <div class="achievement-description">
+                <!-- Здесь мы используем markdown компонент для рендеринга описания -->
+                <markdown>
+                    {{ achievement.description }}
+                </markdown>
+            </div>
+            <div class="achievement-footer">
+                <div class="achievement-teacher" *ngIf="achievement.teacher">
+                    Преподаватель: {{ achievement.teacher }}
+                </div>
+                <div class="achievement-date">
+                    {{ achievement.created_at | date: 'dd.MM.yyyy' }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
