@@ -1,5 +1,7 @@
 import { ActivatedRoute, Router } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+
+import { AchievementService } from '../achievement.service';
 
 @Component({
   selector: 'app-achievement-detail',
@@ -7,19 +9,42 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./achievement-detail.component.scss']
 })
 export class AchievementDetailComponent implements OnInit {
+  achievement: any = null;
+  errorMessage: string | null = null;
+  isLoading: boolean = true;
 
-  achievement: any; // This will hold the achievement data
-
-  constructor(private route: ActivatedRoute, private router: Router) { }
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private achievementService: AchievementService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
-    // Get the achievement data from the route state
-    this.achievement = history.state.achievement;
-    console.log(this.achievement); // You can log to verify the data is coming through
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.loadAchievement(id);
+    } else {
+      this.errorMessage = 'ID достижения не найден';
+    }
+  }
+
+  loadAchievement(id: string): void {
+    this.achievementService.getAchievementById(id).subscribe({
+      next: (data) => {
+        this.achievement = data;
+        this.isLoading = false;
+        this.cdr.detectChanges(); // Trigger change detection manually
+      },
+      error: (err) => {
+        console.error('Ошибка загрузки данных:', err);
+        this.errorMessage = 'Ошибка загрузки данных достижения';
+        this.isLoading = false;
+      }
+    });
   }
 
   goBack(): void {
-    // Navigate to the achievement list
     this.router.navigate(['/scientific-activities/achievements']);
   }
 }
