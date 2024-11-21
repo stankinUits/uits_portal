@@ -40,7 +40,8 @@ THIRD_INSTALLED_APPS = [
     'dj_rest_auth',
     'imagekit',
     'django_quill',
-    'django_filters'
+    'django_filters',
+    'corsheaders',  # Добавлено
 ]
 
 # Local application definition
@@ -73,6 +74,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',  # Добавлено для CORS
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -223,15 +225,6 @@ DEFAULT_EDITABLE_PAGES = [
     'master-edu-plans',
     'master-graduate',
     'master-practices',
-    # 'scientific-activities-conferences',
-    # 'scientific-activities-postgraduate-dissertations',
-    # 'scientific-activities-postgraduate-practices',
-    # 'scientific-activities-postgraduate-specialties',
-    # 'scientific-activities-publications',
-    # 'scientific-activities-scientificWork',
-    # 'scientific-activities-postgraduate-general-info',
-    # 'scientific-activities-postgraduate-reporting',
-    # 'scientific-activities-postgraduate-students',
     'scientific-activity-postgraduate',
     'home-before',
     'home-after'
@@ -256,3 +249,28 @@ TELEGRAM_BOT = {
     'WEBHOOK_URL': env('TG_WEBHOOK_HOST') + 'api/telegram/webhook',
     'WEBHOOK_SECRET': env('TG_SECRET_TOKEN')
 }
+
+# CORS settings
+CORS_ALLOW_ALL_ORIGINS = True  # Разрешает доступ со всех доменов (не рекомендуется для production)
+
+# Если нужна настройка конкретных доменов, замените на:
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:3000",
+#     "https://example.com",
+# ]
+
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_HEADERS = [
+    'content-type',
+    'authorization',
+    'x-csrftoken',
+    'x-requested-with',
+]
+CORS_ALLOW_METHODS = [
+    'GET',
+    'POST',
+    'PUT',
+    'PATCH',
+    'DELETE',
+    'OPTIONS',
+]
