@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import models
-from imagekit.models import ImageSpecField, ProcessedImageField
+from imagekit.models import ProcessedImageField
 from imagekit.processors import ResizeToFit
 from department.employee.models import Teacher
 from django_quill import fields

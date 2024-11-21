@@ -4,7 +4,7 @@ from rest_framework.mixins import ListModelMixin, RetrieveModelMixin
 from rest_framework.decorators import action
 
 from .models import Achievement
-from .serializers import AchievementSerializer
+from .serializers import AchievementDetailSerializer, ListAchievementSerializer
 from .pagination import AchievementLimitOffsetPagination
 from users.permissions import IsModeratorOrReadOnly
 
@@ -14,7 +14,6 @@ class AchievementAPIViewSet(
 ):
 
     queryset = Achievement.objects.filter(is_published=True)
-    serializer_class = AchievementSerializer
     pagination_class = AchievementLimitOffsetPagination
 
     permission_classes = [IsModeratorOrReadOnly]
@@ -26,3 +25,10 @@ class AchievementAPIViewSet(
         )
         serializer = self.get_serializer(achievements, many=True)
         return Response(serializer.data)
+
+    def get_serializer_class(self, *args, **kwargs):
+        match self.action:
+            case 'list':
+                return ListAchievementSerializer
+            case 'retrieve':
+                return AchievementDetailSerializer
