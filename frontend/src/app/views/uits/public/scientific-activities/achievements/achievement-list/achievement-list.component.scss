@@ -1,16 +1,24 @@
-.achievement-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    /* Колонки с минимальной шириной 300px */
-    gap: 20px;
-    /* Расстояние между элементами */
-    grid-auto-rows: minmax(250px, auto);
-    /* Высота карточек зависит от контента */
+/* Общие стили для контейнеров */
+.container {
     margin: 20px;
-    align-items: start;
-    /* Выровнять элементы по верхнему краю */
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
+/* Стили списка достижений */
+.achievement-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Адаптивные колонки */
+    gap: 20px; /* Расстояние между элементами */
+    grid-auto-rows: minmax(250px, auto); /* Гибкие строки */
+    margin: 20px;
+    align-items: start; /* Выравнивание элементов по верхнему краю */
+}
+
+/* Стили карточки достижения */
 .achievement-item {
     background-color: #fff;
     border-radius: 12px;
@@ -21,13 +29,13 @@
     flex-direction: column;
     position: relative;
 
-    /* Эффект при наведении */
     &:hover {
         transform: translateY(-5px);
         box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
     }
 }
 
+/* Стили изображения достижения */
 .achievement-image {
     height: 220px;
     background-color: #f0f0f0;
@@ -35,15 +43,14 @@
     img {
         width: 100%;
         height: 100%;
-        object-fit: cover;
-        /* Картинка заполняет блок */
+        object-fit: cover; /* Обеспечить заполнение блока */
     }
 }
 
+/* Контент карточки */
 .achievement-content {
     padding: 20px;
     flex-grow: 1;
-    /* Увеличивает блок при необходимости */
     display: flex;
     flex-direction: column;
 
@@ -64,7 +71,6 @@
         color: #666;
         margin-bottom: 15px;
         flex-grow: 1;
-        /* Позволяет описанию занимать оставшееся место */
         transition: color 0.3s ease;
 
         &:hover {
@@ -86,5 +92,34 @@
         .achievement-date {
             color: #aaa;
         }
+    }
+}
+
+/* Стили контейнера ошибок */
+.error-container {
+    text-align: center;
+    background: #ffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    font-size: 1.1rem;
+    p {
+        margin: 10px 0;
+    }
+}
+
+/* Стили кнопки повтора */
+.retry-button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+        background-color: #0056b3;
     }
 }
