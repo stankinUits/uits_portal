@@ -2,6 +2,8 @@ export const nav = {
   "NAV": {
     "HOME": "Home",
     "ABOUT": "About the Department",
+    "History": "History of  Department",
+
     "NEWS": "Department News",
     "EMPLOYEE": "Department Staff",
     "TEACHERS": "Teaching Staff",

@@ -25,6 +25,16 @@ const about: NavMenu[] = [
     key: 'about',
     submenu: [
       {
+        path: 'about/history-of-department',
+        title: 'History',
+        translateKey: 'NAV.HISTORY',
+        type: 'item',
+        iconType: 'feather',
+        icon: 'icon-alert-octagon',
+        key: 'about/history-of-department',
+        submenu: []
+      },
+      {
         path: 'about/news',
         title: 'News',
         translateKey: 'NAV.NEWS',
@@ -118,6 +128,16 @@ const about: NavMenu[] = [
       },
       {
         path: 'about/contacts',
+        title: 'Contacts',
+        translateKey: 'NAV.CONTACTS',
+        type: 'item',
+        iconType: 'feather',
+        icon: 'icon-phone',
+        key: 'about/contacts',
+        submenu: []
+      },
+      {
+        path: 'frontend\src\app\history-of-department',
         title: 'Contacts',
         translateKey: 'NAV.CONTACTS',
         type: 'item',
