@@ -1,7 +1,7 @@
 import { RouterModule, Routes } from '@angular/router';
 
-import { AchievementDetailComponent } from './achievement-detail/achievement-detail.component';
-import { AchievementListComponent } from './achievement-list/achievement-list.component';
+import { AchievementDetailComponent } from './achievements/achievement-detail/achievement-detail.component';
+import { AchievementListComponent } from './achievements/achievement-list/achievement-list.component';
 import { NgModule } from '@angular/core';
 
 const routes: Routes = [

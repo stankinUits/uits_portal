@@ -1,4 +1,4 @@
-import { AchievementListComponent } from './achievement-list/achievement-list.component';
+import { AchievementListComponent } from './achievements/achievement-list/achievement-list.component';
 import { CommonModule } from '@angular/common';
 import { ConferencesComponent } from '@app/views/uits/public/scientific-activities/deprecated/conferences/conferences.component';
 import {LayoutModule} from "@app/layout/layout.module";
@@ -11,7 +11,7 @@ import { PostgraduateSpecialtiesComponent } from '@app/views/uits/public/scienti
 import { PublicationsComponent } from '@app/views/uits/public/scientific-activities/deprecated/publications/publications.component';
 import { ScientificActivitiesRoutingModule } from './scientific-activities-routing.module';
 import { ScientificWorkComponent } from '@app/views/uits/public/scientific-activities/deprecated/scientific-work/scientific-work.component';
-import { AchievementDetailComponent } from './achievement-detail/achievement-detail.component';
+import { AchievementDetailComponent } from './achievements/achievement-detail/achievement-detail.component';
 
 @NgModule({
   declarations: [
