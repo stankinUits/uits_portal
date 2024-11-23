@@ -136,16 +136,7 @@ const about: NavMenu[] = [
         key: 'about/contacts',
         submenu: []
       },
-      {
-        path: 'frontend\src\app\history-of-department',
-        title: 'Contacts',
-        translateKey: 'NAV.CONTACTS',
-        type: 'item',
-        iconType: 'feather',
-        icon: 'icon-phone',
-        key: 'about/contacts',
-        submenu: []
-      },
+     
     ]
   }
 ];
