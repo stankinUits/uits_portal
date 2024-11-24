@@ -232,6 +232,16 @@
         <textarea class="form-control no-success-validation no-success-icon-validation"
                   formControlName="description"></textarea>
       </div>
+      <!-- Поля для настройки частоты уведомлений -->
+      <div class="form-group mb-3">
+        <label class="form-label">Частота уведомлений</label>
+        <select class="form-control" formControlName="notificationFrequency">
+          <option value="never">Не отправлять уведомления</option>
+          <option value="hourly">Каждый час</option>
+          <option value="daily">Каждый день</option>
+          <option value="weekly">Каждую неделю</option>
+        </select>
+      </div>
       <div class="text-end" *ngIf="modalMode === 'add'">
         <button class="btn btn-primary" type="submit">Создать</button>
       </div>
