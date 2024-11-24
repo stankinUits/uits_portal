@@ -142,7 +142,7 @@
       Уверены что хотите удалить событие и отправить уведомление об удалении пользователям?
       Его увидят все привязанные к событию пользователи, у которых есть интеграция с аккаунтом Telegram
     </p>
-    <button type="button" class="btn btn-default" (click)="yesNoModalConfirm()">Подтвердить</button>
+    <button type="button" class="btn btn-default" (click)="yesNoModalConfirm(formGroup.value.id)">Подтвердить</button>
     <button type="button" class="btn btn-primary" (click)="yesNoModaldecline()">Отмена</button>
   </div>
 </ng-template>
@@ -244,6 +244,14 @@
       </div>
       <div class="text-end" *ngIf="modalMode === 'add'">
         <button class="btn btn-primary" type="submit">Создать</button>
+      </div>
+      <div class="text-end" *ngIf="modalMode === 'add'">
+        <button class="btn btn-outline-secondary me-3" type="button"
+                (click)="openNotificationModalConfirm(formGroup.value.id)"><img class="me-1"
+                                                                                ngSrc="assets/images/telegram_16px.png"
+                                                                                alt="telegram" width="16" height="16">
+          Уведомление
+        </button>
       </div>
       <div class="text-end" *ngIf="modalMode === 'edit'">
         <button class="btn btn-outline-secondary me-3" type="button"
