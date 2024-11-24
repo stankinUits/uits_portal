@@ -116,6 +116,7 @@ export class EventsComponent implements OnInit {
       dateStartEnd: [getDefaultDateStartEnd(), Validators.required],
       startTime: [getDefaultStartTime(),],
       endTime: [getDefaultEndTime(),],
+      notificationFrequency: ["never"],
       allDay: [false],
       color: [DEFAULT_EVENT_COLOR, Validators.required],
       assignedUsers: [[], Validators.required],
@@ -182,6 +183,7 @@ export class EventsComponent implements OnInit {
       description: rawData.description,
       startedAt: start.toISOString(),
       endedAt: end.toISOString(),
+      notificationFrequency: rawData.notificationFrequency,
       allDay: rawData.allDay,
       assignedUsers: (this.isTeacherProfile(profile)) ? [profile.pk] : rawData.assignedUsers,
       color: rawData.color,
@@ -200,6 +202,7 @@ export class EventsComponent implements OnInit {
       dateStartEnd: getDefaultDateStartEnd(),
       startTime: getDefaultStartTime(),
       endTime: getDefaultEndTime(),
+      notificationFrequency: "never",
       color: DEFAULT_EVENT_COLOR,
       description: '',
       assignedUsers: [],
@@ -295,7 +298,8 @@ export class EventsComponent implements OnInit {
               }
               return founded[0]
             }),
-            owner: ev.user
+            owner: ev.user,
+            notificationFrequency: ev.notificationFrequency
           }
         }
       }));
@@ -332,6 +336,7 @@ export class EventsComponent implements OnInit {
       dateStartEnd: [data.start, data.end],
       startTime: data.start,
       endTime: data.end,
+      notificationFrequency: data.meta.notificationFrequency,
       color: data.color.primary,
       allDay: data.allDay,
       description: data.meta.description,
