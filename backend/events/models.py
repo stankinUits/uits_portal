@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 
 User = get_user_model()
 
@@ -24,15 +25,13 @@ class NotificationFrequency(models.TextChoices):
     NONE = 'none', 'None'  # For no automatic notifications
 
 
-class UserEvent(models.Model):
-    NOTIFICATION_FREQUENCY_CHOICES = [
-        ('every minute', 'Ежеминутно'),
-        ('daily', 'Ежедневно'),
-        ('weekly', 'Еженедельно'),
-        ('monthly', 'Ежемесячно'),
-        ('never', 'Никогда')
-    ]
+class StatusChoice(models.TextChoices):
+    NOT_STARTED = 'not_started', _('Not Started')
+    IN_PROGRESS = 'in_progress', _('In Progress')
+    COMPLETED = 'completed', _('Completed')
 
+
+class UserEvent(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField(blank=True, null=True)
 
@@ -53,13 +52,20 @@ class UserEvent(models.Model):
     )
     last_notified_at = models.DateTimeField(null=True, blank=True)
 
+    status = models.CharField(
+        max_length=20,
+        choices=StatusChoice.choices,
+        default=StatusChoice.NOT_STARTED,
+    )
+
     def notify(self, notification_name: str):
+        """Send notification to assigned users about the event."""
         tz = pytz.timezone('Europe/Moscow')
         started_at = self.started_at.astimezone(tz).strftime("%Y-%m-%d %H:%M:%S" if not self.all_day else "%Y-%m-%d")
         ended_at = self.ended_at.astimezone(tz).strftime("%Y-%m-%d %H:%M:%S" if not self.all_day else "%Y-%m-%d")
         duration = f"{started_at} - {ended_at}" if not self.all_day else f"Весь день с {started_at} по {ended_at}"
-        assigned_at = ", ".join(map(lambda u: u.last_name + " " + u.first_name, self.assigned_users.all()))
-        # notification_data = self._get_notification_data()
+        assigned_at = ", ".join(f"{u.last_name} {u.first_name}" for u in self.assigned_users.all())
+
         for user in self.assigned_users.all():
             try:
                 tg_user = user.telegram_user
@@ -69,13 +75,12 @@ class UserEvent(models.Model):
                 tg_user.last_notification_time = timezone.now()
                 tg_user.save()
             except User.telegram_user.RelatedObjectDoesNotExist:
-                print(f"Does not exist")
+                print(f"Telegram account does not exist for {user.username}")
+   
+    def mark_as_started(self):
+        self.status = StatusChoice.IN_PROGRESS
+        self.save()
 
-    def notify_periodically(self, notification_name: str):
-        if self.notification_frequency_days > 0:
-            tz = pytz.timezone('Europe/Moscow')
-            now = datetime.now().astimezone(tz)
-            if self.last_notification_sent_at is None or (now - self.last_notification_sent_at).days >= self.notification_frequency_days:
-                self.notify(notification_name)
-                self.last_notification_sent_at = now
-                self.save(update_fields=['last_notification_sent_at'])
+    def mark_as_completed(self):
+        self.status = StatusChoice.COMPLETED
+        self.save()

@@ -1,10 +1,12 @@
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from events.models import UserEvent
+from events.models import UserEvent, StatusChoice
 
 
 class EventSerializer(serializers.ModelSerializer):
+    status = serializers.ChoiceField(choices=StatusChoice.choices)
+    
     class Meta:
         model = UserEvent
         fields = '__all__'
