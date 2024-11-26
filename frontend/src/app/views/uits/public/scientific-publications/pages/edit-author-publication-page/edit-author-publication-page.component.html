@@ -1,0 +1,42 @@
+<div class="page_style">
+  <div class="button_layout">
+    <ul style="list-style-type: none;">
+      <li>
+        <button class="button" type="button" (click)="onChooseForScientistsClick()">Выберете преподавателя из списка</button>
+        <ul class="tags_page_style" *ngIf="isHiddenScientistPage">
+          <li *ngFor="let author of authors.keys()" (click)="onAuthorClick(author)">
+            <button type="button" *ngClass="authors.get(author)">{{ author }}</button>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <div>
+      <button type="button" class="button" (click)="addNewEmptyCard()">Добавить новую карточку</button>
+    </div>
+    <div>
+      <button routerLink="" type="button" class="button">Вернуться на страницу просмотра</button>
+    </div>
+  </div>
+
+  <div *ngIf="profileEmptyCardsMap.size > 0">
+    <h4 class="h4_form_style">Новые карточки</h4>
+    <div class="cards_style" *ngFor="let publication of profileEmptyCardsMap.keys()">
+      <app-editable-publication-card
+        [publication]="publication"
+        [tagsWithStylesMap]="profileCardsMap.get(publication)!"
+        (delete)="deleteCard(publication.id_for_unique_identify_component!)"
+      ></app-editable-publication-card>
+    </div>
+  </div>
+
+  <div *ngIf="profileCardsMap.size > 0">
+    <h4 class="h4_form_style">Результаты поиска.</h4>
+    <div class="cards_style" *ngFor="let publication of profileCardsMap.keys()">
+      <app-editable-publication-card
+        [publication]="publication"
+        [tagsWithStylesMap]="profileCardsMap.get(publication)!"
+        (delete)="deleteCard(publication.id_for_unique_identify_component!)"
+      ></app-editable-publication-card>
+    </div>
+  </div>
+</div>

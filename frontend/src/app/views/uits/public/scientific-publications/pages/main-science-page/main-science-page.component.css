@@ -1,0 +1,59 @@
+.page-style {
+  display: inline-block;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-content: start;
+}
+
+.status_buttons_bar {
+  padding-left: 0;
+  display: inline-flex;
+  list-style-type: none;
+}
+
+.cards_button {
+  padding: 12px 12px 12px 12px;
+  margin: 20px 20px 20px 20px;
+}
+
+.tags_style {
+  border: none;
+  padding: 6px 6px 6px 6px;
+  background-color: transparent;
+  width: 100%;
+}
+
+.tags_page_style {
+  list-style-type: none;
+  background-color: var(--light-color);
+  margin: 5px 10px 10px 20px;
+  padding-left: 0;
+  width: max-content;
+  border-radius: 5px;
+}
+
+.tags_style_onClick {
+  border: none;
+  padding: 6px 6px 6px 6px;
+  margin-bottom: 3px;
+  background-color: gray;
+  width: 100%;
+  border-radius: 5px;
+}
+
+.cards_paging {
+  display: flex;
+  margin-left: 2%;
+  margin-right: 2%;
+}
+
+.button {
+  padding: 4px 8px;
+  margin: 10px 10px 10px 10px;
+  border-radius: 5px;
+  border: 1px solid var(--light-color);
+  width: 100%
+}
+
+.cards_button:hover {
+  background-color: gray;
+}

@@ -1,7 +1,10 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {HomeComponent} from '@app/views/uits/public/home/home.component';
-import {CustomPageComponent} from "@app/views/uits/public/custom-page/custom-page.component";
+import {CustomPageComponent} from '@app/views/uits/public/custom-page/custom-page.component';
+import {
+  MainSciencePageComponent
+} from '@app/views/uits/public/scientific-publications/pages/main-science-page/main-science-page.component';
 
 
 const routes: Routes = [
@@ -28,7 +31,10 @@ const routes: Routes = [
   {
     path: 'page/:slug',
     component: CustomPageComponent
-  }
+  },
+  { path: 'scientific-activity-publications', component: MainSciencePageComponent},
+  { path: 'scientific-activity-publications/create_new_author', component: MainSciencePageComponent},
+  { path: 'scientific-activity-publications/edit_author', component: MainSciencePageComponent}
 ];
 
 @NgModule({

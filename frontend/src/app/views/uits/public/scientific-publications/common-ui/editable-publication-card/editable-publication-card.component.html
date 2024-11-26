@@ -1,0 +1,55 @@
+<div *ngIf="publication">
+  <form class="input_form">
+    <div class="input_style">
+      <span>Название карточки</span>
+      <input [(ngModel)]="publication.name" [id]="id_name_card">
+    </div>
+    <div class="input_style">
+      <span>Год публикации</span>
+      <input [(ngModel)]="publication.year" [id]="id_year" [placeholder]="DEFAULT_YEAR">
+    </div>
+    <div class="input_style">
+      <span>Полное имя автора (Если авторов несколько, укажите их через ';')</span>
+      <input [(ngModel)]="publication.author" [id]="id_author_name">
+    </div>
+    <div class="input_style">
+      <span>Описание</span>
+      <input [(ngModel)]="publication.description" [id]="id_description" [placeholder]="DEFAULT_DESCRIPTION">
+    </div>
+    <div class="input_style">
+      <span>Теги (желательно выбрать не больше 4ех)</span>
+      <div class="add_new_tag">
+        <button type="button" class="form_button" (click)="onNewTag()">Добавить новый тег</button>
+        <input [id]="publication.name">
+      </div>
+      <button type="button" class="form_button" (click)="onChooseTag()">Список имеющихся тегов</button>
+      <ul class="tags_page_style" *ngIf="isTagsOpen">
+        <li *ngFor="let tag of tagsWithStylesMap.keys()" (click)="onTagClick(tag)">
+          <button type="button" [ngClass]="tagsWithStylesMap.get(tag)">{{ tag }}</button>
+        </li>
+      </ul>
+    </div>
+    <div class="input_style">
+      <span>Навзвание источника</span>
+      <input [(ngModel)]="publication.source" [id]="id_source" [placeholder]="DEFAULT_SOURCE">
+    </div>
+    <div class="input_style">
+      <span>Ссылка на источник</span>
+      <input [(ngModel)]="publication.url" [id]="id_url" [placeholder]="DEFAULT_URL">
+    </div>
+    <div class="input_style">
+      <span>Файл (если имеется, только в формате пдф)</span>
+      <input type="file" (change)="onFileSelected($event)">
+      <span *ngIf="publication.file" style="color: green">Выбранный файл: {{ publication.file.name }}</span>
+      <span *ngIf="alertMessage" style="color: red">{{ alertMessage }}</span>
+    </div>
+    <div class="input_style">
+      <button type="button" class="form_button" (click)="clickOnSave()">Сохранить</button>
+      <br>
+      <button type="button" class="form_button_del" (click)="clickOnDelete()">Удалить</button>
+    </div>
+  </form>
+</div>
+<div *ngIf="!publication">
+  <span>Результатов нет</span>
+</div>

@@ -1,0 +1,43 @@
+<div *ngIf="profile && !isEditing" class="profile-card">
+  <div class="profile-card__name">
+    <h4><b>{{ profile.name }}</b></h4>
+  </div>
+  <div class="profile-card__author">
+    <span>{{ profile.author?.join(', ') }}</span>
+  </div>
+  <div class="profile-card__description">
+    <span>{{ profile.description }}</span>
+  </div>
+  <div class="profile-card__tag">
+    <div *ngFor="let tag of profile.tags" class="tag">{{ tag }}</div>
+  </div>
+  <div *ngIf="profile.source" class="profile-card__author">
+    <span>{{ profile.source }}</span>
+  </div>
+  <div *ngIf="profile.year" class="profile-card__author">
+    <span>{{ profile.year }}</span>
+  </div>
+  <a *ngIf="profile.url" [href]="profile.url" target="_blank">
+    <div class="profile-card__button">
+      <button class="button">Перейти к источнику</button>
+    </div>
+  </a>
+  <div *ngIf="profile.file" class="profile-card__button">
+    <button class="button" (click)="downloadFile(profile.file)">Скачать статью</button>
+  </div>
+  <div *ngIf="AppSettings.isAdmin">
+    <br>
+    <button type="button" (click)="onEditCard()" class="button button_edit">Редактировать</button>
+  </div>
+</div>
+
+<app-editable-publication-card
+  *ngIf="profile && isEditing"
+  [publication]="profile"
+  [tagsWithStylesMap]="tagsMap"
+  (delete)="deleteCard()"
+></app-editable-publication-card>
+
+<div *ngIf="!profile">
+  <span>Карточек нет</span>
+</div>

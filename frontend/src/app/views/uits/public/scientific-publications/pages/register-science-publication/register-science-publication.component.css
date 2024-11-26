@@ -1,0 +1,105 @@
+.login-form {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+
+.form-style {
+  display: flex;
+}
+
+.span-style {
+  padding: 4px 8px;
+  margin: 10px 10px 10px 10px;
+}
+
+.input_style {
+  padding: 4px 8px;
+  margin: 10px 10px 10px 10px;
+  min-width: 0%;
+  border-radius: 4px;
+  font-size: 22px;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease-in-out;
+}
+
+.h4_form_style {
+  text-align: center;
+}
+
+.button:hover {
+  background-color: gray;
+}
+
+.button {
+  padding: 4px 8px;
+  margin: 12px 10px 10px 10px;
+  height: fit-content;
+
+  font-size: 22px;
+  color: black;
+  background-color: white;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.tags_style_onClick {
+  border: none;
+  padding: 6px 6px 6px 6px;
+  margin-bottom: 3px;
+  background-color: gray;
+  width: 100%;
+  border-radius: 5px;
+}
+
+.tags_style {
+  border: none;
+  padding: 6px 6px 6px 6px;
+  background-color: transparent;
+  width: 100%;
+}
+
+.tags_page_style {
+  list-style-type: none;
+  background-color: var(--light-color);
+  margin: 5px 10px 10px 10px;
+  padding-left: 0;
+  width: max-content;
+  border-radius: 5px;
+}
+
+.tags_style:hover {
+  background-color: #f0f0f0; /* Light gray background on hover */
+  border-radius: 4px; /* Slightly rounded corners on hover */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow on hover */
+}
+
+.cards_style {
+  margin-bottom: 2%;
+}
+
+.cards_page_style {
+  display: grid;
+}
+
+.cards_page_style .div{
+  margin-left: auto;
+  margin-right: auto;
+}
+.cards_page_style_div {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.text_alarm_style {
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  color: gray;
+}

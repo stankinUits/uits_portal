@@ -1,0 +1,45 @@
+.profile-card {
+    border: 1px solid var(--light-color);
+    padding: 12px 12px 12px 16px;
+    margin: 20px 20px 20px 20px;
+    border-radius: 5px;
+    max-height: 100%;
+    min-width: 350px;
+    max-width: 350px;
+    /*min-height: 800px;*/
+}
+
+.button_edit {
+  background-color: wheat;
+}
+
+.profile-card__description {
+    margin: 10px 10px 10px 10px;
+}
+
+.profile-card__author {
+    margin: 10px 10px 10px 10px;
+}
+.profile-card__name {
+    margin: 10px 10px 10px 10px;
+}
+
+.tag {
+    padding: 4px 8px;
+    border-radius: 5px;
+    border: 1px solid var(--light-color);
+    display: inline-block;
+    margin: 10px 10px 10px 10px;
+    gap: 8px;
+}
+
+.profile-card__tag {
+    display: inline-block;
+}
+
+.button {
+    padding: 4px 8px;
+    margin: 10px 10px 10px 10px;
+    border-radius: 5px;
+    border: 1px solid var(--light-color);
+}

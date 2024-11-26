@@ -1,0 +1,57 @@
+<div class="page-style">
+  <ul class="status_buttons_bar">
+    <li *ngIf="AppSettings.isAdmin">
+      <button routerLink="scientific-publications/create_new_author" class="cards_button">
+        Создать преподавателя, поиск по google scholar
+      </button>
+    </li>
+    <li *ngIf="AppSettings.isAdmin">
+      <button routerLink="scientific-publications/edit_author" class="cards_button">
+        Редактировать карточки преподавателя
+      </button>
+    </li>
+    <li>
+      <button class="cards_button" role="button" (click)="onChooseForScientistsClick()">Выбрать автора</button>
+      <ul class="tags_page_style" *ngIf="isHiddenScientistPage">
+        <li *ngFor="let author of authorsMap.keys(); trackBy: trackByFn" (click)="onAuthorClick(author)">
+          <button [ngClass]="authorsMap.get(author)">{{ author }}</button>
+        </li>
+      </ul>
+    </li>
+    <li>
+      <button class="cards_button" role="button" (click)="onChooseForTagsClick()">Выбрать по тегу</button>
+      <ul class="tags_page_style" *ngIf="isHiddenTagPage">
+        <li *ngFor="let tag of profilesTags.keys(); trackBy: trackByFn" (click)="onTagsClick(tag)">
+          <button role="button" [ngClass]="profilesTags.get(tag)">{{ tag }}</button>
+        </li>
+      </ul>
+    </li>
+    <li>
+      <button class="cards_button" role="button" (click)="onChooseForYearClick()">Выбрать год</button>
+      <ul class="tags_page_style" *ngIf="isHiddenYearPage">
+        <li *ngFor="let year of yearsMap.keys(); trackBy: trackByFn" (click)="onYearClick(year)">
+          <button role="button" [ngClass]="yearsMap.get(year)">{{ year }}</button>
+        </li>
+      </ul>
+    </li>
+    <li>
+      <button class="cards_button" role="button" (click)="onChooseForSourceClick()">Источник</button>
+      <ul class="tags_page_style" *ngIf="isHiddenSourcePage">
+        <li *ngFor="let source of sourceMap.keys(); trackBy: trackByFn" (click)="onSourceClick(source)">
+          <button role="button" [ngClass]="sourceMap.get(source)">{{ source }}</button>
+        </li>
+      </ul>
+    </li>
+    <li>
+      <button class="cards_button" (click)="cleanFilter()">Отчистить фильтр</button>
+    </li>
+  </ul>
+  <div class="cards_paging">
+    <div *ngFor="let profile of profilesMap.keys(); trackBy: trackByFn">
+      <app-profile-card
+        [profile]="profile"
+        [tagsMap]="profilesMap.get(profile)!"
+      ></app-profile-card>
+    </div>
+  </div>
+</div>
