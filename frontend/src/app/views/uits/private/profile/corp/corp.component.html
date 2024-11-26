@@ -1,0 +1,16 @@
+<div class="corporate-container">
+  <nav class="corporate-menu">
+    <h1>Корпоративный портал</h1>
+    <ul>
+      <li *ngFor="let menuItem of corporateMenu">
+        <a [routerLink]="menuItem.route">{{ menuItem.title }}</a>
+      </li>
+    </ul>
+    <button (click)="navigateToHome()" class="return-button">Вернуться к информационной части</button>
+  </nav>
+
+  <div class="corporate-content">
+    <router-outlet></router-outlet>
+    <p>Выберите пункт меню слева, чтобы перейти к соответствующему разделу.</p>
+  </div>
+</div>
