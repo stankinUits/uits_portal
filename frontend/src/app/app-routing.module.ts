@@ -6,6 +6,7 @@ import { HomeComponent } from './views/uits/public/home/home.component';
 import { AUTH_LAYOUT_ROUTES } from './routes/auth-layout.routes';
 import { APP_LAYOUT_ROUTES } from './routes/app-layout.routes';
 
+
 const appRoutes: Routes = [
   {
     path: '',
