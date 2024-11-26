@@ -5,6 +5,7 @@ import { HomeComponent } from '@app/views/uits/public/home/home.component';
 import { CustomPageComponent } from '@app/views/uits/public/custom-page/custom-page.component';
 import { PersonalComponent } from './private/profile/personal/personal.component'; // Импорт компонента Personal
 import { EventsComponent } from './private/profile/events/events.component';
+import { DisciplinesComponent } from '@app/views/uits/public/about/employee/teachers/teacher/components/disciplines/disciplines.component';
 
 
 const routes: Routes = [
@@ -40,7 +41,8 @@ const routes: Routes = [
       {
         path: 'calendar',
         component: EventsComponent,
-      }
+      },
+      { path: 'test', component: DisciplinesComponent }, // Test route for DisciplinesComponent
     ]
   },
 
