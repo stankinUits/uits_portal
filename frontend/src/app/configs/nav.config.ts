@@ -247,12 +247,12 @@ const scientificActivity: NavMenu[] = [
       },
       {
         path: PagesConfig.editable('scientific-activity-publications'),
-        title: 'ScientificActivity/SciencePublications',
+        title: 'SciencePublications',
         translateKey: 'NAV.SCIENTIFIC_ACTIVITY.SCIENTIFIC_PUBLICATIONS.TITLE',
         type: 'item',
         iconType: 'feather',
         icon: 'icon-briefcase',
-        key: 'scientificActivity/sciencePublications',
+        key: 'sciencePublications',
         submenu: []
       }
       ]

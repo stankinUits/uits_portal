@@ -38,7 +38,7 @@ export class MainSciencePageComponent {
   authorsMap: Map<string, string> = new Map();
 
   constructor() {
-    console.log(1)
+    console.log(1);
     this.scienceService.getInfoIfUserIsAdmin().subscribe(value => AppSettings.isAdmin = value.isAdmin)
 
     this.scienceService.getALLTagsRest().subscribe(v => {

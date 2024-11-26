@@ -13,6 +13,7 @@ import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { AppConfigState } from './store/app-config/app-config.state';
 import { TranslateModule } from '@ngx-translate/core';
 import { AppComponent } from './app.component';
+import {UitsModule} from '@app/views/uits/uits.module';
 
 // import mockServer from './mock-data/app.mock';
 

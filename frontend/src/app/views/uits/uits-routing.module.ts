@@ -32,9 +32,11 @@ const routes: Routes = [
     path: 'page/:slug',
     component: CustomPageComponent
   },
-  { path: 'scientific-activity-publications', component: MainSciencePageComponent},
-  { path: 'scientific-activity-publications/create_new_author', component: MainSciencePageComponent},
-  { path: 'scientific-activity-publications/edit_author', component: MainSciencePageComponent}
+  {
+    path: 'page/scientific-activity-publications',
+    loadChildren: () => import('@app/views/uits/public/scientific-publications/scientific-publications.module')
+      .then(m => m.ScientificPublicationsModule),
+  }
 ];
 
 @NgModule({

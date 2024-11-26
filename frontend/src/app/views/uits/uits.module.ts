@@ -11,6 +11,9 @@ import {SharedModule} from "@app/shared/shared.module";
 import { LatestAnnouncementsComponent } from './public/home/components/latest-announcements/latest-announcements.component';
 import {LayoutModule} from "@app/layout/layout.module";
 import { CustomPageComponent } from './public/custom-page/custom-page.component';
+import {
+  ScientificPublicationsModule
+} from "@app/views/uits/public/scientific-publications/scientific-publications.module";
 
 
 @NgModule({
@@ -22,12 +25,12 @@ import { CustomPageComponent } from './public/custom-page/custom-page.component'
   ],
   imports: [
     CommonModule,
-    UitsRoutingModule,
     AboutModule,
     NgBootstrapFormValidationModule.forRoot(),
     ModalModule,
     QuillEditorComponent,
     SharedModule,
+    ScientificPublicationsModule,
     LayoutModule
   ],
   exports: [
