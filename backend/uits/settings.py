@@ -42,6 +42,7 @@ THIRD_INSTALLED_APPS = [
     'django_quill',
     'django_filters',
     'corsheaders',  # Добавлено
+    'mdeditor'
 ]
 
 # Local application definition
@@ -52,6 +53,8 @@ LOCAL_INSTALLED_APPS = [
     'department.achievements.apps.AchievementsConfig',
     'department.employee',
     'department.employee.schedule',
+    'department.employee.subject',
+    'department.employee.guidance',
     'editable_pages.apps.EditablePagesConfig',
     'events',
     'tg_bot'
@@ -167,6 +170,7 @@ REST_AUTH = {
     'USER_DETAILS_SERIALIZER': 'users.serializers.UserDetailsSerializer'
 }
 
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
 MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_URL = '/media/'
 
@@ -211,6 +215,38 @@ QUILL_CONFIGS = {
         }
     }
 }
+
+MDEDITOR_CONFIGS = {
+    'default': {
+        'width': '100%',  # Ширина окна редактирования
+        'height': 500,  # Высота окна редактирования
+        'toolbar': ["undo", "redo", "|",
+                    "bold", "del", "italic", "quote", "ucwords", "uppercase", "lowercase", "|",
+                    "h1", "h2", "h3", "h5", "h6", "|",
+                    "list-ul", "list-ol", "hr", "|",
+                    "link", "reference-link", "image", "code", "preformatted-text", "code-block", "table", "datetime",
+                    "emoji", "html-entities", "pagebreak", "goto-line", "|",
+                    "help", "info",
+                    "||", "preview", "watch", "fullscreen"],  # Настройка панели инструментов редактора
+        'upload_image_formats': ["jpg", "jpeg", "gif", "png", "bmp", "webp"],  # Допустимые форматы изображений для загрузки
+        'image_folder': 'editor',  # Имя папки для сохранения изображений
+        'theme': 'dark',  # Тема редактора: 'dark' или 'default'
+        'preview_theme': 'default',  # Тема области предпросмотра
+        'editor_theme': 'default',  # Тема области редактирования
+        'toolbar_autofixed': True,  # Фиксация тулбара
+        'search_replace': True,  # Поиск и замена
+        'emoji': True,  # Включение смайликов
+        'tex': True,  # Включение поддержки Tex для графиков
+        'flow_chart': True,  # Включение поддержки Flow Chart
+        'sequence': True,  # Включение поддержки Sequence Diagram
+        'watch': True,  # Живой предпросмотр
+        'lineWrapping': False,  # Перенос строк
+        'lineNumbers': False,  # Показ номеров строк
+        'language': 'en'  # Язык редактора: 'zh' (китайский), 'en' (английский), 'es' (испанский)
+    }
+}
+
+
 
 # ONLY NEED FOR MIGRATION ON FIRST RUN python manage.py migrate
 # DO NOT CHANGE IT IF U DONT KNOW WHAT IT IS
@@ -274,3 +310,5 @@ CORS_ALLOW_METHODS = [
     'DELETE',
     'OPTIONS',
 ]
+
+X_FRAME_OPTIONS = 'SAMEORIGIN' 
