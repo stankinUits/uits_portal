@@ -24,12 +24,13 @@ import logging
 
 User = get_user_model()
 
+logger = logging.getLogger(__name__)
 
 def async_process_updates(update):
     try:
         loop = asyncio.get_event_loop()
     except RuntimeError:
-        print("Создаём новый event loop")
+        logger.info("Создаём новый event loop")
         loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
     asyncio.run(bot.process_new_updates([update]))
@@ -45,7 +46,7 @@ def telegram_webhook_service(update: Update):
 @csrf_exempt
 def telegram_webhook(request):
     if request.method == 'POST':
-        print("Received update from Telegram!")
+        logger.info("Received update from Telegram!")
         update_json_string = request.body.decode('utf-8')
         update = telebot.types.Update.de_json(update_json_string)
         threading.Thread(target=telegram_webhook_service, args=(update,)).start()
@@ -63,9 +64,6 @@ class TelegramUserDestroyAPIView(DestroyAPIView):
         if user.id != instance.assigned_user_id:
             raise PermissionDenied()
         instance.delete()
-
-
-logger = logging.getLogger(__name__)
 
 
 class UserEventsNotificationsAPIView(GenericAPIView):
