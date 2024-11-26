@@ -272,7 +272,7 @@ CELERY_RESULT_BACKEND = "redis://localhost:6379/1"
 CELERY_TIMEZONE = "Europe/Moscow"
 CELERY_BEAT_SCHEDULE = {
     'schedule-notify-bot': {
-        'task': 'events.tasks.schedule_notify_bot',
+        'task': 'events.tasks.send_event_notifications',
         'schedule': 30.0,
         'options': {
             'expires': 15.0,
@@ -282,9 +282,11 @@ CELERY_BEAT_SCHEDULE = {
 
 TELEGRAM_BOT = {
     'TOKEN': env('TG_BOT_TOKEN'),
-    'WEBHOOK_URL': env('TG_WEBHOOK_HOST') + 'api/telegram/webhook',
+    'WEBHOOK_URL': env('TG_WEBHOOK_HOST') + 'api/telegram/webhook/' + env('TG_SECRET_TOKEN'),
     'WEBHOOK_SECRET': env('TG_SECRET_TOKEN')
 }
+
+TELEGRAM_BOT_TOKEN = os.getenv('TG_BOT_TOKEN')
 
 # CORS settings
 CORS_ALLOW_ALL_ORIGINS = True  # Разрешает доступ со всех доменов (не рекомендуется для production)
@@ -312,3 +314,4 @@ CORS_ALLOW_METHODS = [
 ]
 
 X_FRAME_OPTIONS = 'SAMEORIGIN' 
+
