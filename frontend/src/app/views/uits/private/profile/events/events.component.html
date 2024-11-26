@@ -132,6 +132,21 @@
   </accordion>
 </ng-template>
 
+<!-- yesNoModal template -->
+<ng-template #yesNoModal>
+  <div class="modal-header">
+    <h4 class="modal-title">Подтверджение удаления</h4>
+  </div>
+  <div class="modal-body">
+    <p>
+      Уверены что хотите удалить событие и отправить уведомление об удалении пользователям?
+      Его увидят все привязанные к событию пользователи, у которых есть интеграция с аккаунтом Telegram
+    </p>
+    <button type="button" class="btn btn-default" (click)="yesNoModalConfirm(formGroup.value.id)">Подтвердить</button>
+    <button type="button" class="btn btn-primary" (click)="yesNoModaldecline()">Отмена</button>
+  </div>
+</ng-template>
+
 <!-- create/edit form modal -->
 <ng-template #eventModal>
   <div class="modal-header">
@@ -193,9 +208,16 @@
           formControlName="assignedUsers"
           [multiple]="true"
           bindValue="pk"
+          [closeOnSelect]="false"
         >
-          <ng-template ng-label-tmp let-item="item">
+          <ng-template ng-label-tmp let-item="item" let-clear="clear">
             {{ (item.lastName) ? item.lastName + " " + item.firstName : item.username }}
+            <button type="button" class="btn btn-link p-0 ml-1" (click)="clear(item)">
+              <svg width="12" height="12" viewBox="2 3 20 20" fill="none" stroke="currentColor" stroke-width="2" class="align-middle">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
           </ng-template>
           <ng-template ng-option-tmp let-item="item" let-index="index">
             {{ (item.lastName) ? item.lastName + " " + item.firstName + " (" + item.username + ")" : item.username }}
@@ -210,8 +232,26 @@
         <textarea class="form-control no-success-validation no-success-icon-validation"
                   formControlName="description"></textarea>
       </div>
+      <!-- Поля для настройки частоты уведомлений -->
+      <div class="form-group mb-3">
+        <label class="form-label">Частота уведомлений</label>
+        <select class="form-control" formControlName="notificationFrequency">
+          <option value="never">Не отправлять уведомления</option>
+          <option value="hourly">Каждый час</option>
+          <option value="daily">Каждый день</option>
+          <option value="weekly">Каждую неделю</option>
+        </select>
+      </div>
       <div class="text-end" *ngIf="modalMode === 'add'">
         <button class="btn btn-primary" type="submit">Создать</button>
+      </div>
+      <div class="text-end" *ngIf="modalMode === 'add'">
+        <button class="btn btn-outline-secondary me-3" type="button"
+                (click)="openNotificationModalConfirm(formGroup.value.id)"><img class="me-1"
+                                                                                ngSrc="assets/images/telegram_16px.png"
+                                                                                alt="telegram" width="16" height="16">
+          Уведомление
+        </button>
       </div>
       <div class="text-end" *ngIf="modalMode === 'edit'">
         <button class="btn btn-outline-secondary me-3" type="button"
@@ -220,7 +260,7 @@
                                                                                 alt="telegram" width="16" height="16">
           Уведомление
         </button>
-        <button class="btn btn-danger me-3" (click)="deleteEvent(formGroup.value.id)" type="button">Удалить</button>
+        <button class="btn btn-danger me-3" (click)="showYesNoModal(formGroup.value.id)" type="button">Удалить</button>
         <button class="btn btn-primary" type="submit">Изменить</button>
       </div>
     </form>
@@ -230,7 +270,7 @@
 <!-- notification confirm modal -->
 <ng-template #notificationConfirm>
   <div class="modal-header">
-    <h4 class="modal-title">Подтверджение отправки уведомления</h4>
+    <h4 class="modal-title">Подтверждение отправки уведомления</h4>
   </div>
   <div class="modal-body">
     <p>

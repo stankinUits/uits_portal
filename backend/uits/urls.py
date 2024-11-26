@@ -26,6 +26,7 @@ urlpatterns = [
     path('api/editable-pages/', include('editable_pages.urls')),
     path('api/telegram/', include('tg_bot.urls')),
     path('api/events/', include('events.urls')),
+    path('mdeditor/', include('mdeditor.urls')),  
 ]
 
 if settings.DEBUG:

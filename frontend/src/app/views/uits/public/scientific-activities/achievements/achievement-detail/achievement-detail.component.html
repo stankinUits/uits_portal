@@ -1,0 +1,35 @@
+<div class="achievement-detail">
+    <button class="go-back-btn" (click)="goBack()">
+      <span class="arrow">&#8592;</span> Вернуться назад
+    </button>
+  
+    <div *ngIf="isLoading" class="loading-state">
+      <p>Загрузка...</p>
+    </div>
+  
+    <div *ngIf="errorMessage" class="error-message">
+      <p>{{ errorMessage }}</p>
+    </div>
+  
+    <div *ngIf="achievement && !isLoading" class="achievement-content">
+      <div class="achievement-image">
+        <img [src]="achievement?.image" alt="Achievement Image" />
+      </div>
+  
+      <div class="achievement-details">
+        <h1>{{ achievement?.title }}</h1>
+        <p>{{ achievement?.description }}</p>
+        <div [innerHTML]="achievement?.content"></div>
+  
+        <div class="achievement-footer">
+          <div *ngIf="achievement?.teacher">
+            <strong>Преподаватель:</strong> {{ achievement?.teacher }}
+          </div>
+          <div>
+            <strong>Дата создания:</strong> {{ achievement?.created_at | date: 'dd.MM.yyyy' }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
