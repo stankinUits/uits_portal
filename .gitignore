@@ -5,3 +5,4 @@ postgres_data
 .venv
 venv
 .vscode
+.vs
