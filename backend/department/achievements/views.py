@@ -32,3 +32,7 @@ class AchievementAPIViewSet(
                 return ListAchievementSerializer
             case 'retrieve':
                 return AchievementDetailSerializer
+            case 'by_teacher':
+                return ListAchievementSerializer
+            case _:
+                return super().get_serializer_class(*args, **kwargs)
