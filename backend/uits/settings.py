@@ -49,6 +49,7 @@ THIRD_INSTALLED_APPS = [
 LOCAL_INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'department.news.apps.NewsConfig',
+    'department.achievements.apps.AchievementsConfig',
     'department.employee',
     'department.employee.schedule',
     'department.employee.subject',
