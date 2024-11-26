@@ -16,7 +16,7 @@ export const PagesConfig = {
     }
   },
   admin: "/admin",
-  profile: "/profile",
+  profile: "/corp/profile",
   educationalActivities: {
     bachelor: {
       eduPlans: eduActivitiesPrefix + '/bachelor/edu-plans',

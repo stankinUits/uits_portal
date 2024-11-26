@@ -7,6 +7,7 @@ import { PersonalComponent } from './private/profile/personal/personal.component
 import { EventsComponent } from './private/profile/events/events.component';
 import { DisciplinesComponent } from '@app/views/uits/public/about/employee/teachers/teacher/components/disciplines/disciplines.component';
 
+
 const routes: Routes = [
 
   {
@@ -34,8 +35,8 @@ const routes: Routes = [
         component: CustomPageComponent
       },
       {
-        path: 'personal', // Изменяем 'profile' на 'personal'
-        component: PersonalComponent, // Подключаем PersonalComponent напрямую
+        path: 'profile', 
+        component: PersonalComponent, 
       },
       {
         path: 'calendar',
@@ -44,11 +45,7 @@ const routes: Routes = [
       { path: 'test', component: DisciplinesComponent }, // Test route for DisciplinesComponent
     ]
   },
-  {
-    path: '**', redirectTo: 'corp' 
-  }
-  
- 
+
 ];
 
 @NgModule({

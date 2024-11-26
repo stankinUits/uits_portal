@@ -14,6 +14,8 @@ import { CustomPageComponent } from './public/custom-page/custom-page.component'
 import { CorporateComponent } from './private/profile/corp/corp.component';
 import { PersonalComponent } from './private/profile/personal/personal.component';
 import { EventsComponent } from './private/profile/events/events.component';
+import { CalendarModule } from 'angular-calendar';
+
 
 
 @NgModule({
@@ -24,7 +26,7 @@ import { EventsComponent } from './private/profile/events/events.component';
     LatestAnnouncementsComponent,
     CustomPageComponent,
     PersonalComponent,
-    EventsComponent
+    EventsComponent,
   ],
   imports: [
     CommonModule,
@@ -34,7 +36,9 @@ import { EventsComponent } from './private/profile/events/events.component';
     ModalModule,
     QuillEditorComponent,
     SharedModule,
-    LayoutModule
+    LayoutModule,
+    CalendarModule 
+    
   ],
   exports: [
 
