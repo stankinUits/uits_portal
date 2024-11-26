@@ -19,6 +19,8 @@ from rest_framework.generics import DestroyAPIView, GenericAPIView
 from tg_bot.models import TelegramUser
 from tg_bot.serializers import TelegramUserSerializer
 from users.permissions import IsTeacher
+from django.shortcuts import get_object_or_404
+import logging
 
 User = get_user_model()
 
@@ -41,13 +43,9 @@ def telegram_webhook_service(update: Update):
 
 # Create your views here.
 @csrf_exempt
-def telegram_webhook(request, secret_token):
+def telegram_webhook(request):
     if request.method == 'POST':
-        # Проверка секретного токена
-        if secret_token != settings.TELEGRAM_BOT['WEBHOOK_SECRET']:
-            return HttpResponseForbidden()
-
-        # Обработка обновления от Telegram
+        print("Received update from Telegram!")
         update_json_string = request.body.decode('utf-8')
         update = telebot.types.Update.de_json(update_json_string)
         threading.Thread(target=telegram_webhook_service, args=(update,)).start()
@@ -67,13 +65,27 @@ class TelegramUserDestroyAPIView(DestroyAPIView):
         instance.delete()
 
 
+logger = logging.getLogger(__name__)
+
+
 class UserEventsNotificationsAPIView(GenericAPIView):
-    permission_classes = [IsTeacher]
 
     def post(self, request, *args, **kwargs):
-        print(request.data)
+        logger.info("Received request for sending notifications.")
+        logger.debug(f"Request data: {request.data}")
+
+        # Получение пользователя и идентификатора события
         user = request.user
-        event_pk = request.data['id']
-        user_event = UserEvent.objects.get(pk=event_pk)
-        user_event.notify(f"Напоминание от {user.last_name} {user.first_name}")
-        return Response(200)
+        event_pk = request.data.get('id')
+        if not event_pk:
+            return Response({"error": "Event ID is required."}, status=400)
+
+        # Получение объекта события
+        user_event = get_object_or_404(UserEvent, pk=event_pk)
+
+        # Отправка уведомления
+        notification_message = f"Напоминание от {user.last_name} {user.first_name}"
+        user_event.notify(notification_message)
+
+        logger.info(f"Notification sent for event ID {event_pk} by user {user.id}")
+        return Response({"status": "Notification sent successfully."}, status=200)
