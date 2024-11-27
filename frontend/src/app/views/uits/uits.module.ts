@@ -11,6 +11,11 @@ import {SharedModule} from "@app/shared/shared.module";
 import { LatestAnnouncementsComponent } from './public/home/components/latest-announcements/latest-announcements.component';
 import {LayoutModule} from "@app/layout/layout.module";
 import { CustomPageComponent } from './public/custom-page/custom-page.component';
+import { CorporateComponent } from './private/profile/corp/corp.component';
+import { PersonalComponent } from './private/profile/personal/personal.component';
+import { EventsComponent } from './private/profile/events/events.component';
+import { CalendarModule } from 'angular-calendar';
+
 import {
   ScientificPublicationsModule
 } from "@app/views/uits/public/scientific-publications/scientific-publications.module";
@@ -18,10 +23,13 @@ import {
 
 @NgModule({
   declarations: [
+    CorporateComponent,
     HomeComponent,
     LatestNewsComponent,
     LatestAnnouncementsComponent,
     CustomPageComponent,
+    PersonalComponent,
+    EventsComponent,
   ],
   imports: [
     CommonModule,
@@ -31,7 +39,9 @@ import {
     QuillEditorComponent,
     SharedModule,
     ScientificPublicationsModule,
-    LayoutModule
+    LayoutModule,
+    LayoutModule,
+    CalendarModule
   ],
   exports: [
 

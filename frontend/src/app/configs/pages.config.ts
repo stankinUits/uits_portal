@@ -12,10 +12,11 @@ export const PagesConfig = {
     announcements: '/about/announcements/',
     employee: {
       teachers: '/about/employee/teachers/',
+      schedule: '/about/employee/teachers/schedule/',
     }
   },
   admin: "/admin",
-  profile: "/profile",
+  profile: "/corp/profile",
   educationalActivities: {
     bachelor: {
       eduPlans: eduActivitiesPrefix + '/bachelor/edu-plans',

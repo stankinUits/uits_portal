@@ -53,6 +53,13 @@ export class EventsComponent implements OnInit {
   // event id chosen for notification modal
   confirmNotificationEventId = null;
 
+  // Modal window for confirmation
+@ ViewChild("yesNoModal") yesNoModal: TemplateRef<any>;
+  yesNoModalNotify: BsModalRef;
+  // vars for confirmation of deleting
+  yesNoModalEventId = null;
+
+
 
   getEvents(): Observable<CalendarEvent<CalendarUserEventMeta>[]> {
     return this.events$;
@@ -109,6 +116,7 @@ export class EventsComponent implements OnInit {
       dateStartEnd: [getDefaultDateStartEnd(), Validators.required],
       startTime: [getDefaultStartTime(),],
       endTime: [getDefaultEndTime(),],
+      notificationFrequency: ["never"],
       allDay: [false],
       color: [DEFAULT_EVENT_COLOR, Validators.required],
       assignedUsers: [[], Validators.required],
@@ -175,6 +183,7 @@ export class EventsComponent implements OnInit {
       description: rawData.description,
       startedAt: start.toISOString(),
       endedAt: end.toISOString(),
+      notificationFrequency: rawData.notificationFrequency,
       allDay: rawData.allDay,
       assignedUsers: (this.isTeacherProfile(profile)) ? [profile.pk] : rawData.assignedUsers,
       color: rawData.color,
@@ -193,6 +202,7 @@ export class EventsComponent implements OnInit {
       dateStartEnd: getDefaultDateStartEnd(),
       startTime: getDefaultStartTime(),
       endTime: getDefaultEndTime(),
+      notificationFrequency: "never",
       color: DEFAULT_EVENT_COLOR,
       description: '',
       assignedUsers: [],
@@ -226,6 +236,27 @@ export class EventsComponent implements OnInit {
       this.resetForm()
     })
   }
+
+  showYesNoModal(id: number){
+    this.yesNoModalEventId = id;
+    this.yesNoModalNotify = this.modalService.show(this.yesNoModal, {id: 10, class: 'second '});
+  }
+
+  yesNoModalConfirm(id:number) {
+    this.telegramService.userEventNotify(this.yesNoModalEventId).subscribe(ok => {
+      this.alertService.add("Событие удалено. Уведомление отправлено", 'success');
+      this.yesNoModalNotify.hide();
+      this.deleteEvent(this.yesNoModalEventId);
+    }, err => {
+      this.alertService.add("Ошибка... Что то пошло не так", 'danger');
+      this.yesNoModalNotify.hide();
+    })
+  }
+
+  yesNoModaldecline() {
+    this.yesNoModalNotify.hide();
+  }
+
 
   deleteEvent(id: number) {
     console.log(id)
@@ -267,7 +298,8 @@ export class EventsComponent implements OnInit {
               }
               return founded[0]
             }),
-            owner: ev.user
+            owner: ev.user,
+            notificationFrequency: ev.notificationFrequency
           }
         }
       }));
@@ -304,6 +336,7 @@ export class EventsComponent implements OnInit {
       dateStartEnd: [data.start, data.end],
       startTime: data.start,
       endTime: data.end,
+      notificationFrequency: data.meta.notificationFrequency,
       color: data.color.primary,
       allDay: data.allDay,
       description: data.meta.description,

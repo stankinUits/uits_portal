@@ -5,9 +5,14 @@ import {CustomPageComponent} from '@app/views/uits/public/custom-page/custom-pag
 import {
   MainSciencePageComponent
 } from '@app/views/uits/public/scientific-publications/pages/main-science-page/main-science-page.component';
+import { CorporateComponent } from './private/profile/corp/corp.component';
+import { PersonalComponent } from './private/profile/personal/personal.component'; // Импорт компонента Personal
+import { EventsComponent } from './private/profile/events/events.component';
+import { DisciplinesComponent } from '@app/views/uits/public/about/employee/teachers/teacher/components/disciplines/disciplines.component';
 
 
 const routes: Routes = [
+
   {
     path: 'home', component: HomeComponent
   },
@@ -36,12 +41,31 @@ const routes: Routes = [
     path: 'page/scientific-activity-publications',
     loadChildren: () => import('@app/views/uits/public/scientific-publications/scientific-publications.module')
       .then(m => m.ScientificPublicationsModule),
-  }
+  },
+  {
+    path: 'corp',
+    component: CorporateComponent,
+    children: [
+      {
+        path: 'page/:slug',
+        component: CustomPageComponent
+      },
+      {
+        path: 'profile',
+        component: PersonalComponent,
+      },
+      {
+        path: 'calendar',
+        component: EventsComponent,
+      },
+      { path: 'test', component: DisciplinesComponent }, // Test route for DisciplinesComponent
+    ]
+  },
+
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class UitsRoutingModule {
-}
+export class UitsRoutingModule {}
