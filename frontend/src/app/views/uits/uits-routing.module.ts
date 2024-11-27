@@ -30,14 +30,6 @@ const routes: Routes = [
       .then(m => m.ScientificActivitiesModule)
   },
   {
-    path: 'profile',
-    loadChildren: () => import('@app/views/uits/private/profile/profile.module').then(m => m.ProfileModule)
-  },
-  {
-    path: 'page/:slug',
-    component: CustomPageComponent
-  },
-  {
     path: 'page/scientific-activity-publications',
     loadChildren: () => import('@app/views/uits/public/scientific-publications/scientific-publications.module')
       .then(m => m.ScientificPublicationsModule),
