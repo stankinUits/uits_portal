@@ -7,6 +7,7 @@ import {AppSettings} from '../../utils/settings';
 import {
   ProfileCardComponent
 } from '@app/views/uits/public/scientific-publications/common-ui/profile-card/profile-card.component';
+import {AuthService} from "@app/shared/services/auth.service";
 
 @Component({
   selector: 'app-main-science-page',
@@ -20,6 +21,7 @@ import {
 export class MainSciencePageComponent {
   protected readonly AppSettings = AppSettings;
   scienceService = inject(RegisterScienceService);
+  authService: AuthService = inject(AuthService);
 
   profilesMap: Map<ScienceReadyPublication, Map<string, string>> = new Map();
   originalProfilesMap: Map<ScienceReadyPublication, Map<string, string>> = new Map();
@@ -38,8 +40,10 @@ export class MainSciencePageComponent {
   authorsMap: Map<string, string> = new Map();
 
   constructor() {
-    console.log(1);
-    this.scienceService.getInfoIfUserIsAdmin().subscribe(value => AppSettings.isAdmin = value.isAdmin)
+    //authenticate
+    authService.canEdit().subscribe(v => AppSettings.isAdmin = v);
+
+    this.scienceService.getInfoIfUserIsAdmin().subscribe(value => AppSettings.isAdmin = value.isAdmin);
 
     this.scienceService.getALLTagsRest().subscribe(v => {
       // заполняем все для карточек теги
