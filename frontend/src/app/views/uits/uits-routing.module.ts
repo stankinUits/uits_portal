@@ -27,6 +27,14 @@ const routes: Routes = [
       .then(m => m.ScientificActivitiesModule)
   },
   {
+<<<<<<< HEAD
+=======
+    path: 'page/scientific-activity-publications',
+    loadChildren: () => import('@app/views/uits/public/scientific-publications/scientific-publications.module')
+      .then(m => m.ScientificPublicationsModule),
+  },
+  {
+>>>>>>> b85ed7f2723c64469e93ecb0ab3625898c4f1f33
     path: 'corp',
     component: CorporateComponent, 
     children: [

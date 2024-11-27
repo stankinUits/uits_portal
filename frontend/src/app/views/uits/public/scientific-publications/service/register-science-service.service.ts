@@ -8,6 +8,7 @@ import {AppSettings} from '../utils/settings';
 import {ScienceReadyPublication} from '../interface/profile.interface';
 import {AuthorInfo} from '../interface/autrhor_info.interface';
 
+//todo waiting rest for this
 @Injectable({
   providedIn: 'root'
 })
