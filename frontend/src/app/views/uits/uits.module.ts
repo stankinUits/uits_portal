@@ -15,11 +15,7 @@ import { CorporateComponent } from './private/profile/corp/corp.component';
 import { PersonalComponent } from './private/profile/personal/personal.component';
 import { EventsComponent } from './private/profile/events/events.component';
 import { CalendarModule } from 'angular-calendar';
-
-import {
-  ScientificPublicationsModule
-} from "@app/views/uits/public/scientific-publications/scientific-publications.module";
-
+import { ScientificActivitiesModule } from './public/scientific-activities/scientific-activities.module';
 
 @NgModule({
   declarations: [
@@ -30,18 +26,19 @@ import {
     CustomPageComponent,
     PersonalComponent,
     EventsComponent,
+
   ],
   imports: [
     CommonModule,
+    UitsRoutingModule,
     AboutModule,
     NgBootstrapFormValidationModule.forRoot(),
     ModalModule,
     QuillEditorComponent,
     SharedModule,
-    ScientificPublicationsModule,
     LayoutModule,
-    LayoutModule,
-    CalendarModule
+    CalendarModule,
+    ScientificActivitiesModule
   ],
   exports: [
 
