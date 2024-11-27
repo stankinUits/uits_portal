@@ -1,11 +1,11 @@
 <div class="page-style">
   <ul class="status_buttons_bar">
-    <li *ngIf="AppSettings.isAdmin">
+    <li *ngIf="isAdmin">
       <button routerLink="/page/scientific-activity-publications/create_new_author" class="cards_button">
         Создать преподавателя, поиск по google scholar
       </button>
     </li>
-    <li *ngIf="AppSettings.isAdmin">
+    <li *ngIf="isAdmin">
       <button routerLink="/page/scientific-activity-publications/edit_author" class="cards_button">
         Редактировать карточки преподавателя
       </button>

@@ -19,9 +19,9 @@ import {AuthService} from "@app/shared/services/auth.service";
   styleUrls: ['./main-science-page.component.css']
 })
 export class MainSciencePageComponent {
-  protected readonly AppSettings = AppSettings;
   scienceService = inject(RegisterScienceService);
   authService: AuthService = inject(AuthService);
+  isAdmin = false;
 
   profilesMap: Map<ScienceReadyPublication, Map<string, string>> = new Map();
   originalProfilesMap: Map<ScienceReadyPublication, Map<string, string>> = new Map();
@@ -41,9 +41,7 @@ export class MainSciencePageComponent {
 
   constructor() {
     //authenticate
-    authService.canEdit().subscribe(v => AppSettings.isAdmin = v);
-
-    this.scienceService.getInfoIfUserIsAdmin().subscribe(value => AppSettings.isAdmin = value.isAdmin);
+    this.authService.canEdit().subscribe(v => this.isAdmin = v);
 
     this.scienceService.getALLTagsRest().subscribe(v => {
       // заполняем все для карточек теги

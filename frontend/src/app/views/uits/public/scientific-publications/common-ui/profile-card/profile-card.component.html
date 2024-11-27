@@ -25,7 +25,7 @@
   <div *ngIf="profile.file" class="profile-card__button">
     <button class="button" (click)="downloadFile(profile.file)">Скачать статью</button>
   </div>
-  <div *ngIf="AppSettings.isAdmin">
+  <div *ngIf="isAdmin">
     <br>
     <button type="button" (click)="onEditCard()" class="button button_edit">Редактировать</button>
   </div>

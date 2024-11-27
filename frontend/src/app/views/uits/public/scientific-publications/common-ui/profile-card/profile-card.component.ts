@@ -4,6 +4,7 @@ import { AppSettings } from '../../utils/settings';
 import {EditablePublicationCardComponent} from '../editable-publication-card/editable-publication-card.component';
 import {RegisterScienceService} from '../../service/register-science-service.service';
 import {NgForOf, NgIf} from '@angular/common';
+import {AuthService} from "@app/shared/services/auth.service";
 
 @Component({
   selector: 'app-profile-card',
@@ -21,9 +22,12 @@ export class ProfileCardComponent {
   @Input() profile!: ScienceReadyPublication;
   @Input() tagsMap!: Map<string, string>;
   isEditing = false;
+  authService: AuthService = inject(AuthService);
+  isAdmin = false;
 
   constructor() {
     if (this.profile) {
+      this.authService.canEdit().subscribe(v => this.isAdmin = v);
       if (!this.profile.id_for_unique_identify_component) {
         this.profile.id_for_unique_identify_component = '';
         this.profile.id_for_unique_identify_component = AppSettings.generateRandomString(30);

@@ -18,16 +18,6 @@ export class RegisterScienceService {
   constructor() {
   }
 
-  getInfoIfUserIsAdmin(): Observable<UserStatus> {
-    //return this.http.get<UserStatus>(`${this.baseUrl}/get_if_admin_status`)
-    const mockUserStatus = {
-      username: 'test_user',
-      isAdmin: true
-    };
-
-    return of(mockUserStatus);
-  }
-
   getInfoFromGoogleScholar(name: string | null | undefined): Observable<SciencePublicationResponseInterface> {
     //return this.http.post(`${this.baseUrl}/search_for_scientist/${name}`, null)
 
