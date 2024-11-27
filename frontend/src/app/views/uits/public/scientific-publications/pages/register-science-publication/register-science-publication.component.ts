@@ -87,6 +87,7 @@ export class RegisterSciencePublicationComponent {
     if (inputElement) {
       inputElement.value = name;
       this.form.value.search_string = name;
+      Array.from(this.authors.keys()).forEach(key => this.authors.set(key, AppSettings.DEFAULT_TAG_STYLE))
       this.authors.set(name, AppSettings.ONCLICK_TAG_STYLE);
     }
   }

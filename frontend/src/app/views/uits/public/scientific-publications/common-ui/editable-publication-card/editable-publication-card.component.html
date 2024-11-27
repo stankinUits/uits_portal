@@ -2,19 +2,19 @@
   <form class="input_form">
     <div class="input_style">
       <span>Название карточки</span>
-      <input [(ngModel)]="publication.name" [id]="id_name_card">
+      <input [value]="publication.name ? publication.name : this.DEFAULT_NAME" [id]="id_name_card">
     </div>
     <div class="input_style">
       <span>Год публикации</span>
-      <input [(ngModel)]="publication.year" [id]="id_year" [placeholder]="DEFAULT_YEAR">
+      <input [value]="publication.year?.toString() ? publication.year : this.DEFAULT_YEAR " [id]="id_year" [placeholder]="DEFAULT_YEAR">
     </div>
     <div class="input_style">
       <span>Полное имя автора (Если авторов несколько, укажите их через ';')</span>
-      <input [(ngModel)]="publication.author" [id]="id_author_name">
+      <input [value]="publication.author === [] ? publication.author : this.DEFAULT_AUTHOR" [id]="id_author_name">
     </div>
     <div class="input_style">
       <span>Описание</span>
-      <input [(ngModel)]="publication.description" [id]="id_description" [placeholder]="DEFAULT_DESCRIPTION">
+      <input [value]="publication.description ? publication.description : this.DEFAULT_DESCRIPTION" [id]="id_description">
     </div>
     <div class="input_style">
       <span>Теги (желательно выбрать не больше 4ех)</span>
@@ -31,11 +31,11 @@
     </div>
     <div class="input_style">
       <span>Навзвание источника</span>
-      <input [(ngModel)]="publication.source" [id]="id_source" [placeholder]="DEFAULT_SOURCE">
+      <input [value]="publication.source ? publication.source : this.DEFAULT_SOURCE ">
     </div>
     <div class="input_style">
       <span>Ссылка на источник</span>
-      <input [(ngModel)]="publication.url" [id]="id_url" [placeholder]="DEFAULT_URL">
+      <input [value]="publication.url ? publication.url : this.DEFAULT_URL " [id]="id_url">
     </div>
     <div class="input_style">
       <span>Файл (если имеется, только в формате пдф)</span>

@@ -1,11 +1,17 @@
 .profile-card {
-    border: 1px solid var(--light-color);
     padding: 12px 12px 12px 16px;
     margin: 20px 20px 20px 20px;
     border-radius: 5px;
     max-height: 100%;
     min-width: 350px;
+    min-height: -webkit-fill-available;
     max-width: 350px;
+    background-color: rgba(255, 255, 255, 0.8);
+    font-size: 16px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    color: black;
+    border: 2px solid black;
     /*min-height: 800px;*/
 }
 
@@ -27,7 +33,7 @@
 .tag {
     padding: 4px 8px;
     border-radius: 5px;
-    border: 1px solid var(--light-color);
+    border: 2px solid black;
     display: inline-block;
     margin: 10px 10px 10px 10px;
     gap: 8px;
@@ -41,5 +47,5 @@
     padding: 4px 8px;
     margin: 10px 10px 10px 10px;
     border-radius: 5px;
-    border: 1px solid var(--light-color);
+    border: 2px solid black;
 }

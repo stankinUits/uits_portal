@@ -1,18 +1,28 @@
 .page-style {
-  display: inline-block;
-  grid-template-columns: 1fr 1fr 1fr;
-  align-content: start;
+  display: grid;
+  grid-template-columns: 25% 120%;
 }
 
 .status_buttons_bar {
   padding-left: 0;
-  display: inline-flex;
+  display: inline-block;
   list-style-type: none;
 }
 
 .cards_button {
   padding: 12px 12px 12px 12px;
   margin: 20px 20px 20px 20px;
+
+  display: inline-block;
+  border: 2px solid black;
+  width: -webkit-fill-available;
+  font-size: 16px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-radius: 5px;
+  background-color: rgba(255, 255, 255, 0.8);
+  transition: all 0.3s ease;
 }
 
 .tags_style {
@@ -22,8 +32,13 @@
   width: 100%;
 }
 
+.tags_style:hover {
+  background-color: gray;
+}
+
 .tags_page_style {
   list-style-type: none;
+  border: 2px solid black;
   background-color: var(--light-color);
   margin: 5px 10px 10px 20px;
   padding-left: 0;
@@ -40,8 +55,14 @@
   border-radius: 5px;
 }
 
-.cards_paging {
+.cards_paging_above {
   display: flex;
+  flex-direction: column;
+}
+
+.cards_paging {
+  display: grid;
+  grid-template-columns: 25% 25% 25%;
   margin-left: 2%;
   margin-right: 2%;
 }

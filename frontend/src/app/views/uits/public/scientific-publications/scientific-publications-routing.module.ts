@@ -13,8 +13,8 @@ import {
 
 const routes: Routes = [
   { path: 'page/scientific-activity-publications', component: MainSciencePageComponent},
-  { path: 'scientific-activity-publications/create_new_author', component: RegisterSciencePublicationComponent},
-  { path: 'scientific-activity-publications/edit_author', component: EditAuthorPublicationPageComponent}
+  { path: 'page/scientific-activity-publications/create_new_author', component: RegisterSciencePublicationComponent},
+  { path: 'page/scientific-activity-publications/edit_author', component: EditAuthorPublicationPageComponent}
 
 ];
 

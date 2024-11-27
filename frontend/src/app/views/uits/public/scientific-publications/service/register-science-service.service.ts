@@ -114,7 +114,55 @@ export class RegisterScienceService {
       source: "Scientific American"
     };
 
-    return of([profileMock, johnProfileMock, sophiaProfileMock])
+    const sophiaProfileMock3: ScienceReadyPublication = {
+      id: 24680,
+      name: "Phisics",
+      author: ["sophiapatel"],
+      description: "Innovative biotech engineer specializing in gene editing.",
+      url: "https://www.youtube.com/",
+      file: undefined,
+      tags: ["Biotechnology", "Gene Editing", "Medical Research"],
+      year: 2006,
+      source: "Scientific American"
+    };
+
+    const computerScienceProfile: ScienceReadyPublication = {
+      id: 67890,
+      name: "Computational Biology",
+      author: ["alicebrown123", "davidmartin"],
+      description: "Pioneering research in applying machine learning techniques to genomic data analysis.",
+      url: "https://www.alicebrown.com/research",
+      file: null,
+      tags: ["Machine Learning", "Bioinformatics", "Genomics", "Computational Biology"],
+      year: 2018,
+      source: "Nature Methods"
+    };
+
+    const environmentalScienceProfile: ScienceReadyPublication = {
+      id: 54321,
+      name: "Climate Change Impact",
+      author: ["emilychen", "michaellee"],
+      description: "Investigating the effects of rising temperatures on global ecosystems.",
+      url: "https://www.emilychen.com/climate-research",
+      file: null,
+      tags: ["Climate Science", "Ecosystems", "Environmental Impact", "Sustainability"],
+      year: 2021,
+      source: "Science Journal"
+    };
+
+    const materialsScienceProfile: ScienceReadyPublication = {
+      id: 98765,
+      name: "Smart Materials",
+      author: ["sarahlawrence", "peterpark"],
+      description: "Developing novel materials with self-healing properties for infrastructure applications.",
+      url: "https://www.sarahlawrence.com/materials-science",
+      file: null,
+      tags: ["Materials Science", "Smart Technologies", "Infrastructure", "Self-Healing Materials"],
+      year: 2023,
+      source: "Advanced Materials Journal"
+    };
+
+    return of([profileMock, johnProfileMock, sophiaProfileMock, sophiaProfileMock3, computerScienceProfile, environmentalScienceProfile, materialsScienceProfile])
   }
 
 

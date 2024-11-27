@@ -1,12 +1,12 @@
 <div class="page-style">
   <ul class="status_buttons_bar">
     <li *ngIf="AppSettings.isAdmin">
-      <button routerLink="scientific-publications/create_new_author" class="cards_button">
+      <button routerLink="/page/scientific-activity-publications/create_new_author" class="cards_button">
         Создать преподавателя, поиск по google scholar
       </button>
     </li>
     <li *ngIf="AppSettings.isAdmin">
-      <button routerLink="scientific-publications/edit_author" class="cards_button">
+      <button routerLink="/page/scientific-activity-publications/edit_author" class="cards_button">
         Редактировать карточки преподавателя
       </button>
     </li>
@@ -19,7 +19,7 @@
       </ul>
     </li>
     <li>
-      <button class="cards_button" role="button" (click)="onChooseForTagsClick()">Выбрать по тегу</button>
+      <button class="cards_button" role="button" (click)="onChooseForTagsClick()">Выбрать тег</button>
       <ul class="tags_page_style" *ngIf="isHiddenTagPage">
         <li *ngFor="let tag of profilesTags.keys(); trackBy: trackByFn" (click)="onTagsClick(tag)">
           <button role="button" [ngClass]="profilesTags.get(tag)">{{ tag }}</button>
@@ -35,7 +35,7 @@
       </ul>
     </li>
     <li>
-      <button class="cards_button" role="button" (click)="onChooseForSourceClick()">Источник</button>
+      <button class="cards_button" role="button" (click)="onChooseForSourceClick()">Выбрать источник</button>
       <ul class="tags_page_style" *ngIf="isHiddenSourcePage">
         <li *ngFor="let source of sourceMap.keys(); trackBy: trackByFn" (click)="onSourceClick(source)">
           <button role="button" [ngClass]="sourceMap.get(source)">{{ source }}</button>
@@ -46,12 +46,15 @@
       <button class="cards_button" (click)="cleanFilter()">Отчистить фильтр</button>
     </li>
   </ul>
-  <div class="cards_paging">
-    <div *ngFor="let profile of profilesMap.keys(); trackBy: trackByFn">
-      <app-profile-card
-        [profile]="profile"
-        [tagsMap]="profilesMap.get(profile)!"
-      ></app-profile-card>
+  <div class="cards_paging_above" >
+    <div class="cards_paging">
+      <div *ngFor="let profile of profilesMap.keys(); trackBy: trackByFn">
+        <app-profile-card
+          [profile]="profile"
+          [tagsMap]="profilesMap.get(profile)!"
+        ></app-profile-card>
+      </div>
     </div>
   </div>
+
 </div>

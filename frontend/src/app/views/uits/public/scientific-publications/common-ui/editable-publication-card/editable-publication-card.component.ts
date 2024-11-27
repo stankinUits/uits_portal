@@ -27,10 +27,12 @@ export class EditablePublicationCardComponent {
   isTagsOpen = false;
   alertMessage: string | undefined = undefined;
   newTags: string[] = [];
-  DEFAULT_URL = 'Введите ссылку на публикацию, если она есть';
-  DEFAULT_DESCRIPTION = 'Введите описание статьи';
-  DEFAULT_SOURCE = 'Веедите название источника';
-  DEFAULT_YEAR = 'Введите год публикации статьи';
+  DEFAULT_URL = "Введите ссылку на публикацию, если она есть"
+  DEFAULT_DESCRIPTION = "Введите описание статьи"
+  DEFAULT_SOURCE = "Веедите название источника"
+  DEFAULT_YEAR = "Введите год публикации статьи"
+  DEFAULT_NAME = "Введите название публикации"
+  DEFAULT_AUTHOR = "Введите имя автора"
   id_name_card: string | null = null;
   id_author_name: string | null = null;
   id_description: string | null = null;

@@ -1,71 +1,66 @@
 <div class="login-form">
   <form class="form-style" [formGroup]="form" (ngSubmit)="onSubmit()">
-    <h4 class="span-style">Введите полное имя преподавателя</h4>
     <div class="input_style">
       <input
         id="search-author_input"
         formControlName="search_string"
         (keyup)="updateField()"
-        style="width: 400px"
+        class="input_style"
+        placeholder="Введите полное имя преподавателя"
         type="text"
       />
     </div>
     <button *ngIf="form.value.search_string" class="button" type="submit">Искать</button>
-    <ul style="list-style-type: none;">
-      <li>
-        <button class="button" type="button" (click)="onChooseForScientistsClick()">
-          Выбрать преподавателя из списка
-        </button>
-        <ul class="tags_page_style" *ngIf="isHiddenScientistPage">
-          <li *ngFor="let author of authors.keys()" (click)="onAuthorClick(author)">
-            <button type="button" [ngClass]="authors.get(author)">{{ author }}</button>
-          </li>
-        </ul>
+    <button class="button" type="button" (click)="onChooseForScientistsClick()">
+      Выбрать преподавателя из списка
+    </button>
+    <ul class="tags_page_style" *ngIf="isHiddenScientistPage">
+      <li *ngFor="let author of authors.keys()" (click)="onAuthorClick(author)">
+        <button type="button" [ngClass]="authors.get(author)">{{ author }}</button>
       </li>
     </ul>
     <div>
       <button type="button" class="button" (click)="addNewEmptyCard()">Добавить новую карточку</button>
     </div>
     <div>
-      <button routerLink="" type="button" class="button">Вернуться на страницу просмотра</button>
+      <button routerLink="/page/scientific-activity-publications" type="button" class="button">Вернуться на страницу просмотра</button>
     </div>
   </form>
-</div>
+  <div class="cards_page_style">
+    <h4 class="h4_form_style" *ngIf="isSearch">Выполняется поиск.</h4>
+    <h4 class="h4_form_style" *ngIf="isOverRequested">Превышен лимит запросов, доступно ручное редактирование.</h4>
 
-<div class="cards_page_style">
-  <h4 class="h4_form_style" *ngIf="isSearch">Выполняется поиск.</h4>
-  <h4 class="h4_form_style" *ngIf="isOverRequested">Превышен лимит запросов, доступно ручное редактирование.</h4>
-
-  <div class="cards_page_style_div" *ngIf="profileCardsForEditingMap.size > 0">
-    <h4 class="h4_form_style">Результаты поиска.</h4>
-    <div class="cards_style" *ngFor="let publication of profileCardsForEditingMap.keys()">
-      <app-editable-publication-card
-        [publication]="publication"
-        [tagsWithStylesMap]="profileCardsForEditingMap.get(publication)!"
-        (delete)="deleteCard(publication.id_for_unique_identify_component!)"
-      ></app-editable-publication-card>
+    <div class="cards_page_style_div" *ngIf="profileCardsForEditingMap.size > 0">
+      <h4 class="h4_form_style">Результаты поиска.</h4>
+      <div class="cards_style" *ngFor="let publication of profileCardsForEditingMap.keys()">
+        <app-editable-publication-card
+          [publication]="publication"
+          [tagsWithStylesMap]="profileCardsForEditingMap.get(publication)!"
+          (delete)="deleteCard(publication.id_for_unique_identify_component!)"
+        ></app-editable-publication-card>
+      </div>
     </div>
-  </div>
 
-  <div class="cards_page_style_div" *ngIf="profileCardsReadyMap.size > 0">
-    <h4 class="h4_form_style">Уже сохраненные работы автора.</h4>
-    <div class="cards_style" *ngFor="let publication of profileCardsReadyMap.keys()">
-      <app-editable-publication-card
-        [publication]="publication"
-        [tagsWithStylesMap]="profileCardsReadyMap.get(publication)!"
-        (delete)="deleteCard(publication.id_for_unique_identify_component!)"
-      ></app-editable-publication-card>
+    <div class="cards_page_style_div" *ngIf="profileCardsReadyMap.size > 0">
+      <h4 class="h4_form_style">Уже сохраненные работы автора.</h4>
+      <div class="cards_style" *ngFor="let publication of profileCardsReadyMap.keys()">
+        <app-editable-publication-card
+          [publication]="publication"
+          [tagsWithStylesMap]="profileCardsReadyMap.get(publication)!"
+          (delete)="deleteCard(publication.id_for_unique_identify_component!)"
+        ></app-editable-publication-card>
+      </div>
     </div>
-  </div>
 
-  <div class="cards_page_style_div" *ngIf="profileCardsForEmptyMap.size > 0">
-    <h4 class="h4_form_style">Новые карточки, созданные вами.</h4>
-    <div class="cards_style" *ngFor="let publication of profileCardsForEmptyMap.keys()">
-      <app-editable-publication-card
-        [publication]="publication"
-        [tagsWithStylesMap]="profileCardsForEmptyMap.get(publication)!"
-        (delete)="deleteCard(publication.id_for_unique_identify_component!)"
-      ></app-editable-publication-card>
+    <div class="cards_page_style_div" *ngIf="profileCardsForEmptyMap.size > 0">
+      <h4 class="h4_form_style">Новые карточки, созданные вами.</h4>
+      <div class="cards_style" *ngFor="let publication of profileCardsForEmptyMap.keys()">
+        <app-editable-publication-card
+          [publication]="publication"
+          [tagsWithStylesMap]="profileCardsForEmptyMap.get(publication)!"
+          (delete)="deleteCard(publication.id_for_unique_identify_component!)"
+        ></app-editable-publication-card>
+      </div>
     </div>
   </div>
 </div>

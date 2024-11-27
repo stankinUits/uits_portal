@@ -68,7 +68,7 @@ export class MainSciencePageComponent {
 
     const tagsFromKeys = [];
 
-    Array.from(this.profilesMap.keys()).forEach(val => tagsFromKeys.push(val.tags))
+    Array.from(this.profilesMap.keys()).forEach(val => val.tags.forEach(t => tagsFromKeys.push(t)));
 
     tagsFromKeys.filter(v => v !== undefined)
       .forEach(val => this.profilesTags.set(val, AppSettings.DEFAULT_TAG_STYLE));
