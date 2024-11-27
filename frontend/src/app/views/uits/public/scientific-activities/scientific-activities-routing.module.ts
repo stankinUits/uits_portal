@@ -12,7 +12,7 @@ const routes: Routes = [
   { path: 'achievements/:id', component: AchievementDetailComponent },
   { path: 'page/scientific-activity-publications', component: MainSciencePageComponent },
   { path: 'page/scientific-activity-publications/create_new_author', component: RegisterSciencePublicationComponent },
-  { path: 'page/scientific-activity-publications/create_new_author/edit', component: EditAuthorPublicationPageComponent },
+  { path: 'page/scientific-activity-publications/edit_author', component: EditAuthorPublicationPageComponent },
   // другие маршруты
 ];
 @NgModule({

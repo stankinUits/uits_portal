@@ -32,7 +32,7 @@ export class EditablePublicationCardComponent {
   DEFAULT_SOURCE = "Веедите название источника"
   DEFAULT_YEAR = "Введите год публикации статьи"
   DEFAULT_NAME = "Введите название публикации"
-  DEFAULT_AUTHOR = "Введите имя автора"
+  DEFAULT_AUTHOR = "Введите авторов публикации"
   id_name_card: string | null = null;
   id_author_name: string | null = null;
   id_description: string | null = null;

@@ -10,7 +10,7 @@
     </div>
     <div class="input_style">
       <span>Полное имя автора (Если авторов несколько, укажите их через ';')</span>
-      <input [value]="publication.author !== [] && publication.author !== undefined ? publication.author.join(';') : this.DEFAULT_AUTHOR" [id]="id_author_name">
+      <input [value]="publication.author.length > 0 ? publication.author.join(';') : this.DEFAULT_AUTHOR" [id]="id_author_name">
     </div>
     <div class="input_style">
       <span>Описание</span>
