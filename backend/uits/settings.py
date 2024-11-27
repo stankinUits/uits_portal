@@ -52,7 +52,8 @@ LOCAL_INSTALLED_APPS = [
     'department.employee.schedule',
     'editable_pages.apps.EditablePagesConfig',
     'events',
-    'tg_bot'
+    'tg_bot',
+    'module_grades'
 ]
 
 # Application definition
