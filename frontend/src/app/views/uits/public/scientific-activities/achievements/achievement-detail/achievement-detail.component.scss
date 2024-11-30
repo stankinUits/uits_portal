@@ -1,0 +1,64 @@
+.achievement-detail {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+
+    .go-back-btn {
+        background: none;
+        border: none;
+        padding: 8px 16px;
+        color: #007bff;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        text-decoration: none;
+        font-weight: 500;
+
+        &:hover {
+            color: #0056b3;
+        }
+
+        .arrow {
+            margin-right: 5px;
+        }
+    }
+
+    .achievement-image img {
+        width: 100%;
+        height: auto;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .achievement-content {
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+        h1 {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .achievement-description {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .achievement-footer {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: #777;
+
+            div {
+                font-weight: 500;
+            }
+        }
+    }
+}

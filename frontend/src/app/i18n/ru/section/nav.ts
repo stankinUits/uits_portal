@@ -70,7 +70,7 @@ export const nav = {
       }
     },
     SCIENTIFIC_ACTIVITY:{
-      TITLE:'Научная деятельность',
+      TITLE: 'Научная деятельность',
       POST_GRADUATE: {
         TITLE: 'Аспирантура',
         PRACTICES:'Практики',
@@ -84,13 +84,15 @@ export const nav = {
           DOCTORAL: 'Докторские'
         }
       },
-      SCIENTIFIC_PUBLICATIONS:'Научные публикации',
+      SCIENTIFIC_PUBLICATIONS: {
+        TITLE: 'Научные публикации'
+      },
       SCIENTIFIC_WORK:'Научная работа',
       CONFERENCES:'Конференции'
     },
     PROFILE: {
       PROFILE: 'Личный кабинет',
-      ADMIN: "Админская панель",
+      ADMIN: 'Админская панель',
       SIGN_OUT: 'Выход'
     },
     RETURN: 'Вернуться'

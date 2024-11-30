@@ -2,3 +2,9 @@
 *.env
 postgres.env
 postgres_data
+.venv
+venv
+.vs
+.vscode
+backend/db.local.env
+frontend/package-lock.json

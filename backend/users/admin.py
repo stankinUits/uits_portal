@@ -11,9 +11,11 @@ User = get_user_model()
 
 @admin.register(User)
 class UserModelAdmin(UserAdmin):
+    readonly_fields = ('telegram_code',)
     fieldsets = (
         (None, {"fields": ("username", "password")}),
-        (_("Personal info"), {"fields": ("first_name", "last_name", "email", "avatar")}),
+        (_("Personal info"), {"fields": ("first_name", "last_name", "email", "avatar",)}),
+        (_('Telegram'), {'fields': ('telegram_code',)}),
         (
             _("Permissions"),
             {

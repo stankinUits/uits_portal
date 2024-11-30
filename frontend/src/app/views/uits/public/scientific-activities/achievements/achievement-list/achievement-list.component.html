@@ -1,0 +1,32 @@
+<div *ngIf="isLoading" class="loading-container">
+    <div class="loading-spinner"></div>
+</div>
+
+<div *ngIf="errorMessage" class="error-container">
+    <p>Произошла ошибка при загрузке достижений. Пожалуйста, попробуйте снова.</p>
+    <button class="retry-button" (click)="reloadPage()">Повторить попытку</button>
+</div>
+
+<div *ngIf="!isLoading && !errorMessage" class="achievement-list">
+    <div class="achievement-item" *ngFor="let achievement of achievements" (click)="onSelectAchievement(achievement)">
+        <div class="achievement-image">
+            <img [src]="achievement.image" alt="Achievement Image" />
+        </div>
+        <div class="achievement-content">
+            <div class="achievement-title">
+                {{ achievement.title }}
+            </div>
+            <markdown class="achievement-description">
+                {{ achievement.description }}
+            </markdown>
+            <div class="achievement-footer">
+                <div class="achievement-teacher" *ngIf="achievement.teacher">
+                    Преподаватель: {{ achievement.teacher }}
+                </div>
+                <div class="achievement-date">
+                    {{ achievement.created_at | date: 'dd.MM.yyyy' }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

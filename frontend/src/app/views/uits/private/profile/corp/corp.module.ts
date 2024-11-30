@@ -1,7 +1,13 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '@app/shared/shared.module';
-import { routes } from './profile.routing.module';
 import { RouterModule } from '@angular/router';
+import { CorporateComponent } from './corp.component';
+import { AuthGuard } from '@app/shared/guards/auth.guard';
+import { CommonModule } from '@angular/common';
+import {routes} from './corp.routing.module';
+import { PersonalComponent } from '../personal/personal.component';
+import { EventsComponent } from '../events/events.component';
+import { CorpRoutModule } from './corp.routing.module';
 import { ColumnPanelModule } from '@app/shared/components/column-panel/column-panel.module';
 import { RadioModule } from '@app/shared/components/radio/radio.module';
 import { NgBootstrapFormValidationModule } from 'ng-bootstrap-form-validation';
@@ -9,12 +15,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { UploadModule } from '@app/shared/components/upload/upload.module'
 import { SwitchModule } from '@app/shared/components/switch/switch.module';
 import { ToastrModule } from 'ngx-toastr';
-
-import { RowContentComponent } from './row-content/row-content.component';
-import { ProfileComponent } from './profile.component';
-import { PersonalComponent } from './personal/personal.component';
-import {AuthGuard} from "@app/shared/guards/auth.guard";
-import { EventsComponent } from './events/events.component';
+import { RowContentComponent } from '../row-content/row-content.component';
 import {TabsModule} from "ngx-bootstrap/tabs";
 import {CalendarModule} from "angular-calendar";
 import {NgSelectModule} from "@ng-select/ng-select";
@@ -29,20 +30,26 @@ import {CollapseModule} from "ngx-bootstrap/collapse";
 import { defineLocale } from 'ngx-bootstrap/chronos';
 import { ruLocale } from 'ngx-bootstrap/locale';
 import {CheckboxModule} from "@app/shared/components/checkbox/checkbox.module";
-
-defineLocale('ru', ruLocale);
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
-    declarations: [
-        ProfileComponent,
-        PersonalComponent,
-        RowContentComponent,
-        EventsComponent
-    ],
-    imports: [
-        SharedModule,
-        ColumnPanelModule,
-        RadioModule,
+  declarations: [
+    CorporateComponent,
+    PersonalComponent,
+    RowContentComponent,
+    EventsComponent
+  ],
+  imports: [
+    CommonModule,
+    SharedModule,
+    PersonalComponent,
+    EventsComponent,
+    CorpRoutModule,
+    ColumnPanelModule,
+    RadioModule,
+    CalendarModule,
+    FormsModule,
+    ReactiveFormsModule,
         BsDatepickerModule.forRoot(),
         UploadModule.forRoot(),
         SwitchModule,
@@ -61,10 +68,12 @@ defineLocale('ru', ruLocale);
         AccordionModule,
         CollapseModule,
         CheckboxModule
-    ],
-    exports: [],
-    providers: [
-      AuthGuard
-    ],
+
+  ],
+  exports: [],
+  providers: [
+    AuthGuard
+    
+  ]
 })
-export class ProfileModule {}
+export class CorporateModule {}

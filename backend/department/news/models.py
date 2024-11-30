@@ -46,3 +46,23 @@ class Post(models.Model):
 class Announcement(models.Model):
     title = models.CharField(max_length=100, verbose_name="Заголовок", default="")
     short_description = models.TextField()
+
+class ConferenceAnnouncement(models.Model):
+    title = models.CharField(max_length=200, verbose_name="Название конференции")
+    description = models.TextField(verbose_name="Описание")
+    date = models.DateField(verbose_name="Дата проведения")
+    time = models.TimeField(verbose_name="Время проведения")
+    location = models.CharField(max_length=200, verbose_name="Место проведения")
+    organizer = models.CharField(max_length=100, verbose_name="Организатор")
+    contact_email = models.EmailField(verbose_name="Контактный email")
+    contact_phone = models.CharField(max_length=20, verbose_name="Контактный телефон", blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Дата обновления")
+    author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="Автор")
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = "Объявление о конференции"
+        verbose_name_plural = "Объявления о конференциях"

@@ -13,6 +13,10 @@ import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { AppConfigState } from './store/app-config/app-config.state';
 import { TranslateModule } from '@ngx-translate/core';
 import { AppComponent } from './app.component';
+import { ManageTagsPageComponent } from '@app/views/uits/public/scientific-publications/pages/manage-tags-page/manage-tags-page.component';
+import {
+  EditablePublicationCardComponent
+} from "@app/views/uits/public/scientific-publications/common-ui/editable-publication-card/editable-publication-card.component";
 
 // import mockServer from './mock-data/app.mock';
 
@@ -21,20 +25,22 @@ import { AppComponent } from './app.component';
 @NgModule({
     declarations: [
         AppComponent,
+        ManageTagsPageComponent,
     ],
-    imports: [
-        BrowserModule,
-        BrowserAnimationsModule,
-        AppRoutingModule,
-        SharedModule,
-        TranslateModule.forRoot(),
-        LayoutModule,
-        NgxsModule.forRoot([
-            AppConfigState
-        ]),
-        NgxsReduxDevtoolsPluginModule.forRoot(),
-        NgxsLoggerPluginModule.forRoot()
-    ],
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    AppRoutingModule,
+    SharedModule,
+    TranslateModule.forRoot(),
+    LayoutModule,
+    NgxsModule.forRoot([
+      AppConfigState
+    ]),
+    NgxsReduxDevtoolsPluginModule.forRoot(),
+    NgxsLoggerPluginModule.forRoot(),
+    EditablePublicationCardComponent
+  ],
     providers: [
         {
             provide: LocationStrategy,

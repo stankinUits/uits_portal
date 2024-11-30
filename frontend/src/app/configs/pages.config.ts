@@ -12,10 +12,11 @@ export const PagesConfig = {
     announcements: '/about/announcements/',
     employee: {
       teachers: '/about/employee/teachers/',
+      schedule: '/about/employee/teachers/schedule/',
     }
   },
   admin: "/admin",
-  profile: "/profile",
+  profile: "/corp/profile",
   educationalActivities: {
     bachelor: {
       eduPlans: eduActivitiesPrefix + '/bachelor/edu-plans',
@@ -30,13 +31,17 @@ export const PagesConfig = {
   },
   scientificActivities: {
     postgraduate: {
-      practices : sciActivitiesPrefix + '/postgraduate/practices',
+      practices: sciActivitiesPrefix + '/postgraduate/practices',
       specialties: sciActivitiesPrefix + '/postgraduate/specialties',
       dissertations: sciActivitiesPrefix + '/postgraduate/dissertations',
     },
     conferences: sciActivitiesPrefix + '/conferences',
     publications: sciActivitiesPrefix + '/publications',
     scientificWork: sciActivitiesPrefix + '/scientific-work',
+    // Добавляем пути для новых компонентов
+    mainSciencePage: sciActivitiesPrefix + '/publications/main-science-page',
+    registerSciencePublication: sciActivitiesPrefix + '/publications/register-science-publication',
+    editAuthorPublication: sciActivitiesPrefix + '/publications/edit-author-publication',
   },
   editable: (slug: string) => `/page/${slug}`
 };
