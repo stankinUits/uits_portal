@@ -38,7 +38,7 @@
       <input [value]="publication.url ? publication.url : this.DEFAULT_URL " [id]="id_url">
     </div>
     <div class="input_style">
-      <span>Файл (если имеется, только в формате пдф)</span>
+      <span>Файл (если имеется, только в формате pdf)</span>
       <input type="file" (change)="onFileSelected($event)">
       <span *ngIf="publication.file" style="color: green">Выбранный файл: {{ publication.file.name }}</span>
       <span *ngIf="alertMessage" style="color: red">{{ alertMessage }}</span>

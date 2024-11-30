@@ -1,0 +1,31 @@
+<div class="page-style">
+  <div class="btn_align">
+    <button routerLink="/page/scientific-activity-publications" type="button" class="button">Вернуться на страницу просмотра</button>
+  </div>
+  <div class="tag-container">
+    <div class="input-group mb-3">
+      <div class="input_style" >
+        <input id="onInputNewTag" type="text" class="input_style" (keyup)="enableSaveButton()" [(ngModel)]="tagStringToSave" placeholder="Добавить новый  тег">
+        <button *ngIf="enableButton" role="button" class="btn btn-primary mt-1" [disabled]="!tagStringToSave" (click)="addTag()">Сохранить</button>
+      </div>
+      <div class="input_style">
+        <input
+          id="search-tag_input"
+          (keyup)="searchTags()"
+          class="input_style"
+          placeholder="Искать тег"
+          [(ngModel)]="searchTerm"
+          type="text"
+        />
+      </div>
+    </div>
+
+    <div *ngFor="let tag of filteredTags; let i = index" class="tags">
+      <span>{{ tag }}</span>
+      <button role="button" class="btn btn-sm btn-danger ml-2" (click)="deleteTag(i)">Delete</button>
+    </div>
+  </div>
+</div>
+
+
+

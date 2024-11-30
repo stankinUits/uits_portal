@@ -6,6 +6,9 @@ import { AchievementListComponent } from './achievements/achievement-list/achiev
 import { MainSciencePageComponent } from '../scientific-publications/pages/main-science-page/main-science-page.component';
 import { RegisterSciencePublicationComponent } from '../scientific-publications/pages/register-science-publication/register-science-publication.component';
 import { EditAuthorPublicationPageComponent } from '../scientific-publications/pages/edit-author-publication-page/edit-author-publication-page.component';
+import {
+  ManageTagsPageComponent
+} from "@app/views/uits/public/scientific-publications/pages/manage-tags-page/manage-tags-page.component";
 
 const routes: Routes = [
   { path: 'achievements', component: AchievementListComponent },
@@ -13,6 +16,7 @@ const routes: Routes = [
   { path: 'page/scientific-activity-publications', component: MainSciencePageComponent },
   { path: 'page/scientific-activity-publications/create_new_author', component: RegisterSciencePublicationComponent },
   { path: 'page/scientific-activity-publications/edit_author', component: EditAuthorPublicationPageComponent },
+  { path: 'page/scientific-activity-publications/manage_tags', component: ManageTagsPageComponent }
   // другие маршруты
 ];
 @NgModule({

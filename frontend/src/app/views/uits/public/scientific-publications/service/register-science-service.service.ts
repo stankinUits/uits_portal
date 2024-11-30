@@ -63,7 +63,11 @@ export class RegisterScienceService {
   }
 
   deleteCard(publication: ScienceReadyPublication) {
-    return this.http.post(`${AppSettings.BASE_URL}\\delete_card`, {publication: publication})
+    return this.http.post(`${AppSettings.BASE_URL}\\delete_card`, {publication: publication});
+  }
+
+  deleteTag(tag: string) {
+    return this.http.post(`${AppSettings.BASE_URL}\\delete_tag`, {tagName: tag});
   }
 
   getListOfCards(): Observable<ScienceReadyPublication[]> {

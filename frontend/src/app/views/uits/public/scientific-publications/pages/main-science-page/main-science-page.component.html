@@ -10,6 +10,11 @@
         Редактировать карточки преподавателя
       </button>
     </li>
+    <li *ngIf="isAdmin">
+      <button routerLink="/page/scientific-activity-publications/manage_tags" class="cards_button">
+        Редактировать теги
+      </button>
+    </li>
     <li>
       <button class="cards_button" role="button" (click)="onChooseForScientistsClick()">Выбрать автора</button>
       <ul class="tags_page_style" *ngIf="isHiddenScientistPage">
