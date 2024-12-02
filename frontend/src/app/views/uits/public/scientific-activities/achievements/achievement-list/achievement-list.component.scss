@@ -1,125 +1,66 @@
-/* Общие стили для контейнеров */
-.container {
-    margin: 20px;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Стили списка достижений */
 .achievement-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Адаптивные колонки */
-    gap: 20px; /* Расстояние между элементами */
-    grid-auto-rows: minmax(250px, auto); /* Гибкие строки */
-    margin: 20px;
-    align-items: start; /* Выравнивание элементов по верхнему краю */
-}
+    max-width: 1200px; // Ограничиваем ширину списка
+    margin: 0 auto; // Центрируем список
 
-/* Стили карточки достижения */
-.achievement-item {
-    background-color: #fff;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-
-    &:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
-    }
-}
-
-/* Стили изображения достижения */
-.achievement-image {
-    height: 220px;
-    background-color: #f0f0f0;
-
-    img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover; /* Обеспечить заполнение блока */
-    }
-}
-
-/* Контент карточки */
-.achievement-content {
-    padding: 20px;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-
-    .achievement-title {
-        font-size: 1.4rem;
-        font-weight: bold;
-        margin-bottom: 10px;
-        color: #333;
-        transition: color 0.3s ease;
-
-        &:hover {
-            color: #007bff;
-        }
-    }
-
-    .achievement-description {
-        font-size: 1rem;
-        color: #666;
-        margin-bottom: 15px;
-        flex-grow: 1;
-        transition: color 0.3s ease;
-
-        &:hover {
-            color: #555;
-        }
-    }
-
-    .achievement-footer {
+    .achievement-item {
         display: flex;
-        justify-content: space-between;
-        font-size: 0.9rem;
-        color: #777;
-        margin-top: 15px;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+        margin-bottom: 20px;
 
-        .achievement-teacher {
-            font-weight: 500;
+        // Для нечетных элементов
+        &.odd-item {
+            flex-direction: row-reverse;
+            @media (max-width: 768px) {
+                flex-direction: column; // Ставим элементы в столбик на мобильных экранах
+                align-items: flex-start; // Выравниваем по левому краю
+                order: 0; // Возвращаем порядок элементов на мобильных устройствах
+            }
         }
 
-        .achievement-date {
-            color: #aaa;
+        // Для всех элементов
+        .achievement-image {
+            img {
+                width: 100%;
+                height: auto;
+                aspect-ratio: 4 / 3;
+                object-fit: cover;
+                border-radius: 5px;
+
+                @media (min-width: 768px) {
+                    width: 300px; // Ширина картинки на средних экранах
+                }
+
+                @media (min-width: 1200px) {
+                    width: 400px; // Ширина картинки на больших экранах
+                }
+            }
         }
-    }
-}
 
-/* Стили контейнера ошибок */
-.error-container {
-    text-align: center;
-    background: #ffff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    font-size: 1.1rem;
-    p {
-        margin: 10px 0;
-    }
-}
+        .achievement-content {
+            flex: 1;
+            max-width: 600px;
+            padding: 10px;
 
-/* Стили кнопки повтора */
-.retry-button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+            @media (max-width: 768px) {
+                max-width: 100%; // Текст занимает всю ширину на маленьких экранах
+            }
+        }
 
-    &:hover {
-        background-color: #0056b3;
+        // Адаптивность для маленьких экранов
+        @media (max-width: 768px) {
+            flex-direction: column; // Размещаем элементы в столбик
+            align-items: flex-start; // Выравниваем по левому краю
+
+            .achievement-image {
+                order: 1; // Перемещаем картинку между заголовком и текстом
+                width: 100%; // Картинка занимает всю ширину
+            }
+
+            .achievement-content {
+                order: 2; // Текст будет ниже заголовка
+            }
+        }
     }
 }
