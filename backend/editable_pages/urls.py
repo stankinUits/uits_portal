@@ -1,4 +1,5 @@
 from django.urls import path
+from . import views
 
 from editable_pages.views import EditablePageAPIView
 
