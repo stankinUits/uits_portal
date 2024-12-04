@@ -34,10 +34,10 @@ $ng-select-value-font-size: 0.9em;
             .ng-value-container {
                 
                 .ng-value {
-                    border-radius: 10px;
+                    border-radius: 0px;
                     font-weight: $font-weight-bold;
                     padding: 0 5px;
-                    background-color: $secondary;
+                    background-color: rgba(0, 0, 255, 0);
                     color: $gray-800;
 
                     .ng-value-icon {
