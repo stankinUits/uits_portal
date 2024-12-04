@@ -67,6 +67,15 @@ export const nav = {
           EDUCATIONAL_INTRODUCTORY:'Учебная практики(ознакомительная)',
         },
         DISCIPLINES:'Дисциплины'
+      },
+      SCHEDULES: {
+        TITLE: "Расписания",
+        SUMMARY: {
+          TITLE: "Сводное расписание преподавателей",
+        },
+        EXAMS:{
+          TITLE: "Расписание экзаменов"
+        }
       }
     },
     SCIENTIFIC_ACTIVITY:{

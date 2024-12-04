@@ -27,6 +27,10 @@ export const PagesConfig = {
       graduate: eduActivitiesPrefix + '/master/graduate',
       practices: eduActivitiesPrefix + '/master/practices',
     },
+    schedule: {
+      summary: eduActivitiesPrefix + '/schedule/schedule-summary',
+      exams: eduActivitiesPrefix + '/schedule/schedule-exams'
+    }
   },
   scientificActivities: {
     postgraduate: {
