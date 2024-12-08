@@ -8,6 +8,8 @@ from users import permissions
 import requests
 from django.http import JsonResponse
 from django.views import View
+from .models import ScientificPublication, Tag
+import json
 
 # Create your views here.
 class EditablePageAPIView(generics.RetrieveUpdateAPIView):
@@ -52,3 +54,44 @@ class ScientificPublicationsSearchView(View):
             'isOverRequested': False,
             'sciencePublicationCards': science_publication_cards
         })
+    
+class GetAllTagsView(View):
+    def get(self, request):
+        tags = Tag.objects.all().values_list('name', flat=True)
+        return JsonResponse(list(tags), safe=False)
+
+class SaveCardView(View):
+    def post(self, request):
+        data = json.loads(request.body)
+        publication = ScientificPublication.objects.create(
+            name=data['name'],
+            author=data['author'],
+            description=data['description'],
+            url=data['url'],
+            file=data['file'],
+            year=data['year'],
+            source=data['source']
+        )
+        for tag_name in data['tags']:
+            tag, created = Tag.objects.get_or_create(name=tag_name)
+            publication.tags.add(tag)
+        return JsonResponse({'id': publication.id})
+
+class SaveNewTagsView(View):
+    def post(self, request):
+        data = json.loads(request.body)
+        tags = data['tags']
+        for tag_name in tags:
+            Tag.objects.get_or_create(name=tag_name)
+        return JsonResponse({'status': 'success'})
+
+class DeleteCardView(View):
+    def post(self, request):
+        data = json.loads(request.body)
+        publication_id = data['id']
+        try:
+            publication = ScientificPublication.objects.get(id=publication_id)
+            publication.delete()
+            return JsonResponse({'status': 'success'})
+        except ScientificPublication.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': 'Publication not found'}, status=404)
