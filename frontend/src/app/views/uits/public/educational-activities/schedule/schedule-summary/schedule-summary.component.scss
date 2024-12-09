@@ -23,3 +23,26 @@
 .pre-line {
   white-space: pre-line;
 }
+
+.filter-container {
+  max-width: 200px;
+  margin-bottom: 20px;
+}
+
+.schedule-item {
+  border: 1px solid #ddd;
+  padding: 15px;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.event-popup {
+  position: fixed;
+  z-index: 1000;
+  background: white;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  border-radius: 4px;
+  max-width: 300px;
+}

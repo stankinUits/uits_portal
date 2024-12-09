@@ -20,6 +20,8 @@ import {
   DateAdapter,
   DateFormatterParams
 } from "angular-calendar";
+import { AboutModule } from '../about/about.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -41,7 +43,10 @@ import {
   }),
     NgSelectModule, // Если нужно для выбора
     DateFnsModule, // Для работы с датами
-    ModalModule.forRoot() // Если используются модальные окна
+    ModalModule.forRoot(), // Если используются модальные окна
+    AboutModule,
+    FormsModule,
+    ReactiveFormsModule,
   ]
 })
 export class EducationalActivitiesModule { }

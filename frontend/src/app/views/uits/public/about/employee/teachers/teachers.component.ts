@@ -11,12 +11,15 @@ import {PagesConfig} from "@app/configs/pages.config";
 import {AuthService} from "@app/shared/services/auth.service";
 import {Permission} from "@app/shared/types/permission.enum";
 import {AVATAR_DEFAULT_URL} from "@app/configs/app.config";
+import { Injectable } from '@angular/core';;
 
 @Component({
   selector: 'app-teachers',
   templateUrl: './teachers.component.html',
   styleUrls: ['./teachers.component.scss']
 })
+
+@Injectable({ providedIn: 'root' })
 export class TeachersComponent implements OnInit {
   teacherModel = {
     first_name: '',
