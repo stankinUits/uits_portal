@@ -11,11 +11,20 @@
   <div class="profile-card__tag">
     <div *ngFor="let tag of profile.tags" class="tag">{{ tag }}</div>
   </div>
+  <div *ngIf="profile.pages" class="profile-card__author">
+    <span>Страницы: {{ profile.pages }}</span>
+  </div>
+  <div *ngIf="profile.vol_n" class="profile-card__author">
+    <span>Номер тома: {{ profile.vol_n }}</span>
+  </div>
+  <div *ngIf="profile.isbn" class="profile-card__author">
+    <span>Isbn: {{ profile.isbn }}</span>
+  </div>
   <div *ngIf="profile.source" class="profile-card__author">
-    <span>{{ profile.source }}</span>
+    <span>Источник: {{ profile.source }}</span>
   </div>
   <div *ngIf="profile.year" class="profile-card__author">
-    <span>{{ profile.year }}</span>
+    <span>Год издания: {{ profile.year }}</span>
   </div>
   <a *ngIf="profile.url" [href]="profile.url" target="_blank">
     <div class="profile-card__button">
@@ -39,5 +48,5 @@
 ></app-editable-publication-card>
 
 <div *ngIf="!profile">
-  <span>Карточек нет</span>
+  <span>Публикаций нет</span>
 </div>

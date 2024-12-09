@@ -73,91 +73,94 @@ export class RegisterScienceService {
   getListOfCards(): Observable<ScienceReadyPublication[]> {
     //return this.http.get<Profile[]>(`${this.baseUrl}/get`)
 
-    const profileMock: ScienceReadyPublication = {
-      id: 12345,
-      name: "buildings",
-      author: ["Jane Smith", "johnlee123"],
-      description: "Renowned astrophysicist specializing in black hole research.",
-      url: "https://www.janesmith.com",
-      file: undefined, // Optional field, so we set it to null here
-      tags: ["Astrophysics", "Black Holes", "Cosmology"],
-      year: 2002,
-      source: "Nature Journal"
-    };
+    const mockObjects: ScienceReadyPublication[] = [
+      {
+        id: 1,
+        name: "Quantum Physics Breakthrough",
+        author: ["Dr. Maria Rodriguez", "Prof. John Smith"],
+        description: "A groundbreaking study on quantum entanglement.",
+        url: "https://example.com/quantum-physics-paper",
+        file: null,
+        tags: ["physics", "quantum", "research"],
+        source: "Nature Journal",
+        year: 2023,
+        pages: "pp. 12-20",
+        vol_n: "Vol. 123, No. 456",
+        isbn: "978-3-16-148410-0",
+      },
+      {
+        id: 2,
+        name: "Climate Change Impact Study",
+        author: ["Dr. Jane Doe", "Prof. Bob Johnson"],
+        description: "An analysis of global warming effects on coastal ecosystems.",
+        url: "https://example.com/climate-change-study",
+        file: null,
+        tags: ["climate", "ecology", "environmental"],
+        source: "Science Magazine",
+        year: 2022,
+        pages: "pp. 45-55",
+        vol_n: "Vol. 124, No. 567",
+        isbn: "978-3-16-149410-0",
+      },
+      {
+        id: 3,
+        name: "Artificial Intelligence Ethics",
+        author: ["Prof. Sarah Lee", "Dr. Michael Brown"],
+        description: "Exploring ethical implications of AI development.",
+        url: "https://example.com/ai-ethics",
+        file: null,
+        tags: ["AI", "ethics", "technology"],
+        source: "IEEE Spectrum",
+        year: 2021,
+        pages: "pp. 67-75",
+        vol_n: "Vol. 125, No. 890",
+        isbn: "978-3-16-150410-0",
+      },
+      {
+        id: 4,
+        name: "Neuroscience Breakthrough",
+        author: ["Dr. Emily Chen", "Prof. David Lee"],
+        description: "Discoveries in brain-computer interfaces.",
+        url: "https://example.com/neuroscience-breakthrough",
+        file: null,
+        tags: ["neuroscience", "technology", "innovation"],
+        source: "Nature Neuroscience",
+        year: 2020,
+        pages: "pp. 89-98",
+        vol_n: "Vol. 126, No. 123",
+        isbn: "978-3-16-151410-0",
+      },
+      {
+        id: 5,
+        name: "Renewable Energy Solutions",
+        author: ["Prof. Maria Rodriguez", "Dr. John Smith"],
+        description: "Exploring sustainable energy alternatives.",
+        url: "https://example.com/renewable-energy-solutions",
+        file: null,
+        tags: ["sustainability", "energy", "environmental"],
+        source: "Science Advances",
+        year: 2019,
+        pages: "pp. 101-110",
+        vol_n: "Vol. 127, No. 456",
+        isbn: "978-3-16-152410-0",
+      },
+      {
+        id: 6,
+        name: "Quantum Computing Advancements",
+        author: ["Dr. Sarah Johnson", "Prof. Michael Chen"],
+        description: "Recent developments in quantum computing hardware.",
+        url: "https://example.com/quantum-computing",
+        file: null,
+        tags: ["computing", "quantum", "research"],
+        source: "Physical Review X",
+        year: 2018,
+        pages: "pp. 113-122",
+        vol_n: "Vol. 128, No. 789",
+        isbn: "978-3-16-153410-0",
+      }
+    ];
 
-    const johnProfileMock: ScienceReadyPublication = {
-      id: 34567,
-      name: "Chemistry",
-      author: ["johnlee123"],
-      description: "Expert in machine learning and AI applications.",
-      url: "https://www.johnlee.ai",
-      file: undefined,
-      tags: ["Machine Learning", "AI", "Data Science", "Gene Editing"],
-      year: 2012,
-      source: "MIT Technology Review"
-    };
-
-    const sophiaProfileMock: ScienceReadyPublication = {
-      id: 24680,
-      name: "Phisics",
-      author: ["sophiapatel"],
-      description: "Innovative biotech engineer specializing in gene editing.",
-      url: "https://www.youtube.com/",
-      file: undefined,
-      tags: ["Biotechnology", "Gene Editing", "Medical Research"],
-      year: 2006,
-      source: "Scientific American"
-    };
-
-    const sophiaProfileMock3: ScienceReadyPublication = {
-      id: 24680,
-      name: "Phisics",
-      author: ["sophiapatel"],
-      description: "Innovative biotech engineer specializing in gene editing.",
-      url: "https://www.youtube.com/",
-      file: undefined,
-      tags: ["Biotechnology", "Gene Editing", "Medical Research"],
-      year: 2006,
-      source: "Scientific American"
-    };
-
-    const computerScienceProfile: ScienceReadyPublication = {
-      id: 67890,
-      name: "Computational Biology",
-      author: ["alicebrown123", "davidmartin"],
-      description: "Pioneering research in applying machine learning techniques to genomic data analysis.",
-      url: "https://www.alicebrown.com/research",
-      file: null,
-      tags: ["Machine Learning", "Bioinformatics", "Genomics", "Computational Biology"],
-      year: 2018,
-      source: "Nature Methods"
-    };
-
-    const environmentalScienceProfile: ScienceReadyPublication = {
-      id: 54321,
-      name: "Climate Change Impact",
-      author: ["emilychen", "michaellee"],
-      description: "Investigating the effects of rising temperatures on global ecosystems.",
-      url: "https://www.emilychen.com/climate-research",
-      file: null,
-      tags: ["Climate Science", "Ecosystems", "Environmental Impact", "Sustainability"],
-      year: 2021,
-      source: "Science Journal"
-    };
-
-    const materialsScienceProfile: ScienceReadyPublication = {
-      id: 98765,
-      name: "Smart Materials",
-      author: ["sarahlawrence", "peterpark"],
-      description: "Developing novel materials with self-healing properties for infrastructure applications.",
-      url: "https://www.sarahlawrence.com/materials-science",
-      file: null,
-      tags: ["Materials Science", "Smart Technologies", "Infrastructure", "Self-Healing Materials"],
-      year: 2023,
-      source: "Advanced Materials Journal"
-    };
-
-    return of([profileMock, johnProfileMock, sophiaProfileMock, sophiaProfileMock3, computerScienceProfile, environmentalScienceProfile, materialsScienceProfile])
+    return of(mockObjects)
   }
 
 

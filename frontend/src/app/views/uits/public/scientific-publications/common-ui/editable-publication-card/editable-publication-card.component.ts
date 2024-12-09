@@ -39,6 +39,9 @@ export class EditablePublicationCardComponent {
   id_url: string | null = null;
   id_source: string | null = null;
   id_year: string | null = null;
+  id_pages: string | null = null;
+  id_isbn: string | null = null;
+  id_vol_n: string | null = null;
 
   constructor() {
     this.id_name_card = this.generateRandomString(25);
@@ -47,6 +50,9 @@ export class EditablePublicationCardComponent {
     this.id_url = this.generateRandomString(25);
     this.id_year = this.generateRandomString(25);
     this.id_source = this.generateRandomString(25);
+    this.id_pages = this.generateRandomString(25);
+    this.id_isbn = this.generateRandomString(25);
+    this.id_vol_n = this.generateRandomString(25);
   }
 
   private generateRandomString(length: number): string {
@@ -135,6 +141,33 @@ export class EditablePublicationCardComponent {
       this.publication.description = description.value;
     }
 
+    const source = document.getElementById(this.id_source!) as HTMLInputElement;
+    if (source && source.value !== this.DEFAULT_SOURCE) {
+      this.publication.source = source.value;
+    }
+
+
+    const year = document.getElementById(this.id_year!) as HTMLInputElement;
+    console.log(year.value)
+    if (year && year.value !== this.DEFAULT_YEAR) {
+      this.publication.year = Number(year.value);
+    }
+
+    const pages = document.getElementById(this.id_pages!) as HTMLInputElement;
+    if (pages && pages.value !== '') {
+      this.publication.pages = pages.value;
+    }
+
+    const vol_n = document.getElementById(this.id_vol_n!) as HTMLInputElement;
+    if (vol_n && vol_n.value !== '') {
+      this.publication.vol_n = vol_n.value;
+    }
+
+    const isbn = document.getElementById(this.id_isbn!) as HTMLInputElement;
+    if (isbn && isbn.value !== '') {
+      this.publication.isbn = isbn.value;
+    }
+
     this.publication.tags = Array.from(
       [...this.tagsWithStylesMap.entries()].filter(([_, value]) => value === AppSettings.ONCLICK_TAG_STYLE),
       ([key, _]) => key
@@ -153,6 +186,8 @@ export class EditablePublicationCardComponent {
         }
       }
     }
+
+    console.log(this.publication);
 
     if (isValid) {
       this.scienceService.saveCard(this.publication).subscribe((data: HttpResponse<any>) => {

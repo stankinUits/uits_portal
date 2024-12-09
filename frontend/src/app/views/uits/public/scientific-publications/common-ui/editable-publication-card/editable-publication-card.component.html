@@ -1,7 +1,7 @@
 <div *ngIf="publication">
   <form class="input_form">
     <div class="input_style">
-      <span>Название карточки</span>
+      <span>Название публикации</span>
       <input [value]="publication.name ? publication.name : this.DEFAULT_NAME" [id]="id_name_card">
     </div>
     <div class="input_style">
@@ -30,8 +30,20 @@
       </ul>
     </div>
     <div class="input_style">
+      <span>Страницы</span>
+      <input [value]="publication.pages ? publication.pages : '' " [id]="id_pages">
+    </div>
+    <div class="input_style">
+      <span>Номер тома</span>
+      <input [value]="publication.vol_n ? publication.vol_n :'' " [id]="id_vol_n">
+    </div>
+    <div class="input_style">
+    <span>Номер isbn\issn</span>
+    <input [value]="publication.isbn ? publication.isbn : '' " [id]="id_isbn">
+    </div>
+    <div class="input_style">
       <span>Навзвание источника</span>
-      <input [value]="publication.source ? publication.source : this.DEFAULT_SOURCE ">
+      <input [value]="publication.source ? publication.source : this.DEFAULT_SOURCE " [id]="id_source">
     </div>
     <div class="input_style">
       <span>Ссылка на источник</span>

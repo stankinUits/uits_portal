@@ -8,12 +8,13 @@ import {
   ProfileCardComponent
 } from '@app/views/uits/public/scientific-publications/common-ui/profile-card/profile-card.component';
 import {AuthService} from "@app/shared/services/auth.service";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-main-science-page',
   standalone: true,
   imports: [
-    ProfileCardComponent, NgClass, RouterModule, NgIf, NgForOf
+    ProfileCardComponent, NgClass, RouterModule, NgIf, NgForOf, ReactiveFormsModule, FormsModule
   ],
   templateUrl: './main-science-page.component.html',
   styleUrls: ['./main-science-page.component.css']
@@ -39,6 +40,8 @@ export class MainSciencePageComponent {
 
   authorsMap: Map<string, string> = new Map();
 
+  searchString: string = '';
+
   constructor() {
     //authenticate
     this.authService.canEdit().subscribe(v => this.isAdmin = v);
@@ -54,6 +57,7 @@ export class MainSciencePageComponent {
 
         //заполняем кнопки для поиска
         this.fillSearchButtons();
+        this.filterThrewAllSearch();
       });
     });
   }
@@ -84,10 +88,21 @@ export class MainSciencePageComponent {
     const forFilterYear = Array.from(this.yearsMap.keys()).filter(v => this.yearsMap.get(v) === AppSettings.ONCLICK_TAG_STYLE);
     const forFilterAuthors = Array.from(this.authorsMap.keys()).filter(v => this.authorsMap.get(v) === AppSettings.ONCLICK_TAG_STYLE);
     const forFilterTag = Array.from(this.profilesTags.keys()).filter(v => this.profilesTags.get(v) === AppSettings.ONCLICK_TAG_STYLE);
+    let filterNames: string[] = [];
+
+    if (this.searchString.trim() !== '') {
+      filterNames = Array.from(this.profilesMap.keys()).filter(v => v.name.toLowerCase().includes(this.searchString)).map(v => v.name);
+    }
 
     const copyMap: Map<any, any> = new Map();
-    Array.from(new Map(this.originalProfilesMap).keys())
-      .filter(v => this.containsTsOrEmpty(forFilterSource, forFilterYear, forFilterAuthors, forFilterTag, v))
+    Array.from(this.originalProfilesMap.keys())
+      .sort((a, b) => {
+        const yearA = Number(a.year);
+        const yearB = Number(b.year);
+
+        return yearB - yearA;
+      })
+      .filter(v => this.containsTsOrEmpty(forFilterSource, forFilterYear, forFilterAuthors, forFilterTag, filterNames, v))
       .map(v => copyMap.set(v, new Map(this.tagsWithStylesMapForEditingCards)));
 
     this.profilesMap = copyMap;
@@ -97,20 +112,15 @@ export class MainSciencePageComponent {
                     forFilterYear: string[],
                     forFilterAuthors: string[],
                     forFilterTag: string[],
+                    filterNames: string[],
                     publication: ScienceReadyPublication
   ): boolean {
-
-    console.log('forFilterSource:', forFilterSource);
-    console.log('forFilterYear:', forFilterYear);
-    console.log('forFilterAuthors:', forFilterAuthors);
-    console.log('forFilterTag:', forFilterTag);
-
-    console.log(forFilterAuthors.some(item => publication.author?.includes(item)));
 
     return ((forFilterSource.length === 0 || forFilterSource.some(item => item === publication.source))
       && (forFilterYear.length === 0 || forFilterYear.some(item => item === publication.year?.toString()))
       && (forFilterAuthors.length === 0 || publication.author?.some(item => forFilterAuthors.includes(item)))
-      && (forFilterTag.length === 0 || publication.tags?.some(item => forFilterTag.includes(item))))!;
+      && (forFilterTag.length === 0 || publication.tags?.some(item => forFilterTag.includes(item)))
+      && (filterNames.length === 0 || filterNames.some(item => item.toLowerCase().includes(publication.name.toLowerCase()))))!;
   }
 
   initTagsWithStylesMapForEditingCards(v: string[]) {
@@ -178,5 +188,13 @@ export class MainSciencePageComponent {
     this.profilesMap = new Map(this.originalProfilesMap);
     this.fillSearchButtons();
     this.filterThrewAllSearch();
+  }
+
+  searchScienceCards() {
+    if (this.searchString.trim() !== '') {
+      this.filterThrewAllSearch();
+    } else {
+      this.filterThrewAllSearch();
+    }
   }
 }

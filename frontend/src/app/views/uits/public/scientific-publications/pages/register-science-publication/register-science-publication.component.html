@@ -20,7 +20,7 @@
       </li>
     </ul>
     <div>
-      <button type="button" class="button" (click)="addNewEmptyCard()">Добавить новую карточку</button>
+      <button type="button" class="button" (click)="addNewEmptyCard()">Добавить новую публикацию</button>
     </div>
     <div>
       <button routerLink="/page/scientific-activity-publications" type="button" class="button">Вернуться на страницу просмотра</button>
@@ -53,7 +53,7 @@
     </div>
 
     <div class="cards_page_style_div" *ngIf="profileCardsForEmptyMap.size > 0">
-      <h4 class="h4_form_style">Новые карточки, созданные вами.</h4>
+      <h4 class="h4_form_style">Новые пустые публикации</h4>
       <div class="cards_style" *ngFor="let publication of profileCardsForEmptyMap.keys()">
         <app-editable-publication-card
           [publication]="publication"

@@ -8,5 +8,8 @@ export interface ScienceReadyPublication {
     tags?: string[],
     source?: string,
     year?: number,
+    pages?: string,
+    vol_n?: string,
+    isbn?: string,
     id_for_unique_identify_component?: string
 }

@@ -22,8 +22,8 @@ export class ManageTagsPageComponent {
 
   constructor() {
     this.scienceService.getALLTagsRest().subscribe(v =>{
-      this.tags = v
-      this.filteredTags = v
+      this.tags = v;
+      this.filteredTags = v;
     });
   }
 
@@ -39,23 +39,23 @@ export class ManageTagsPageComponent {
 
   enableSaveButton() {
     if (this.tagStringToSave.length > 0) {
-      this.enableButton = true
+      this.enableButton = true;
     } else {
-      this.enableButton = false
+      this.enableButton = false;
     }
   }
 
   addTag(): void {
     console.log(this.tagStringToSave);
-    this.scienceService.saveNewTags([this.tagStringToSave])
-    this.tags.push(this.tagStringToSave)
-    this.tagStringToSave = ''
+    this.scienceService.saveNewTags([this.tagStringToSave]);
+    this.tags.push(this.tagStringToSave);
+    this.tagStringToSave = '';
     this.searchTags();
   }
 
   deleteTag(index: number): void {
-    console.log(this.tags.splice(index, 1))
-    this.scienceService.deleteTag(this.tags.splice(index, 1).join(''))
+    console.log(this.tags.splice(index, 1));
+    this.scienceService.deleteTag(this.tags.splice(index, 1).join(''));
     this.searchTags();
   }
 }

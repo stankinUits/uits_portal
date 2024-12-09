@@ -6,7 +6,7 @@
     <div class="input-group mb-3">
       <div class="input_style" >
         <input id="onInputNewTag" type="text" class="input_style" (keyup)="enableSaveButton()" [(ngModel)]="tagStringToSave" placeholder="Добавить новый  тег">
-        <button *ngIf="enableButton" role="button" class="btn btn-primary mt-1" [disabled]="!tagStringToSave" (click)="addTag()">Сохранить</button>
+        <button *ngIf="enableButton" role="button" class="btn btn-primary mt-1" [disabled]="!tagStringToSave" (click)="addTag()">Сохранить тег</button>
       </div>
       <div class="input_style">
         <input
@@ -22,7 +22,7 @@
 
     <div *ngFor="let tag of filteredTags; let i = index" class="tags">
       <span>{{ tag }}</span>
-      <button role="button" class="btn btn-sm btn-danger ml-2" (click)="deleteTag(i)">Delete</button>
+      <button role="button" class="btn btn-sm btn-danger ml-2" (click)="deleteTag(i)">Удалить тег</button>
     </div>
   </div>
 </div>

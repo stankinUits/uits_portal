@@ -1,5 +1,17 @@
 <div class="page-style">
   <ul class="status_buttons_bar">
+    <li>
+      <div class="input_style">
+        <input
+          id="search-tag_input"
+          (keyup)="searchScienceCards()"
+          class="input_style"
+          placeholder="Искать по названию"
+          [(ngModel)]="searchString"
+          type="text"
+        />
+      </div>
+    </li>
     <li *ngIf="isAdmin">
       <button routerLink="/page/scientific-activity-publications/create_new_author" class="cards_button">
         Создать преподавателя, поиск по google scholar
@@ -7,7 +19,7 @@
     </li>
     <li *ngIf="isAdmin">
       <button routerLink="/page/scientific-activity-publications/edit_author" class="cards_button">
-        Редактировать карточки преподавателя
+        Редактировать публикации преподавателя
       </button>
     </li>
     <li *ngIf="isAdmin">
