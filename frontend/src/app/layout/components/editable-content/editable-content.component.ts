@@ -1,11 +1,11 @@
-import {Component, HostListener, Input, OnInit} from '@angular/core';
-import {MarkdownService} from "ngx-markdown";
-import {AuthService} from "@app/shared/services/auth.service";
-import {EditableContentService} from "@app/layout/components/editable-content/editable-content.service";
-import {BehaviorSubject, Observable} from "rxjs";
-import {EditorLocale} from "angular-markdown-editor";
-import {UNSAVED_WARN_MESSAGE} from "@app/configs/app.config";
-import {fadeInOut} from "@app/shared/animations/fadeInOut.animation";
+import { Component, HostListener, Input, OnInit } from '@angular/core';
+import { MarkdownService } from "ngx-markdown";
+import { AuthService } from "@app/shared/services/auth.service";
+import { EditableContentService } from "@app/layout/components/editable-content/editable-content.service";
+import { BehaviorSubject, Observable } from "rxjs"; // Добавьте импорт Observable
+import { EditorLocale } from "angular-markdown-editor";
+import { UNSAVED_WARN_MESSAGE } from "@app/configs/app.config";
+import { fadeInOut } from "@app/shared/animations/fadeInOut.animation";
 
 @Component({
   selector: 'app-editable-content',
@@ -48,7 +48,6 @@ export class EditableContentComponent implements OnInit {
   content$: BehaviorSubject<string>;
   editorOptions: any;
   editMode: boolean = false;
-
 
   constructor(private markdownService: MarkdownService,
               public authService: AuthService,
