@@ -4,6 +4,8 @@ from rest_framework import generics
 from editable_pages.models import EditablePage
 from editable_pages.serializers import EditablePageSerializer
 from users import permissions
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 
 import requests
 from django.http import JsonResponse
@@ -54,12 +56,13 @@ class ScientificPublicationsSearchView(View):
             'isOverRequested': False,
             'sciencePublicationCards': science_publication_cards
         })
-    
+
 class GetAllTagsView(View):
     def get(self, request):
         tags = Tag.objects.all().values_list('name', flat=True)
         return JsonResponse(list(tags), safe=False)
 
+@method_decorator(csrf_exempt, name='dispatch')
 class SaveCardView(View):
     def post(self, request):
         data = json.loads(request.body)
@@ -77,6 +80,7 @@ class SaveCardView(View):
             publication.tags.add(tag)
         return JsonResponse({'id': publication.id})
 
+@method_decorator(csrf_exempt, name='dispatch')
 class SaveNewTagsView(View):
     def post(self, request):
         data = json.loads(request.body)
@@ -85,6 +89,7 @@ class SaveNewTagsView(View):
             Tag.objects.get_or_create(name=tag_name)
         return JsonResponse({'status': 'success'})
 
+@method_decorator(csrf_exempt, name='dispatch')
 class DeleteCardView(View):
     def post(self, request):
         data = json.loads(request.body)
