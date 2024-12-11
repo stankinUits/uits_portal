@@ -13,6 +13,7 @@ import {
 } from "@app/views/uits/public/about/announcements/announcement-post/announcement-post.component";
 import {AnnouncementsComponent} from "@app/views/uits/public/about/announcements/announcements.component";
 import {TeacherComponent} from "@app/views/uits/public/about/employee/teachers/teacher/teacher.component";
+import { ScheduleComponent } from './employee/teachers/teacher/components/schedule/schedule.component';
 
 const routes: Routes = [
   {
@@ -32,6 +33,9 @@ const routes: Routes = [
   },
   {
     path: 'employee/teachers/:id', component: TeacherComponent
+  },
+  {
+    path: 'employee/teachers/schedule/:id', component: ScheduleComponent,
   },
   {
     path: 'employee/uvp', component: UVPComponent

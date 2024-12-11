@@ -24,6 +24,9 @@ export const ApiConfig = {
         schedule: {
           import: (id: number) => `api/department/employee/teachers/${id}/schedule/import`,
           retrieve: (id: number) => `api/department/employee/teachers/${id}/schedule`,
+        },
+        subject: {
+          retrieve: (teacherId: number) => 'api/department/employee/teachers/${id}/subject'
         }
       },
     }

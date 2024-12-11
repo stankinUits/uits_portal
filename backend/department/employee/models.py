@@ -1,9 +1,11 @@
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.db import models
+
 from imagekit.models import ProcessedImageField
 from imagekit.processors import ResizeToFit
 
 from department.employee.schedule.models import Schedule
+from department.employee.subject.models import Subject
 
 
 # Create your models here.
@@ -28,22 +30,39 @@ class Teacher(models.Model):
                                  processors=[ResizeToFit(512)],
                                  options={'quality': 80},
                                  null=True)
+
     # Основная информация
     last_name = models.CharField(max_length=50, verbose_name="Фамилия")
     first_name = models.CharField(max_length=50, verbose_name="Имя")
     patronymic = models.CharField(max_length=50, blank=True, null=True, verbose_name="Отчество")
 
-    # Степень, звание, должность
+    # Контакты
+    phone_number = models.CharField(max_length=50, blank=True, null=True, verbose_name="Телефон")
+    email = models.CharField(max_length=50, blank=True, null=True, verbose_name="Почта")
+    messenger = models.CharField(max_length=50, blank=True, null=True, verbose_name="Мессенджер")
+    
+    # Основная проф информация 
     degree = models.CharField(max_length=100, choices=TeacherDegree.choices, blank=True, null=True,
                               verbose_name="Степень")
     rank = models.CharField(max_length=100, choices=TeacherRank.choices, blank=True, null=True, verbose_name="Звание")
     position = models.CharField(max_length=100, verbose_name="Должность")
+    experience = models.IntegerField(blank=True, null=True, verbose_name="Общий стаж работы (в годах)")
+    professional_experience = models.IntegerField(blank=True, null=True, verbose_name="Стаж работы по специальности (в годах)")
+
+    # Образование и повышение квалификации
+    education = models.TextField(blank=True, null=True, verbose_name="Образование")
+    qualification = models.TextField(blank=True, null=True, verbose_name="Повышение квалификации")
 
     # Общая информация
     bio = models.TextField(blank=True, null=True, verbose_name="Биография")
+    
+    subjects = models.ManyToManyField(Subject, related_name='subjects', verbose_name="Дисциплины")
 
     def __str__(self):
         return self.full_name
+
+    def get_subjects(self):
+        return self.subjects.filter(id = self.id)
 
     def import_schedule(self, file: InMemoryUploadedFile):
         Schedule.objects.import_from_file(self.id, file)
