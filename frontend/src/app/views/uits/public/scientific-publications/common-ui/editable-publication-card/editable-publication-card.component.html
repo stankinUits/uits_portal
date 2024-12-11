@@ -1,0 +1,67 @@
+<div *ngIf="publication">
+  <form class="input_form">
+    <div class="input_style">
+      <span>Название публикации</span>
+      <input [value]="publication.name ? publication.name : this.DEFAULT_NAME" [id]="id_name_card">
+    </div>
+    <div class="input_style">
+      <span>Год публикации</span>
+      <input [value]="publication.year?.toString() ? publication.year : this.DEFAULT_YEAR " [id]="id_year" [placeholder]="DEFAULT_YEAR">
+    </div>
+    <div class="input_style">
+      <span>Полное имя автора (Если авторов несколько, укажите их через ';')</span>
+      <input [value]="publication.author.length > 0 ? publication.author.join(';') : this.DEFAULT_AUTHOR" [id]="id_author_name">
+    </div>
+    <div class="input_style">
+      <span>Описание</span>
+      <input [value]="publication.description ? publication.description : this.DEFAULT_DESCRIPTION" [id]="id_description">
+    </div>
+    <div class="input_style">
+      <span>Теги (желательно выбрать не больше 4ех)</span>
+      <div class="add_new_tag">
+        <button type="button" class="form_button" (click)="onNewTag()">Добавить новый тег</button>
+        <input [id]="publication.name">
+      </div>
+      <button type="button" class="form_button" (click)="onChooseTag()">Список имеющихся тегов</button>
+      <ul class="tags_page_style" *ngIf="isTagsOpen">
+        <li *ngFor="let tag of tagsWithStylesMap.keys()" (click)="onTagClick(tag)">
+          <button type="button" [ngClass]="tagsWithStylesMap.get(tag)">{{ tag }}</button>
+        </li>
+      </ul>
+    </div>
+    <div class="input_style">
+      <span>Страницы</span>
+      <input [value]="publication.pages ? publication.pages : '' " [id]="id_pages">
+    </div>
+    <div class="input_style">
+      <span>Номер тома</span>
+      <input [value]="publication.vol_n ? publication.vol_n :'' " [id]="id_vol_n">
+    </div>
+    <div class="input_style">
+    <span>Номер isbn\issn</span>
+    <input [value]="publication.isbn ? publication.isbn : '' " [id]="id_isbn">
+    </div>
+    <div class="input_style">
+      <span>Навзвание источника</span>
+      <input [value]="publication.source ? publication.source : this.DEFAULT_SOURCE " [id]="id_source">
+    </div>
+    <div class="input_style">
+      <span>Ссылка на источник</span>
+      <input [value]="publication.url ? publication.url : this.DEFAULT_URL " [id]="id_url">
+    </div>
+    <div class="input_style">
+      <span>Файл (если имеется, только в формате pdf)</span>
+      <input type="file" (change)="onFileSelected($event)">
+      <span *ngIf="publication.file" style="color: green">Выбранный файл: {{ publication.file.name }}</span>
+      <span *ngIf="alertMessage" style="color: red">{{ alertMessage }}</span>
+    </div>
+    <div class="input_style">
+      <button type="button" class="form_button" (click)="clickOnSave()">Сохранить</button>
+      <br>
+      <button type="button" class="form_button_del" (click)="clickOnDelete()">Удалить</button>
+    </div>
+  </form>
+</div>
+<div *ngIf="!publication">
+  <span>Результатов нет</span>
+</div>

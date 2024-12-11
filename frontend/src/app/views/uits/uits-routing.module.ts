@@ -28,15 +28,15 @@ const routes: Routes = [
   },
   {
     path: 'corp',
-    component: CorporateComponent, 
+    component: CorporateComponent,
     children: [
       {
         path: 'page/:slug',
         component: CustomPageComponent
       },
       {
-        path: 'profile', 
-        component: PersonalComponent, 
+        path: 'profile',
+        component: PersonalComponent,
       },
       {
         path: 'calendar',
@@ -45,7 +45,6 @@ const routes: Routes = [
       { path: 'test', component: DisciplinesComponent }, // Test route for DisciplinesComponent
     ]
   },
-
 ];
 
 @NgModule({
