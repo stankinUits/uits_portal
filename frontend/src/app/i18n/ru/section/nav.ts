@@ -98,7 +98,7 @@ export const nav = {
       CONFERENCES:'Конференции'
     },
     PROFILE: {
-      PROFILE: 'Личный кабинет',
+      PROFILE: 'Корпоративный портал',
       ADMIN: "Админская панель",
       SIGN_OUT: 'Выход'
     },
