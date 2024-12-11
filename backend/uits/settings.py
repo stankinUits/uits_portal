@@ -41,7 +41,7 @@ THIRD_INSTALLED_APPS = [
     'imagekit',
     'django_quill',
     'django_filters',
-    'corsheaders',  # Добавлено
+    # 'corsheaders',  # Добавлено
     'mdeditor'
 ]
 
@@ -77,7 +77,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',  # Добавлено для CORS
+    # 'corsheaders.middleware.CorsMiddleware',  # Добавлено для CORS
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -271,12 +271,17 @@ CELERY_BROKER_URL = "redis://localhost:6379/0"
 CELERY_RESULT_BACKEND = "redis://localhost:6379/1"
 CELERY_TIMEZONE = "Europe/Moscow"
 CELERY_BEAT_SCHEDULE = {
-    'schedule-notify-bot': {
-        'task': 'events.tasks.send_event_notifications',
-        'schedule': 30.0,
-        'options': {
-            'expires': 15.0,
-        },
+    'notify-daily': {
+        'task': 'events.tasks.notify_daily',
+        'schedule': 86400.0,  # раз в день
+    },
+    'notify-weekly': {
+        'task': 'events.tasks.notify_weekly',
+        'schedule': 604800.0,  # раз в неделю
+    },
+    'notify-monthly': {
+        'task': 'events.tasks.notify_monthly',
+        'schedule': 2419200.0,  # раз в месяц (приблизительно 28 дней)
     },
 }
 
