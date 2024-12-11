@@ -9,7 +9,7 @@ services:
     env_file:
       - ./backend/db.local.env
     volumes:
-      - ./postgres_data:/var/lib/postgresql/data/
+      - /var/postgres_data:/var/lib/postgresql/data/
   
   redis:
     image: "redis:7.2.4-alpine"
