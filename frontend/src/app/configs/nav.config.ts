@@ -285,6 +285,16 @@ const scientificActivity: NavMenu[] = [
         icon: 'icon-briefcase',
         key: 'sciencePublications',
         submenu: []
+      },
+      {
+        path: PagesConfig.scientificActivities.achievements,
+        title: 'Achievements',
+        translateKey: 'NAV.SCIENTIFIC_ACTIVITY.ACHIEVEMENTS.TITLE',
+        type: 'item',
+        iconType: 'feather',
+        icon: 'icon-award',
+        key: 'scientificActivity/achievements',
+        submenu: []
       }
       ]
     }
