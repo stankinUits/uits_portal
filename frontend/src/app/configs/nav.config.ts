@@ -232,6 +232,37 @@ const educationActivities: NavMenu[] = [
             submenu: []
           }
         ]
+      },
+      {
+        path: '/schedule',
+        title: 'Schedule',
+        translateKey: 'NAV.EDUCATION_ACTIVITIES.SCHEDULES.TITLE',
+        type: 'item',
+        iconType: 'feather',
+        icon: 'icon-calendar',
+        key: 'schedule',
+        submenu: [
+          {
+            path: PagesConfig.educationalActivities.schedule.summary,
+            title: 'Summary',
+            translateKey: 'NAV.EDUCATION_ACTIVITIES.SCHEDULES.SUMMARY.TITLE',
+            type: 'item',
+            iconType: 'feather',
+            icon: 'icon-list',
+            key: 'summary',
+            submenu: []
+          },
+          {
+            path: PagesConfig.educationalActivities.schedule.exams,
+            title: 'ExamsSchedule',
+            translateKey: 'NAV.EDUCATION_ACTIVITIES.SCHEDULES.EXAMS.TITLE',
+            type: 'item',
+            iconType: 'feather',
+            icon: 'icon-clipboard',
+            key: 'examsSchedule',
+            submenu: []
+          }
+        ]
       }
     ]
   }
@@ -256,6 +287,16 @@ const scientificActivity: NavMenu[] = [
         key: 'scientificActivity/postGraduate',
         submenu: []
       },
+      {
+        path: PagesConfig.editable('scientific-activity-publications'),
+        title: 'SciencePublications',
+        translateKey: 'NAV.SCIENTIFIC_ACTIVITY.SCIENTIFIC_PUBLICATIONS.TITLE',
+        type: 'item',
+        iconType: 'feather',
+        icon: 'icon-briefcase',
+        key: 'sciencePublications',
+        submenu: []
+      }
       ]
     }
       // {

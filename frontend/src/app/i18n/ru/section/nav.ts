@@ -69,10 +69,19 @@ HISTORY: 'История кафедры',
           EDUCATIONAL_INTRODUCTORY:'Учебная практики(ознакомительная)',
         },
         DISCIPLINES:'Дисциплины'
+      },
+      SCHEDULES: {
+        TITLE: "Расписания",
+        SUMMARY: {
+          TITLE: "Сводное расписание преподавателей",
+        },
+        EXAMS:{
+          TITLE: "Расписание экзаменов"
+        }
       }
     },
     SCIENTIFIC_ACTIVITY:{
-      TITLE:'Научная деятельность',
+      TITLE: 'Научная деятельность',
       POST_GRADUATE: {
         TITLE: 'Аспирантура',
         PRACTICES:'Практики',
@@ -86,13 +95,15 @@ HISTORY: 'История кафедры',
           DOCTORAL: 'Докторские'
         }
       },
-      SCIENTIFIC_PUBLICATIONS:'Научные публикации',
+      SCIENTIFIC_PUBLICATIONS: {
+        TITLE: 'Научные публикации'
+      },
       SCIENTIFIC_WORK:'Научная работа',
       CONFERENCES:'Конференции'
     },
     PROFILE: {
       PROFILE: 'Личный кабинет',
-      ADMIN: "Админская панель",
+      ADMIN: 'Админская панель',
       SIGN_OUT: 'Выход'
     },
     RETURN: 'Вернуться'

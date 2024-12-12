@@ -68,7 +68,17 @@ export const nav = {
           "EDUCATIONAL_INTRODUCTORY": "Educational Internship (Introductory)",
         },
         "DISCIPLINES": "Disciplines"
+      },
+      "SCHEDULES": {
+        "TITLE": "Schedules",
+        "SUMMARY": {
+          "TITLE": "Schedule summary",
+        },
+        "EXAMS":{
+          "TITLE": "Exams schedule"
+        }
       }
+
     },
     "SCIENTIFIC_ACTIVITY": {
       "TITLE": "Scientific Activity",

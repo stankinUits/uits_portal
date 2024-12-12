@@ -1,11 +1,12 @@
 from django.db import models
-
+import mdeditor
+from mdeditor.fields import MDTextField
 
 # Create your models here.
 class EditablePage(models.Model):
     title = models.CharField(max_length=255, verbose_name="Название страницы (для отображения в админ-панели)",
                              blank=True, null=True)
-    text = models.TextField(verbose_name='Контент Markdown', blank=True)
+    text = MDTextField(verbose_name='Контент Markdown', blank=True)
     page = models.SlugField(max_length=100, verbose_name='Идентификатор страницы', unique=True)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
     modified_at = models.DateTimeField(auto_now=True, verbose_name='Дата изменения')
@@ -17,3 +18,22 @@ class EditablePage(models.Model):
     class Meta:
         verbose_name = 'редактируемая страница'
         verbose_name_plural = 'редактируемые страницы'
+
+class Tag(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+
+    def __str__(self):
+        return self.name
+
+class ScientificPublication(models.Model):
+    name = models.CharField(max_length=200)
+    author = models.JSONField()
+    description = models.TextField()
+    url = models.URLField(null=True, blank=True)
+    file = models.FileField(null=True, blank=True)
+    tags = models.ManyToManyField(Tag)
+    year = models.IntegerField()
+    source = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.name

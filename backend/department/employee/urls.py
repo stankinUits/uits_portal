@@ -7,6 +7,7 @@ urlpatterns = [
         'get': 'list',
         'post': 'create'
     })),
+  
     path('teachers/uvp/', HelpersEmployeeViewSet.as_view({
         'get': 'list',
         'post': 'create'
@@ -17,13 +18,20 @@ urlpatterns = [
         'delete': 'destroy',
         'patch': 'partial_update'
     })),
+  
     path('teachers/<int:pk>/schedule/import', TeacherAPIViewSet.as_view({
         'post': 'import_schedule'
     })),
+  
     path('teachers/<int:pk>/schedule', TeacherAPIViewSet.as_view({
         'get': 'retrieve_schedule',
     })),
+  
     path('teachers/<int:pk>/subject', TeacherAPIViewSet.as_view({
         'get': 'get_subjects',
+    })),
+  
+    path('teachers/all-schedule', TeacherAPIViewSet.as_view({
+        'get': 'retrieve_all_schedule',
     }))
 ]

@@ -18,6 +18,7 @@ import {
 import {
   MasterPracticesComponent
 } from "@app/views/uits/public/educational-activities/master/master-practices/master-practices.component";
+import { ScheduleSummaryComponent } from './schedule/schedule-summary/schedule-summary.component';
 
 const routes: Routes = [
   { path: 'bachelor/edu-plans', component: BachelorEduPlansComponent},
@@ -26,6 +27,7 @@ const routes: Routes = [
   { path: 'master/edu-plans', component: MasterEduPlansComponent},
   { path: 'master/graduate', component: MasterGraduateComponent},
   { path: 'master/practices', component: MasterPracticesComponent},
+  { path: 'schedule/schedule-summary', component: ScheduleSummaryComponent}
 ];
 
 @NgModule({

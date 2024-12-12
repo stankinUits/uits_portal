@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Post
+from .models import Post, ConferenceAnnouncement, Announcement
 from django.utils.translation import gettext_lazy as _
 
 # Register your models here.
@@ -14,3 +14,16 @@ class PostModelAdmin(admin.ModelAdmin):
     list_display = ('title', 'post_type', 'author', 'created_at', 'display')
     list_filter = ('post_type', 'display', 'created_at', 'author')
     search_fields = ('title', 'short_description', 'content')
+
+@admin.register(ConferenceAnnouncement)
+class ConferenceAnnouncementAdmin(admin.ModelAdmin):
+    fieldsets = (
+        (_("Основная информация"), {'fields': ('title', 'description', 'content', 'start_date', 'end_date', 'time')}),
+        (_("Контактная информация"), {'fields': ('organizer', 'contact_email', 'contact_phone')}),
+        (_("Изображение"), {'fields': ('preview_image', 'preview_image_description')}),
+        (_("Настройки отображения"), {'fields': ('created_at', 'updated_at', 'author'), 'classes': ('collapse',)}),
+    )
+    readonly_fields = ('created_at', 'updated_at')
+    list_display = ('title', 'start_date', 'end_date', 'time', 'organizer', 'created_at')
+    search_fields = ('title', 'description', 'organizer')
+    list_filter = ('start_date', 'end_date', 'created_at', 'updated_at')

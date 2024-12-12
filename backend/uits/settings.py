@@ -40,7 +40,9 @@ THIRD_INSTALLED_APPS = [
     'dj_rest_auth',
     'imagekit',
     'django_quill',
-    'django_filters'
+    'django_filters',
+    # 'corsheaders',  # Добавлено
+    'mdeditor'
 ]
 
 # Local application definition
@@ -48,6 +50,7 @@ THIRD_INSTALLED_APPS = [
 LOCAL_INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'department.news.apps.NewsConfig',
+    'department.achievements.apps.AchievementsConfig',
     'department.employee',
     'department.employee.schedule',
     'department.employee.subject',
@@ -74,6 +77,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    # 'corsheaders.middleware.CorsMiddleware',  # Добавлено для CORS
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -166,6 +170,7 @@ REST_AUTH = {
     'USER_DETAILS_SERIALIZER': 'users.serializers.UserDetailsSerializer'
 }
 
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
 MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_URL = '/media/'
 
@@ -211,6 +216,38 @@ QUILL_CONFIGS = {
     }
 }
 
+MDEDITOR_CONFIGS = {
+    'default': {
+        'width': '100%',  # Ширина окна редактирования
+        'height': 500,  # Высота окна редактирования
+        'toolbar': ["undo", "redo", "|",
+                    "bold", "del", "italic", "quote", "ucwords", "uppercase", "lowercase", "|",
+                    "h1", "h2", "h3", "h5", "h6", "|",
+                    "list-ul", "list-ol", "hr", "|",
+                    "link", "reference-link", "image", "code", "preformatted-text", "code-block", "table", "datetime",
+                    "emoji", "html-entities", "pagebreak", "goto-line", "|",
+                    "help", "info",
+                    "||", "preview", "watch", "fullscreen"],  # Настройка панели инструментов редактора
+        'upload_image_formats': ["jpg", "jpeg", "gif", "png", "bmp", "webp"],  # Допустимые форматы изображений для загрузки
+        'image_folder': 'editor',  # Имя папки для сохранения изображений
+        'theme': 'dark',  # Тема редактора: 'dark' или 'default'
+        'preview_theme': 'default',  # Тема области предпросмотра
+        'editor_theme': 'default',  # Тема области редактирования
+        'toolbar_autofixed': True,  # Фиксация тулбара
+        'search_replace': True,  # Поиск и замена
+        'emoji': True,  # Включение смайликов
+        'tex': True,  # Включение поддержки Tex для графиков
+        'flow_chart': True,  # Включение поддержки Flow Chart
+        'sequence': True,  # Включение поддержки Sequence Diagram
+        'watch': True,  # Живой предпросмотр
+        'lineWrapping': False,  # Перенос строк
+        'lineNumbers': False,  # Показ номеров строк
+        'language': 'en'  # Язык редактора: 'zh' (китайский), 'en' (английский), 'es' (испанский)
+    }
+}
+
+
+
 # ONLY NEED FOR MIGRATION ON FIRST RUN python manage.py migrate
 # DO NOT CHANGE IT IF U DONT KNOW WHAT IT IS
 DEFAULT_EDITABLE_PAGES = [
@@ -224,15 +261,6 @@ DEFAULT_EDITABLE_PAGES = [
     'master-edu-plans',
     'master-graduate',
     'master-practices',
-    # 'scientific-activities-conferences',
-    # 'scientific-activities-postgraduate-dissertations',
-    # 'scientific-activities-postgraduate-practices',
-    # 'scientific-activities-postgraduate-specialties',
-    # 'scientific-activities-publications',
-    # 'scientific-activities-scientificWork',
-    # 'scientific-activities-postgraduate-general-info',
-    # 'scientific-activities-postgraduate-reporting',
-    # 'scientific-activities-postgraduate-students',
     'scientific-activity-postgraduate',
     'home-before',
     'home-after'
@@ -243,17 +271,52 @@ CELERY_BROKER_URL = "redis://localhost:6379/0"
 CELERY_RESULT_BACKEND = "redis://localhost:6379/1"
 CELERY_TIMEZONE = "Europe/Moscow"
 CELERY_BEAT_SCHEDULE = {
-    'schedule-notify-bot': {
-        'task': 'events.tasks.schedule_notify_bot',
-        'schedule': 30.0,
-        'options': {
-            'expires': 15.0,
-        },
+    'notify-daily': {
+        'task': 'events.tasks.notify_daily',
+        'schedule': 86400.0,  # раз в день
+    },
+    'notify-weekly': {
+        'task': 'events.tasks.notify_weekly',
+        'schedule': 604800.0,  # раз в неделю
+    },
+    'notify-monthly': {
+        'task': 'events.tasks.notify_monthly',
+        'schedule': 2419200.0,  # раз в месяц (приблизительно 28 дней)
     },
 }
 
 TELEGRAM_BOT = {
     'TOKEN': env('TG_BOT_TOKEN'),
-    'WEBHOOK_URL': env('TG_WEBHOOK_HOST') + 'api/telegram/webhook',
+    'WEBHOOK_URL': env('TG_WEBHOOK_HOST') + 'api/telegram/webhook/' + env('TG_SECRET_TOKEN'),
     'WEBHOOK_SECRET': env('TG_SECRET_TOKEN')
 }
+
+TELEGRAM_BOT_TOKEN = os.getenv('TG_BOT_TOKEN')
+
+# CORS settings
+CORS_ALLOW_ALL_ORIGINS = True  # Разрешает доступ со всех доменов (не рекомендуется для production)
+
+# Если нужна настройка конкретных доменов, замените на:
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:3000",
+#     "https://example.com",
+# ]
+
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_HEADERS = [
+    'content-type',
+    'authorization',
+    'x-csrftoken',
+    'x-requested-with',
+]
+CORS_ALLOW_METHODS = [
+    'GET',
+    'POST',
+    'PUT',
+    'PATCH',
+    'DELETE',
+    'OPTIONS',
+]
+
+X_FRAME_OPTIONS = 'SAMEORIGIN' 
+

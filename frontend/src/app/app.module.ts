@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 import { PathLocationStrategy, LocationStrategy } from '@angular/common';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -12,26 +13,34 @@ import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { AppConfigState } from './store/app-config/app-config.state';
 import { TranslateModule } from '@ngx-translate/core';
 import { AppComponent } from './app.component';
+import { ManageTagsPageComponent } from '@app/views/uits/public/scientific-publications/pages/manage-tags-page/manage-tags-page.component';
+import {
+  EditablePublicationCardComponent
+} from "@app/views/uits/public/scientific-publications/common-ui/editable-publication-card/editable-publication-card.component";
 
+// import mockServer from './mock-data/app.mock';
+
+// mockServer();
 
 @NgModule({
     declarations: [
         AppComponent,
-      
+        ManageTagsPageComponent,
     ],
-    imports: [
-        BrowserModule,
-        BrowserAnimationsModule,
-        AppRoutingModule,
-        SharedModule,
-        TranslateModule.forRoot(),
-        LayoutModule,
-        NgxsModule.forRoot([
-            AppConfigState
-        ]),
-        NgxsReduxDevtoolsPluginModule.forRoot(),
-        NgxsLoggerPluginModule.forRoot()
-    ],
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    AppRoutingModule,
+    SharedModule,
+    TranslateModule.forRoot(),
+    LayoutModule,
+    NgxsModule.forRoot([
+      AppConfigState
+    ]),
+    NgxsReduxDevtoolsPluginModule.forRoot(),
+    NgxsLoggerPluginModule.forRoot(),
+    EditablePublicationCardComponent
+  ],
     providers: [
         {
             provide: LocationStrategy,
@@ -41,3 +50,4 @@ import { AppComponent } from './app.component';
     bootstrap: [AppComponent]
 })
 export class AppModule { }
+

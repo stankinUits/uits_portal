@@ -1,0 +1,250 @@
+<ng-container>
+  <ng-container *ngIf="filteredEvents$ | async as events; else loading">
+    <ng-container *ngTemplateOutlet="title"></ng-container>
+  </ng-container>
+  <ng-container *ngTemplateOutlet="content"></ng-container>
+</ng-container>
+
+<!-- Templates -->
+
+<ng-template #title>
+  <h2 class="mb-3">Сводное расписание</h2>
+</ng-template>
+
+<ng-template #content>
+  <div class="mb-3">
+    <div class="mb-4">
+      <!-- Фильтр преподавателей -->
+      <label for="teacherSelect" class="form-label fw-semibold mb-2">Выберите преподавателей:</label>
+      <ng-select
+        id="teacherSelect"
+        [items]="teachersForSelect"
+        bindLabel="fullName" 
+        bindValue="id"       
+        [multiple]="true"
+        placeholder="Список преподавателей"
+        [(ngModel)]="selectedTeacherIds"
+        (change)="onFilterChange()"></ng-select>
+    </div>
+
+    <div class="mb-4">
+      <div class="fw-semibold mb-2">Выберите вид календаря:</div>
+      <div class="btn-group" role="group" aria-label="Вид календаря">
+        <button
+          type="button"
+          class="btn"
+          [ngClass]="{'btn-primary': currentView === 'week', 'btn-outline-primary': currentView !== 'week'}"
+          (click)="onViewChange('week')">
+          Недельный вид
+        </button>
+        <button
+          type="button"
+          class="btn"
+          [ngClass]="{'btn-primary': currentView === 'day', 'btn-outline-primary': currentView !== 'day'}"
+          (click)="onViewChange('day')">
+          Дневной вид
+        </button>
+      </div>
+    </div>
+    
+    <ng-container *ngTemplateOutlet="actionPanel"></ng-container>
+    <div *ngIf="currentView === 'week'">
+      <div class="d-flex flex-column gap-1"
+          [ngStyle]="{ 'max-width': '300px' }"
+          *ngIf="schedules$">
+        <div class="fw-semibold">
+          Выбор недели
+        </div>
+        <div class="btn-group">
+          <div class="btn btn-primary"
+              mwlCalendarPreviousView
+              view="week"
+              [(viewDate)]="viewDate">
+            Предыдущая
+          </div>
+          <div class="btn btn-outline-secondary"
+              mwlCalendarToday
+              [(viewDate)]="viewDate">
+            Сейчас
+          </div>
+          <div class="btn btn-primary"
+              mwlCalendarNextView
+              view="week"
+              [(viewDate)]="viewDate">
+            Следующая
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="filteredEvents$ | async as events; else loading">
+    <!-- Недельный вид -->
+    <div *ngIf="currentView === 'week'">
+  
+      <mwl-calendar-week-view
+        #view
+        [viewDate]="viewDate"
+        [events]="events"
+        locale="ru"
+        weekStartsOn="1"
+        [excludeDays]="[0,7]"
+        dayStartHour="8"
+        dayEndHour="22"
+        [eventTitleTemplate]="eventTitleTemplate"
+        dayEndMinute="50"
+        [hourSegments]="3"
+        [hourSegmentTemplate]="weekViewHourSegment"
+        (eventClicked)="onCalendarEventClick($event)">
+      </mwl-calendar-week-view>
+    </div>
+  
+    <!-- Дневной вид -->
+    <div *ngIf="currentView === 'day'">
+      <!-- Кнопки управления днем -->
+      <div class="d-flex flex-column gap-1"
+           [ngStyle]="{ 'max-width': '300px' }">
+        <div class="fw-semibold">
+          Выбор дня
+        </div>
+        <div class="btn-group">
+          <div class="btn btn-primary"
+               mwlCalendarPreviousView
+               view="day"
+               [(viewDate)]="viewDate">
+            Предыдущий
+          </div>
+          <div class="btn btn-outline-secondary"
+               mwlCalendarToday
+               [(viewDate)]="viewDate">
+            Сегодня
+          </div>
+          <div class="btn btn-primary"
+               mwlCalendarNextView
+               view="day"
+               [(viewDate)]="viewDate">
+            Следующий
+          </div>
+        </div>
+      </div>
+  
+      <!-- Отображение текущей даты -->
+      <div class="mb-3 text-center">
+        <h4>{{ viewDate | date: 'EEEE, d MMMM yyyy':'':'ru' }}</h4>
+      </div>
+  
+      <mwl-calendar-day-view
+        [viewDate]="viewDate"
+        [events]="events"
+        locale="ru"
+        dayStartHour="8"
+        dayEndHour="22"
+        dayEndMinute="50"
+        [hourSegments]="3"
+        [eventTitleTemplate]="eventTitleTemplate"
+        [hourSegmentTemplate]="weekViewHourSegment"
+        (eventClicked)="onCalendarEventClick($event)">
+      </mwl-calendar-day-view>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #loading>
+  <p>Загрузка расписания...</p>
+</ng-template>
+
+
+<!-- Шаблон для отображения события -->
+<ng-template #eventTitleTemplate let-event="event" let-view="view">
+  <div class="d-flex flex-column">
+    <div class="cal-event-title cal-event-title-lesson"
+         [innerHTML]="event.title | calendarEventTitle : view : event"
+         [attr.aria-hidden]="{} | calendarA11y : 'hideEventTitle'">
+    </div>
+
+    <div class="cal-event-description">
+      <p>
+        Преподаватель: {{ teacherMap[event.meta.teacherId] || 'Неизвестный преподаватель' }} <br>
+        Кабинет: {{ event.meta.cabinet }} <br>
+        Группа: {{ event.meta.group }} {{ event.meta.subgroup }} <br> 
+        Время: {{ event.start | date: 'HH:mm' }} - {{ event.end | date: 'HH:mm' }} <br>
+      </p>
+    </div>
+  </div>
+</ng-template>
+
+<!-- Шаблон для отображения сегментов часов -->
+<ng-template #weekViewHourSegment let-segment="segment" let-locale="locale" let-segmentHeight="segmentHeight" let-isTimeLabel="isTimeLabel">
+  <div class="cal-hour-segment"
+       [style.height.px]="segmentHeight"
+       [class.cal-hour-start]="segment.isStart"
+       [ngClass]="segment.cssClass">
+    <div class="cal-time" *ngIf="isTimeLabel" [ngClass]="{ 'cal-time-secondary' : !(segment.date | date: 'HH:mm').endsWith('00') }">
+      {{ segment.date | date: 'HH:mm' }}
+    </div>
+  </div>
+</ng-template>
+
+
+<!-- Панель администрирования -->
+<ng-template #actionPanel>
+  <div class="d-flex flex-column gap-3">
+    <div class="d-flex flex-column gap-1 mb-3"
+         *ngIf="(profile | async) && ((profile | async).isModerator || (profile | async).isSuperuser)">
+      <div class="fw-semibold">
+        Администрирование
+      </div>
+      <div class="d-flex gap-3">
+        <button class="btn btn-primary" (click)="navigateToScheduleEdit()">Редактировать</button>
+        <div>
+          <input #inputSchedulePDF type="file" accept="application/pdf"
+                 (change)="onScheduleFileSelected($event); inputSchedulePDF.value = ''" hidden>
+          <button class="btn btn-info" (click)="inputSchedulePDF.click();">
+            Импорт расписания
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<!-- Модальное окно подтверждения импорта расписания -->
+<ng-template #confirmImportSchedule bsModal>
+  <div class="modal-header">
+    <h4 class="modal-title">Импорт расписания</h4>
+  </div>
+  <div class="modal-body">
+    <p>Уверены что хотите удалить текущее расписание преподавателя и импортировать новое?</p>
+    <button type="button" class="btn btn-primary me-3" (click)="importScheduleFromSelectedFile()">Да</button>
+    <button type="button" class="btn btn-outline-secondary" (click)="cancelImportSchedule()">Нет</button>
+  </div>
+</ng-template>
+
+<!-- Модальное окно для подтверждения редактирования пары -->
+<ng-template #confirmRedirectToEditScheduleLesson bsModal>
+  <div class="modal-header">
+    <h4 class="modal-title">Переход на страницу редактирования пары</h4>
+  </div>
+  <div class="modal-body">
+    <p>Хотите перейти на страницу редактирования этой пары?</p>
+    <button type="button" class="btn btn-primary me-3" (click)="onConfirmRedirectToEditScheduleLesson()">Да</button>
+    <button type="button" class="btn btn-outline-secondary" (click)="cancelRedirectToEditScheduleLesson()">Нет</button>
+  </div>
+</ng-template>
+
+
+<ng-template #loading>
+  <div>Загрузка...</div>
+</ng-template>
+
+<div *ngIf="selectedEvent" 
+     class="event-popup" 
+     [ngStyle]="{ top: popupPosition.top, left: popupPosition.left }">
+  <h5>{{ selectedEvent.title }}</h5>
+  <p>
+    Преподаватель: {{ teacherMap[selectedEvent.meta.teacherId] || 'Неизвестный преподаватель' }} <br>
+    Кабинет: {{ selectedEvent.meta.cabinet }} <br>
+    Группа: {{ selectedEvent.meta.group }} {{ selectedEvent.meta.subgroup }} <br> 
+    Время: {{ selectedEvent.start | date: 'HH:mm' }} - {{ selectedEvent.end | date: 'HH:mm' }}
+  </p>
+  <button class="btn btn-outline-secondary btn-sm" (click)="selectedEvent = null">Закрыть</button>
+</div>
