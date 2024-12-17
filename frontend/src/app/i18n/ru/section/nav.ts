@@ -96,8 +96,11 @@ export const nav = {
       SCIENTIFIC_PUBLICATIONS: {
         TITLE: 'Научные публикации'
       },
-      SCIENTIFIC_WORK:'Научная работа',
-      CONFERENCES:'Конференции'
+      SCIENTIFIC_WORK: 'Научная работа',
+      CONFERENCES: 'Конференции',
+      ACHIEVEMENTS: {
+        TITLE: 'Достижения'
+      }
     },
     PROFILE: {
       PROFILE: 'Личный кабинет',

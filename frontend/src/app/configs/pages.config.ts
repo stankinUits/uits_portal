@@ -46,6 +46,7 @@ export const PagesConfig = {
     mainSciencePage: sciActivitiesPrefix + '/publications/main-science-page',
     registerSciencePublication: sciActivitiesPrefix + '/publications/register-science-publication',
     editAuthorPublication: sciActivitiesPrefix + '/publications/edit-author-publication',
+    achievements: sciActivitiesPrefix + '/achievements',
   },
   editable: (slug: string) => `/page/${slug}`
 };
