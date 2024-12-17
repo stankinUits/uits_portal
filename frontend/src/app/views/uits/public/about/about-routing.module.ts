@@ -13,6 +13,7 @@ import { AnnouncementsComponent } from './announcements/announcements.component'
 import { TeacherComponent } from './employee/teachers/teacher/teacher.component';
 import { ScheduleComponent } from './employee/teachers/teacher/components/schedule/schedule.component';
 import { DisciplinesComponent } from './employee/teachers/teacher/components/disciplines/disciplines.component';
+import {HistoryOfDepartmentComponent} from "@app/views/uits/public/about/history-of-department/history-of-department.component";
 
 const routes: Routes = [
   { path: 'news', component: NewsComponent },
@@ -28,6 +29,7 @@ const routes: Routes = [
   { path: 'documents/department', component: DepartmentComponent },
   { path: 'documents/university', component: UniversityComponent },
   { path: 'contacts', component: ContactsComponent },
+  { path: 'history-of-department', component: HistoryOfDepartmentComponent},
 ];
 
 @NgModule({

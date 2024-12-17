@@ -2,6 +2,8 @@ export const nav = {
   NAV: {
     HOME: 'Главная',
     ABOUT: 'О кафедре',
+    
+HISTORY: 'История кафедры',
     NEWS: 'Новости кафедры',
     ANNOUNCEMENTS: 'Объявления кафедры',
     EMPLOYEE: 'Сотрудники кафедры',

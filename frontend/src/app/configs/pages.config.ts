@@ -10,6 +10,7 @@ export const PagesConfig = {
   about: {
     news: '/about/news/',
     announcements: '/about/announcements/',
+    
     employee: {
       teachers: '/about/employee/teachers/',
       schedule: '/about/employee/teachers/schedule/',
