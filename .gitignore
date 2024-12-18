@@ -1,3 +1,4 @@
+celerybeat-schedule
 .idea
 *.env
 postgres.env

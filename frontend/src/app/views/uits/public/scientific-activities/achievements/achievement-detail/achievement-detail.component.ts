@@ -64,7 +64,7 @@ export class AchievementDetailComponent implements OnInit {
   
   redirectToEditPage(): void {
     if (this.achievement?.id) {
-      const adminUrl = `http://127.0.0.1:8000/admin/achievements/achievement/${this.achievement.id}/change/`;
+      const adminUrl = `http://uits-backend:8000/admin/achievements/achievement/${this.achievement.id}/change/`;
       window.open(adminUrl, '_blank');
     }
   }

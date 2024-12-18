@@ -63,6 +63,6 @@ export class AchievementListComponent implements OnInit {
   }
 
 redirectToAdminPanel(): void {
-    window.open('http://127.0.0.1:8000/admin/achievements/achievement/', '_blank');
+    window.open('http://uits-backend:8000/admin/achievements/achievement/', '_blank');
 }
 }

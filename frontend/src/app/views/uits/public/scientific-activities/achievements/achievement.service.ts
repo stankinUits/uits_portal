@@ -6,7 +6,7 @@ import { Observable, catchError, throwError } from 'rxjs';
   providedIn: 'root',
 })
 export class AchievementService {
-  private apiUrl = 'http://127.0.0.1:8000/api/department/achievements/';
+  private apiUrl = 'http://uits-backend:8000/api/department/achievements/';
 
   constructor(private http: HttpClient) {}
 

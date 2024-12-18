@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-95rc)10zgr)+px@hl=h_5*3h3ab6rmt3esf@p#gw(ez^+7m9%*
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['uits.stankin.ru', 'localhost', '127.0.0.1', '0.0.0.0']
 
 # Third party apps
 
@@ -116,7 +116,7 @@ DATABASES = {
         'NAME': env('POSTGRES_DB'),
         'USER': env('POSTGRES_USER'),
         'PASSWORD': env('POSTGRES_PASSWORD'),
-        'HOST': 'localhost',
+        'HOST': 'uits-postgres',
         'PORT': '5432',
         'OPTIONS': {
             'client_encoding': 'UTF8'
@@ -267,8 +267,8 @@ DEFAULT_EDITABLE_PAGES = [
 ]
 
 # CELERY SETTINGS
-CELERY_BROKER_URL = "redis://localhost:6379/0"
-CELERY_RESULT_BACKEND = "redis://localhost:6379/1"
+CELERY_BROKER_URL = "redis://uits-redis:6379/0"
+CELERY_RESULT_BACKEND = "redis://uits-redis:6379/1"
 CELERY_TIMEZONE = "Europe/Moscow"
 CELERY_BEAT_SCHEDULE = {
     'notify-daily': {

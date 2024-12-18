@@ -1,30 +1,17 @@
 version: "3.7"
 services:
-  nginx:
+  frontend-nginx:
     build:
         context: ./services
-        dockerfile: ./services/nginx.Dockerfile
+        dockerfile: ./nginx.Dockerfile
 
-    container_name: uits_nginx
+    container_name: uits-nginx
 
     volumes:
-      - ../frontend/:/usr/share/nginx/html
+      - ./frontend/dist/espire:/usr/share/nginx/html
 
     ports:
       - 80:80
-
-    depends_on:
-      - frontend
-
-  frontend:
-    build:
-        context: ./
-        dockerfile: ./services/frontend.Dockerfile
-
-    container_name: uits_frontend
-
-    volumes:
-      - ../frontend/:/usr/src/app
 
     depends_on:
       - backend
@@ -35,18 +22,18 @@ services:
         dockerfile: ./services/backend.Dockerfile
 
     container_name: uits-backend
-    command: python manage.py runserver 0.0.0.0:8000
+    command: gunicorn uits.wsgi:application --bind 0.0.0.0:8000
     
     volumes:
-      - ../backend/:/usr/src/app
+      - ./backend/:/app
     
     ports:
       - 8000:8000
 
     depends_on:
-      - db
+      - postgres
 
-  db:
+  postgres:
     image: postgres:15.0-alpine
     container_name: uits-postgres
     restart: always
