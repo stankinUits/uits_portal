@@ -1,5 +1,6 @@
-import { BehaviorSubject, Observable, catchError, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { catchError, map } from 'rxjs/operators'; // Import map and catchError
 
 import { ApiConfig } from '@app/configs/api.config';
 import { Injectable } from '@angular/core';
@@ -38,6 +39,7 @@ export class AchievementService {
       .get<any>(ApiConfig.department.achievements.retrieve(id))
       .pipe(catchError(this.handleError));
   }
+  
 
   // Обработчик ошибок
   private handleError(error: HttpErrorResponse) {

@@ -7,29 +7,34 @@
     <button class="retry-button" (click)="reloadPage()">Повторить попытку</button>
 </div>
 
-<button *ngIf="isAdmin" type="button" class="btn btn-info mb-3" (click)="redirectToAdminPanel()">
+<button *ngIf="isAdmin" type="button" class="btn btn-info position-fixed" style="bottom: 50px; right: 16px; z-index: 1;" (click)="redirectToAdminPanel()">
     Изменить достижения
 </button>
 
 
 
-<div *ngIf="!isLoading && !errorMessage" class="achievement-list">
-    <div 
-        class="achievement-item" 
-        *ngFor="let achievement of achievements; let index = index" 
-        (click)="onSelectAchievement(achievement)" 
-        [ngClass]="{'even-item': index % 2 === 0, 'odd-item': index % 2 !== 0}">
-        
-        <div class="achievement-image">
-            <img [src]="achievement.image" alt="Achievement Image" />
-        </div>
-        <div class="achievement-content">
-            <h2 class="achievement-title">
-                {{ achievement.title }}
-            </h2>
-            <markdown class="achievement-description">
-                {{ achievement.description }}
-            </markdown>
+
+<div>
+    <h1>Достижения</h1>
+    <div *ngIf="!isLoading && !errorMessage" class="achievement-list">
+        <div 
+            class="achievement-item" 
+            *ngFor="let achievement of achievements; let index = index" 
+            (click)="onSelectAchievement(achievement)" 
+            [ngClass]="{'even-item': index % 2 === 0, 'odd-item': index % 2 !== 0}">
+            
+            <div class="achievement-image">
+                <img [src]="achievement.image" alt="Achievement Image" />
+            </div>
+            <div class="achievement-content">
+                <h2 class="achievement-title">
+                    {{ achievement.title }}
+                </h2>
+                <markdown class="achievement-description">
+                    {{ achievement.description }}
+                </markdown>
+            </div>
         </div>
     </div>
 </div>
+

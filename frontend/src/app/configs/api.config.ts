@@ -1,4 +1,3 @@
-// Слеш в конце каждого API URL обязателен
 export const ApiConfig = {
   telegram: {
     user: "api/telegram/user",
@@ -20,6 +19,11 @@ export const ApiConfig = {
     achievements: {
       base: "api/department/achievements/",
       retrieve: (id: string | number) => `api/department/achievements/${id}/`,
+      redact: {
+        all: "api/admin/achievements/achievement/",
+        one: (id: string | number) =>
+          `api/admin/achievements/achievement/${id}/change/`,
+      },
     },
     employee: {
       teacher: {

@@ -3,6 +3,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 
 import { AchievementService } from '../achievement.service';
 import { AuthService } from '@app/shared/services/auth.service';
+import { ApiConfig } from '@app/configs/api.config';
 
 @Component({
   selector: 'app-achievement-detail',
@@ -64,7 +65,7 @@ export class AchievementDetailComponent implements OnInit {
 
   redirectToEditPage(): void {
     if (this.achievement?.id) {
-      const adminUrl = `http://127.0.0.1:8000/admin/achievements/achievement/${this.achievement.id}/change/`;
+      const adminUrl = ApiConfig.department.achievements.redact.one(this.achievement.id);
       window.open(adminUrl, '_blank');
     }
   }

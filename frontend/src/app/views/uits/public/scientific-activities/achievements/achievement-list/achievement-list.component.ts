@@ -36,19 +36,20 @@ export class AchievementListComponent implements OnInit {
 
   fetchAchievements(): void {
     this.achievementService.getAchievements().subscribe({
-      next: (data) => {
-        this.achievements = data; // Данные AchievementService хранятся как массив
+      next: (data: any) => {
+        // Check if `data` has `results`; otherwise, treat it as an array
+        this.achievements = Array.isArray(data) ? data : data.results || [];
         this.isLoading = false;
         this.cdr.detectChanges();
       },
       error: (error) => {
-        this.errorMessage = error;
+        this.errorMessage = error.message || 'An error occurred while fetching achievements.';
         this.isLoading = false;
         this.cdr.detectChanges();
       },
     });
   }
-
+  
   reloadPage(): void {
     this.isLoading = true;
     this.errorMessage = null;
