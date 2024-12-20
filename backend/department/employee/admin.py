@@ -36,8 +36,9 @@ class TeacherAdmin(admin.ModelAdmin):
                 "fields": ["bio"]
             }
         )
-        
+
     ]
+    search_fields = ('full_name',)
 
 
 @admin.register(HelpersEmployee)
