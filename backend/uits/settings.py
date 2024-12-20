@@ -54,6 +54,7 @@ LOCAL_INSTALLED_APPS = [
     'department.employee.schedule',
     'department.employee.subject',
     'department.employee.guidance',
+    'department.employee.postgraduate',
     'editable_pages.apps.EditablePagesConfig',
     'events',
     'tg_bot'
