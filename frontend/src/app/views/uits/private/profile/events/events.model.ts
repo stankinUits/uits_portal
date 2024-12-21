@@ -7,6 +7,7 @@ export interface IEvent {
   description: string
   startedAt: string
   endedAt: string
+  notificationFrequency: string,
   color: string
   allDay: boolean
   assignedUsers: number[]
@@ -19,6 +20,7 @@ export interface EditEventFormGroup {
   dateStartEnd: FormControl<Date[]>
   startTime: FormControl<Date>,
   endTime: FormControl<Date>,
+  notificationFrequency: FormControl<string>,
   allDay: FormControl<boolean>
   color: FormControl<string>
   assignedUsers: FormControl<any>
@@ -30,5 +32,6 @@ export interface EditEventFormGroup {
 export interface CalendarUserEventMeta {
   description?: string,
   assigned?: ({ pk: number, username: string, firstName: string, lastName: string } | Profile)[],
+  notificationFrequency?: string,
   owner?: number
 }

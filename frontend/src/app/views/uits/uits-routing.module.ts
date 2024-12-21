@@ -1,10 +1,15 @@
-import {NgModule} from '@angular/core';
-import {RouterModule, Routes} from '@angular/router';
-import {HomeComponent} from '@app/views/uits/public/home/home.component';
-import {CustomPageComponent} from "@app/views/uits/public/custom-page/custom-page.component";
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { CorporateComponent } from './private/profile/corp/corp.component';
+import { HomeComponent } from '@app/views/uits/public/home/home.component';
+import { CustomPageComponent } from '@app/views/uits/public/custom-page/custom-page.component';
+import { PersonalComponent } from './private/profile/personal/personal.component'; // Импорт компонента Personal
+import { EventsComponent } from './private/profile/events/events.component';
+import { DisciplinesComponent } from '@app/views/uits/public/about/employee/teachers/teacher/components/disciplines/disciplines.component';
 
 
 const routes: Routes = [
+
   {
     path: 'home', component: HomeComponent
   },
@@ -22,18 +27,28 @@ const routes: Routes = [
       .then(m => m.ScientificActivitiesModule)
   },
   {
-    path: 'profile',
-    loadChildren: () => import('@app/views/uits/private/profile/profile.module').then(m => m.ProfileModule)
+    path: 'corp',
+    component: CorporateComponent,
+    children: [
+      {
+        path: 'page/:slug',
+        component: CustomPageComponent
+      },
+      {
+        path: 'profile',
+        component: PersonalComponent,
+      },
+      {
+        path: 'calendar',
+        component: EventsComponent,
+      },
+      { path: 'test', component: DisciplinesComponent }, // Test route for DisciplinesComponent
+    ]
   },
-  {
-    path: 'page/:slug',
-    component: CustomPageComponent
-  }
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class UitsRoutingModule {
-}
+export class UitsRoutingModule {}

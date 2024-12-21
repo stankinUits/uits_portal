@@ -70,6 +70,7 @@ class ConferenceAnnouncement(models.Model):
     content = QuillField(verbose_name="Содержание статьи", default="")
     is_hidden = models.BooleanField(default=False, verbose_name="Скрыть объявление")
 
+
     def __str__(self):
         return self.title
 
