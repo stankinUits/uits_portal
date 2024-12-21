@@ -21,9 +21,9 @@ class ConferenceAnnouncementAdmin(admin.ModelAdmin):
         (_("Основная информация"), {'fields': ('title', 'description', 'content', 'start_date', 'end_date', 'time')}),
         (_("Контактная информация"), {'fields': ('organizer', 'contact_email', 'contact_phone')}),
         (_("Изображение"), {'fields': ('preview_image', 'preview_image_description')}),
-        (_("Настройки отображения"), {'fields': ('created_at', 'updated_at', 'author'), 'classes': ('collapse',)}),
+        (_("Настройки отображения"), {'fields': ('is_hidden', 'created_at'), 'classes': ('collapse',)}),
     )
-    readonly_fields = ('created_at', 'updated_at')
-    list_display = ('title', 'start_date', 'end_date', 'time', 'organizer', 'created_at')
+    readonly_fields = ('created_at',)
+    list_display = ('title', 'start_date', 'end_date', 'time', 'organizer', 'is_hidden', 'created_at')
     search_fields = ('title', 'description', 'organizer')
-    list_filter = ('start_date', 'end_date', 'created_at', 'updated_at')
+    list_filter = ('start_date', 'end_date', 'created_at', 'is_hidden')

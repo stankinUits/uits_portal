@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
 from django.db import models
 from imagekit.models import ImageSpecField, ProcessedImageField
 from imagekit.processors import ResizeToFit
@@ -58,8 +59,6 @@ class ConferenceAnnouncement(models.Model):
     contact_email = models.EmailField(verbose_name="Контактный email", blank=True, null=True)
     contact_phone = models.CharField(max_length=20, verbose_name="Контактный телефон", blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
-    updated_at = models.DateTimeField(auto_now=True, verbose_name="Дата обновления")
-    author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="Автор")
     preview_image = ProcessedImageField(
         verbose_name="Превью изображение",
         upload_to="conference_images/%Y/%m/%d",
@@ -69,9 +68,14 @@ class ConferenceAnnouncement(models.Model):
     )
     preview_image_description = models.CharField(max_length=256, verbose_name="Краткое описание фотографии", blank=True, null=True)
     content = QuillField(verbose_name="Содержание статьи", default="")
+    is_hidden = models.BooleanField(default=False, verbose_name="Скрыть объявление")
 
     def __str__(self):
         return self.title
+
+    def clean(self):
+        if self.end_date and self.start_date and self.end_date < self.start_date:
+            raise ValidationError("Дата окончания не может быть раньше даты начала.")
 
     class Meta:
         verbose_name = "Объявление о конференции"
