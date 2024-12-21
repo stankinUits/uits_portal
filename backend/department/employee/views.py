@@ -43,7 +43,12 @@ class TeacherAPIViewSet(ModelViewSet):
     @action(detail=False, methods=['get'], url_path='all-schedule')
     def retrieve_all_schedule(self, request, *args, **kwargs):
         teachers = self.get_queryset()
-        schedules = [teacher.schedule for teacher in teachers]
+        schedules = []
+        
+        for teacher in teachers:
+            if hasattr(teacher, 'schedule') and teacher.schedule is not None:
+                schedules.append(teacher.schedule)
+        
         serializer = ScheduleSerializer(schedules, many=True)
         return Response(serializer.data)
 
