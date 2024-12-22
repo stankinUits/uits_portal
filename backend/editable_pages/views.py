@@ -11,6 +11,7 @@ import requests
 from django.http import JsonResponse
 from django.views import View
 from .models import ScientificPublication, Tag
+from .serializers import ScientificPublicationSerializer, TagSerializer
 import json
 
 # Create your views here.
@@ -100,3 +101,34 @@ class DeleteCardView(View):
             return JsonResponse({'status': 'success'})
         except ScientificPublication.DoesNotExist:
             return JsonResponse({'status': 'error', 'message': 'Publication not found'}, status=404)
+
+@method_decorator(csrf_exempt, name='dispatch')
+class DeleteTagView(View):
+    def post(self, request, pk):
+        try:
+            tag = Tag.objects.get(pk=pk)
+            tag.delete()
+            return JsonResponse({'status': 'success'}, status=200)
+        except Tag.DoesNotExist:
+            return JsonResponse({"error": "Tag not found"}, status=404)
+
+class GetAllCardsView(View):
+    def get(self, request):
+        publications = ScientificPublication.objects.all()
+        serializer = ScientificPublicationSerializer(publications, many=True)
+        return JsonResponse(serializer.data, safe=False)
+
+class GetByNameView(View):
+    def get(self, request, name):
+        publications = ScientificPublication.objects.filter(author__icontains=name)
+        serializer = ScientificPublicationSerializer(publications, many=True)
+        return JsonResponse(serializer.data, safe=False)
+
+class GetAllAuthorsView(View):
+    def get(self, request):
+        authors = ScientificPublication.objects.values_list('author', flat=True)
+        unique_authors = set()
+        for author_list in authors:
+            for author in author_list:
+                unique_authors.add(author)
+        return JsonResponse(list(unique_authors), safe=False)
