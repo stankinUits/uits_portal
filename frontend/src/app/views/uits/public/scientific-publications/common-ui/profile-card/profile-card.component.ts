@@ -45,16 +45,31 @@ export class ProfileCardComponent {
     this.scienceService.deleteCard(this.profile!);
   }
 
-  downloadFile(file: File) {
+  downloadFile(file: string) {
     if (file) {
-      const url = window.URL.createObjectURL(file);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = file.name;
+      const base64WithoutPrefix = file.split(',')[1];
 
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      const binaryString = atob(base64WithoutPrefix);
+
+      const uint8Array = new Uint8Array(binaryString.length);
+      for (let i = 0; i < binaryString.length; i++) {
+        uint8Array[i] = binaryString.charCodeAt(i);
+      }
+
+      const blob = new Blob([uint8Array], { type: AppSettings.PDF_MIME_TYPE });
+
+      const file_O = new File([blob], AppSettings.generateRandomString(30), { type: AppSettings.PDF_MIME_TYPE });
+
+      if (file_O) {
+        const url = window.URL.createObjectURL(file_O);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = file_O.name;
+
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
     }
   }
 

@@ -4,7 +4,7 @@ export interface ScienceReadyPublication {
     author?: string[]
     description?: string,
     url?: string,
-    file?: File,
+    file?: string,
     tags?: string[],
     source?: string,
     year?: number,

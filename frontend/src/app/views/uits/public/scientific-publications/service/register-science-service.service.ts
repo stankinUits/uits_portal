@@ -5,6 +5,7 @@ import {SciencePublicationResponseInterface} from '../interface/science-publicat
 import {AppSettings} from '../utils/settings';
 import {ScienceReadyPublication} from '../interface/profile.interface';
 import {AuthorInfo} from '../interface/autrhor_info.interface';
+import {ResponseOnSave} from "../interface/response_on_save_object.interface";
 
 @Injectable({
   providedIn: 'root'
@@ -17,21 +18,36 @@ export class RegisterScienceService {
   }
 
   getInfoFromGoogleScholar(name: string | null | undefined): Observable<SciencePublicationResponseInterface> {
-    return this.http.post<SciencePublicationResponseInterface>(`${AppSettings.BASE_URL}/search_for_scientist/${name}`, null);
+    return this.http.get<SciencePublicationResponseInterface>(`${AppSettings.BASE_URL}/search_for_scientist/${name}`);
   }
 
-  saveNewTags(tags: string[]) {
-    return this.http.post(`${AppSettings.BASE_URL}\\save_new_tags`, {
-      tags
+  saveNewTags(tag: string[]) {
+    const objectToSend = {
+      tags: tag
+    };
+
+    return this.http.post(`${AppSettings.BASE_URL}/save_new_tags/`, {//не работает
+      objectToSend
     });
   }
 
   saveCard(publication: ScienceReadyPublication) {
-    return this.http.post(`${AppSettings.BASE_URL}/save_card`, {publication});
+    return this.http.post(`${AppSettings.BASE_URL}/save_card/`, {publication});
+  }
+
+  onSaveCard(publication: ScienceReadyPublication) {
+    this.saveCard(publication).subscribe(
+      (response: ResponseOnSave) => {
+        publication.id = response.id;
+      },
+      (error) => {
+        console.error('Error saving card:', error);
+      }
+    );
   }
 
   deleteCard(publication: ScienceReadyPublication) {
-    return this.http.post(`${AppSettings.BASE_URL}/delete_card`, {publication});
+    return this.http.post(`${AppSettings.BASE_URL}/delete_card/`, {publication});
   }
 
   deleteTag(tag: string) {
@@ -43,9 +59,8 @@ export class RegisterScienceService {
   }
 
   getListOfCards(): Observable<ScienceReadyPublication[]> {
-    return this.http.get<ScienceReadyPublication[]>(`${AppSettings.BASE_URL}/get`);
+    return this.http.get<ScienceReadyPublication[]>(`${AppSettings.BASE_URL}/get_cards`);
   }
-
 
   getAllAuthors(profiles: ScienceReadyPublication[]): string[] {
     const authorsSet: Set<string> = new Set();
