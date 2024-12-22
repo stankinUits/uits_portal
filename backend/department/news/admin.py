@@ -27,3 +27,4 @@ class ConferenceAnnouncementAdmin(admin.ModelAdmin):
     list_display = ('title', 'start_date', 'end_date', 'time', 'organizer', 'is_hidden', 'created_at')
     search_fields = ('title', 'description', 'organizer')
     list_filter = ('start_date', 'end_date', 'created_at', 'is_hidden')
+

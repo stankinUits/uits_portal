@@ -78,4 +78,21 @@ export class AuthService {
       return (profile.isTeacher || profile.isSuperuser) && !profile.isAnonymous
     }));
   }
+
+  updateProfile(profileData: any): Observable<any> {
+    return this.http.put<Profile>('/api/profile', profileData).pipe(
+      map(updatedProfile => {
+        const camelCaseProfile = SnakeObjectToCamelCase(updatedProfile) as Profile;
+        this.profile$.next(camelCaseProfile);
+        return camelCaseProfile;
+      }),
+      catchError(err => {
+        console.error('Ошибка при обновлении профиля:', err);
+        return throwError(err);
+      })
+    );
+  }
+  
 }
+
+
