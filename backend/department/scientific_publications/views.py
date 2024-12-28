@@ -86,9 +86,9 @@ class DeleteCardView(View):
 
 @method_decorator(csrf_exempt, name='dispatch')
 class DeleteTagView(View):
-    def post(self, request, pk):
+    def post(self, request, name):
         try:
-            tag = Tag.objects.get(pk=pk)
+            tag = Tag.objects.get(name=name)
             tag.delete()
             return JsonResponse({'status': 'success'}, status=200)
         except Tag.DoesNotExist:
