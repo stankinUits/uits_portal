@@ -51,7 +51,7 @@ export class RegisterScienceService {
   }
 
   deleteTag(tag: string) {
-    return this.http.post(`${AppSettings.BASE_URL}/delete_tag`, {tagName: tag});
+    return this.http.post(`${AppSettings.BASE_URL}/delete_tag/${tag}/`, {});
   }
 
   getALLTagsRest(): Observable<string[]> {

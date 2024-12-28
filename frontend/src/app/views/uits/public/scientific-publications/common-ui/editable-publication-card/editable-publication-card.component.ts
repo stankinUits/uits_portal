@@ -99,7 +99,7 @@ export class EditablePublicationCardComponent {
     }
   }
 
-// Helper function to encode a file to Base64
+
   encodeFileToBase64(file: File): Promise<string> {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
