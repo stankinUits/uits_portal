@@ -1,24 +1,45 @@
-import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, catchError, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators'; // Import map and catchError
+
+import { ApiConfig } from '@app/configs/api.config';
+import { Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AchievementService {
-  private apiUrl = 'http://127.0.0.1:8000/api/department/achievements/';
+  private achievements$: BehaviorSubject<any[]>;
 
-  constructor(private http: HttpClient) {}
-
-  // Метод для получения достижений
-  getAchievements(): Observable<any> {
-    return this.http.get<any>(this.apiUrl).pipe(catchError(this.handleError));
+  constructor(private http: HttpClient) {
+    this.achievements$ = new BehaviorSubject<any[]>([]);
   }
 
-  getAchievementById(id: string): Observable<any> {
-    const url = `${this.apiUrl}${id}/`;
-    return this.http.get<any>(url).pipe(catchError(this.handleError));
+  // Получить BehaviorSubject для всех достижений
+  getAchievementsObservable(): Observable<any[]> {
+    return this.achievements$.asObservable();
   }
+
+  // Получить все достижения из API
+  getAchievements(): Observable<any[]> {
+    return this.http
+      .get<any[]>(ApiConfig.department.achievements.base)
+      .pipe(
+        map((achievements) => {
+          this.achievements$.next(achievements);
+          return achievements;
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  // Получить одно достижение по ID
+  retrieveAchievement(id: string): Observable<any> {
+    return this.http
+      .get<any>(ApiConfig.department.achievements.retrieve(id))
+      .pipe(catchError(this.handleError));
+  }
+  
 
   // Обработчик ошибок
   private handleError(error: HttpErrorResponse) {

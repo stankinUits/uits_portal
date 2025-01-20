@@ -1,7 +1,9 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 
 import { AchievementService } from '../achievement.service';
-import { AuthService } from '@app/shared/services/auth.service'; // Импорт AuthService
+
+import { AuthService } from '@app/shared/services/auth.service';
+
 import { Router } from '@angular/router';
 
 @Component({
@@ -11,40 +13,45 @@ import { Router } from '@angular/router';
 })
 export class AchievementListComponent implements OnInit {
   achievements: any[] = [];
-  isLoading = true; // Индикатор загрузки
-  errorMessage: string | null = null; // Сообщение об ошибке
-  isAdmin = false; // Флаг для проверки прав администратора
+
+  isLoading = true;
+  errorMessage: string | null = null;
+  isAdmin = false;
 
   constructor(
     private achievementService: AchievementService,
-    private authService: AuthService, // Внедрение AuthService
+    private authService: AuthService,
     private router: Router,
-    private cdr: ChangeDetectorRef // ChangeDetectorRef для ручного обновления
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
-    this.checkAdminRights(); // Проверка прав администратора
+    this.checkAdminRights();
+
     this.fetchAchievements();
   }
 
   checkAdminRights(): void {
     this.authService.canEdit().subscribe((canEdit: boolean) => {
-      this.isAdmin = canEdit; // Обновляем флаг
-      this.cdr.detectChanges(); // Обновляем представление вручную
+
+      this.isAdmin = canEdit;
+      this.cdr.detectChanges();
+
     });
   }
 
   fetchAchievements(): void {
     this.achievementService.getAchievements().subscribe({
-      next: (data) => {
-        this.achievements = data.results;
+      next: (data: any) => {
+        // Check if `data` has `results`; otherwise, treat it as an array
+        this.achievements = Array.isArray(data) ? data : data.results || [];
         this.isLoading = false;
-        this.cdr.detectChanges(); // Обновить изменения
+        this.cdr.detectChanges();
       },
       error: (error) => {
-        this.errorMessage = error;
+        this.errorMessage = error.message || 'An error occurred while fetching achievements.';
         this.isLoading = false;
-        this.cdr.detectChanges(); // Обновить изменения
+        this.cdr.detectChanges();
       },
     });
   }
@@ -62,7 +69,9 @@ export class AchievementListComponent implements OnInit {
     ]);
   }
 
-redirectToAdminPanel(): void {
+
+  redirectToAdminPanel(): void {
     window.open('http://127.0.0.1:8000/admin/achievements/achievement/', '_blank');
-}
+  }
+
 }
