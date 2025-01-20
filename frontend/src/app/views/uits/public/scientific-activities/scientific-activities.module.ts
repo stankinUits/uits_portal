@@ -12,6 +12,9 @@ import { PublicationsComponent } from '@app/views/uits/public/scientific-activit
 import { ScientificActivitiesRoutingModule } from './scientific-activities-routing.module';
 import { ScientificWorkComponent } from '@app/views/uits/public/scientific-activities/deprecated/scientific-work/scientific-work.component';
 import { AchievementDetailComponent } from './achievements/achievement-detail/achievement-detail.component';
+import { MainSciencePageComponent } from '../scientific-publications/pages/main-science-page/main-science-page.component';
+import { RegisterSciencePublicationComponent } from '../scientific-publications/pages/register-science-publication/register-science-publication.component';
+import { EditAuthorPublicationPageComponent } from '../scientific-publications/pages/edit-author-publication-page/edit-author-publication-page.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +26,8 @@ import { AchievementDetailComponent } from './achievements/achievement-detail/ac
     ConferencesComponent,
     PostgraduateInfoComponent,
     AchievementListComponent,
-    AchievementDetailComponent,
+    AchievementDetailComponent
+
   ],
   imports: [
     CommonModule,

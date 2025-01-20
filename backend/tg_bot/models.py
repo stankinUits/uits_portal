@@ -12,6 +12,7 @@ class TelegramUser(models.Model):
     username = models.CharField(max_length=255)
     chat_id = models.IntegerField()
     assigned_user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='telegram_user')
+    last_notification_time = models.DateTimeField(null=True, blank=True)
 
     def send_message(self, message):
         create_thread_send_message(self.chat_id, message)

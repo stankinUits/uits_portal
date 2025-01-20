@@ -1,7 +1,9 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 
 import { AchievementService } from '../achievement.service';
+
 import { AuthService } from '@app/shared/services/auth.service';
+
 import { Router } from '@angular/router';
 
 @Component({
@@ -11,6 +13,7 @@ import { Router } from '@angular/router';
 })
 export class AchievementListComponent implements OnInit {
   achievements: any[] = [];
+
   isLoading = true;
   errorMessage: string | null = null;
   isAdmin = false;
@@ -24,13 +27,16 @@ export class AchievementListComponent implements OnInit {
 
   ngOnInit(): void {
     this.checkAdminRights();
+
     this.fetchAchievements();
   }
 
   checkAdminRights(): void {
     this.authService.canEdit().subscribe((canEdit: boolean) => {
+
       this.isAdmin = canEdit;
       this.cdr.detectChanges();
+
     });
   }
 
@@ -49,7 +55,7 @@ export class AchievementListComponent implements OnInit {
       },
     });
   }
-  
+
   reloadPage(): void {
     this.isLoading = true;
     this.errorMessage = null;
@@ -63,7 +69,9 @@ export class AchievementListComponent implements OnInit {
     ]);
   }
 
+
   redirectToAdminPanel(): void {
     window.open('http://127.0.0.1:8000/admin/achievements/achievement/', '_blank');
   }
+
 }

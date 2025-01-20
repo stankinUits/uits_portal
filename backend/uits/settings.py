@@ -41,7 +41,7 @@ THIRD_INSTALLED_APPS = [
     'imagekit',
     'django_quill',
     'django_filters',
-    'corsheaders',  # Добавлено
+    # 'corsheaders',  # Добавлено
     'mdeditor'
 ]
 
@@ -55,9 +55,11 @@ LOCAL_INSTALLED_APPS = [
     'department.employee.schedule',
     'department.employee.subject',
     'department.employee.guidance',
+    'department.employee.postgraduate',
+    'department.scientific_publications.apps.ScientificPublicationsConfig',
     'editable_pages.apps.EditablePagesConfig',
     'events',
-    'tg_bot'
+    'tg_bot',
 ]
 
 # Application definition
@@ -77,7 +79,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',  # Добавлено для CORS
+    # 'corsheaders.middleware.CorsMiddleware',  # Добавлено для CORS
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -271,20 +273,27 @@ CELERY_BROKER_URL = "redis://localhost:6379/0"
 CELERY_RESULT_BACKEND = "redis://localhost:6379/1"
 CELERY_TIMEZONE = "Europe/Moscow"
 CELERY_BEAT_SCHEDULE = {
-    'schedule-notify-bot': {
-        'task': 'events.tasks.schedule_notify_bot',
-        'schedule': 30.0,
-        'options': {
-            'expires': 15.0,
-        },
+    'notify-daily': {
+        'task': 'events.tasks.notify_daily',
+        'schedule': 86400.0,  # раз в день
+    },
+    'notify-weekly': {
+        'task': 'events.tasks.notify_weekly',
+        'schedule': 604800.0,  # раз в неделю
+    },
+    'notify-monthly': {
+        'task': 'events.tasks.notify_monthly',
+        'schedule': 2419200.0,  # раз в месяц (приблизительно 28 дней)
     },
 }
 
 TELEGRAM_BOT = {
     'TOKEN': env('TG_BOT_TOKEN'),
-    'WEBHOOK_URL': env('TG_WEBHOOK_HOST') + 'api/telegram/webhook',
+    'WEBHOOK_URL': env('TG_WEBHOOK_HOST') + 'api/telegram/webhook/' + env('TG_SECRET_TOKEN'),
     'WEBHOOK_SECRET': env('TG_SECRET_TOKEN')
 }
+
+TELEGRAM_BOT_TOKEN = os.getenv('TG_BOT_TOKEN')
 
 # CORS settings
 CORS_ALLOW_ALL_ORIGINS = True  # Разрешает доступ со всех доменов (не рекомендуется для production)
@@ -312,3 +321,4 @@ CORS_ALLOW_METHODS = [
 ]
 
 X_FRAME_OPTIONS = 'SAMEORIGIN' 
+

@@ -13,11 +13,13 @@
         &.odd-item {
             flex-direction: row-reverse;
             @media (max-width: 768px) {
+
                 flex-direction: column;
                 align-items: flex-start;
                 order: 0; 
             }
         }
+
 
         .achievement-image {
             img {
@@ -26,6 +28,7 @@
                 aspect-ratio: 4 / 3;
                 object-fit: cover;
                 border-radius: 5px;
+
                 box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
                 transition: transform 0.3s ease, box-shadow 0.3s ease;
         
@@ -45,18 +48,22 @@
         }
         
 
+
         .achievement-content {
             flex: 1;
             max-width: 600px;
             padding: 10px;
 
             @media (max-width: 768px) {
+
                 max-width: 100%;
+
             }
         }
 
         // Адаптивность для маленьких экранов
         @media (max-width: 768px) {
+
             flex-direction: column; 
             align-items: flex-start;
 
@@ -67,6 +74,7 @@
 
             .achievement-content {
                 order: 2;
+
             }
         }
     }
