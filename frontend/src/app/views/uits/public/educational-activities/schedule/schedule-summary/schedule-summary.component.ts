@@ -84,20 +84,30 @@ export class ScheduleSummaryComponent implements OnInit, OnDestroy {
 
   teacherMap: { [id: number]: string } = {};
 
-mapFill(): void {
-  this.employeeService.getAllTeachers().subscribe(teachers => {
-    this.teacherMap = teachers.reduce((map, teacher) => {
-      map[teacher.id] = `${teacher.last_name} ${teacher.first_name[0]}. ${teacher.patronymic ? teacher.patronymic[0] + '.' : ''}`;
-      return map;
-    }, {});
-
-    // Преобразуем мапу в массив для селектора
-    this.teachersForSelect = teachers.map(teacher => ({
-      id: teacher.id,
-      fullName: this.teacherMap[teacher.id]
-    }));
-  });
-}
+  mapFill(): void {
+    this.http.get<any>('/api/department/employee/teachers/all-schedule').subscribe({
+      next: (data) => {
+        const uniqueTeacherIds = Array.from(new Set(data.map((schedule: any) => schedule.teacher)));
+        this.employeeService.getAllTeachers().subscribe(teachers => {
+          const filteredTeachers = teachers.filter(teacher => uniqueTeacherIds.includes(teacher.id));
+  
+          this.teacherMap = filteredTeachers.reduce((map, teacher) => {
+            map[teacher.id] = `${teacher.last_name} ${teacher.first_name[0]}. ${teacher.patronymic ? teacher.patronymic[0] + '.' : ''}`;
+            return map;
+          }, {});
+  
+          // Преобразуем мапу в массив для селектора
+          this.teachersForSelect = filteredTeachers.map(teacher => ({
+            id: teacher.id,
+            fullName: this.teacherMap[teacher.id]
+          }));
+        });
+      },
+      error: (err) => {
+        console.error('Ошибка при загрузке расписаний:', err);
+      }
+    });
+  }
 
   updateCalendarEvents(schedules: Schedule[]): void {
     const events: CalendarEvent[] = [];

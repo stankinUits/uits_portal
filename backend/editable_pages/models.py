@@ -18,22 +18,3 @@ class EditablePage(models.Model):
     class Meta:
         verbose_name = 'редактируемая страница'
         verbose_name_plural = 'редактируемые страницы'
-
-class Tag(models.Model):
-    name = models.CharField(max_length=100, unique=True)
-
-    def __str__(self):
-        return self.name
-
-class ScientificPublication(models.Model):
-    name = models.CharField(max_length=200)
-    author = models.JSONField()
-    description = models.TextField()
-    url = models.URLField(null=True, blank=True)
-    file = models.FileField(null=True, blank=True)
-    tags = models.ManyToManyField(Tag)
-    year = models.IntegerField()
-    source = models.CharField(max_length=200)
-
-    def __str__(self):
-        return self.name

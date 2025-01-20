@@ -4,4 +4,5 @@ urlpatterns = [
     path('news/', include('department.news.urls')),
     path('achievements/', include('department.achievements.urls')),
     path('employee/', include('department.employee.urls')),
+    path('scientific_publications/', include('department.scientific_publications.urls')),
 ]
