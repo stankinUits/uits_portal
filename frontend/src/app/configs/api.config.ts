@@ -26,7 +26,8 @@ export const ApiConfig = {
           retrieve: (id: number) => `api/department/employee/teachers/${id}/schedule`,
         },
         subject: {
-          retrieve: (teacherId: number) => 'api/department/employee/teachers/${id}/subject'
+          retrieve: (teacherId: number) => `api/department/employee/teachers/${teacherId}/subject`,
+          import: (teacherId: number) => `api/department/employee/teachers/${teacherId}/subject/import`
         }
       },
     }

@@ -1,14 +1,21 @@
-<div class="mb-4">
+<div class="contacts-container mb-4">
   <ng-container [ngTemplateOutlet]="titlePage"></ng-container>
-  <app-editable-content
-    page="contacts"
-  ></app-editable-content>
 
+  <div class="contacts-map-info">
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2222.294912947792!2d37.593088!3d55.789498!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46b54a501d1f52ad%3A0x179f46b86f1b82e1!2z0JzQsNGC0LDRg9C70LjRhtGPINGD0LsuLCAxLCDQkdC40YHRgtC-0LjQvdCw0Y8g0KDQvtGB0LrQsNGPINC-0LHQu9Cw0YHRgtGM!5e0!3m2!1sru!2sru!4v1699219200000!5m2!1sru!2sru" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+
+    <div class="contact-info">
+      <app-editable-content [page]="'contacts'"></app-editable-content>
+      
+<div class="social-icons">
+  <a href="https://t.me/+WQVM050GSEFmZWUy" target="_blank"><img src="assets\images\telegram.png" alt="VK"></a>
 </div>
-
-
-<!-- templates -->
+    </div>
+  </div>
+</div>
 
 <ng-template #titlePage>
   <h1 class="mb-3">Контакты</h1>
 </ng-template>
+
+

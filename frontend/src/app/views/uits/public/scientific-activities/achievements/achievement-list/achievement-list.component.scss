@@ -1,0 +1,66 @@
+.achievement-list {
+    max-width: 1200px; // Ограничиваем ширину списка
+    margin: 0 auto; // Центрируем список
+
+    .achievement-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+        margin-bottom: 20px;
+
+        // Для нечетных элементов
+        &.odd-item {
+            flex-direction: row-reverse;
+            @media (max-width: 768px) {
+                flex-direction: column; // Ставим элементы в столбик на мобильных экранах
+                align-items: flex-start; // Выравниваем по левому краю
+                order: 0; // Возвращаем порядок элементов на мобильных устройствах
+            }
+        }
+
+        // Для всех элементов
+        .achievement-image {
+            img {
+                width: 100%;
+                height: auto;
+                aspect-ratio: 4 / 3;
+                object-fit: cover;
+                border-radius: 5px;
+
+                @media (min-width: 768px) {
+                    width: 300px; // Ширина картинки на средних экранах
+                }
+
+                @media (min-width: 1200px) {
+                    width: 400px; // Ширина картинки на больших экранах
+                }
+            }
+        }
+
+        .achievement-content {
+            flex: 1;
+            max-width: 600px;
+            padding: 10px;
+
+            @media (max-width: 768px) {
+                max-width: 100%; // Текст занимает всю ширину на маленьких экранах
+            }
+        }
+
+        // Адаптивность для маленьких экранов
+        @media (max-width: 768px) {
+            flex-direction: column; // Размещаем элементы в столбик
+            align-items: flex-start; // Выравниваем по левому краю
+
+            .achievement-image {
+                order: 1; // Перемещаем картинку между заголовком и текстом
+                width: 100%; // Картинка занимает всю ширину
+            }
+
+            .achievement-content {
+                order: 2; // Текст будет ниже заголовка
+            }
+        }
+    }
+}

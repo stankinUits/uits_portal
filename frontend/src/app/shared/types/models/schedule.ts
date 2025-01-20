@@ -53,18 +53,29 @@ export class ScheduleLessonDate {
 }
 
 export class ScheduleLesson {
-  id: number
-  name: string
-  group: string
-  type: string
-  subgroup: string | null
-  cabinet: string | null
-  dates: ScheduleLessonDate[]
-  classTime: ClassNumbers
-  weekNumber: WeekNumbers
+  id: number;
+  name: string;
+  group: string;
+  type: string;
+  subgroup: string | null;
+  cabinet: string | null;
+  dates: ScheduleLessonDate[];
+  classTime: number;
+  weekNumber: number;
+  teacherId: any; // Новое поле
 
-
-  constructor(id: number, name: string, group: string, type: string, subgroup: string | null, cabinet: string | null, class_time: number, week_number: number, dates: ScheduleLessonDate[]) {
+  constructor(
+    id: number,
+    name: string,
+    group: string,
+    type: string,
+    subgroup: string | null,
+    cabinet: string | null,
+    classTime: number,
+    weekNumber: number,
+    dates: ScheduleLessonDate[],
+    teacherId: any // Новое поле
+  ) {
     this.id = id;
     this.name = name;
     this.group = group;
@@ -72,12 +83,24 @@ export class ScheduleLesson {
     this.subgroup = subgroup;
     this.cabinet = cabinet;
     this.dates = dates;
-    this.classTime = class_time;
-    this.weekNumber = week_number;
+    this.classTime = classTime;
+    this.weekNumber = weekNumber;
+    this.teacherId = teacherId; // Сохраняем teacherId
   }
 
-  static fromListResponse(list: any[]): ScheduleLesson[] {
-    return list.map(elem => new ScheduleLesson(elem.id, elem.name, elem.group, elem.type, elem.subgroup, elem.cabinet, elem.class_time, elem.week_number, ScheduleLessonDate.fromListResponse(elem.dates)));
+  static fromListResponse(list: any[], teacher: number): ScheduleLesson[] {
+    return list.map(elem => new ScheduleLesson(
+      elem.id,
+      elem.name,
+      elem.group,
+      elem.type,
+      elem.subgroup,
+      elem.cabinet,
+      elem.class_time,
+      elem.week_number,
+      ScheduleLessonDate.fromListResponse(elem.dates),
+      teacher // Передаем ID преподавателя
+    ));
   }
 
   getHourStart(): number {
@@ -110,37 +133,31 @@ export class Schedule {
   }
 
   static fromResponse(raw_schedule: any): Schedule {
-    return new Schedule(raw_schedule.id, raw_schedule.teacher, ScheduleLesson.fromListResponse(raw_schedule.lessons));
+    return new Schedule(raw_schedule.id, raw_schedule.teacher, ScheduleLesson.fromListResponse(raw_schedule.lessons, raw_schedule.teacher));
   }
 
 
   toCalendarEvents(): CalendarEvent[] {
-    const now = new Date()
-
-    const events: CalendarEvent<CalendarEventMetaLesson>[] = []
-
+    const now = new Date();
+  
+    const events: CalendarEvent[] = [];
+  
     for (const lesson of this.lessons) {
       for (const date of lesson.dates) {
-
-        const startMonth = parseInt(date.startDate.split('.')[1])
-        const startDay = parseInt(date.startDate.split('.')[0])
-
+        const startMonth = parseInt(date.startDate.split('.')[1]);
+        const startDay = parseInt(date.startDate.split('.')[0]);
+  
         if (date.endDate) {
-          const endMonth = parseInt(date.endDate.split('.')[1])
-          const endDay = parseInt(date.endDate.split('.')[0])
-
-          const startPeriodDate = new Date(now.getFullYear(), startMonth - 1, startDay)
-          const endPeriodDate = new Date(now.getFullYear(), endMonth - 1, endDay)
+          const endMonth = parseInt(date.endDate.split('.')[1]);
+          const endDay = parseInt(date.endDate.split('.')[0]);
+  
+          const startPeriodDate = new Date(now.getFullYear(), startMonth - 1, startDay);
+          const endPeriodDate = new Date(now.getFullYear(), endMonth - 1, endDay);
           let iterFromStart = startPeriodDate;
-          // console.log("----------", lesson.name)
-          // console.log("start", startPeriodDate)
-          // console.log("end", endPeriodDate)
+  
           while (iterFromStart <= endPeriodDate) {
-            // console.log("iterFromStart", iterFromStart, iterFromStart.getMonth(), iterFromStart.getDate());
-            const id = `${lesson.weekNumber}_${lesson.id}_${date.id}_period_${iterFromStart.getMonth()}.${iterFromStart.getDate()}`;
-
             events.push({
-              id: id,
+              id: `${lesson.weekNumber}_${lesson.id}_${date.id}_period_${iterFromStart.getMonth()}.${iterFromStart.getDate()}`,
               title: lesson.name,
               start: new Date(now.getFullYear(), iterFromStart.getMonth(), iterFromStart.getDate(), lesson.getHourStart(), lesson.getMinuteStart(), 0),
               end: new Date(now.getFullYear(), iterFromStart.getMonth(), iterFromStart.getDate(), lesson.getHourEnd(), lesson.getMinuteEnd(), 0),
@@ -153,31 +170,37 @@ export class Schedule {
                 group: lesson.group,
                 cabinet: lesson.cabinet,
                 type: lesson.type,
-                subgroup: lesson.subgroup
+                subgroup: lesson.subgroup,
+                teacherId: lesson.teacherId // Добавляем teacherId в meta
               }
-            })
-
-            iterFromStart = addWeeks(iterFromStart, (date.alternativelyPeriod) ? 2 : 1);
+            });
+  
+            iterFromStart = addWeeks(iterFromStart, date.alternativelyPeriod ? 2 : 1);
           }
-
+  
         } else {
           events.push({
             id: `${lesson.weekNumber}_${lesson.classTime}_${lesson.id}_${date.id}_noperiod`,
             title: lesson.name,
             start: new Date(now.getFullYear(), startMonth - 1, startDay, lesson.getHourStart(), lesson.getMinuteStart(), 0),
             end: new Date(now.getFullYear(), startMonth - 1, startDay, lesson.getHourEnd(), lesson.getMinuteEnd(), 0),
+            color: {
+              primary: "#11a1fd",
+              secondary: "#e8e4f5"
+            },
             meta: {
               id: lesson.id,
               group: lesson.group,
               cabinet: lesson.cabinet,
               type: lesson.type,
-              subgroup: lesson.subgroup
+              subgroup: lesson.subgroup,
+              teacherId: lesson.teacherId // Добавляем teacherId в meta
             }
-          })
+          });
         }
       }
     }
-
+  
     return events;
   }
 }

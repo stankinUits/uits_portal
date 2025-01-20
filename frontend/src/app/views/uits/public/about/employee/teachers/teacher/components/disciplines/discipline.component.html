@@ -1,0 +1,86 @@
+<ng-container>
+    <ng-container *ngIf="disciplines | async">
+      <ng-container *ngTemplateOutlet="title"></ng-container>
+    </ng-container>
+    <ng-container *ngTemplateOutlet="content"></ng-container>
+  </ng-container>
+  
+  <!-- Templates -->
+  
+  <ng-template #title>
+    <h2 class="mb-3">Дисциплины, читаемые преподавателем</h2>
+  </ng-template>
+  
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="#">Общая информация</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Расписание</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active">Дисциплины</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Руководство</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Публикации</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Достижения</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  
+  <ng-template #content>
+    <div class="mb-3">
+      <ng-container *ngTemplateOutlet="actionPanel"></ng-container>
+      <div class="d-flex flex-column gap-1" *ngIf="disciplines | async">
+        <div class="fw-semibold">
+          Выбор дисциплины
+        </div>
+        <ul class="list-group">
+          <li class="list-group-item" *ngFor="let discipline of disciplines">
+            {{ discipline.name }} ({{ discipline.semesters }} семестр{{ discipline.semesters === 1 ? '' : 'а' }})
+          </li>
+        </ul>
+      </div>
+    </div>
+  </ng-template>
+  
+  <ng-template #actionPanel>
+    <div class="d-flex flex-column gap-3">
+      <div class="d-flex flex-column gap-1 mb-3" *ngIf="(profile | async) && ((profile | async).isModerator || (profile | async).isSuperuser)">
+        <div class="fw-semibold">
+          Администрирование
+        </div>
+        <div class="d-flex gap-3">
+          <button class="btn btn-primary" (click)="navigateToDisciplineEdit()">Редактировать</button>
+          <div>
+            <input #inputDisciplinePDF type="file" accept="application/pdf" (change)="onDisciplineFileSelected($event); inputDisciplinePDF.value = ''" hidden>
+            <button class="btn btn-info" (click)="inputDisciplinePDF.click();">
+              Импорт дисциплин
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  
+  <ng-template #confirmImportDisciplines bsModal>
+    <div class="modal-header">
+      <h4 class="modal-title">Импорт дисциплин</h4>
+    </div>
+    <div class="modal-body">
+      <p>
+        Уверены, что хотите удалить текущие дисциплины и импортировать новые?
+      </p>
+      <button type="button" class="btn btn-primary me-3" (click)="importDisciplinesFromSelectedFile()">Да</button>
+      <button type="button" class="btn btn-outline-secondary" (click)="cancelImportDisciplines()">Нет</button>
+    </div>
+  </ng-template>
+  

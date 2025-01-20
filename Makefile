@@ -1,7 +1,7 @@
 DEFAULT_GOAL := run-local
 
 BACKEND_ROUTE := backend
-VENV = $(BACKEND_ROUTE)/.venv
+VENV = $(BACKEND_ROUTE)/venv
 PYTHON = $(VENV)/bin/python
 PIP = $(VENV)/bin/pip
 
@@ -15,7 +15,7 @@ MANAGE_FILE = $(PYTHON) $(BACKEND_ROUTE)/manage.py
 .init-project:
 	pip3.10 install virtualenv
 	cd ${BACKEND_ROUTE} && python3.10 -m virtualenv venv
-	./${VENV}/pip install -r requirements.txt
+	./${VENV}/bin/pip install -r ./${BACKEND_ROUTE}/requirements.txt
 	cd ${FRONTEND_ROUTE} && npm ci --legacy-peer-deps
 
 init-project: .init-project
