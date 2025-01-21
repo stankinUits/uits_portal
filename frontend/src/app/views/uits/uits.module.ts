@@ -3,6 +3,7 @@ import {CommonModule} from '@angular/common';
 import {UitsRoutingModule} from '@app/views/uits/uits-routing.module';
 import {HomeComponent} from '@app/views/uits/public/home/home.component';
 import {AboutModule} from '@app/views/uits/public/about/about.module';
+import {CorporateModule} from '@app/views/uits/private/profile/corp/corp.module';
 import { NgBootstrapFormValidationModule } from 'ng-bootstrap-form-validation';
 import { LatestNewsComponent } from './public/home/components/latest-news/latest-news.component';
 import {ModalModule} from 'ngx-bootstrap/modal';
@@ -20,19 +21,19 @@ import { ScientificActivitiesModule } from './public/scientific-activities/scien
 
 @NgModule({
   declarations: [
-    CorporateComponent,
+    // CorporateComponent,
     HomeComponent,
     LatestNewsComponent,
     LatestAnnouncementsComponent,
     CustomPageComponent,
-    PersonalComponent,
-    EventsComponent,
-
+    // PersonalComponent,
+    // EventsComponent,
   ],
   imports: [
     CommonModule,
     UitsRoutingModule,
     AboutModule,
+    CorporateModule,
     NgBootstrapFormValidationModule.forRoot(),
     ModalModule,
     QuillEditorComponent,

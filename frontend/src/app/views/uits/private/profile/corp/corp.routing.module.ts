@@ -2,10 +2,12 @@ import { EventsComponent } from '../events/events.component';
 import { PersonalComponent } from '../personal/personal.component';
 import { CorporateComponent } from './corp.component';
 import { AuthGuard } from '@app/shared/guards/auth.guard';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
 
-export const routes = [
+const routes: Routes  = [
   {
-    path: 'corp',
+    path: '',
     component: CorporateComponent,
     data: { hidePageHeader: true },
     canActivate: [AuthGuard]
@@ -17,13 +19,15 @@ export const routes = [
   },
 
   {
-    path:"calendar",
+    path:'calendar',
     component: EventsComponent,
     data: { hidePageHeader: true},
   },
-
-
-
 ];
 
-export class CorpRoutModule{};
+@NgModule({
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
+})
+
+export class CorpRoutModule{ }

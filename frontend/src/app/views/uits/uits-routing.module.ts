@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CorporateComponent } from './private/profile/corp/corp.component';
+// import { CorporateComponent } from './private/profile/corp/corp.component';
 import { HomeComponent } from '@app/views/uits/public/home/home.component';
 import { CustomPageComponent } from '@app/views/uits/public/custom-page/custom-page.component';
-import { PersonalComponent } from './private/profile/personal/personal.component'; // Импорт компонента Personal
-import { EventsComponent } from './private/profile/events/events.component';
+// import { PersonalComponent } from './private/profile/personal/personal.component'; // Импорт компонента Personal
+// import { EventsComponent } from './private/profile/events/events.component';
 import { DisciplinesComponent } from '@app/views/uits/public/about/employee/teachers/teacher/components/disciplines/disciplines.component';
+import {CorporateModule} from "@app/views/uits/private/profile/corp/corp.module";
 
 
 const routes: Routes = [
@@ -27,24 +28,32 @@ const routes: Routes = [
       .then(m => m.ScientificActivitiesModule)
   },
   {
-    path: 'corp',
-    component: CorporateComponent,
-    children: [
-      {
-        path: 'page/:slug',
-        component: CustomPageComponent
-      },
-      {
-        path: 'profile',
-        component: PersonalComponent,
-      },
-      {
-        path: 'calendar',
-        component: EventsComponent,
-      },
-      { path: 'test', component: DisciplinesComponent }, // Test route for DisciplinesComponent
-    ]
+    path: 'page/:slug',
+    component: CustomPageComponent
   },
+  {
+    path: 'corp',
+    loadChildren: () => import('@app/views/uits/private/profile/corp/corp.module').then(m => m.CorporateModule),
+  }
+  // {
+  //   path: 'corp',
+  //   component: CorporateComponent,
+  //   children: [
+  //     {
+  //       path: 'page/:slug',
+  //       component: CustomPageComponent
+  //     },
+  //     {
+  //       path: 'profile',
+  //       component: PersonalComponent,
+  //     },
+  //     {
+  //       path: 'calendar',
+  //       component: EventsComponent,
+  //     },
+  //     { path: 'test', component: DisciplinesComponent }, // Test route for DisciplinesComponent
+  //   ]
+  // },
 ];
 
 @NgModule({
