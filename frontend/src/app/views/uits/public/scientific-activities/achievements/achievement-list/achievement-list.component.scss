@@ -13,13 +13,14 @@
         &.odd-item {
             flex-direction: row-reverse;
             @media (max-width: 768px) {
-                flex-direction: column; // Ставим элементы в столбик на мобильных экранах
-                align-items: flex-start; // Выравниваем по левому краю
-                order: 0; // Возвращаем порядок элементов на мобильных устройствах
+
+                flex-direction: column;
+                align-items: flex-start;
+                order: 0; 
             }
         }
 
-        // Для всех элементов
+
         .achievement-image {
             img {
                 width: 100%;
@@ -28,15 +29,25 @@
                 object-fit: cover;
                 border-radius: 5px;
 
+                box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+        
                 @media (min-width: 768px) {
-                    width: 300px; // Ширина картинки на средних экранах
+                    width: 300px;
                 }
-
+        
                 @media (min-width: 1200px) {
-                    width: 400px; // Ширина картинки на больших экранах
+                    width: 400px;
+                }
+        
+                &:hover {
+                    transform: scale(1.01);
+                    box-shadow: 0px 12px 20px rgba(0, 0, 0, 0.3);
                 }
             }
         }
+        
+
 
         .achievement-content {
             flex: 1;
@@ -44,22 +55,26 @@
             padding: 10px;
 
             @media (max-width: 768px) {
-                max-width: 100%; // Текст занимает всю ширину на маленьких экранах
+
+                max-width: 100%;
+
             }
         }
 
         // Адаптивность для маленьких экранов
         @media (max-width: 768px) {
-            flex-direction: column; // Размещаем элементы в столбик
-            align-items: flex-start; // Выравниваем по левому краю
+
+            flex-direction: column; 
+            align-items: flex-start;
 
             .achievement-image {
-                order: 1; // Перемещаем картинку между заголовком и текстом
-                width: 100%; // Картинка занимает всю ширину
+                order: 1; 
+                width: 100%; 
             }
 
             .achievement-content {
-                order: 2; // Текст будет ниже заголовка
+                order: 2;
+
             }
         }
     }

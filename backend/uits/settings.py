@@ -55,9 +55,11 @@ LOCAL_INSTALLED_APPS = [
     'department.employee.schedule',
     'department.employee.subject',
     'department.employee.guidance',
+    'department.employee.postgraduate',
+    'department.scientific_publications.apps.ScientificPublicationsConfig',
     'editable_pages.apps.EditablePagesConfig',
     'events',
-    'tg_bot'
+    'tg_bot',
 ]
 
 # Application definition

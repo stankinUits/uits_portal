@@ -84,11 +84,37 @@ export class EditablePublicationCardComponent {
     const file = (target.files as FileList)[0];
 
     if (file && file.type === AppSettings.PDF_MIME_TYPE) {
-      this.publication.file = file;
-      this.alertMessage = undefined;
+
+      this.encodeFileToBase64(file).then((base64String) => {
+
+        this.publication.file = base64String;
+        this.alertMessage = undefined;
+        console.log('File encoded to Base64:', base64String);
+      }).catch((error) => {
+        this.alertMessage = 'Ошибка при кодировании файла в Base64';
+        console.error('Error encoding file to Base64:', error);
+      });
     } else {
       this.alertMessage = 'Можно прикрепить только файл формата pdf';
     }
+  }
+
+
+  encodeFileToBase64(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        const base64String = reader.result as string;
+        resolve(base64String);
+      };
+
+      reader.onerror = (error) => {
+        reject(error);
+      };
+
+      reader.readAsDataURL(file);
+    });
   }
 
   onTagClick(tag: string) {
@@ -148,7 +174,6 @@ export class EditablePublicationCardComponent {
 
 
     const year = document.getElementById(this.id_year!) as HTMLInputElement;
-    console.log(year.value)
     if (year && year.value !== this.DEFAULT_YEAR) {
       this.publication.year = Number(year.value);
     }
@@ -168,26 +193,30 @@ export class EditablePublicationCardComponent {
       this.publication.isbn = isbn.value;
     }
 
-    this.publication.tags = Array.from(
-      [...this.tagsWithStylesMap.entries()].filter(([_, value]) => value === AppSettings.ONCLICK_TAG_STYLE),
-      ([key, _]) => key
-    );
+    if (this.publication.tags && this.publication.tags.length > 0) {
+      this.publication.tags = Array.from(
+        [...this.tagsWithStylesMap.entries()].filter(([_, value]) => value === AppSettings.ONCLICK_TAG_STYLE),
+        ([key, _]) => key
+      );
+    }
 
     let isValid = false;
+
     //проверки перед сохранением
-    if (this.publication.author.length < 1) {
+    if (this.publication.author.length < 1 || this.publication.author[0] === this.DEFAULT_AUTHOR) {
       this.alertCall('Требуется добавить автора публикации');
-      if (this.publication.name === '' || this.publication.name === undefined) {
+      if (this.publication.name === '' || this.publication.name === undefined || this.publication.name === this.DEFAULT_NAME) {
         this.alertCall('Требуется добавить название публикации');
-        if ((this.publication.url  === '' || this.publication.url === undefined) && (this.publication.file === undefined)) {
+        if ((this.publication.url === '' || this.publication.url === undefined) && (this.publication.file === undefined)) {
           this.alertCall('Требуется добавить файл публикации, или ссылку на нее');
-        } else {
-          isValid = true;
+          if (this.publication.year === undefined || this.publication.year === 0) {
+            this.alertCall('Требуется добавить год публикации');
+          } else {
+            isValid = true;
+          }
         }
       }
     }
-
-    console.log(this.publication);
 
     if (isValid) {
       this.scienceService.saveCard(this.publication).subscribe((data: HttpResponse<any>) => {
@@ -200,18 +229,18 @@ export class EditablePublicationCardComponent {
             this.alertCall('Ошибка при сохранении');
           }
         });
-    }
 
-    this.scienceService.saveNewTags(this.newTags).subscribe((data: HttpResponse<any>) => {
-        if (data.status === 200 || data.status === 202) {
-          this.alertCall(`Успешно сохранено`);
-        }
-      },
-      (err: HttpErrorResponse) => {
-        if (err.status === 403) {
-          this.alertCall('Ошибка при сохранении');
-        }
-      });;
+      this.scienceService.saveNewTags(this.newTags).subscribe((data: HttpResponse<any>) => {
+          if (data.status === 200 || data.status === 202) {
+            this.alertCall(`Успешно сохранено`);
+          }
+        },
+        (err: HttpErrorResponse) => {
+          if (err.status === 403) {
+            this.alertCall('Ошибка при сохранении');
+          }
+        });
+    }
   }
 
   clickOnDelete() {
