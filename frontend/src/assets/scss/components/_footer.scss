@@ -1,7 +1,7 @@
 .footer {
     padding: 0px $layout-content-gutter;
     font-size: 90%;
-    
+
     .footer-content {
         display: flex;
         height: $footer-height;
@@ -9,4 +9,11 @@
         justify-content: space-between;
         border-top: 1px solid $border-color;
     }
+}
+
+.footer-links {
+  img {
+    width: 35px;
+    height: 35px;
+  }
 }
