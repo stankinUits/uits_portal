@@ -14,7 +14,8 @@ export const PagesConfig = {
     employee: {
       teachers: '/about/employee/teachers/',
       schedule: '/about/employee/teachers/schedule/',
-    }
+    },
+    contributors: '/contributors',
   },
   admin: '/admin',
   profile: '/corp/profile',

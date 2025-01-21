@@ -136,7 +136,16 @@ const about: NavMenu[] = [
         key: 'about/contacts',
         submenu: []
       },
-
+      {
+        path: PagesConfig.editable('contributors'),
+        title: 'Contributors',
+        translateKey: 'NAV.CONTRIBUTORS',
+        type: 'item',
+        iconType: 'feather',
+        icon: 'icon-heart-on',
+        key: 'about/contributors',
+        submenu: []
+      }
     ]
   }
 ];
@@ -307,38 +316,38 @@ const scientificActivity: NavMenu[] = [
         key: 'scientificActivity/achievements',
         submenu: []
       }
-      ]
-    }
-      // {
-      //   path: PagesConfig.scientificActivities.publications,
-      //   title: 'ScientificPublications',
-      //   translateKey: 'NAV.SCIENTIFIC_ACTIVITY.SCIENTIFIC_PUBLICATIONS',
-      //   type: 'item',
-      //   iconType: 'feather',
-      //   icon: 'icon-align-left',
-      //   key: 'scientificPublications',
-      //   submenu: []
-      // },
-      // {
-      //   path: PagesConfig.scientificActivities.scientificWork,
-      //   title: 'ScientificWork',
-      //   translateKey: 'NAV.SCIENTIFIC_ACTIVITY.SCIENTIFIC_WORK',
-      //   type: 'item',
-      //   iconType: 'feather',
-      //   icon: 'icon-align-left',
-      //   key: 'scientificWork',
-      //   submenu: []
-      // },
-      // {
-      //   path: PagesConfig.scientificActivities.conferences,
-      //   title: 'Conferences',
-      //   translateKey: 'NAV.SCIENTIFIC_ACTIVITY.CONFERENCES',
-      //   type: 'item',
-      //   iconType: 'feather',
-      //   icon: 'icon-align-left',
-      //   key: 'conferences',
-      //   submenu: []
-      // }
+    ]
+  }
+  // {
+  //   path: PagesConfig.scientificActivities.publications,
+  //   title: 'ScientificPublications',
+  //   translateKey: 'NAV.SCIENTIFIC_ACTIVITY.SCIENTIFIC_PUBLICATIONS',
+  //   type: 'item',
+  //   iconType: 'feather',
+  //   icon: 'icon-align-left',
+  //   key: 'scientificPublications',
+  //   submenu: []
+  // },
+  // {
+  //   path: PagesConfig.scientificActivities.scientificWork,
+  //   title: 'ScientificWork',
+  //   translateKey: 'NAV.SCIENTIFIC_ACTIVITY.SCIENTIFIC_WORK',
+  //   type: 'item',
+  //   iconType: 'feather',
+  //   icon: 'icon-align-left',
+  //   key: 'scientificWork',
+  //   submenu: []
+  // },
+  // {
+  //   path: PagesConfig.scientificActivities.conferences,
+  //   title: 'Conferences',
+  //   translateKey: 'NAV.SCIENTIFIC_ACTIVITY.CONFERENCES',
+  //   type: 'item',
+  //   iconType: 'feather',
+  //   icon: 'icon-align-left',
+  //   key: 'conferences',
+  //   submenu: []
+  // }
 ];
 
 

@@ -15,14 +15,14 @@ import {ModalModule} from 'ngx-bootstrap/modal';
 import {modules} from '@app/configs/quill.config';
 import {SharedModule} from '@app/shared/shared.module';
 import {NgBootstrapFormValidationModule} from 'ng-bootstrap-form-validation';
-import {CrudActionModule} from "@app/shared/components/crud-action/crud-action.module";
+import {CrudActionModule} from '@app/shared/components/crud-action/crud-action.module';
 import {PostComponent} from './news/post/post.component';
-import {DateFnsModule} from "ngx-date-fns";
+import {DateFnsModule} from 'ngx-date-fns';
 import {PostContentComponent} from './news/post/components/post-content/post-content.component';
 import {PostInfoComponent} from './news/post/components/post-info/post-info.component';
 import {AnnouncementsComponent} from './announcements/announcements.component';
 import {AnnouncementPostComponent} from './announcements/announcement-post/announcement-post.component';
-import {NgSelectModule} from "@ng-select/ng-select";
+import {NgSelectModule} from '@ng-select/ng-select';
 import {TeacherComponent} from './employee/teachers/teacher/teacher.component';
 import {
   CalendarDateFormatter,
@@ -30,18 +30,19 @@ import {
   CalendarNativeDateFormatter,
   DateAdapter,
   DateFormatterParams
-} from "angular-calendar";
-import {adapterFactory} from "angular-calendar/date-adapters/date-fns";
+} from 'angular-calendar';
+import {adapterFactory} from 'angular-calendar/date-adapters/date-fns';
 import {ScheduleComponent} from './employee/teachers/teacher/components/schedule/schedule.component';
 import { registerLocaleData } from '@angular/common';
 import localeRu from '@angular/common/locales/ru';
-import {AngularMarkdownEditorModule} from "angular-markdown-editor";
-import {MarkdownModule} from "ngx-markdown";
-import {LayoutModule} from "@app/layout/layout.module";
-import {CreateButtonComponent} from "@app/shared/components/create-button/create-button.component";
-import {PaginationModule} from "ngx-bootstrap/pagination";
+import {AngularMarkdownEditorModule} from 'angular-markdown-editor';
+import {MarkdownModule} from 'ngx-markdown';
+import {LayoutModule} from '@app/layout/layout.module';
+import {CreateButtonComponent} from '@app/shared/components/create-button/create-button.component';
+import {PaginationModule} from 'ngx-bootstrap/pagination';
 import { DisciplinesComponent } from './employee/teachers/teacher/components/disciplines/disciplines.component';
-import {HistoryOfDepartmentComponent} from "@app/views/uits/public/about/history-of-department/history-of-department.component";
+import {HistoryOfDepartmentComponent} from '@app/views/uits/public/about/history-of-department/history-of-department.component';
+import { ContributorsComponent } from './contributors/contributors.component';
 registerLocaleData(localeRu);
 
 
@@ -77,7 +78,8 @@ class CustomDateFormatter extends CalendarNativeDateFormatter {
     TeacherComponent,
     ScheduleComponent,
     DisciplinesComponent,
-    HistoryOfDepartmentComponent
+    HistoryOfDepartmentComponent,
+    ContributorsComponent
   ],
   exports: [
     PostActionsComponent,

@@ -2,8 +2,9 @@ export const nav = {
   NAV: {
     HOME: 'Главная',
     ABOUT: 'О кафедре',
-    
-HISTORY: 'История кафедры',
+    CONTRIBUTORS: 'Благодарности',
+
+    HISTORY: 'История кафедры',
     NEWS: 'Новости кафедры',
     ANNOUNCEMENTS: 'Объявления кафедры',
     EMPLOYEE: 'Сотрудники кафедры',
@@ -16,82 +17,82 @@ HISTORY: 'История кафедры',
       UNIVERSITY: 'Университета'
     },
     CONTACTS: 'Контакты',
-    EDUCATION_ACTIVITIES : {
-      TITLE:'Учебная деятельность',
-      BACHELOR:{
+    EDUCATION_ACTIVITIES: {
+      TITLE: 'Учебная деятельность',
+      BACHELOR: {
         TITLE: '09.03.03 Бакалавриат',
-        STUDY_PLAN:'Учебные планы',
-        SCHEDULE : {
+        STUDY_PLAN: 'Учебные планы',
+        SCHEDULE: {
           TITLE: 'Расписание',
           CLASS_SCHEDULE: 'Расписание занятий',
-          EXAM_SCHEDULE:'Расписание экзаменов',
+          EXAM_SCHEDULE: 'Расписание экзаменов',
         },
         GRADUATION: {
           TITLE: 'Защита ВКР',
-          ORDERS:'Приказы об утверждении тем и руководителей',
-          TEMPLATES:'Шаблоны и примеры оформления',
-          INFORMATION:'Информация',
-          DIPLOMA_TOPICS:'Тематики вкр',
-          LINKS_TO_EOS:'Ссылки в ЭОС',
-          GRADUATES:'Выпускники',
+          ORDERS: 'Приказы об утверждении тем и руководителей',
+          TEMPLATES: 'Шаблоны и примеры оформления',
+          INFORMATION: 'Информация',
+          DIPLOMA_TOPICS: 'Тематики вкр',
+          LINKS_TO_EOS: 'Ссылки в ЭОС',
+          GRADUATES: 'Выпускники',
         },
         PRACTICES: {
-          TITLE:'Практики',
-          RESEARCH_WORK:'Производственная(НИР)',
-          PROJECT_TECHNOLOGICAL:'Производственная(проектно-технологическая)',
-          PRE_GRADUATION:'Преддипломная'
+          TITLE: 'Практики',
+          RESEARCH_WORK: 'Производственная(НИР)',
+          PROJECT_TECHNOLOGICAL: 'Производственная(проектно-технологическая)',
+          PRE_GRADUATION: 'Преддипломная'
         },
-        DISCIPLINES:'Дисциплины'
+        DISCIPLINES: 'Дисциплины'
       },
-      MAGISTRACY:{
+      MAGISTRACY: {
         TITLE: '09.04.01 Магистратура',
-        STUDY_PLAN:'Учебные планы',
-        SCHEDULE : {
+        STUDY_PLAN: 'Учебные планы',
+        SCHEDULE: {
           TITLE: 'Расписание',
           CLASS_SCHEDULE: 'Расписание занятий',
-          EXAM_SCHEDULE:'Расписание экзаменов',
+          EXAM_SCHEDULE: 'Расписание экзаменов',
         },
         GRADUATION: {
           TITLE: 'Защита ВКР',
-          ORDERS:'Приказы об утверждении тем и руководителей',
-          TEMPLATES:'Шаблоны и примеры оформления',
-          INFORMATION:'Информация',
-          DIPLOMA_TOPICS:'Тематики вкр',
-          LINKS_TO_EOS:'Ссылки в ЭОС',
-          GRADUATES:'Выпускники',
+          ORDERS: 'Приказы об утверждении тем и руководителей',
+          TEMPLATES: 'Шаблоны и примеры оформления',
+          INFORMATION: 'Информация',
+          DIPLOMA_TOPICS: 'Тематики вкр',
+          LINKS_TO_EOS: 'Ссылки в ЭОС',
+          GRADUATES: 'Выпускники',
         },
         PRACTICES: {
-          TITLE:'Практики',
-          RESEARCH_WORK:'Производственная(НИР)',
-          PROJECT_TECHNOLOGICAL:'Производственная(технологическая(проектно-технологическая)',
-          PRE_GRADUATION:'Преддипломная',
-          EDUCATIONAL_PEDAGOGICAL:'Учебная практики(педагогическая)',
-          EDUCATIONAL_INTRODUCTORY:'Учебная практики(ознакомительная)',
+          TITLE: 'Практики',
+          RESEARCH_WORK: 'Производственная(НИР)',
+          PROJECT_TECHNOLOGICAL: 'Производственная(технологическая(проектно-технологическая)',
+          PRE_GRADUATION: 'Преддипломная',
+          EDUCATIONAL_PEDAGOGICAL: 'Учебная практики(педагогическая)',
+          EDUCATIONAL_INTRODUCTORY: 'Учебная практики(ознакомительная)',
         },
-        DISCIPLINES:'Дисциплины'
+        DISCIPLINES: 'Дисциплины'
       },
       SCHEDULES: {
         TITLE: "Расписания",
         SUMMARY: {
           TITLE: "Сводное расписание преподавателей",
         },
-        EXAMS:{
+        EXAMS: {
           TITLE: "Расписание экзаменов"
         }
       }
     },
-    SCIENTIFIC_ACTIVITY:{
+    SCIENTIFIC_ACTIVITY: {
       TITLE: 'Научная деятельность',
       POST_GRADUATE: {
         TITLE: 'Аспирантура',
-        PRACTICES:'Практики',
-        SPECIALITIES:'Специальности',
+        PRACTICES: 'Практики',
+        SPECIALITIES: 'Специальности',
         GENERAL_INFORMATION: 'Общая информация',
         REPORTING: 'Отчетность',
         STUDENTS: 'Список аспирантов',
         DISSERTATIONS: {
-          TITLE:'Диссертации',
-          PHD:'Кандидатские',
+          TITLE: 'Диссертации',
+          PHD: 'Кандидатские',
           DOCTORAL: 'Докторские'
         }
       },
