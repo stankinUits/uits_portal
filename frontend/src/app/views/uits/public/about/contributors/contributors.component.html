@@ -1,55 +1,14 @@
-<!--<app-editable-content page="contributors"></app-editable-content>-->
-<h1>Выражаем огромную благодарность всем, кто принимал участие в создании этого проекта</h1>
+<h3 class="header">Выражаем огромную благодарность всем, кто принимал участие в создании портала кафедры</h3>
 <hr>
-<br>
-<table class="table table-striped">
-  <tbody>
-  <tr>
-    <td>Ерин Сергей</td>
-  </tr>
-  <tr>
-    <td>Вдовенко Данил</td>
-  </tr>
-  <tr>
-    <td>Медведев Вадим</td>
-  </tr>
-  <tr>
-    <td>Шостов Дмитрий</td>
-  </tr>
-  <tr>
-    <td>Рябцев Михаил</td>
-  </tr>
-  <tr>
-    <td>Осипова Ксения</td>
-  </tr>
-  <tr>
-    <td>Вежновец Дмитрий</td>
-  </tr>
-  <tr>
-    <td>Лебедев Александр</td>
-  </tr>
-  <tr>
-    <td>Станьков Дмитрий</td>
-  </tr>
-  <tr>
-    <td>Мокроусова Лариса</td>
-  </tr>
-  <tr>
-    <td>Бадян Ксения</td>
-  </tr>
-  <tr>
-    <td>Бадян Анастасия</td>
-  </tr>
-  <tr>
-    <td>Золотухин Иван</td>
-  </tr>
-  <tr>
-    <td>Мальцев Тимофей</td>
-  </tr>
-  <tr>
-    <td>Вьюев Сергей</td>
-  </tr>
 
-
-  </tbody>
-</table>
+<div class="team-container">
+  <button (click)="scrollLeft()"> < </button>
+  <div class="team-wrapper" #scrollContainer>
+    <div class="team-member" *ngFor="let contributor of contributors">
+      <img [src]="contributor.image" [alt]="contributor.name" />
+      <p class="name">{{ contributor.name }}</p>
+      <p class="description"> {{ contributor.description }}</p>
+    </div>
+  </div>
+  <button (click)="scrollRight()"> > </button>
+</div>
