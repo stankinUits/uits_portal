@@ -137,7 +137,8 @@ const about: NavMenu[] = [
         submenu: []
       },
       {
-        path: PagesConfig.editable('contributors'),
+        // path: PagesConfig.editable('contributors'),
+        path: 'about/contributors',
         title: 'Contributors',
         translateKey: 'NAV.CONTRIBUTORS',
         type: 'item',

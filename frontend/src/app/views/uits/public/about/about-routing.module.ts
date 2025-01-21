@@ -34,11 +34,11 @@ const routes: Routes = [
   {path: 'documents/university', component: UniversityComponent},
   {path: 'contacts', component: ContactsComponent},
   {path: 'history-of-department', component: HistoryOfDepartmentComponent},
-  // {path: 'contributors', component: ContributorsComponent},
-  {
-    path: 'page/:slug',
-    component: CustomPageComponent
-  },
+  {path: 'contributors', component: ContributorsComponent},
+  // {
+  //   path: 'page/:slug',
+  //   component: CustomPageComponent
+  // },
 ];
 
 @NgModule({
