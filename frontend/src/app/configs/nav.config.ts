@@ -136,7 +136,7 @@ const about: NavMenu[] = [
         key: 'about/contacts',
         submenu: []
       },
-     
+
     ]
   }
 ];
@@ -288,7 +288,7 @@ const scientificActivity: NavMenu[] = [
         submenu: []
       },
       {
-        path: PagesConfig.editable('scientific-activity-publications'),
+        path: PagesConfig.scientificActivities.mainSciencePage,
         title: 'SciencePublications',
         translateKey: 'NAV.SCIENTIFIC_ACTIVITY.SCIENTIFIC_PUBLICATIONS.TITLE',
         type: 'item',

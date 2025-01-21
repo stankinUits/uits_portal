@@ -1,5 +1,5 @@
-const eduActivitiesPrefix = "/educational-activities"
-const sciActivitiesPrefix = "/scientific-activities"
+const eduActivitiesPrefix = '/educational-activities';
+const sciActivitiesPrefix = '/scientific-activities';
 
 export const PagesConfig = {
   auth: {
@@ -10,14 +10,14 @@ export const PagesConfig = {
   about: {
     news: '/about/news/',
     announcements: '/about/announcements/',
-    
+
     employee: {
       teachers: '/about/employee/teachers/',
       schedule: '/about/employee/teachers/schedule/',
     }
   },
-  admin: "/admin",
-  profile: "/corp/profile",
+  admin: '/admin',
+  profile: '/corp/profile',
   educationalActivities: {
     bachelor: {
       eduPlans: eduActivitiesPrefix + '/bachelor/edu-plans',

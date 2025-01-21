@@ -13,10 +13,10 @@ import {
 const routes: Routes = [
   { path: 'achievements', component: AchievementListComponent },
   { path: 'achievements/:id', component: AchievementDetailComponent },
-  { path: 'page/scientific-activity-publications', component: MainSciencePageComponent },
-  { path: 'page/scientific-activity-publications/create_new_author', component: RegisterSciencePublicationComponent },
-  { path: 'page/scientific-activity-publications/edit_author', component: EditAuthorPublicationPageComponent },
-  { path: 'page/scientific-activity-publications/manage_tags', component: ManageTagsPageComponent }
+  { path: 'publications/main-science-page', component: MainSciencePageComponent },
+  { path: 'publications/create_new_author', component: RegisterSciencePublicationComponent },
+  { path: 'publications/edit_author', component: EditAuthorPublicationPageComponent },
+  { path: 'publications/manage_tags', component: ManageTagsPageComponent }
   // другие маршруты
 ];
 @NgModule({
