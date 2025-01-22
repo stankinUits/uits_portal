@@ -9,9 +9,7 @@
 
 <h1 class="mb-4">Достижения</h1>
 
-<div *ngIf="authService.canEdit() | async" class="btn-add__item font-size-lg mb-4" (click)="redirectToAdminPanel()">
-  <i class="feather icon-plus-square"></i>
-</div>
+<app-create-button (create)="redirectToAdminPanel()"></app-create-button>
 
 <div *ngIf="!isLoading && !errorMessage" class="achievement-list">
   <div

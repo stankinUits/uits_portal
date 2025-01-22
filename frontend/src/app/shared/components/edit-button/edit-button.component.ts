@@ -3,14 +3,13 @@ import {AuthService} from '@app/shared/services/auth.service';
 import {CommonModule} from '@angular/common';
 
 @Component({
-  selector: 'app-create-button',
-  templateUrl: './create-button.component.html',
-  styleUrls: ['./create-button.component.css'],
+  selector: 'app-edit-button',
+  templateUrl: './edit-button.component.html',
   standalone: true,
-  imports: [CommonModule,]
+  imports: [CommonModule]
 })
-export class CreateButtonComponent implements OnInit {
-  @Output() create: EventEmitter<any> = new EventEmitter<any>();
+export class EditButtonComponent implements OnInit {
+  @Output() edit: EventEmitter<any> = new EventEmitter<any>();
   constructor(public authService: AuthService) { }
 
   ngOnInit(): void {

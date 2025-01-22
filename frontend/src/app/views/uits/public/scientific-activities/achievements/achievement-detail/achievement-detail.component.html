@@ -3,13 +3,9 @@
     <button class="go-back-btn" (click)="goBack()">
       <span class="arrow">&#8592;</span> Вернуться назад
     </button>
-    <div
-      *ngIf="authService.canEdit()"
-      class="btn-add__item"
-      (click)="redirectToEditPage()"
-    >
-      <i class="feather icon-edit"></i>
-    </div>
+    <app-edit-button
+      (edit)="redirectToEditPage()">
+    </app-edit-button>
   </div>
 
   <div *ngIf="isLoading" class="loading-state">

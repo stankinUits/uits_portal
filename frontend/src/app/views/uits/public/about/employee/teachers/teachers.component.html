@@ -1,6 +1,13 @@
 <h1 class="mb-4">Преподавательский состав кафедры</h1>
 
-<app-create-button></app-create-button>
+<app-create-button
+  (create)="onCreateTeacher()">
+</app-create-button>
+
+<div>
+
+</div>
+
 <div *ngIf="(teacher$ | async).length !== 0; else loading">
   <div class="row align-center-start gap-5 flex-row">
     <div *ngFor="let employee of teacher$ | async" class="card" style="width: 18rem; min-height: 100%">
@@ -16,30 +23,27 @@
         <h4
           class="card-title text-center">{{ employee.last_name }} {{ employee.first_name }} {{ employee.patronymic }}</h4>
         <p
-          class="card-text text-center">{{getEmployeePositions(employee)}}</p>
+          class="card-text text-center">{{ getEmployeePositions(employee) }}</p>
       </div>
       <div class="overlay">
         <div>
-          <app-crud-action
-            [actions]="[{
-      icon: 'feather icon-edit',
-      type: 0
-    }]"
-            [item]="employee"
-            [permission]="Permission.MODERATOR"
-            (edit)="onEditTeacher($event)"
-            (delete)="onDeleteTeacher($event)"
-          ></app-crud-action>
+          <app-edit-button
+            class="edit-button-teacher"
+            (edit)="onEditTeacher(employee.id)">
+          </app-edit-button>
         </div>
         <div class="overlay-content">
           <img
             [src]="(!employee.avatar)?AVATAR_DEFAULT_URL: employee.avatar"
             class="card-img-top mx-auto mx-5 rounded-circle"
-            alt="..."
+            alt="avatar"
           >
-          <!-- Здесь размещаете дополнительную информацию о сотруднике -->
+
           <p>Дополнительная информация о сотруднике
-            <br><b>{{ employee.last_name }} {{ employee.first_name }} {{ employee.patronymic }}</b></p>
+            <br>
+              <b>{{ employee.last_name }} {{ employee.first_name }} {{ employee.patronymic }}
+            </b>
+          </p>
           <button class="btn btn-info" (click)="moveToEmployee(employee.id)">Подробнее</button>
         </div>
       </div>
@@ -50,83 +54,4 @@
 
 <ng-template #loading>
   <h3>Сотрудников пока нет</h3>
-</ng-template>
-
-<ng-template #createTeacherModal bsModal>
-  <div class="modal-header">
-    <h4 class="modal-title pull-left">Добавить преподавателя</h4>
-    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-    <div class="row">
-      <div>
-        <form [formGroup]="createTeacherForm" (validSubmit)="onSubmit()">
-          <div class="form-group mb-3" [customErrorMessages]="customLastNameMessages">
-            <label class="control-label">Фамилия</label>
-            <input type="text" class="form-control no-success-validation no-success-icon-validation"
-                   formControlName="last_name">
-          </div>
-
-          <div class="form-group mb-3" [customErrorMessages]="customFirstNameMessages">
-            <label class="control-label">Имя</label>
-            <input type="text" class="form-control no-success-validation no-success-icon-validation"
-                   formControlName="first_name">
-          </div>
-          <div class="form-group mb-3">
-            <label class="control-label">Отчество</label>
-            <input type="text" class="form-control no-success-validation no-success-icon-validation"
-                   formControlName="patronymic">
-          </div>
-          <div class="form-group mb-3" [customErrorMessages]="customPositionMessages">
-            <label class="form-label">Должность</label>
-            <!--            <input type="text" class="form-control no-success-validation no-success-icon-validation" formControlName="position">-->
-            <ng-select
-              class="no-success-validation no-success-icon-validation"
-              [items]="basePositions"
-              formControlName="position"
-              addTag="true"
-            ></ng-select>
-          </div>
-          <div class="form-group mb-3">
-            <label class="control-label">Ученая степень</label>
-            <input type="text" class="form-control no-success-validation no-success-icon-validation"
-                   formControlName="degree">
-          </div>
-          <div class="form-group mb-3">
-            <label class="control-label">Звание</label>
-            <input type="text" class="form-control no-success-validation no-success-icon-validation"
-                   formControlName="rank">
-          </div>
-          <div class="form-group mb-3">
-            <label class="control-label">Описание</label>
-            <textarea type="text" class="form-control no-success-validation no-validation-icon"
-                      formControlName="bio"></textarea>
-          </div>
-          <div class="modal-footer">
-            <button *ngIf="editFormMode === 'CREATE'" class="btn btn-info" type="submit">Добавить</button>
-            <button *ngIf="editFormMode === 'EDIT'" class="btn btn-info" type="submit">Изменить</button>
-            <button class="btn btn-outline-secondary" (click)="closeForm()">Отменить</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</ng-template>
-
-<ng-template #deleteTeacherModal bsModal>
-  <div class="modal-header">
-    <h4 class="modal-title pull-left">Вы уверены, что хотите удалить
-      преподавателя {{ chosenTeacher.last_name }} {{ chosenTeacher.first_name }} {{ chosenTeacher.patronymic }}?</h4>
-    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-    <div class="d-flex gap-2">
-      <button class="btn btn-danger" (click)="deleteTeacherConfirm()">Удалить</button>
-      <button class="btn btn-outline-secondary" (click)="modalRef.hide()">Отменить</button>
-    </div>
-  </div>
 </ng-template>

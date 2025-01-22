@@ -33,16 +33,20 @@ import {
 } from 'angular-calendar';
 import {adapterFactory} from 'angular-calendar/date-adapters/date-fns';
 import {ScheduleComponent} from './employee/teachers/teacher/components/schedule/schedule.component';
-import { registerLocaleData } from '@angular/common';
+import {registerLocaleData} from '@angular/common';
 import localeRu from '@angular/common/locales/ru';
 import {AngularMarkdownEditorModule} from 'angular-markdown-editor';
 import {MarkdownModule} from 'ngx-markdown';
 import {LayoutModule} from '@app/layout/layout.module';
 import {CreateButtonComponent} from '@app/shared/components/create-button/create-button.component';
+import {EditButtonComponent} from '@app/shared/components/edit-button/edit-button.component';
 import {PaginationModule} from 'ngx-bootstrap/pagination';
-import { DisciplinesComponent } from './employee/teachers/teacher/components/disciplines/disciplines.component';
-import {HistoryOfDepartmentComponent} from '@app/views/uits/public/about/history-of-department/history-of-department.component';
-import { ContributorsComponent } from './contributors/contributors.component';
+import {DisciplinesComponent} from './employee/teachers/teacher/components/disciplines/disciplines.component';
+import {
+  HistoryOfDepartmentComponent
+} from '@app/views/uits/public/about/history-of-department/history-of-department.component';
+import {ContributorsComponent} from './contributors/contributors.component';
+
 registerLocaleData(localeRu);
 
 
@@ -54,8 +58,8 @@ class CustomDateFormatter extends CalendarNativeDateFormatter {
     return formatDate(date, 'HH:mm', locale);
   }
 
-  public weekViewHour({ date, locale }: DateFormatterParams): string {
-    return this.dayViewHour({ date, locale });
+  public weekViewHour({date, locale}: DateFormatterParams): string {
+    return this.dayViewHour({date, locale});
   }
 
 }
@@ -85,31 +89,32 @@ class CustomDateFormatter extends CalendarNativeDateFormatter {
     PostActionsComponent,
     NewsComponent,
   ],
-    imports: [
-        CommonModule,
-        AboutRoutingModule,
-        QuillViewComponent,
-        ModalModule,
-        QuillEditorComponent,
-        QuillConfigModule.forRoot({
-            modules
-        }),
-        SharedModule,
-        NgBootstrapFormValidationModule,
-        CrudActionModule,
-        DateFnsModule,
-        NgSelectModule,
-        NgOptimizedImage,
-        CalendarModule.forRoot({
-            provide: DateAdapter,
-            useFactory: adapterFactory
-        }),
-        AngularMarkdownEditorModule.forRoot({iconlibrary: 'fa'}),
-        MarkdownModule.forRoot(),
-        LayoutModule,
-        CreateButtonComponent,
-        PaginationModule,
-    ],
+  imports: [
+    CommonModule,
+    AboutRoutingModule,
+    QuillViewComponent,
+    ModalModule,
+    QuillEditorComponent,
+    QuillConfigModule.forRoot({
+      modules
+    }),
+    SharedModule,
+    NgBootstrapFormValidationModule,
+    CrudActionModule,
+    DateFnsModule,
+    NgSelectModule,
+    NgOptimizedImage,
+    CalendarModule.forRoot({
+      provide: DateAdapter,
+      useFactory: adapterFactory
+    }),
+    AngularMarkdownEditorModule.forRoot({iconlibrary: 'fa'}),
+    MarkdownModule.forRoot(),
+    LayoutModule,
+    CreateButtonComponent,
+    EditButtonComponent,
+    PaginationModule,
+  ],
   providers: [
     {provide: CalendarDateFormatter, useClass: CustomDateFormatter}
   ]

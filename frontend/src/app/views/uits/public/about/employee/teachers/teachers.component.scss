@@ -1,48 +1,49 @@
 .card {
-  background: #ffffff; /* Белый фон */
-  //box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Небольшая тень для объема */
-  //border: none; /* Убрать границу, если она есть */
-  border-radius: 6px; /* Закругленные углы для карточки */
-  padding: 10px; /* Отступы внутри карточки */
-  transition: transform 0.2s ease-in-out; /* Добавляем анимацию увеличения */
+  background: #ffffff;
+  border-radius: 6px;
+  padding: 10px;
+  transition: transform 0.2s ease-in-out;
 }
 
 .card:hover {
   transform: scale(1.05) translateY(-5px);
-  z-index: 1; /* Поднимаем карту наверх, чтобы она перекрывала другие карты */
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Увеличиваем тень для немного большего объема */
+  z-index: 1;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
 .card-img-top {
   max-width: 60%;
 }
 
-/* Стили для контейнера оверлея */
 .overlay {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(255, 255, 255); /* Полупрозрачный белый фон */
+  background-color: rgba(255, 255, 255);
   opacity: 0;
-  pointer-events: none; /* Отключает события мыши на оверлее */
+  pointer-events: none;
   transition: opacity 0.4s ease-in-out;
 }
 
-/* Стили для оверлея при наведении */
 .card:hover .overlay {
   opacity: 1;
   pointer-events: auto;
   transition: opacity 0.4s ease-in-out;
-  //background-color: #f0f8ff; /* Изменяем цвет фона при наведении */
 }
 
-/* Стили для содержимого оверлея */
+
 .overlay-content {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
+}
+
+.edit-button-teacher {
+  position: absolute;
+  right: 10px;
+  top: 10px;
 }
