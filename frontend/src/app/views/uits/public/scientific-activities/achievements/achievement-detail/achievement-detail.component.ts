@@ -25,7 +25,7 @@ export class AchievementDetailComponent implements OnInit {
     private router: Router,
     private achievementService: AchievementService,
 
-    private authService: AuthService,
+    public authService: AuthService,
     private cdr: ChangeDetectorRef
   ) { }
 

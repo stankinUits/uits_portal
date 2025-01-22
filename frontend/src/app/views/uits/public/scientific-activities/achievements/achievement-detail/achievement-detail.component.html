@@ -3,9 +3,13 @@
     <button class="go-back-btn" (click)="goBack()">
       <span class="arrow">&#8592;</span> Вернуться назад
     </button>
-    <button *ngIf="isAdmin" type="button" class="btn btn-info" (click)="redirectToEditPage()">
-      Редактировать
-    </button>
+    <div
+      *ngIf="authService.canEdit()"
+      class="btn-add__item"
+      (click)="redirectToEditPage()"
+    >
+      <i class="feather icon-edit"></i>
+    </div>
   </div>
 
   <div *ngIf="isLoading" class="loading-state">
@@ -18,12 +22,11 @@
 
   <div *ngIf="achievement && !isLoading" class="achievement-content">
     <div class="achievement-image">
-      <img [src]="achievement?.image" alt="Achievement Image" />
+      <img [src]="achievement?.image" alt="Achievement Image"/>
     </div>
 
     <div class="achievement-details">
       <h1>{{ achievement?.title }}</h1>
-      <p>{{ achievement?.description }}</p>
       <div [innerHTML]="achievement?.content"></div>
 
       <div class="achievement-footer">

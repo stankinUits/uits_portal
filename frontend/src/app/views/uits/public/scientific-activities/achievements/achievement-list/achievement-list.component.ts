@@ -1,10 +1,8 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-
 import { AchievementService } from '../achievement.service';
-
 import { AuthService } from '@app/shared/services/auth.service';
-
 import { Router } from '@angular/router';
+import {PagesConfig} from '@app/configs/pages.config';
 
 @Component({
   selector: 'app-achievement-list',
@@ -20,7 +18,7 @@ export class AchievementListComponent implements OnInit {
 
   constructor(
     private achievementService: AchievementService,
-    private authService: AuthService,
+    public authService: AuthService,
     private router: Router,
     private cdr: ChangeDetectorRef
   ) {}
@@ -43,7 +41,6 @@ export class AchievementListComponent implements OnInit {
   fetchAchievements(): void {
     this.achievementService.getAchievements().subscribe({
       next: (data: any) => {
-        // Check if `data` has `results`; otherwise, treat it as an array
         this.achievements = Array.isArray(data) ? data : data.results || [];
         this.isLoading = false;
         this.cdr.detectChanges();
@@ -71,7 +68,6 @@ export class AchievementListComponent implements OnInit {
 
 
   redirectToAdminPanel(): void {
-    window.open('http://127.0.0.1:8000/admin/achievements/achievement/', '_blank');
+    window.open(PagesConfig.admin + '/achievements/achievement/', '_blank');
   }
-
 }
