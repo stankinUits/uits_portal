@@ -4,9 +4,21 @@
   (create)="onCreateTeacher()">
 </app-create-button>
 
-<div>
-
+<div class="head-of-department__wrapper">
+  <h2>Заведующий кафедрой управления и информатики в технических системах</h2>
+  <div class="head-of-department__info">
+    <img class="head-of-department__info__photo" src="/assets/images/contributors/chekanin-vladislav.jpg" alt="">
+    <div>
+      <h3 class="head-of-department__info__name">Чеканин Владислав Александрович</h3>
+      <div class="head-of-department__info__contacts">
+        <p><b>Почта:</b> v.chekanin@stankin.ru</p>
+        <p><b>Телефон:</b> +7 (499) 973-39-13</p>
+      </div>
+    </div>
+  </div>
 </div>
+
+<h2 class="mb-4">Сотрудники кафедры</h2>
 
 <div *ngIf="(teacher$ | async).length !== 0; else loading">
   <div class="row align-center-start gap-5 flex-row">
@@ -41,7 +53,7 @@
 
           <p>Дополнительная информация о сотруднике
             <br>
-              <b>{{ employee.last_name }} {{ employee.first_name }} {{ employee.patronymic }}
+            <b>{{ employee.last_name }} {{ employee.first_name }} {{ employee.patronymic }}
             </b>
           </p>
           <button class="btn btn-info" (click)="moveToEmployee(employee.id)">Подробнее</button>

@@ -51,6 +51,7 @@ export class TeachersComponent implements OnInit {
     ];
 
     moveToEmployee(id: number) {
+      console.log('Navigating to:', PagesConfig.about.employee.teachers, id);
       this.router.navigate([PagesConfig.about.employee.teachers, id]);
     }
 

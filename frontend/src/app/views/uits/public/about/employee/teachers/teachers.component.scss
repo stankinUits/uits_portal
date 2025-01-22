@@ -1,3 +1,32 @@
+.head-of-department__wrapper {
+  display: flex;
+  flex-direction: column;
+  margin: 20px 0 50px;
+}
+
+.head-of-department__info {
+  padding: 20px 0 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 50px;
+
+  .head-of-department__info__photo {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+  }
+
+  .head-of-department__info__name {
+    margin-bottom: 15px;
+  }
+
+  .head-of-department__info__contacts {
+    font-size: 18px;
+    line-height: 1;
+  }
+}
+
 .card {
   background: #ffffff;
   border-radius: 6px;

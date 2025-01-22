@@ -46,6 +46,10 @@ import {
   HistoryOfDepartmentComponent
 } from '@app/views/uits/public/about/history-of-department/history-of-department.component';
 import {ContributorsComponent} from './contributors/contributors.component';
+import { GeneralComponent } from './employee/teachers/teacher/components/general/general.component';
+import { ManagementComponent } from './employee/teachers/teacher/components/management/management.component';
+import { PublicationsTeacherComponent } from './employee/teachers/teacher/components/publications/publications-teacher.component';
+import { AchievementsTeacherComponent } from './employee/teachers/teacher/components/achievements/achievements-teacher.component';
 
 registerLocaleData(localeRu);
 
@@ -83,7 +87,11 @@ class CustomDateFormatter extends CalendarNativeDateFormatter {
     ScheduleComponent,
     DisciplinesComponent,
     HistoryOfDepartmentComponent,
-    ContributorsComponent
+    ContributorsComponent,
+    GeneralComponent,
+    ManagementComponent,
+    PublicationsTeacherComponent,
+    AchievementsTeacherComponent
   ],
   exports: [
     PostActionsComponent,

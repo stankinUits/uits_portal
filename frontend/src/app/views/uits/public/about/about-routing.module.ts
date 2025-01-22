@@ -17,7 +17,19 @@ import {
   HistoryOfDepartmentComponent
 } from '@app/views/uits/public/about/history-of-department/history-of-department.component';
 import {ContributorsComponent} from '@app/views/uits/public/about/contributors/contributors.component';
-import {CustomPageComponent} from "@app/views/uits/public/custom-page/custom-page.component";
+import {CustomPageComponent} from '@app/views/uits/public/custom-page/custom-page.component';
+import {
+  ManagementComponent
+} from '@app/views/uits/public/about/employee/teachers/teacher/components/management/management.component';
+import {
+  GeneralComponent
+} from '@app/views/uits/public/about/employee/teachers/teacher/components/general/general.component';
+import {
+  PublicationsTeacherComponent
+} from '@app/views/uits/public/about/employee/teachers/teacher/components/publications/publications-teacher.component';
+import {
+  AchievementsTeacherComponent
+} from '@app/views/uits/public/about/employee/teachers/teacher/components/achievements/achievements-teacher.component';
 
 const routes: Routes = [
   {path: 'news', component: NewsComponent},
@@ -25,9 +37,21 @@ const routes: Routes = [
   {path: 'announcements', component: AnnouncementsComponent},
   {path: 'announcements/:id', component: AnnouncementPostComponent},
   {path: 'employee/teachers', component: TeachersComponent},
-  {path: 'employee/teachers/:id', component: TeacherComponent},
-  {path: 'employee/teachers/schedule/:id', component: ScheduleComponent},
-  {path: 'employee/teachers/schedule/:id/disciplines', component: DisciplinesComponent},
+  {
+    path: 'employee/teachers/:id',
+    component: TeacherComponent,
+    children: [
+      {path: '', redirectTo: 'general', pathMatch: 'full'},
+      {path: 'general', component: GeneralComponent},
+      {path: 'schedule', component: ScheduleComponent},
+      {path: 'disciplines', component: DisciplinesComponent},
+      {path: 'management', component: ManagementComponent},
+      {path: 'publications', component: PublicationsTeacherComponent},
+      {path: 'achievements', component: AchievementsTeacherComponent},
+    ]
+  },
+  // {path: 'employee/teachers/schedule/:id', component: ScheduleComponent},
+  // {path: 'employee/teachers/schedule/:id/disciplines', component: DisciplinesComponent},
   {path: 'employee/uvp', component: UVPComponent},
   {path: 'fields-of-study', component: FieldsOfStudyComponent},
   {path: 'documents/department', component: DepartmentComponent},

@@ -1,76 +1,37 @@
 <ng-container *ngIf="teacher$ | async as teacher; else loading">
-  <ng-container *ngTemplateOutlet="title; context: { teacher }"></ng-container>
+
+  <h2>{{ fullName }}</h2>
+
   <div>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link" href="#">Общая информация</a>
+            <a class="nav-link" routerLink="general" routerLinkActive="active">Общая информация</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" (click)="goToSchedule(teacher.id)">Расписание</a>
+            <a class="nav-link" routerLink="schedule" routerLinkActive="active">Расписание</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Дисциплины</a>
+            <a class="nav-link" routerLink="disciplines" routerLinkActive="active">Дисциплины</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Руководство</a>
+            <a class="nav-link" routerLink="management" routerLinkActive="active">Руководство</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Публикации</a>
+            <a class="nav-link" routerLink="publications" routerLinkActive="active">Публикации</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Достижения</a>
+            <a class="nav-link" routerLink="achievements" routerLinkActive="active">Достижения</a>
           </li>
         </ul>
       </div>
     </nav>
-
-    <div class="row">
-      <div class="col-md-4">
-        <img [src]="avatar"
-             class="avatar mb-3"
-             style="width: 10rem; height: 10rem"
-             alt="{{fullName}}">
-      </div>
-      <div class="col-md-8">
-        <div class="row">
-          <div class="col-md-6">
-            <h5>Общая информация</h5>
-            <p><b>Полное имя</b>: {{fullName}}</p>
-            <p><b>Должность</b>: {{position}}</p>
-            <p><b>Ученая степень</b>: {{degree}}</p>
-            <p><b>Ученое звание</b>: {{rank}}</p>
-            <p><b>Общий стаж работы</b>: {{experience}}</p>
-            <p><b>Стаж работы по специальности</b>: {{professional_experience}}</p>
-          </div>
-          <div class="col-md-6">
-            <h5>Контакты</h5>
-            <p><b>Телефон</b>: {{teacher.phone_number}}</p>
-            <p><b>Почта</b>: {{teacher.email}}</p>
-            <p><b>Мессенджер</b>: {{teacher.messenger}}</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div>
-      <h5>Образование</h5>
-      <p *ngIf="teacher.education">{{ teacher.education }}</p>
-      <h5>Данные о повышении квалификации и (или) профессиональной переподготовке (за последние 5 лет)</h5>
-      <p>{{ teacher.qualification }}</p>
-    </div>
-    <div>
-      <h5>Биография</h5>
-      <p *ngIf="teacher.bio">{{ teacher.bio }}</p>
-    </div>
   </div>
+
+  <router-outlet></router-outlet>
 
 </ng-container>
 <ng-template #loading>
   Загрузка
-</ng-template>
-
-<ng-template #title let-teacher="teacher">
-  <h2 class="mb-3">{{shortName}}</h2>
 </ng-template>

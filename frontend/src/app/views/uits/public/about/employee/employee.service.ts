@@ -73,12 +73,6 @@ export class EmployeeService {
   }
 
   retrieveDisciplines(teacherId: number): Observable<Discipline[]> {
-    return this.http.get<Discipline[]>(ApiConfig.department.employee.teacher.subject.retrieve(teacherId));
-  }
-
-  importDisciplines(teacherId: number, file: File): Observable<any> {
-    const formData = new FormData();
-    formData.append('file', file);
-    return this.http.post(ApiConfig.department.employee.teacher.subject.import(teacherId), formData);
+    return this.http.get<Discipline[]>(ApiConfig.department.employee.teacher.subject.disciplines(teacherId));
   }
 }
