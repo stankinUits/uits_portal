@@ -72,12 +72,12 @@ export const nav = {
         DISCIPLINES: 'Дисциплины'
       },
       SCHEDULES: {
-        TITLE: "Расписания",
+        TITLE: 'Расписания',
         SUMMARY: {
-          TITLE: "Сводное расписание преподавателей",
+          TITLE: 'Сводное расписание преподавателей',
         },
         EXAMS: {
-          TITLE: "Расписание экзаменов"
+          TITLE: 'Расписание экзаменов'
         }
       }
     },
@@ -102,12 +102,12 @@ export const nav = {
       SCIENTIFIC_WORK: 'Научная работа',
       CONFERENCES: 'Конференции',
       ACHIEVEMENTS: {
-        TITLE: 'Достижения'
+        TITLE: 'Достижения кафедры'
       }
     },
     PROFILE: {
       PROFILE: 'Личный кабинет',
-      ADMIN: 'Админская панель',
+      ADMIN: 'Админ-панель',
       SIGN_OUT: 'Выход'
     },
     RETURN: 'Вернуться'

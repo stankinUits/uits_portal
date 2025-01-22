@@ -38,6 +38,7 @@ export const ApiConfig = {
         subject: {
           disciplines: (teacherId: number) => `api/department/employee/teachers/${teacherId}/subject`
         },
+        achievements: (teacherId: number) => `api/department/achievements/teacher/${teacherId}/`,
       },
     },
   },
