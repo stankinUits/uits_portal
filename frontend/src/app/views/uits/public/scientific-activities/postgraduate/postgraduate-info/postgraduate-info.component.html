@@ -1,1 +1,26 @@
-<p>postgraduate-info works!</p>
+<app-editable-content page="postgraduate"></app-editable-content>
+
+<div class="table-container mt-5">
+  <table>
+    <thead>
+      <tr>
+        <th>№</th>
+        <th>Студент</th>
+        <th>Тема диплома</th>
+        <th>Специальность</th>
+        <th>Год поступления</th>
+        <th>Преподаватель</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let student of students; let i = index">
+        <td>{{ i + 1}}</td>
+        <td>{{ student.student.full_name }}</td>
+        <td>{{ student.student.diploma_theme }}</td>
+        <td>{{ student.student.speciality }}</td>
+        <td>{{ student.student.admission_year }}</td>
+        <td>{{ student.teacher.full_name }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -12,6 +12,7 @@ export const ApiConfig = {
     logout: 'api/users/auth/logout/',
   },
   department: {
+    postgraduate: 'api/department/postgraduate',
     news: {
       posts: 'api/department/news/posts/',
       announcements: 'api/department/news/announcements/',

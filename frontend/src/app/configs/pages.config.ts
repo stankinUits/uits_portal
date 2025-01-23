@@ -36,11 +36,12 @@ export const PagesConfig = {
     }
   },
   scientificActivities: {
-    postgraduate: {
-      practices: sciActivitiesPrefix + '/postgraduate/practices',
-      specialties: sciActivitiesPrefix + '/postgraduate/specialties',
-      dissertations: sciActivitiesPrefix + '/postgraduate/dissertations',
-    },
+    // postgraduate: {
+    //   practices: sciActivitiesPrefix + '/postgraduate/practices',
+    //   specialties: sciActivitiesPrefix + '/postgraduate/specialties',
+    //   dissertations: sciActivitiesPrefix + '/postgraduate/dissertations',
+    // },
+    postgraduate: sciActivitiesPrefix + '/postgraduate',
     conferences: sciActivitiesPrefix + '/conferences',
     publications: sciActivitiesPrefix + '/publications',
     scientificWork: sciActivitiesPrefix + '/scientific-work',

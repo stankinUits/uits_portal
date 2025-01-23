@@ -288,7 +288,7 @@ const scientificActivity: NavMenu[] = [
     key: 'scientificActivity',
     submenu: [
       {
-        path: PagesConfig.editable('scientific-activity-postgraduate'),
+        path: PagesConfig.scientificActivities.postgraduate,
         title: 'ScientificActivity/PostGraduate',
         translateKey: 'NAV.SCIENTIFIC_ACTIVITY.POST_GRADUATE.TITLE',
         type: 'item',
