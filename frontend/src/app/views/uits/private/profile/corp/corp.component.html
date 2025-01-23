@@ -1,6 +1,15 @@
 <div class="corporate-container">
-  <nav class="corporate-menu">
-    <h1>Корпоративный портал</h1>
+  <nav class="corporate-menu" [class.collapsed]="isCollapsed">
+    <div class="menu-header__wrapper">
+      <button *ngIf="!isCollapsed" class="toggle-btn" (click)="toggleMenu()">
+        <i class="feather icon-chevrons-left"></i>
+      </button>
+      <button *ngIf="isCollapsed" class="toggle-btn" (click)="toggleMenu()">
+        <i class="feather icon-chevrons-right"></i>
+      </button>
+      <h1 class="menu-header">Корпоративный портал</h1>
+    </div>
+
     <ul>
       <li *ngFor="let menuItem of corporateMenu">
         <a
@@ -8,10 +17,13 @@
           routerLinkActive="active"
         >
           <i class="{{menuItem.icon}}"></i>
-          {{ menuItem.title }}
+          <span class="menu-item-text">
+            {{ menuItem.title }}
+          </span>
         </a>
       </li>
     </ul>
+
     <button class="go-back-btn" (click)="navigateToHome()">
       <i class="feather icon-arrow-left go-back-btn__icon"></i>
       <span class="go-back-btn__text">Информационная часть</span>

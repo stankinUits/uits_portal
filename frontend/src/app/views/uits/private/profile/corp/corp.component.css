@@ -4,6 +4,28 @@
   gap: 5rem;
 }
 
+.menu-header__wrapper{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.menu-header {
+  color: #11a1fd !important;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-direction: column;
+}
+
+.menu-header h1 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #2c3e50;
+  margin: 0;
+}
+
 .corporate-menu {
   width: 250px;
   background-color: #ffffff;
@@ -12,6 +34,11 @@
   padding: 20px;
   font-family: Arial, sans-serif;
   border-radius: 6px;
+  transition: width 0.3s ease;
+}
+
+.corporate-menu.collapsed {
+  width: 80px;
 }
 
 .corporate-menu h1 {
@@ -50,6 +77,49 @@
 .corporate-menu ul li a.active {
   /*background-color: #007bff;*/
   color: #007bff;
+}
+
+.corporate-menu ul li a i {
+  margin-right: 10px;
+  color: #2c3e50;
+  width: 20px;
+  text-align: center;
+}
+
+.corporate-menu.collapsed .menu-item-text {
+  display: none;
+}
+
+.corporate-menu.collapsed .menu-header {
+  display: none;
+}
+
+.corporate-menu.collapsed .go-back-btn__text {
+  display: none;
+}
+
+.corporate-menu.collapsed .go-back-btn__icon {
+  width: 8px;
+}
+
+.toggle-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #2c3e50;
+  font-size: 1.2rem;
+  padding: 5px;
+}
+
+.toggle-btn:hover {
+  color: #1abc9c;
+}
+
+.corporate-content {
+  flex-grow: 1;
+  padding: 20px;
+  overflow-y: auto;
+  transition: margin-left 0.3s ease;
 }
 
 .go-back-btn {

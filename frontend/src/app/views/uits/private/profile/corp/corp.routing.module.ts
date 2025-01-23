@@ -15,16 +15,23 @@ const routes: Routes = [
       {
         path: '',
         redirectTo: 'personal',
-        pathMatch: 'full'},
+        pathMatch: 'full',
+      },
       {
         path: 'personal',
         component: PersonalComponent,
-        data: {hidePageHeader: true},
+        data: {
+          hidePageHeader: true,
+          canActivate: [AuthGuard],
+        },
       },
       {
         path: 'calendar',
         component: EventsComponent,
-        data: {hidePageHeader: true},
+        data: {
+          hidePageHeader: true,
+          canActivate: [AuthGuard],
+        },
       },
     ]
   },

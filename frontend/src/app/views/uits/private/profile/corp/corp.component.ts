@@ -21,6 +21,7 @@ export class CorporateComponent implements OnInit {
   corporateMenu: CorporateMenu[] = [];
   isTeacher = false;
   isMobile = false;
+  isCollapsed = false;
   isMobilePanelOpen = false;
   currentPanel = 'default';
 
@@ -53,6 +54,10 @@ export class CorporateComponent implements OnInit {
 
   navigateToHome(): void {
     this.router.navigate(['/home']);
+  }
+
+  toggleMenu() {
+    this.isCollapsed = !this.isCollapsed;
   }
 
   // Метод для проверки, находится ли пользователь на корпоративной странице
