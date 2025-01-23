@@ -3,7 +3,10 @@
     <h1>Корпоративный портал</h1>
     <ul>
       <li *ngFor="let menuItem of corporateMenu">
-        <a [routerLink]="menuItem.route">
+        <a
+          [routerLink]="menuItem.route"
+          routerLinkActive="active"
+        >
           <i class="{{menuItem.icon}}"></i>
           {{ menuItem.title }}
         </a>

@@ -48,8 +48,8 @@
 }
 
 .corporate-menu ul li a.active {
-  background-color: #1abc9c;
-  color: white;
+  /*background-color: #007bff;*/
+  color: #007bff;
 }
 
 .go-back-btn {
