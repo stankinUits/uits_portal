@@ -10,7 +10,7 @@ import { EventsComponent } from '../events/events.component';
 import { ColumnPanelModule } from '@app/shared/components/column-panel/column-panel.module';
 import { RadioModule } from '@app/shared/components/radio/radio.module';
 import { NgBootstrapFormValidationModule } from 'ng-bootstrap-form-validation';
-import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import {BsDatepickerModule, BsLocaleService} from 'ngx-bootstrap/datepicker';
 import { UploadModule } from '@app/shared/components/upload/upload.module';
 import { SwitchModule } from '@app/shared/components/switch/switch.module';
 import { ToastrModule } from 'ngx-toastr';
@@ -30,6 +30,8 @@ import { defineLocale } from 'ngx-bootstrap/chronos';
 import { ruLocale } from 'ngx-bootstrap/locale';
 import {CheckboxModule} from '@app/shared/components/checkbox/checkbox.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+defineLocale('ru', ruLocale);
 
 @NgModule({
   declarations: [
@@ -74,4 +76,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
   ]
 })
-export class CorporateModule {}
+export class CorporateModule {
+  constructor(private localeService: BsLocaleService) {
+    this.localeService.use('ru');
+  }
+}
