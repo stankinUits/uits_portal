@@ -116,7 +116,8 @@ export class EventsComponent implements OnInit {
       dateStartEnd: [getDefaultDateStartEnd(), Validators.required],
       startTime: [getDefaultStartTime(),],
       endTime: [getDefaultEndTime(),],
-      notificationFrequency: ["never"],
+      notificationFrequency: ["none"],
+      status: ["not_started"],
       allDay: [false],
       color: [DEFAULT_EVENT_COLOR, Validators.required],
       assignedUsers: [[], Validators.required],
@@ -184,6 +185,7 @@ export class EventsComponent implements OnInit {
       startedAt: start.toISOString(),
       endedAt: end.toISOString(),
       notificationFrequency: rawData.notificationFrequency,
+      status: rawData.status,
       allDay: rawData.allDay,
       assignedUsers: (this.isTeacherProfile(profile)) ? [profile.pk] : rawData.assignedUsers,
       color: rawData.color,
@@ -202,7 +204,8 @@ export class EventsComponent implements OnInit {
       dateStartEnd: getDefaultDateStartEnd(),
       startTime: getDefaultStartTime(),
       endTime: getDefaultEndTime(),
-      notificationFrequency: "never",
+      notificationFrequency: "none",
+      status: "not_started",
       color: DEFAULT_EVENT_COLOR,
       description: '',
       assignedUsers: [],
@@ -299,7 +302,8 @@ export class EventsComponent implements OnInit {
               return founded[0]
             }),
             owner: ev.user,
-            notificationFrequency: ev.notificationFrequency
+            notificationFrequency: ev.notificationFrequency,
+            status: ev.status
           }
         }
       }));
@@ -337,6 +341,7 @@ export class EventsComponent implements OnInit {
       startTime: data.start,
       endTime: data.end,
       notificationFrequency: data.meta.notificationFrequency,
+      status: data.meta.status,
       color: data.color.primary,
       allDay: data.allDay,
       description: data.meta.description,
@@ -376,13 +381,15 @@ export class EventsComponent implements OnInit {
   }
 
   confirmNotifification() {
-    this.telegramService.userEventNotify(this.confirmNotificationEventId).subscribe(ok => {
-      this.alertService.add("Уведомление отправлено", 'success');
-      this.modalNotifyConfirmRef.hide();
-    }, err => {
-      this.alertService.add("Ошибка... Что то пошло не так", 'danger');
-      this.modalNotifyConfirmRef.hide();
-    })
+    if (this.confirmNotificationEventId !== null) {
+      this.telegramService.userEventNotify(this.confirmNotificationEventId).subscribe(ok => {
+        this.alertService.add("Уведомление отправлено", 'success');
+        this.modalNotifyConfirmRef.hide();
+      }, err => {
+        this.alertService.add("Ошибка... Что то пошло не так", 'danger');
+        this.modalNotifyConfirmRef.hide();
+      })
+    }
   }
 
   declineNotifification() {
