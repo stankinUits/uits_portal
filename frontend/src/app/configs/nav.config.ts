@@ -39,8 +39,8 @@ const about: NavMenu[] = [
         title: 'News',
         translateKey: 'NAV.NEWS',
         type: 'item',
-        iconType: 'feather',
-        icon: 'icon-globe',
+        iconType: 'line-awesome',
+        icon: 'la-newspaper',
         key: 'about/news',
         submenu: []
       },
@@ -142,8 +142,8 @@ const about: NavMenu[] = [
         title: 'Contributors',
         translateKey: 'NAV.CONTRIBUTORS',
         type: 'item',
-        iconType: 'feather',
-        icon: 'icon-heart-on',
+        iconType: 'line-awesome',
+        icon: 'la la-gratipay',
         key: 'about/contributors',
         submenu: []
       }
@@ -166,8 +166,8 @@ const educationActivities: NavMenu[] = [
         title: 'Bachelor',
         translateKey: 'NAV.EDUCATION_ACTIVITIES.BACHELOR.TITLE',
         type: 'item',
-        iconType: 'feather',
-        icon: 'icon-file',
+        iconType: 'line-awesome',
+        icon: 'la la-school',
         key: 'bachelor',
         submenu: [
           {
@@ -175,8 +175,8 @@ const educationActivities: NavMenu[] = [
             title: 'StudyPlan',
             translateKey: 'NAV.EDUCATION_ACTIVITIES.BACHELOR.STUDY_PLAN',
             type: 'item',
-            iconType: 'feather',
-            icon: 'icon-file',
+            iconType: 'line-awesome',
+            icon: 'la la-clipboard-list',
             key: 'studyPlan',
             submenu: []
           },
@@ -185,8 +185,8 @@ const educationActivities: NavMenu[] = [
             title: 'Graduation',
             translateKey: 'NAV.EDUCATION_ACTIVITIES.BACHELOR.GRADUATION.TITLE',
             type: 'item',
-            iconType: 'feather',
-            icon: 'icon-file',
+            iconType: 'line-awesome',
+            icon: 'la la-graduation-cap',
             key: 'graduation',
             submenu: []
           },
@@ -195,8 +195,8 @@ const educationActivities: NavMenu[] = [
             title: 'Practices',
             translateKey: 'NAV.EDUCATION_ACTIVITIES.BACHELOR.PRACTICES.TITLE',
             type: 'item',
-            iconType: 'feather',
-            icon: 'icon-file',
+            iconType: 'line-awesome',
+            icon: 'la la-file-code',
             key: 'practices',
             submenu: []
           }
@@ -207,8 +207,8 @@ const educationActivities: NavMenu[] = [
         title: 'Magistracy',
         translateKey: 'NAV.EDUCATION_ACTIVITIES.MAGISTRACY.TITLE',
         type: 'item',
-        iconType: 'feather',
-        icon: 'icon-file',
+        iconType: 'line-awesome',
+        icon: 'la la-landmark',
         key: 'magistracy',
         submenu: [
           {
@@ -216,8 +216,8 @@ const educationActivities: NavMenu[] = [
             title: 'StudyPlan',
             translateKey: 'NAV.EDUCATION_ACTIVITIES.BACHELOR.STUDY_PLAN',
             type: 'item',
-            iconType: 'feather',
-            icon: 'icon-file',
+            iconType: 'line-awesome',
+            icon: 'la la-clipboard-list',
             key: 'studyPlan',
             submenu: []
           },
@@ -226,8 +226,8 @@ const educationActivities: NavMenu[] = [
             title: 'Graduation',
             translateKey: 'NAV.EDUCATION_ACTIVITIES.BACHELOR.GRADUATION.TITLE',
             type: 'item',
-            iconType: 'feather',
-            icon: 'icon-file',
+            iconType: 'line-awesome',
+            icon: 'la la-graduation-cap',
             key: 'graduation',
             submenu: []
           },
@@ -236,8 +236,8 @@ const educationActivities: NavMenu[] = [
             title: 'Practices',
             translateKey: 'NAV.EDUCATION_ACTIVITIES.BACHELOR.PRACTICES.TITLE',
             type: 'item',
-            iconType: 'feather',
-            icon: 'icon-file',
+            iconType: 'line-awesome',
+            icon: 'la la-file-code',
             key: 'practices',
             submenu: []
           }
@@ -284,7 +284,7 @@ const scientificActivity: NavMenu[] = [
     translateKey: 'NAV.SCIENTIFIC_ACTIVITY.TITLE',
     type: 'title',
     iconType: 'feather',
-    icon: 'icon-search',
+    icon: 'feather icon-briefcase',
     key: 'scientificActivity',
     submenu: [
       {
@@ -292,8 +292,8 @@ const scientificActivity: NavMenu[] = [
         title: 'ScientificActivity/PostGraduate',
         translateKey: 'NAV.SCIENTIFIC_ACTIVITY.POST_GRADUATE.TITLE',
         type: 'item',
-        iconType: 'feather',
-        icon: 'icon-briefcase',
+        iconType: 'line-awesome',
+        icon: 'la la-user-graduate',
         key: 'scientificActivity/postGraduate',
         submenu: []
       },
@@ -302,8 +302,8 @@ const scientificActivity: NavMenu[] = [
         title: 'SciencePublications',
         translateKey: 'NAV.SCIENTIFIC_ACTIVITY.SCIENTIFIC_PUBLICATIONS.TITLE',
         type: 'item',
-        iconType: 'feather',
-        icon: 'icon-briefcase',
+        iconType: 'line-awesome',
+        icon: 'la la-book',
         key: 'sciencePublications',
         submenu: []
       },
@@ -312,8 +312,8 @@ const scientificActivity: NavMenu[] = [
         title: 'Achievements',
         translateKey: 'NAV.SCIENTIFIC_ACTIVITY.ACHIEVEMENTS.TITLE',
         type: 'item',
-        iconType: 'feather',
-        icon: 'icon-award',
+        iconType: 'line-awesome',
+        icon: 'la la-trophy',
         key: 'scientificActivity/achievements',
         submenu: []
       }
