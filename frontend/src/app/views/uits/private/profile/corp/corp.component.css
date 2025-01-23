@@ -79,6 +79,10 @@
   color: #007bff;
 }
 
+.corporate-menu ul li a.active i {
+  color: #007bff;
+}
+
 .corporate-menu ul li a i {
   margin-right: 10px;
   color: #2c3e50;
