@@ -1,3 +1,9 @@
+.corporate-container {
+  display: flex;
+  height: 100%;
+  gap: 5rem;
+}
+
 .corporate-menu {
   width: 250px;
   background-color: #ffffff;

@@ -50,8 +50,6 @@ const routes: Routes = [
       {path: 'achievements', component: AchievementsTeacherComponent},
     ]
   },
-  // {path: 'employee/teachers/schedule/:id', component: ScheduleComponent},
-  // {path: 'employee/teachers/schedule/:id/disciplines', component: DisciplinesComponent},
   {path: 'employee/uvp', component: UVPComponent},
   {path: 'fields-of-study', component: FieldsOfStudyComponent},
   {path: 'documents/department', component: DepartmentComponent},

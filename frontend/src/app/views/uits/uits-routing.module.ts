@@ -35,25 +35,6 @@ const routes: Routes = [
     path: 'corp',
     loadChildren: () => import('@app/views/uits/private/profile/corp/corp.module').then(m => m.CorporateModule),
   }
-  // {
-  //   path: 'corp',
-  //   component: CorporateComponent,
-  //   children: [
-  //     {
-  //       path: 'page/:slug',
-  //       component: CustomPageComponent
-  //     },
-  //     {
-  //       path: 'profile',
-  //       component: PersonalComponent,
-  //     },
-  //     {
-  //       path: 'calendar',
-  //       component: EventsComponent,
-  //     },
-  //     { path: 'test', component: DisciplinesComponent }, // Test route for DisciplinesComponent
-  //   ]
-  // },
 ];
 
 @NgModule({

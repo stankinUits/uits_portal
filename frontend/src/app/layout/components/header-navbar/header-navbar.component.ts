@@ -34,7 +34,6 @@ export class HeaderNavbarComponent implements OnInit {
         this.router.events.pipe(
             filter(event => event instanceof NavigationEnd)
         ).subscribe(() => {
-            console.log('Обновляем видимость меню после изменения маршрута: ', this.router.url);
             this.updateMenuVisibility();
         });
     }
@@ -44,10 +43,8 @@ export class HeaderNavbarComponent implements OnInit {
         this.isProfilePage = this.router.url.startsWith('/corp');
 
         if (this.isProfilePage) {
-            console.log('Корпоративный портал: скрываем меню');
             this.menu = []; // Очистка меню
         } else {
-            console.log('Обычная страница: показываем меню');
             this.menu = navConfiguration; // Установка стандартной конфигурации меню
         }
 
