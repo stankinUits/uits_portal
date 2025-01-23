@@ -1,26 +1,31 @@
+<h1>Аспирантура</h1>
+
 <app-editable-content page="postgraduate"></app-editable-content>
 
-<div class="table-container mt-5">
-  <table>
-    <thead>
-      <tr>
-        <th>№</th>
-        <th>Студент</th>
-        <th>Тема диплома</th>
-        <th>Специальность</th>
-        <th>Год поступления</th>
-        <th>Преподаватель</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let student of students; let i = index">
-        <td>{{ i + 1}}</td>
-        <td>{{ student.student.full_name }}</td>
-        <td>{{ student.student.diploma_theme }}</td>
-        <td>{{ student.student.speciality }}</td>
-        <td>{{ student.student.admission_year }}</td>
-        <td>{{ student.teacher.full_name }}</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+<h3>Аспиранты, руководители и специальности</h3>
+<input
+    #searchInput
+    type="text"
+    class="form-control mb-3"
+    placeholder="Введите для поиска..."
+    (keyup)="search(searchInput.value)"
+/>
+<ngx-datatable
+    #table
+    [columns]="columns"
+    columnMode="force"
+    [headerHeight]="50"
+    [footerHeight]="0"
+    rowHeight="auto"
+    [rows]="rows"
+>
+  <ngx-datatable-column
+    name="№"
+    [sortable]="false"
+    [cellTemplate]="indexColumnTemplate">
+  </ngx-datatable-column>
+</ngx-datatable>
+
+<ng-template #indexColumnTemplate let-rowIndex="rowIndex">
+  {{ rowIndex + 1 }}
+</ng-template>

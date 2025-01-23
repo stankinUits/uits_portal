@@ -24,7 +24,8 @@ import { EditAuthorPublicationPageComponent }
   from '../scientific-publications/pages/edit-author-publication-page/edit-author-publication-page.component';
 import {QuillViewComponent} from 'ngx-quill';
 import {EditButtonComponent} from '@app/shared/components/edit-button/edit-button.component';
-import {CreateButtonComponent} from "@app/shared/components/create-button/create-button.component";
+import {CreateButtonComponent} from '@app/shared/components/create-button/create-button.component';
+import {NgxDatatableModule} from '@swimlane/ngx-datatable';
 
 @NgModule({
   declarations: [
@@ -39,14 +40,15 @@ import {CreateButtonComponent} from "@app/shared/components/create-button/create
     AchievementDetailComponent
 
   ],
-  imports: [
-    CommonModule,
-    ScientificActivitiesRoutingModule,
-    LayoutModule,
-    MarkdownModule.forRoot(),
-    QuillViewComponent,
-    EditButtonComponent,
-    CreateButtonComponent
-  ]
+    imports: [
+        CommonModule,
+        ScientificActivitiesRoutingModule,
+        LayoutModule,
+        MarkdownModule.forRoot(),
+        QuillViewComponent,
+        EditButtonComponent,
+        CreateButtonComponent,
+        NgxDatatableModule
+    ]
 })
 export class ScientificActivitiesModule { }

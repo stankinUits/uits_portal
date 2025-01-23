@@ -1,7 +1,7 @@
 .corporate-container {
   display: flex;
   height: 100%;
-  gap: 5rem;
+  gap: 2rem;
 }
 
 .menu-header__wrapper{
@@ -102,8 +102,10 @@
   display: none;
 }
 
-.corporate-menu.collapsed .go-back-btn__icon {
+.corporate-menu.collapsed .go-back-btn {
   width: 8px;
+  background-color: white;
+  margin-left: 2px;
 }
 
 .toggle-btn {
