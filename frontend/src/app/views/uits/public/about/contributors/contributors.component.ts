@@ -1,5 +1,7 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {Contributor} from '@app/shared/types/models/contributor.interface';
+import {AVATAR_DEFAULT_URL} from '@app/configs/app.config';
+
 
 @Component({
   selector: 'app-contributors',
@@ -26,7 +28,7 @@ export class ContributorsComponent implements OnInit {
       id: 3,
       name: 'Ерин Сергей',
       description: 'Разработчик',
-      image: 'fdg',
+      image: AVATAR_DEFAULT_URL,
     },
     {
       id: 4,
@@ -62,7 +64,7 @@ export class ContributorsComponent implements OnInit {
       id: 9,
       name: 'Шостов Дмитрий',
       description: 'Backend-разработчик',
-      image: 'fdg',
+      image: AVATAR_DEFAULT_URL,
     },
     {
       id: 10,
@@ -74,43 +76,43 @@ export class ContributorsComponent implements OnInit {
       id: 11,
       name: 'Мокроусова Лариса',
       description: 'Frontend-разработчик',
-      image: 'fdg',
+      image: AVATAR_DEFAULT_URL,
     },
     {
       id: 12,
       name: 'Станьков Дмитрий',
       description: 'Frontend-разработчик',
-      image: 'fdg',
+      image: AVATAR_DEFAULT_URL,
     },
     {
       id: 13,
       name: 'Бадян Ксения',
       description: 'Frontend-разработчик',
-      image: 'fdg',
+      image: AVATAR_DEFAULT_URL,
     },
     {
       id: 14,
       name: 'Бадян Анастасия',
       description: 'Frontend-разработчик',
-      image: 'fdg',
+      image: AVATAR_DEFAULT_URL,
     },
     {
       id: 15,
       name: 'Золотухин Иван',
       description: 'Fullstack-разработчик',
-      image: 'fdg',
+      image: AVATAR_DEFAULT_URL,
     },
     {
       id: 16,
       name: 'Мальцев Тимофей',
       description: 'Backend-разработчик',
-      image: 'fdg',
+      image: AVATAR_DEFAULT_URL,
     },
     {
       id: 17,
       name: 'Вьев Сергей',
       description: 'Backend-разработчик',
-      image: 'fdg',
+      image: AVATAR_DEFAULT_URL,
     },
   ];
 

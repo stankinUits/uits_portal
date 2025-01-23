@@ -4,10 +4,11 @@
   margin: 0;
   width: 100%;
   max-width: 600px;
+  transition: transform 0.2s ease-in-out;
 }
 
 .subject-item li {
-  /*background-color: #f9f9f9;*/
+  background-color: white;
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 15px 20px;
@@ -18,10 +19,6 @@
   cursor: pointer;
 }
 
-/*.subject-item li:hover {*/
-/*  background-color: #e0f7fa;*/
-/*  border-color: #00bcd4;*/
-/*  transform: translateY(-2px);*/
-/*  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
-/*}*/
-
+.subject-item:hover {
+  transform: scale(1.02);
+}

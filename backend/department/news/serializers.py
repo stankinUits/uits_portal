@@ -2,6 +2,8 @@ from dj_rest_auth.app_settings import api_settings
 from rest_framework import serializers
 
 from .models import Post
+from .models import ConferenceAnnouncement
+
 
 
 class ListPostSerializer(serializers.ModelSerializer):
@@ -34,3 +36,11 @@ class CreatePostSerializer(serializers.ModelSerializer):
         fields = ['title', 'short_description',
                   'content', 'preview_image',
                   'author', 'display']
+
+
+class ConferenceAnnouncementSerializer(serializers.ModelSerializer):
+    content = serializers.CharField(source='content.html')
+
+    class Meta:
+        model = ConferenceAnnouncement
+        fields = '__all__'

@@ -1,5 +1,5 @@
 :host ::ng-deep ngx-datatable .datatable-header-cell {
-  color: #11a1fd;
+  color: #007bff;
 }
 
 :host ::ng-deep ngx-datatable .datatable-header-cell:nth-child(1),

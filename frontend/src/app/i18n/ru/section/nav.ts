@@ -100,7 +100,7 @@ export const nav = {
         TITLE: 'Научные публикации'
       },
       SCIENTIFIC_WORK: 'Научная работа',
-      CONFERENCES: 'Конференции',
+      CONFERENCES: 'Объявления о конференциях',
       ACHIEVEMENTS: {
         TITLE: 'Достижения кафедры'
       }

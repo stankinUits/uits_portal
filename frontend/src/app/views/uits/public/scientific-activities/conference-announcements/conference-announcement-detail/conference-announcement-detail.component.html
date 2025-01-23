@@ -1,0 +1,47 @@
+<div class="announcement-detail">
+  <!-- Кнопки управления -->
+  <div class="controls">
+<!--    <button class="go-back-btn" (click)="goBack()">-->
+<!--      <span class="arrow">&#8592;</span> Вернуться назад-->
+<!--    </button>-->
+<!--    <app-edit-button (edit)="redirectToEditPage()"></app-edit-button>-->
+  </div>
+
+  <!-- Контент объявления -->
+  <div *ngIf="conference$ | async as conference" class="announcement-content">
+    <!-- Изображение объявления -->
+    <div class="announcement-image">
+      <img [src]="conference?.preview_image" [alt]="conference?.preview_image_description" />
+    </div>
+
+    <!-- Детали объявления -->
+    <div class="announcement-details">
+      <h1>{{ conference?.title }}</h1>
+      <div [innerHTML]="conference?.content"></div>
+
+      <!-- Дополнительная информация -->
+      <div class="announcement-footer">
+        <div *ngIf="conference?.start_date && conference?.end_date">
+          <strong>Даты проведения:</strong>
+          {{ conference?.start_date | date: 'dd.MM.yyyy' }} - {{ conference?.end_date | date: 'dd.MM.yyyy' }}
+        </div>
+        <div *ngIf="conference?.time">
+          <strong>Время:</strong> {{ conference?.time }}
+        </div>
+        <div *ngIf="conference?.organizer">
+          <strong>Организатор:</strong> {{ conference?.organizer }}
+        </div>
+        <div *ngIf="conference?.contact_email || conference?.contact_phone">
+          <strong>Контакты:</strong>
+          <a *ngIf="conference?.contact_email" [href]="'mailto:' + conference?.contact_email">
+            {{ conference?.contact_email }}
+          </a>
+          <span *ngIf="conference?.contact_phone">, {{ conference?.contact_phone }}</span>
+        </div>
+        <div>
+          <strong>Дата создания:</strong> {{ conference?.created_at | date: 'dd.MM.yyyy' }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

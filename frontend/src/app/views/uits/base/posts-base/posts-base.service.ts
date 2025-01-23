@@ -1,15 +1,15 @@
-import {BehaviorSubject, map, Observable} from "rxjs";
-import {Pagination} from "@app/shared/types/paginate.interface";
-import {ListPost, Post} from "@app/shared/types/models/news";
-import {HttpClient} from "@angular/common/http";
-import {Snaked} from "@app/shared/utils/SnakeToCamelCase";
-import {ApiConfig} from "@app/configs/api.config";
+import {BehaviorSubject, map, Observable} from 'rxjs';
+import {Pagination} from '@app/shared/types/paginate.interface';
+import {ListPost, Post} from '@app/shared/types/models/news';
+import {HttpClient} from '@angular/common/http';
+import {Snaked} from '@app/shared/utils/SnakeToCamelCase';
+import {ApiConfig} from '@app/configs/api.config';
 
-type PostType = 'ANNOUNCEMENTS' | 'NEWS'
+type PostType = 'ANNOUNCEMENTS' | 'NEWS';
 
 export class PostsBaseService {
-  page: number = 1;
-  type: PostType = 'NEWS'
+  page = 1;
+  type: PostType = 'NEWS';
   paginatedResponse$: BehaviorSubject<Pagination<ListPost>>;
 
 
@@ -22,7 +22,7 @@ export class PostsBaseService {
       params: {limit: _limit ? _limit : 10, offset: _offset ? _offset : 0}
     }).pipe(
       map(response => {
-        const _posts = response.results
+        const _posts = response.results;
         console.log(_posts);
         const posts = _posts.map(post => new ListPost(post));
         const camelResponse: Pagination<ListPost> = {...response, results: posts};
@@ -56,10 +56,10 @@ export class PostsBaseService {
 
   getUrl(){
     switch (this.type) {
-      case "ANNOUNCEMENTS":
-        return ApiConfig.department.news.announcements
-      case "NEWS":
-        return ApiConfig.department.news.posts
+      case 'ANNOUNCEMENTS':
+        return ApiConfig.department.news.announcements;
+      case 'NEWS':
+        return ApiConfig.department.news.posts;
     }
   }
 }

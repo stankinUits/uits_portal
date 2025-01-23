@@ -16,11 +16,19 @@ import {
 import {
   PostgraduateInfoComponent
 } from '@app/views/uits/public/scientific-activities/postgraduate/postgraduate-info/postgraduate-info.component';
+import {
+  ConferenceAnnouncementsComponent
+} from '@app/views/uits/public/scientific-activities/conference-announcements/conference-announcements.component';
+import {
+  ConferenceAnnouncementDetailComponent
+} from '@app/views/uits/public/scientific-activities/conference-announcements/conference-announcement-detail/conference-announcement-detail.component';
 
 const routes: Routes = [
   {path: 'achievements', component: AchievementListComponent},
   {path: 'achievements/:id', component: AchievementDetailComponent},
   {path: 'postgraduate', component: PostgraduateInfoComponent},
+  {path: 'conferences', component: ConferenceAnnouncementsComponent},
+  {path: 'conferences/:id', component: ConferenceAnnouncementDetailComponent},
   {path: 'publications/main-science-page', component: MainSciencePageComponent},
   {path: 'publications/create_new_author', component: RegisterSciencePublicationComponent},
   {path: 'publications/edit_author', component: EditAuthorPublicationPageComponent},

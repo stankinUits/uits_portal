@@ -16,6 +16,10 @@ export const ApiConfig = {
     news: {
       posts: 'api/department/news/posts/',
       announcements: 'api/department/news/announcements/',
+      conferences: {
+        all: 'api/department/news/conference-announcements',
+        byID: (id: number | string) => `api/department/news/conference-announcements/${id}`
+      },
     },
     achievements: {
       base: 'api/department/achievements/',

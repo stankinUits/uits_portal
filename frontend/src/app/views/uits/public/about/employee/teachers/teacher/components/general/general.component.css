@@ -1,8 +1,57 @@
-:host {
-  p {
-    font-size: 16px;
-  }
+.container {
+  padding: 20px;
 }
+
+.card {
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  /*transition: transform 0.2s ease-in-out;*/
+}
+
+.card:hover {
+  /*transform: scale(1.02);*/
+}
+
+.personal-info__wrapper {
+  height: 429px;
+}
+
+.card-title {
+  color: #343a40;
+  font-weight: bold;
+  text-align: center;
+}
+
+.card-text {
+  text-align: center;
+}
+
 .color-heading {
   color: #007bff;
+}
+
+.avatar {
+  width: 50%;
+  height: auto;
+  border-radius: 50%;
+  margin: 50px auto 30px;
+}
+
+.card-body p {
+  margin: 5px 0;
+  font-size: 16px;
+  color: #555;
+}
+
+b {
+  color: #222;
+}
+
+@media (max-width: 768px) {
+  .row {
+    flex-direction: column;
+  }
+  .col-md-4, .col-md-8 {
+    width: 100%;
+  }
 }

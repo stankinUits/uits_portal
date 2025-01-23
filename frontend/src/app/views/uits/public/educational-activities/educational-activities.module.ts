@@ -22,6 +22,7 @@ import {
 } from "angular-calendar";
 import { AboutModule } from '../about/about.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ExamScheduleComponent } from './schedule/exam-schedule/exam-schedule.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     BachelorPracticesComponent,
     MasterEduPlansComponent,
     MasterGraduateComponent,
-    MasterPracticesComponent
+    MasterPracticesComponent,
+    ExamScheduleComponent
   ],
   imports: [
     CommonModule,

@@ -5,7 +5,9 @@ from rest_framework.viewsets import ModelViewSet
 
 from users.permissions import IsModeratorOrReadOnly
 from .models import Post
+from .models import ConferenceAnnouncement
 from .serializers import PostSerializer, CreatePostSerializer, ListPostSerializer
+from .serializers import ConferenceAnnouncementSerializer
 
 
 class PostLimitOffsetPagination(LimitOffsetPagination):
@@ -41,3 +43,8 @@ class PostAPIViewSet(ModelViewSet):
 
 class AnnouncementAPIViewSet(PostAPIViewSet):
     queryset = Post.objects.filter(display=True, post_type=Post.PostType.ANNOUNCEMENT).order_by('-created_at')
+
+class ConferenceAnnouncementViewSet(ModelViewSet):
+    queryset = ConferenceAnnouncement.objects.filter(is_hidden=False).order_by('-start_date')
+    serializer_class = ConferenceAnnouncementSerializer
+    permission_classes = [IsModeratorOrReadOnly]
