@@ -1,56 +1,25 @@
+<app-create-button (create)="redirectToAdd()"></app-create-button>
 <ng-container *ngIf="conferenceAnnouncements$ | async as conferences">
-  <div *ngIf="conferences.length > 0; else noConferences" class="row">
-    <div *ngFor="let conference of conferences" class="col-md-4 mb-4">
-      <div class="card h-100" (click)="redirectToDetail(conference.id)">
-        <img [src]="conference.preview_image"
-             class="card-img-top"
-             [alt]="conference.preview_image_description"
-             *ngIf="conference.preview_image">
-
-        <div class="card-body">
-          <h5 class="card-title">{{ conference.title }}</h5>
-
-          <p class="card-text">{{ conference.description }}</p>
-
-          <p class="card-text">
-            <small class="text-muted">
-              <b>Даты:</b> {{ conference.start_date }} - {{ conference.end_date }}
-            </small>
-          </p>
-
-          <p class="card-text">
-            <small class="text-muted">
-              <b>Время:</b> {{ conference.time }}
-            </small>
-          </p>
-
-          <p class="card-text">
-            <small class="text-muted">
-              <b>Организатор:</b> {{ conference.organizer }}
-            </small>
-          </p>
-
-          <p class="card-text">
-            <small class="text-muted">
-              <b>Контакты:</b>
-              <a [href]="'mailto:' + conference.contact_email">{{ conference.contact_email }}</a>,
-              {{ conference.contact_phone }}
-            </small>
-          </p>
+  <div *ngIf="conferences.length > 0; else empty" class="conference-wrapper">
+    <div class="conference-item" *ngFor="let conference of conferences" (click)="redirectToDetail(conference.id)">
+      <div class="conference-info">
+        <h1 class="conference-title">{{ conference.title }}</h1>
+        <div class="conference-content">
+          {{conference.description}}
         </div>
-
-        <div class="card-footer bg-transparent border-top-0">
-          <a [routerLink]="['/conferences', conference.id]" class="btn btn-primary">
-            Подробнее
-          </a>
+        <button class="btn btn-info btn-redirect" (click)="redirectToDetail(conference.id)">Подробнее</button>
+      </div>
+      <div class="conference-image">
+        <img [src]="conference.preview_image" [alt]="conference.title" class="conference-img">
+        <div class="conference-date">
+          <i>Дата размещения объявления: {{ conference.created_at | date: 'dd.MM.yyyy' }}</i>
         </div>
       </div>
     </div>
   </div>
-
-  <ng-template #noConferences>
-    <div class="alert alert-info" role="alert">
-      Нет доступных конференций.
-    </div>
-  </ng-template>
 </ng-container>
+
+<ng-template #empty>
+  <p>Нет доступных объявлений</p>
+</ng-template>
+

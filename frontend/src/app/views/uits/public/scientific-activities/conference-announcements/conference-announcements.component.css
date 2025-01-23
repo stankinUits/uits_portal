@@ -1,40 +1,104 @@
-.card {
-  border: none;
+h1 {
+  margin-bottom: 2rem;
+  font-size: 2.5rem;
+  color: #2c3e50;
+}
+
+.conference-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.conference-item {
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  margin-bottom: 3rem;
+  padding: 1.5rem;
+  background: #fff;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s ease;
 
   &:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   }
+}
 
-  .card-img-top {
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    height: 200px;
-    object-fit: cover;
-  }
+.conference-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-width: 60%;
+  max-width: 60%;
+  padding: 4rem;
 
-  .card-title {
-    font-size: 1.25rem;
-    font-weight: bold;
+  .conference-title {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
     color: #2c3e50;
   }
 
-  .card-text {
-    font-size: 0.9rem;
+  .conference-content {
+    font-size: 1rem;
+    line-height: 1.6;
     color: #34495e;
+    overflow-wrap: break-word;
+
+    p {
+      margin-bottom: 1rem;
+    }
   }
 
-  .card-footer {
-    background: transparent;
-    border-top: none;
+  .btn-redirect {
+    width: 30%;
+  }
+}
+
+.conference-image {
+  flex: 1;
+  max-width: 40%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .conference-img {
+    width: 100%;
+    height: auto;
+    max-height: 400px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+  }
+
+  .conference-date {
+    font-size: 0.9rem;
+    color: #666;
     text-align: center;
   }
 }
 
-.alert-info {
-  margin-top: 1rem;
-  text-align: center;
+@media (max-width: 768px) {
+  .conference-item {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .conference-info,
+  .conference-image {
+    max-width: 100%;
+  }
+
+  .conference-title {
+    font-size: 1.5rem;
+  }
+
+  .conference-content {
+    font-size: 0.9rem;
+  }
+
+  .conference-img {
+    max-height: 300px;
+  }
 }

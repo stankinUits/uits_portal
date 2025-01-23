@@ -5,6 +5,7 @@ import {
   ConferenceAnnouncementsService
 } from '@app/views/uits/public/scientific-activities/conference-announcements/conference-announcements.service';
 import {ActivatedRoute, Router} from '@angular/router';
+import {PagesConfig} from "@app/configs/pages.config";
 
 @Component({
   selector: 'app-conference-announcement-detail',
@@ -13,16 +14,26 @@ import {ActivatedRoute, Router} from '@angular/router';
 })
 export class ConferenceAnnouncementDetailComponent implements OnInit {
   conference$: BehaviorSubject<IConferenceAnnouncements> = new BehaviorSubject<IConferenceAnnouncements>(null);
+  id: number;
 
   constructor(private conferenceAnnouncementsService: ConferenceAnnouncementsService,
-              private router: ActivatedRoute,) { }
+              private route: ActivatedRoute,
+              private router: Router) { }
 
   ngOnInit(): void {
-    console.log('123');
-    const id = this.router.snapshot.paramMap.get('id');
+    const id = this.route.snapshot.paramMap.get('id');
+    this.id = +id;
     this.conferenceAnnouncementsService.getConferenceAnnouncementByID(id)
       .subscribe(conferenceAnnouncement => {
         this.conference$.next(conferenceAnnouncement);
       });
+  }
+
+  goBack(): void {
+    this.router.navigate(['/scientific-activities/conferences']);
+  }
+
+  redirectToEditPage(): void {
+    window.open(`${PagesConfig.admin}/news/conferenceannouncement/${this.id}/change/`);
   }
 }

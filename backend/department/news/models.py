@@ -30,7 +30,7 @@ class Post(models.Model):
                                        processors=[ResizeToFit(240)],
                                        format='JPEG',
                                        options={'quality': 60})
-    preview_image_description = models.CharField(max_length=256, default="", verbose_name="Краткое описание фотографии")
+    preview_image_description = models.CharField(max_length=256, default="", verbose_name="Краткое описание фотографии", blank=True, null=True)
 
     content = QuillField(verbose_name="Содержание статьи")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")

@@ -45,6 +45,6 @@ class AnnouncementAPIViewSet(PostAPIViewSet):
     queryset = Post.objects.filter(display=True, post_type=Post.PostType.ANNOUNCEMENT).order_by('-created_at')
 
 class ConferenceAnnouncementViewSet(ModelViewSet):
-    queryset = ConferenceAnnouncement.objects.filter(is_hidden=False).order_by('-start_date')
+    queryset = ConferenceAnnouncement.objects.filter(is_hidden=False).order_by('-created_at')
     serializer_class = ConferenceAnnouncementSerializer
     permission_classes = [IsModeratorOrReadOnly]

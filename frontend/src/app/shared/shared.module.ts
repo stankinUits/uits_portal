@@ -7,11 +7,13 @@ import {CSRFInterceptor} from '@app/shared/interceptor/csrf.interceptor';
 import {ResizableComponent} from "@app/shared/components/base/resizable.component";
 import { TimeFromDatePipe } from './pipes/time-from-date.pipe';
 import { CreateButtonComponent } from './components/create-button/create-button.component';
+import { TimeWithoutSsPipe } from './pipes/time-without-ss.pipe';
 
 @NgModule({
   declarations: [
     ResizableComponent,
-    TimeFromDatePipe
+    TimeFromDatePipe,
+    TimeWithoutSsPipe
   ],
     exports: [
         CommonModule,
@@ -21,6 +23,7 @@ import { CreateButtonComponent } from './components/create-button/create-button.
         HttpClientJsonpModule,
         TranslateModule,
         TimeFromDatePipe,
+        TimeWithoutSsPipe,
     ],
   imports: [],
   providers: [

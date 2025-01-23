@@ -34,6 +34,7 @@ import {CreateButtonComponent} from '@app/shared/components/create-button/create
 import {NgxDatatableModule} from '@swimlane/ngx-datatable';
 import {ConferenceAnnouncementsComponent} from './conference-announcements/conference-announcements.component';
 import { ConferenceAnnouncementDetailComponent } from './conference-announcements/conference-announcement-detail/conference-announcement-detail.component';
+import {SharedModule} from "@app/shared/shared.module";
 
 @NgModule({
   declarations: [
@@ -58,7 +59,8 @@ import { ConferenceAnnouncementDetailComponent } from './conference-announcement
     QuillViewComponent,
     EditButtonComponent,
     CreateButtonComponent,
-    NgxDatatableModule
+    NgxDatatableModule,
+    SharedModule
   ]
 })
 export class ScientificActivitiesModule {

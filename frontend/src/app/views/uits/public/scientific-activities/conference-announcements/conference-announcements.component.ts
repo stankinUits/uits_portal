@@ -5,6 +5,7 @@ import {
 import {BehaviorSubject} from 'rxjs';
 import {IConferenceAnnouncements} from '@app/shared/types/models/conference-announcements';
 import {Router} from '@angular/router';
+import {PagesConfig} from '@app/configs/pages.config';
 
 @Component({
   selector: 'app-conference-announcements',
@@ -26,10 +27,10 @@ export class ConferenceAnnouncementsComponent implements OnInit {
   }
 
   redirectToDetail(id: number | string): void {
-    this.router.navigate(['/scientific-activities/conferences', id]).then(success => {
-      if (!success) {
-        console.error('Navigation failed');
-      }
-    });
+    this.router.navigate(['/scientific-activities/conferences', id]);
+  }
+
+  redirectToAdd() {
+    window.open(`${PagesConfig.admin}/news/conferenceannouncement/add/`, '_blank');
   }
 }
