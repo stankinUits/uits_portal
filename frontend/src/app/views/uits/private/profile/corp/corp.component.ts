@@ -8,7 +8,7 @@ import { getUserPermissions } from '@app/shared/types/models/auth';
 interface CorporateMenu {
   title: string;
   route: string;
-  icon?: string; 
+  icon?: string;
   key?: string;
 }
 
@@ -20,9 +20,9 @@ interface CorporateMenu {
 export class CorporateComponent implements OnInit {
   corporateMenu: CorporateMenu[] = [];
   isTeacher = false;
-  isMobile = false; 
-  isMobilePanelOpen = false; 
-  currentPanel: string = 'default';
+  isMobile = false;
+  isMobilePanelOpen = false;
+  currentPanel = 'default';
 
   constructor(private authService: AuthService, private router: Router) {}
 
@@ -32,19 +32,19 @@ export class CorporateComponent implements OnInit {
         const userPermissions = getUserPermissions(profile);
         if (userPermissions.includes(Permission.MODERATOR)) {
           this.corporateMenu = [
-            { title: 'Профиль', route: '/corp/profile', icon: 'icon-user', key: 'Аккаунт' },
-            { title: 'Модульные журналы', route: '/corp/modular_journals', icon: 'icon-journal', key: 'Журнал' },
-            { title: 'Статистика модульных журналов', route: '/corp/statistics', icon: 'icon-stats', key: 'Статистика' },
-            { title: 'Календарь событий', route: '/corp/calendar', icon: 'icon-calendar', key: 'Календарь событий' },
+            { title: 'Профиль', route: '/corp/profile', icon: 'feather icon-user', key: 'Аккаунт' },
+            { title: 'Модульные журналы', route: '/corp/modular_journals', icon: 'feather icon-book', key: 'Журнал' },
+            { title: 'Статистика модульных журналов', route: '/corp/statistics', icon: 'feather icon-loader', key: 'Статистика' },
+            { title: 'Календарь событий', route: '/corp/calendar', icon: 'feather icon-calendar', key: 'Календарь событий' },
           ];
         } else if (userPermissions.includes(Permission.TEACHER) || userPermissions.includes(Permission.SUPERUSER)) {
           this.isTeacher = true;
           this.corporateMenu = [
-            { title: 'Профиль', route: '/corp/profile', icon: 'icon-user', key: 'Аккаунт' },
-            { title: 'Публикации', route: '/corp/publications', icon: 'icon-publications', key: 'Публикации' },
-            { title: 'Достижения', route: '/corp/achievements', icon: 'icon-achievements', key: 'Достижения' },
-            { title: 'Модульные журналы', route: '/corp/modular_journals', icon: 'icon-journal', key: 'Журнал' },
-            { title: 'Календарь событий', route: '/corp/calendar', icon: 'icon-calendar', key: 'Календарь событий' },
+            { title: 'Профиль', route: '/corp/profile', icon: 'feather icon-user', key: 'Аккаунт' },
+            { title: 'Публикации', route: '/corp/publications', icon: 'feather icon-book', key: 'Публикации' },
+            { title: 'Достижения', route: '/corp/achievements', icon: 'feather icon-star', key: 'Достижения' },
+            { title: 'Модульные журналы', route: '/corp/modular_journals', icon: 'feather icon-book', key: 'Журнал' },
+            { title: 'Календарь событий', route: '/corp/calendar', icon: 'feather icon-calendar', key: 'Календарь событий' },
           ];
         }
       })

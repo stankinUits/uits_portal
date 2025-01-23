@@ -3,10 +3,16 @@
     <h1>Корпоративный портал</h1>
     <ul>
       <li *ngFor="let menuItem of corporateMenu">
-        <a [routerLink]="menuItem.route">{{ menuItem.title }}</a>
+        <a [routerLink]="menuItem.route">
+          <i class="{{menuItem.icon}}"></i>
+          {{ menuItem.title }}
+        </a>
       </li>
     </ul>
-    <button (click)="navigateToHome()" class="return-button">Вернуться к информационной части</button>
+    <button class="go-back-btn" (click)="navigateToHome()">
+      <i class="feather icon-arrow-left go-back-btn__icon"></i>
+      <span class="go-back-btn__text">Информационная часть</span>
+    </button>
   </nav>
 
   <div class="corporate-content">
