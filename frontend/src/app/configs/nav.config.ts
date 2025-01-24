@@ -29,8 +29,8 @@ const about: NavMenu[] = [
         title: 'History',
         translateKey: 'NAV.HISTORY',
         type: 'item',
-        iconType: 'feather',
-        icon: 'icon-alert-octagon',
+        iconType: 'line-awesome',
+        icon: 'la-comment',
         key: 'about/history-of-department',
         submenu: []
       },
@@ -49,8 +49,8 @@ const about: NavMenu[] = [
         title: 'Announcements',
         translateKey: 'NAV.ANNOUNCEMENTS',
         type: 'item',
-        iconType: 'feather',
-        icon: 'icon-alert-octagon',
+        iconType: 'line-awesome',
+        icon: 'la la-bullhorn',
         key: 'about/announcements',
         submenu: []
       },
@@ -142,8 +142,8 @@ const about: NavMenu[] = [
         title: 'Contributors',
         translateKey: 'NAV.CONTRIBUTORS',
         type: 'item',
-        iconType: 'line-awesome',
-        icon: 'la la-gratipay',
+        iconType: 'feather',
+        icon: 'icon-star',
         key: 'about/contributors',
         submenu: []
       }
@@ -283,10 +283,20 @@ const scientificActivity: NavMenu[] = [
     title: 'ScientificActivity',
     translateKey: 'NAV.SCIENTIFIC_ACTIVITY.TITLE',
     type: 'title',
-    iconType: 'feather',
-    icon: 'feather icon-briefcase',
+    iconType: 'line-awesome',
+    icon: 'la-superscript',
     key: 'scientificActivity',
     submenu: [
+      {
+        path: PagesConfig.scientificActivities.research,
+        title: 'ScientificActivity/Research',
+        translateKey: 'NAV.SCIENTIFIC_ACTIVITY.RESEARCH',
+        type: 'item',
+        iconType: 'line-awesome',
+        icon: 'la-flask',
+        key: 'scientificActivity/research',
+        submenu: []
+      },
       {
         path: PagesConfig.scientificActivities.postgraduate,
         title: 'ScientificActivity/PostGraduate',
@@ -313,7 +323,7 @@ const scientificActivity: NavMenu[] = [
         translateKey: 'NAV.SCIENTIFIC_ACTIVITY.ACHIEVEMENTS.TITLE',
         type: 'item',
         iconType: 'line-awesome',
-        icon: 'la la-trophy',
+        icon: 'la la-award',
         key: 'scientificActivity/achievements',
         submenu: []
       },
@@ -325,6 +335,16 @@ const scientificActivity: NavMenu[] = [
         iconType: 'feather',
         icon: 'icon-mic',
         key: 'scientificActivity/conferences',
+        submenu: []
+      },
+      {
+        path: PagesConfig.scientificActivities.forum,
+        title: 'Forum',
+        translateKey: 'NAV.SCIENTIFIC_ACTIVITY.FORUM',
+        type: 'item',
+        iconType: 'line-awesome',
+        icon: 'la la-users',
+        key: 'scientificActivity/forum',
         submenu: []
       }
     ]

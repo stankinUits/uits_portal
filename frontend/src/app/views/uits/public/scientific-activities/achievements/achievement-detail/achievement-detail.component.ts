@@ -52,7 +52,7 @@ export class AchievementDetailComponent implements OnInit {
   }
 
   loadAchievement(id: string): void {
-    this.achievementService.retrieveAchievement(id).subscribe({
+    this.achievementService.getAchievementByID(id).subscribe({
       next: (data) => {
         this.achievement = data;
         this.isLoading = false;

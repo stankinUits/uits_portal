@@ -1,21 +1,20 @@
 <div *ngIf="isLoading" class="loading-container">
-  <div class="loading-spinner"></div>
+  Загрузка...
 </div>
 
 <div *ngIf="errorMessage" class="error-container">
   <p>Произошла ошибка при загрузке достижений. Пожалуйста, попробуйте снова.</p>
-  <button class="retry-button" (click)="reloadPage()">Повторить попытку</button>
 </div>
 
 <h1 class="mb-4">Достижения</h1>
 
 <app-create-button (create)="redirectToAdminPanel()"></app-create-button>
 
-<div *ngIf="!isLoading && !errorMessage" class="achievement-list">
+<div *ngIf="response$ | async as response" class="achievement-list">
   <div
     class="achievement-item"
-    *ngFor="let achievement of achievements; let index = index"
-    (click)="onSelectAchievement(achievement)"
+    *ngFor="let achievement of response.results; let index = index"
+    (click)="openAchievementById(achievement)"
     [ngClass]="{'even-item': index % 2 === 0, 'odd-item': index % 2 !== 0}">
 
     <div class="achievement-image">
@@ -29,7 +28,18 @@
         {{ achievement.description }}
       </markdown>
     </div>
-
   </div>
+
+  <ng-container *ngIf="response.count > itemsPerPage" class="pagination">
+    <pagination
+      [itemsPerPage]="itemsPerPage"
+      [totalItems]="response.count"
+      (pageChanged)="pageChanged($event)"
+      [ngModel]="page"
+      nextText=">"
+      previousText="<"
+    ></pagination>
+  </ng-container>
 </div>
+
 

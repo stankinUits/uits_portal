@@ -25,7 +25,7 @@ export class AuthService {
   constructor(private http: HttpClient) {
     this.profile$ = new BehaviorSubject<Profile>(Anonymous);
     this.retrieveProfile().subscribe((p) => {
-      console.log(p, 'ok');
+      // console.log(p, 'ok');
     });
   }
 
@@ -67,14 +67,14 @@ export class AuthService {
 
   canEdit(): Observable<boolean> {
     return this.profile$.pipe(map(profile => {
-      console.log('This user can edit - ', profile.isModerator || profile.isSuperuser)
+      // console.log('This user can edit - ', profile.isModerator || profile.isSuperuser)
       return (profile.isModerator || profile.isSuperuser) && !profile.isAnonymous
     }));
   }
 
   isTeacher(): Observable<boolean> {
     return this.profile$.pipe(map(profile => {
-      console.log('This user is teacher - ', profile.isTeacher || profile.isSuperuser)
+      // console.log('This user is teacher - ', profile.isTeacher || profile.isSuperuser)
       return (profile.isTeacher || profile.isSuperuser) && !profile.isAnonymous
     }));
   }
@@ -92,7 +92,7 @@ export class AuthService {
       })
     );
   }
-  
+
 }
 
 

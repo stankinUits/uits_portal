@@ -1,4 +1,4 @@
-import {BehaviorSubject} from "rxjs";
+import {BehaviorSubject} from 'rxjs';
 
 export interface onPaginate {
   page: number
@@ -15,4 +15,4 @@ export type Pagination<T extends any> = {
   next: string
   previous: string
   results: T[]
-}
+};

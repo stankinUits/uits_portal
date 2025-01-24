@@ -4,7 +4,7 @@ export interface IEmployee {
   avatar: string;
   first_name: string;
   last_name: string;
-  patronymic: string;
+  patronymic?: string;
 
   degree?: string;
   rank?: string;

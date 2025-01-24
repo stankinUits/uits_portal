@@ -35,6 +35,9 @@ import {NgxDatatableModule} from '@swimlane/ngx-datatable';
 import {ConferenceAnnouncementsComponent} from './conference-announcements/conference-announcements.component';
 import { ConferenceAnnouncementDetailComponent } from './conference-announcements/conference-announcement-detail/conference-announcement-detail.component';
 import {SharedModule} from "@app/shared/shared.module";
+import { ResearchComponent } from './research/research.component';
+import { ForumComponent } from './forum/forum.component';
+import {PaginationModule} from "ngx-bootstrap/pagination";
 
 @NgModule({
   declarations: [
@@ -48,20 +51,23 @@ import {SharedModule} from "@app/shared/shared.module";
     AchievementListComponent,
     AchievementDetailComponent,
     ConferenceAnnouncementsComponent,
-    ConferenceAnnouncementDetailComponent
+    ConferenceAnnouncementDetailComponent,
+    ResearchComponent,
+    ForumComponent
 
   ],
-  imports: [
-    CommonModule,
-    ScientificActivitiesRoutingModule,
-    LayoutModule,
-    MarkdownModule.forRoot(),
-    QuillViewComponent,
-    EditButtonComponent,
-    CreateButtonComponent,
-    NgxDatatableModule,
-    SharedModule
-  ]
+    imports: [
+        CommonModule,
+        ScientificActivitiesRoutingModule,
+        LayoutModule,
+        MarkdownModule.forRoot(),
+        QuillViewComponent,
+        EditButtonComponent,
+        CreateButtonComponent,
+        NgxDatatableModule,
+        SharedModule,
+        PaginationModule
+    ]
 })
 export class ScientificActivitiesModule {
 }

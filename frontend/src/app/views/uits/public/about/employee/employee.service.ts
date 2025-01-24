@@ -1,11 +1,11 @@
-import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-import { ApiConfig } from "@app/configs/api.config";
-import { BehaviorSubject, map, Observable } from "rxjs";
-import { IEmployee } from "@app/shared/types/models/employee";
-import { Schedule } from "@app/shared/types/models/schedule";
-import { Subject as Discipline } from "@app/shared/types/models/subject";
-import {TeacherAchievements} from "@app/shared/types/models/teacher-achievements";
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { ApiConfig } from '@app/configs/api.config';
+import { BehaviorSubject, map, Observable } from 'rxjs';
+import { IEmployee } from '@app/shared/types/models/employee';
+import { Schedule } from '@app/shared/types/models/schedule';
+import { Subject as Discipline } from '@app/shared/types/models/subject';
+import {TeacherAchievements} from '@app/shared/types/models/teacher-achievements';
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +26,7 @@ export class EmployeeService {
           this.teacher$.next(teachers);
           return teachers;
         })
-      )
+      );
   }
 
   getAllEmployees(): Observable<IEmployee[]> {
@@ -36,23 +36,7 @@ export class EmployeeService {
           this.uvp$.next(uvp);
           return uvp;
         })
-      )
-  }
-
-  createTeacher(teacher: Object) {
-    return this.http.post(ApiConfig.department.employee.teacher.info, {
-      ...teacher
-    })
-  }
-
-  updateTeacher(id: number, formData: any) {
-    return this.http.patch(ApiConfig.department.employee.teacher.info + id, {
-      ...formData
-    })
-  }
-
-  deleteTeacher(id: number) {
-    return this.http.delete(`${ApiConfig.department.employee.teacher.info}/${id}`)
+      );
   }
 
   retrieveTeacher(id: number): Observable<IEmployee> {

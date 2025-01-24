@@ -22,6 +22,8 @@ import {
 import {
   ConferenceAnnouncementDetailComponent
 } from '@app/views/uits/public/scientific-activities/conference-announcements/conference-announcement-detail/conference-announcement-detail.component';
+import {ResearchComponent} from '@app/views/uits/public/scientific-activities/research/research.component';
+import {ForumComponent} from '@app/views/uits/public/scientific-activities/forum/forum.component';
 
 const routes: Routes = [
   {path: 'achievements', component: AchievementListComponent},
@@ -29,6 +31,8 @@ const routes: Routes = [
   {path: 'postgraduate', component: PostgraduateInfoComponent},
   {path: 'conferences', component: ConferenceAnnouncementsComponent},
   {path: 'conferences/:id', component: ConferenceAnnouncementDetailComponent},
+  {path: 'research', component: ResearchComponent},
+  {path: 'forum', component: ForumComponent},
   {path: 'publications/main-science-page', component: MainSciencePageComponent},
   {path: 'publications/create_new_author', component: RegisterSciencePublicationComponent},
   {path: 'publications/edit_author', component: EditAuthorPublicationPageComponent},

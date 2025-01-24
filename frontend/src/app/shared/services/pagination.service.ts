@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -20,5 +20,5 @@ export class PaginationService {
       relativeTo: this.route,
       queryParams: { limit, offset },
       queryParamsHandling: 'merge'
-    })
+    });
   }}

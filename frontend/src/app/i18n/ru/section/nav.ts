@@ -82,6 +82,7 @@ export const nav = {
       }
     },
     SCIENTIFIC_ACTIVITY: {
+      RESEARCH: 'Направления научных исследований',
       TITLE: 'Научная деятельность',
       POST_GRADUATE: {
         TITLE: 'Аспирантура',
@@ -103,7 +104,8 @@ export const nav = {
       CONFERENCES: 'Объявления о конференциях',
       ACHIEVEMENTS: {
         TITLE: 'Достижения кафедры'
-      }
+      },
+      FORUM: 'Международный Научный Форум'
     },
     PROFILE: {
       PROFILE: 'Личный кабинет',

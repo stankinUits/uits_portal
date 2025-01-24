@@ -1,24 +1,24 @@
 import {ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {CalendarEvent, CalendarView} from "angular-calendar";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {BsModalRef, BsModalService} from "ngx-bootstrap/modal";
-import {eachDayOfInterval, endOfDay, format, parseISO, startOfDay} from "date-fns";
-import {BehaviorSubject, combineLatest, debounceTime, Observable} from "rxjs";
-import {EventsService} from "@app/views/uits/private/profile/events/events.service";
-import {Profile} from "@app/shared/types/models/auth";
-import {AuthService} from "@app/shared/services/auth.service";
-import {CalendarUserEventMeta, EditEventFormGroup, IEvent} from "@app/views/uits/private/profile/events/events.model";
-import {startTimeBeforeEndTimeValidator} from "@app/views/uits/private/profile/events/events.validators";
-import {ru} from "date-fns/locale";
-import {BsLocaleService} from "ngx-bootstrap/datepicker";
-import {AlertService} from "@app/shared/services/alert.service";
-import {TelegramService} from "@app/shared/services/telegram.service";
+import {CalendarEvent, CalendarView} from 'angular-calendar';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
+import {eachDayOfInterval, endOfDay, format, parseISO, startOfDay} from 'date-fns';
+import {BehaviorSubject, combineLatest, debounceTime, Observable} from 'rxjs';
+import {EventsService} from '@app/views/uits/private/profile/events/events.service';
+import {Profile} from '@app/shared/types/models/auth';
+import {AuthService} from '@app/shared/services/auth.service';
+import {CalendarUserEventMeta, EditEventFormGroup, IEvent} from '@app/views/uits/private/profile/events/events.model';
+import {startTimeBeforeEndTimeValidator} from '@app/views/uits/private/profile/events/events.validators';
+import {ru} from 'date-fns/locale';
+import {BsLocaleService} from 'ngx-bootstrap/datepicker';
+import {AlertService} from '@app/shared/services/alert.service';
+import {TelegramService} from '@app/shared/services/telegram.service';
 import {
   DEFAULT_EVENT_COLOR,
   getDefaultDateStartEnd,
   getDefaultEndTime,
   getDefaultStartTime
-} from "@app/views/uits/private/profile/events/events.config";
+} from '@app/views/uits/private/profile/events/events.config';
 
 
 @Component({
@@ -47,14 +47,14 @@ export class EventsComponent implements OnInit {
   // confirm notify assigned users of event
   modalNotifyConfirmRef: BsModalRef;
   // mode. creating or editing
-  modalMode: 'add' | 'edit' = 'add'
-  @ViewChild("eventModal") eventModal: TemplateRef<any>;
-  @ViewChild("notificationConfirm") notificationConfirm: TemplateRef<any>;
+  modalMode: 'add' | 'edit' = 'add';
+  @ViewChild('eventModal') eventModal: TemplateRef<any>;
+  @ViewChild('notificationConfirm') notificationConfirm: TemplateRef<any>;
   // event id chosen for notification modal
   confirmNotificationEventId = null;
 
   // Modal window for confirmation
-@ ViewChild("yesNoModal") yesNoModal: TemplateRef<any>;
+@ ViewChild('yesNoModal') yesNoModal: TemplateRef<any>;
   yesNoModalNotify: BsModalRef;
   // vars for confirmation of deleting
   yesNoModalEventId = null;
@@ -83,14 +83,14 @@ export class EventsComponent implements OnInit {
 
     // check if assigned users form state is correct
     this.formGroup.get('assignedUsers').valueChanges.pipe(debounceTime(300))
-      .subscribe(_ => this.checkAssignedUsersStateForm())
+      .subscribe(_ => this.checkAssignedUsersStateForm());
 
     // retrieve users-teachers
-    this.authService.listUsers({'is_teacher': true}).subscribe(users => {
+    this.authService.listUsers({is_teacher: true}).subscribe(users => {
       this.usersCanBeAssigned.next(users);
       this.checkStateForm();
-      this.refreshEvents()
-    })
+      this.refreshEvents();
+    });
 
     //
     this.formGroup.get('assignedUsersSelectAll').valueChanges.pipe(
@@ -98,15 +98,15 @@ export class EventsComponent implements OnInit {
     ).subscribe(arr => {
       console.log('changed checkbox', arr);
       const users = this.usersCanBeAssigned.getValue();
-      if (users.length === 0) return;
-      const assignedUsersControl = this.formGroup.get('assignedUsers')
+      if (users.length === 0) {return;}
+      const assignedUsersControl = this.formGroup.get('assignedUsers');
       // @ts-ignore TODO: this is not right
       if (arr.length) {
         assignedUsersControl.setValue(users.map(u => u.pk));
       } else if (assignedUsersControl.value.length === users.length) {
         assignedUsersControl.setValue([]);
       }
-    })
+    });
   }
 
   initEditForm() {
@@ -116,8 +116,8 @@ export class EventsComponent implements OnInit {
       dateStartEnd: [getDefaultDateStartEnd(), Validators.required],
       startTime: [getDefaultStartTime(),],
       endTime: [getDefaultEndTime(),],
-      notificationFrequency: ["none"],
-      status: ["not_started"],
+      notificationFrequency: ['none'],
+      status: ['not_started'],
       allDay: [false],
       color: [DEFAULT_EVENT_COLOR, Validators.required],
       assignedUsers: [[], Validators.required],
@@ -130,22 +130,22 @@ export class EventsComponent implements OnInit {
     this.checkAssignedUsersStateForm();
 
     const allDay = this.formGroup.get('allDay');
-    this.onSwitchAllDayControl({checked: allDay.value})
+    this.onSwitchAllDayControl({checked: allDay.value});
   }
 
   checkAssignedUsersStateForm() {
     const profile = this.authService.profile$.getValue();
-    const assigned = this.formGroup.get('assignedUsers')
+    const assigned = this.formGroup.get('assignedUsers');
     if (this.isTeacherProfile(profile)) {
       if (!(assigned.value.length === 1 && assigned.value[0] === profile.pk)) {
         assigned.setValue([profile.pk]);
       }
       if (!assigned.disabled) {
-        assigned.disable()
+        assigned.disable();
       }
     } else {
       if (!assigned.enabled) {
-        assigned.enable()
+        assigned.enable();
       }
     }
   }
@@ -164,10 +164,10 @@ export class EventsComponent implements OnInit {
   }
 
   getDataFromForm(): IEvent {
-    const rawData = this.formGroup.value
+    const rawData = this.formGroup.value;
     const profile = this.authService.profile$.getValue();
-    let start = new Date(rawData.dateStartEnd[0])
-    let end = new Date(rawData.dateStartEnd[1])
+    let start = new Date(rawData.dateStartEnd[0]);
+    let end = new Date(rawData.dateStartEnd[1]);
     if (!rawData.allDay) {
       const startTime = rawData.startTime ?? startOfDay(start);
       const endTime = rawData.endTime ?? endOfDay(end);
@@ -190,28 +190,28 @@ export class EventsComponent implements OnInit {
       assignedUsers: (this.isTeacherProfile(profile)) ? [profile.pk] : rawData.assignedUsers,
       color: rawData.color,
       user: -1
-    }
+    };
 
-    return data
+    return data;
   }
 
 
   resetForm() {
-    this.modalMode = 'add'
+    this.modalMode = 'add';
     this.formGroup.setValue({
       id: null,
       title: '',
       dateStartEnd: getDefaultDateStartEnd(),
       startTime: getDefaultStartTime(),
       endTime: getDefaultEndTime(),
-      notificationFrequency: "none",
-      status: "not_started",
+      notificationFrequency: 'none',
+      status: 'not_started',
       color: DEFAULT_EVENT_COLOR,
       description: '',
       assignedUsers: [],
       assignedUsersSelectAll: false,
       allDay: false
-    })
+    });
 
     this.checkStateForm();
   }
@@ -219,25 +219,25 @@ export class EventsComponent implements OnInit {
 
   addEvent(): void {
     const data = this.getDataFromForm();
-    console.log('DATA:', data)
+    console.log('DATA:', data);
 
     this.eventService.create(data).subscribe(ev => {
       console.log('response event', ev);
       this.refreshEvents();
       this.modalRef.hide();
       this.resetForm();
-    })
+    });
   }
 
   editEvent() {
     const data = this.getDataFromForm();
     this.eventService.update(data.id, data).subscribe(ev => {
-      console.log(ev)
+      console.log(ev);
       this.refreshEvents();
 
-      this.modalRef.hide()
-      this.resetForm()
-    })
+      this.modalRef.hide();
+      this.resetForm();
+    });
   }
 
   showYesNoModal(id: number){
@@ -245,16 +245,19 @@ export class EventsComponent implements OnInit {
     this.yesNoModalNotify = this.modalService.show(this.yesNoModal, {id: 10, class: 'second '});
   }
 
-  yesNoModalConfirm(id:number) {
-    this.telegramService.userEventNotify(this.yesNoModalEventId).subscribe(ok => {
-      this.alertService.add("Событие удалено. Уведомление отправлено", 'success');
+  yesNoModalConfirm(id: number) {
+  this.telegramService.userEventNotify(this.yesNoModalEventId).subscribe({
+    next: (ok) => {
+      this.alertService.add('Событие удалено. Уведомление отправлено', 'success');
       this.yesNoModalNotify.hide();
       this.deleteEvent(this.yesNoModalEventId);
-    }, err => {
-      this.alertService.add("Ошибка... Что то пошло не так", 'danger');
+    },
+    error: (err) => {
+      this.alertService.add('Ошибка... Что-то пошло не так', 'danger');
       this.yesNoModalNotify.hide();
-    })
-  }
+    }
+  });
+}
 
   yesNoModaldecline() {
     this.yesNoModalNotify.hide();
@@ -262,13 +265,13 @@ export class EventsComponent implements OnInit {
 
 
   deleteEvent(id: number) {
-    console.log(id)
+    console.log(id);
     this.eventService.delete(id).subscribe(_ => {
-      console.log(id, 'deleted')
+      console.log(id, 'deleted');
       this.refreshEvents();
-      this.modalRef.hide()
-      this.resetForm()
-    })
+      this.modalRef.hide();
+      this.resetForm();
+    });
   }
 
 
@@ -277,9 +280,7 @@ export class EventsComponent implements OnInit {
     const teacherUsers = this.usersCanBeAssigned.getValue();
 
     this.eventService.read().subscribe((events: IEvent[]) => {
-      this.events$.next(events.map(ev => {
-
-        return {
+      this.events$.next(events.map(ev => ({
           id: ev.id,
           start: new Date(ev.startedAt),
           end: new Date(ev.endedAt),
@@ -292,25 +293,24 @@ export class EventsComponent implements OnInit {
           meta: {
             description: ev.description,
             assigned: ev.assignedUsers.map(uId => {
-              const founded = teacherUsers.filter(tU => tU.pk === uId)
-              if (founded.length === 0) return {
+              const founded = teacherUsers.filter(tU => tU.pk === uId);
+              if (founded.length === 0) {return {
                 pk: uId,
                 username: 'Пользователь ' + uId,
                 firstName: '',
                 lastName: ''
-              }
-              return founded[0]
+              };}
+              return founded[0];
             }),
             owner: ev.user,
             notificationFrequency: ev.notificationFrequency,
             status: ev.status
           }
-        }
-      }));
+        })));
 
       const grouped = this.getEventDates();
-      this.groupedEvents.next(grouped)
-    })
+      this.groupedEvents.next(grouped);
+    });
   }
 
 
@@ -321,18 +321,18 @@ export class EventsComponent implements OnInit {
   protected readonly CalendarView = CalendarView;
 
   openAddEventModal(template: TemplateRef<any>) {
-    this.modalMode = 'add'
+    this.modalMode = 'add';
     this.modalRef = this.modalService.show(template, {id: 1});
-    this.onModalClose()
+    this.onModalClose();
   }
 
   openEditEventModal(template: TemplateRef<any>, id: string | number) {
-    let data = this.events$.getValue().filter(elm => elm.id === id)[0]
+    const data = this.events$.getValue().filter(elm => elm.id === id)[0];
     if (data.meta.owner !== this.authService.profile$.getValue().pk) {
-      this.alertService.add("Вы не можете изменить это событие, т.к. его создатель не вы", 'warning');
-      return
+      this.alertService.add('Вы не можете изменить это событие, т.к. его создатель не вы', 'warning');
+      return;
     }
-    this.modalMode = 'edit'
+    this.modalMode = 'edit';
     this.modalRef = this.modalService.show(template, {id: 1});
     this.formGroup.setValue({
       id: data.id,
@@ -347,8 +347,8 @@ export class EventsComponent implements OnInit {
       description: data.meta.description,
       assignedUsers: data.meta.assigned.map(u => u.pk),
       assignedUsersSelectAll: false
-    })
-    this.onModalClose()
+    });
+    this.onModalClose();
     this.checkStateForm();
   }
 
@@ -358,8 +358,8 @@ export class EventsComponent implements OnInit {
       this.modalRef.onHidden
     ).subscribe(() => this.cdr.markForCheck());
     this.modalRef.onHide.subscribe((reason: string | any) => {
-      this.resetForm()
-    })
+      this.resetForm();
+    });
   }
 
   getEventDates(): { day: string, events: CalendarEvent[] }[] {
@@ -368,11 +368,11 @@ export class EventsComponent implements OnInit {
   }
 
   eventClicked($event: { event: CalendarEvent<CalendarUserEventMeta> | { id: number }, sourceEvent: any }) {
-    this.openEditEventModal(this.eventModal, $event.event.id)
+    this.openEditEventModal(this.eventModal, $event.event.id);
   }
 
   convertAssignedUsers(assignedUsers: CalendarUserEventMeta['assigned']) {
-    return assignedUsers.map(user => (user.lastName) ? user.lastName + " " + user.firstName : user.username).join(', ')
+    return assignedUsers.map(user => (user.lastName) ? user.lastName + ' ' + user.firstName : user.username).join(', ');
   }
 
   openNotificationModalConfirm(id: number) {
@@ -383,12 +383,12 @@ export class EventsComponent implements OnInit {
   confirmNotifification() {
     if (this.confirmNotificationEventId !== null) {
       this.telegramService.userEventNotify(this.confirmNotificationEventId).subscribe(ok => {
-        this.alertService.add("Уведомление отправлено", 'success');
+        this.alertService.add('Уведомление отправлено', 'success');
         this.modalNotifyConfirmRef.hide();
       }, err => {
-        this.alertService.add("Ошибка... Что то пошло не так", 'danger');
+        this.alertService.add('Ошибка... Что то пошло не так', 'danger');
         this.modalNotifyConfirmRef.hide();
-      })
+      });
     }
   }
 
@@ -399,17 +399,17 @@ export class EventsComponent implements OnInit {
 
 
   filterUsersIfTeacher(users: Profile[]) {
-    const profile = this.authService.profile$.getValue()
+    const profile = this.authService.profile$.getValue();
     if (this.isTeacherProfile(profile)) {
-      return users.filter(u => u.pk === profile.pk)
+      return users.filter(u => u.pk === profile.pk);
     } else {
-      return users
+      return users;
     }
   }
 
   isTeacher() {
-    const profile = this.authService.profile$.getValue()
-    return this.isTeacherProfile(profile)
+    const profile = this.authService.profile$.getValue();
+    return this.isTeacherProfile(profile);
   }
 
   isTeacherProfile(profile: Profile) {

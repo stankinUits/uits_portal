@@ -42,7 +42,9 @@ export const PagesConfig = {
     //   dissertations: sciActivitiesPrefix + '/postgraduate/dissertations',
     // },
     postgraduate: sciActivitiesPrefix + '/postgraduate',
+    research: sciActivitiesPrefix + '/research',
     conferences: sciActivitiesPrefix + '/conferences',
+    forum: sciActivitiesPrefix + '/forum',
     publications: sciActivitiesPrefix + '/publications',
     scientificWork: sciActivitiesPrefix + '/scientific-work',
     // Добавляем пути для новых компонентов

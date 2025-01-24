@@ -18,6 +18,7 @@ export class PostsBaseService {
   }
 
   getPosts(_limit?: number, _offset?: number): Observable<Pagination<ListPost>> {
+    console.log(_limit, _offset);
     return this.http.get<Snaked<Pagination<ListPost>>>(this.getUrl(), {
       params: {limit: _limit ? _limit : 10, offset: _offset ? _offset : 0}
     }).pipe(
