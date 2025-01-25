@@ -7,6 +7,7 @@ import { Injectable } from '@angular/core';
 import {Pagination} from '@app/shared/types/paginate.interface';
 import {Snaked} from '@app/shared/utils/SnakeToCamelCase';
 import {Achievement, ListAchievement} from '@app/shared/types/models/achievement';
+import {PaginationService} from '@app/shared/services/pagination.service';
 
 @Injectable({
   providedIn: 'root',
@@ -14,14 +15,15 @@ import {Achievement, ListAchievement} from '@app/shared/types/models/achievement
 export class AchievementService {
    paginatedResponse$: BehaviorSubject<Pagination<ListAchievement>>;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private paginationService: PaginationService) {
     this.paginatedResponse$ = new BehaviorSubject<Pagination<ListAchievement>>(null);
   }
 
   getAchievements(limit?: number, offset?: number): Observable<Pagination<ListAchievement>> {
     return this.http.get<Pagination<ListAchievement>>(ApiConfig.department.achievements.base, {
         params: {
-          limit: limit ? limit: 7, offset: offset ? offset : 0,
+          limit: limit ? limit: this.paginationService.defaultLimit,
+          offset: offset ? offset : 0,
         }
       })
       .pipe(

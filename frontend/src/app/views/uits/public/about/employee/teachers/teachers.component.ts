@@ -46,10 +46,6 @@ export class TeachersComponent implements OnInit {
       window.open(`${PagesConfig.admin}/employee/teacher/${id}/change/`);
     }
 
-    basePositions: TeacherRank[] = [
-      TeacherRank.Assistant, TeacherRank.Teacher, TeacherRank.HighTeacher, TeacherRank.Reader, TeacherRank.Proffesor
-    ];
-
     moveToEmployee(id: number) {
       console.log('Navigating to:', PagesConfig.about.employee.teachers, id);
       this.router.navigate([PagesConfig.about.employee.teachers, id]);

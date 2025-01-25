@@ -3,7 +3,7 @@ import {AchievementService} from '../achievement.service';
 import {AuthService} from '@app/shared/services/auth.service';
 import {Router} from '@angular/router';
 import {PagesConfig} from '@app/configs/pages.config';
-import {BehaviorSubject, catchError, Observable, Subject, Subscription, takeUntil, tap} from 'rxjs';
+import {BehaviorSubject, catchError, finalize, Observable, Subject, Subscription, takeUntil, tap} from 'rxjs';
 import {ListAchievement} from '@app/shared/types/models/achievement';
 import {HttpErrorResponse} from '@angular/common/http';
 import {AlertService} from '@app/shared/services/alert.service';
@@ -19,9 +19,9 @@ import {PageChangedEvent} from 'ngx-bootstrap/pagination';
 export class AchievementListComponent implements OnInit, OnDestroy {
   destroy$: Subject<void> = new Subject<void>();
   page = 1;
-  defaultLimit = 7;
+  defaultLimit = this.paginationService.defaultLimit;
   defaultOffset = 0;
-  maxSize = 5;
+  maxSize = this.paginationService.maxSize;
   isLoading = true;
   errorMessage: string | null = null;
 

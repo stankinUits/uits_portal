@@ -18,7 +18,8 @@ import {PaginationService} from '@app/shared/services/pagination.service';
   styleUrls: ['./announcements.component.css']
 })
 export class AnnouncementsComponent extends PostsBaseComponent implements OnInit, OnDestroy {
-  defaultLimit = 10;
+  defaultLimit = this.paginationService.defaultLimit;
+  maxSize = this.paginationService.maxSize;
   defaultOffset = 0;
   _page = 1;
   destroy$: Subject<void> = new Subject<void>();

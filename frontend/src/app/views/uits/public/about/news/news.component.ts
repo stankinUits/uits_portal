@@ -19,9 +19,9 @@ export class NewsComponent extends PostsBaseComponent implements OnInit, OnDestr
   destroy$: Subject<void> = new Subject<void>();
 
   isMobile: boolean;
-  maxSize = 5;
+  maxSize = this.paginationService.maxSize;
   _page = 1;
-  defaultLimit = 10;
+  defaultLimit = this.paginationService.defaultLimit;
   defaultOffset = 0;
 
   constructor(private newsService: NewsService,
@@ -75,8 +75,6 @@ export class NewsComponent extends PostsBaseComponent implements OnInit, OnDestr
 
   setPosts() {
     const {limit, offset} = this.paginationService.getPaginationParams();
-    console.log('limit', limit);
-    console.log('offset', offset);
     this.newsService.getPosts(limit, offset).pipe(
       takeUntil(this.destroy$)
     ).subscribe();

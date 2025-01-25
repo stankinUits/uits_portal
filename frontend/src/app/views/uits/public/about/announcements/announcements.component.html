@@ -17,9 +17,10 @@
       [itemsPerPage]="itemsPerPage"
       [totalItems]="response.count"
       (pageChanged)="pageChanged($event)"
+      [maxSize]="maxSize"
       [ngModel]="page"
-      nextText="Следующая"
-      previousText="Предыдущая"
+      nextText=">"
+      previousText="<"
     ></pagination>
   </ng-container>
 </ng-container>

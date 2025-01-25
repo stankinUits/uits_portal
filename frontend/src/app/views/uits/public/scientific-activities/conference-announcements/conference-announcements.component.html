@@ -1,7 +1,7 @@
 <app-create-button (create)="redirectToAdd()"></app-create-button>
-<ng-container *ngIf="conferenceAnnouncements$ | async as conferences">
-  <div *ngIf="conferences.length > 0; else empty" class="conference-wrapper">
-    <div class="conference-item" *ngFor="let conference of conferences" (click)="redirectToDetail(conference.id)">
+<ng-container *ngIf="response$ | async as conferences">
+  <div *ngIf="conferences.results.length > 0; else empty" class="conference-wrapper">
+    <div class="conference-item" *ngFor="let conference of conferences.results" (click)="redirectToDetail(conference.id)">
       <div class="conference-info">
         <h1 class="conference-title">{{ conference.title }}</h1>
         <div class="conference-content">
@@ -15,8 +15,25 @@
           <i>Дата размещения объявления: {{ conference.created_at | date: 'dd.MM.yyyy' }}</i>
         </div>
       </div>
+      <app-edit-button
+      class="edit-btn"
+      (edit)="redirectToEditPage(conference.id)"
+      (click)="$event.stopPropagation()"
+     >
+    </app-edit-button>
     </div>
   </div>
+  <ng-container *ngIf="conferences.count > itemsPerPage" class="pagination">
+    <pagination
+      [itemsPerPage]="itemsPerPage"
+      [totalItems]="conferences.count"
+      (pageChanged)="pageChanged($event)"
+      [maxSize] = maxSize
+      [ngModel]="page"
+      nextText=">"
+      previousText="<"
+    ></pagination>
+  </ng-container>
 </ng-container>
 
 <ng-template #empty>

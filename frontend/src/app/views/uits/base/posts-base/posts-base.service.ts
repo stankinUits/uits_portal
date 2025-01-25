@@ -4,6 +4,7 @@ import {ListPost, Post} from '@app/shared/types/models/news';
 import {HttpClient} from '@angular/common/http';
 import {Snaked} from '@app/shared/utils/SnakeToCamelCase';
 import {ApiConfig} from '@app/configs/api.config';
+import {PaginationService} from '@app/shared/services/pagination.service';
 
 type PostType = 'ANNOUNCEMENTS' | 'NEWS';
 
@@ -20,7 +21,10 @@ export class PostsBaseService {
   getPosts(_limit?: number, _offset?: number): Observable<Pagination<ListPost>> {
     console.log(_limit, _offset);
     return this.http.get<Snaked<Pagination<ListPost>>>(this.getUrl(), {
-      params: {limit: _limit ? _limit : 10, offset: _offset ? _offset : 0}
+      params: {
+        limit: _limit ? _limit : 5,
+        offset: _offset ? _offset : 0
+      }
     }).pipe(
       map(response => {
         const _posts = response.results;

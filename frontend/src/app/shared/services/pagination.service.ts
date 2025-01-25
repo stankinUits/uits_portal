@@ -10,6 +10,14 @@ export class PaginationService {
   constructor(private router: Router, private route: ActivatedRoute) {
   }
 
+  get defaultLimit() {
+    return 5;
+  }
+
+  get maxSize() {
+    return 5;
+  }
+
   getPaginationParams(): { limit: number, offset: number } {
     const offset = +this.route.snapshot.queryParamMap.get('offset');
     const limit = +this.route.snapshot.queryParamMap.get('limit');
