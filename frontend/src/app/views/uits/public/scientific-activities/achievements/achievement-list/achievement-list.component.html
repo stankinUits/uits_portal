@@ -17,11 +17,6 @@
     (click)="openAchievementById(achievement)"
     [ngClass]="{'even-item': index % 2 === 0, 'odd-item': index % 2 !== 0}">
 
-    <app-edit-button
-      class="edit-btn"
-      (edit)="redirectToEditPage(achievement.id)">
-    </app-edit-button>
-
     <div class="achievement-image">
       <img [src]="achievement.image" alt="Achievement Image"/>
     </div>
@@ -33,6 +28,12 @@
         {{ achievement.description }}
       </markdown>
     </div>
+     <app-edit-button
+      class="edit-btn"
+      (edit)="redirectToEditPage(achievement.id)"
+      (click)="$event.stopPropagation()"
+     >
+    </app-edit-button>
   </div>
 
   <ng-container *ngIf="response.count > itemsPerPage" class="pagination">
