@@ -19,6 +19,7 @@ export class NewsComponent extends PostsBaseComponent implements OnInit, OnDestr
   destroy$: Subject<void> = new Subject<void>();
 
   isMobile: boolean;
+  maxSize = 5;
   _page = 1;
   defaultLimit = 10;
   defaultOffset = 0;
@@ -97,7 +98,6 @@ export class NewsComponent extends PostsBaseComponent implements OnInit, OnDestr
     const newOffset = (limit * ($event.page - 1));
     this.page = $event.page;
     this.paginationService.setPaginationParams(limit, newOffset).then(ok => {
-      console.log(limit, offset, this.page);
       this.setPosts();
     });
   }

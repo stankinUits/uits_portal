@@ -34,10 +34,10 @@ import {CreateButtonComponent} from '@app/shared/components/create-button/create
 import {NgxDatatableModule} from '@swimlane/ngx-datatable';
 import {ConferenceAnnouncementsComponent} from './conference-announcements/conference-announcements.component';
 import { ConferenceAnnouncementDetailComponent } from './conference-announcements/conference-announcement-detail/conference-announcement-detail.component';
-import {SharedModule} from "@app/shared/shared.module";
+import {SharedModule} from '@app/shared/shared.module';
 import { ResearchComponent } from './research/research.component';
 import { ForumComponent } from './forum/forum.component';
-import {PaginationModule} from "ngx-bootstrap/pagination";
+import {PaginationModule} from 'ngx-bootstrap/pagination';
 
 @NgModule({
   declarations: [

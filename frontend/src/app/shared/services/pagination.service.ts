@@ -1,24 +1,27 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
+import {PageChangedEvent} from 'ngx-bootstrap/pagination';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PaginationService {
 
-  constructor(private router: Router, private route: ActivatedRoute) {}
+  constructor(private router: Router, private route: ActivatedRoute) {
+  }
 
   getPaginationParams(): { limit: number, offset: number } {
     const offset = +this.route.snapshot.queryParamMap.get('offset');
     const limit = +this.route.snapshot.queryParamMap.get('limit');
 
-    return { limit, offset };
+    return {limit, offset};
   }
 
   setPaginationParams(limit: number, offset: number): Promise<boolean> {
     return this.router.navigate([], {
       relativeTo: this.route,
-      queryParams: { limit, offset },
+      queryParams: {limit, offset},
       queryParamsHandling: 'merge'
     });
-  }}
+  }
+}

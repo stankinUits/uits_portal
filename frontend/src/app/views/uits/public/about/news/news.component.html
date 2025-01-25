@@ -16,6 +16,7 @@
     <pagination
       [itemsPerPage]="itemsPerPage"
       [totalItems]="response.count"
+      [maxSize] = maxSize
       (pageChanged)="pageChanged($event)"
       [ngModel]="page"
       nextText="Следующая"

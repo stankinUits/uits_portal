@@ -4,28 +4,28 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HTTP_INTERCEPTORS, HttpClientJsonpModule, HttpClientModule} from '@angular/common/http';
 import {TranslateModule} from '@ngx-translate/core';
 import {CSRFInterceptor} from '@app/shared/interceptor/csrf.interceptor';
-import {ResizableComponent} from "@app/shared/components/base/resizable.component";
+import {ResizableComponent} from '@app/shared/components/base/resizable.component';
 import { TimeFromDatePipe } from './pipes/time-from-date.pipe';
-import { CreateButtonComponent } from './components/create-button/create-button.component';
 import { TimeWithoutSsPipe } from './pipes/time-without-ss.pipe';
 
 @NgModule({
   declarations: [
     ResizableComponent,
     TimeFromDatePipe,
-    TimeWithoutSsPipe
+    TimeWithoutSsPipe,
   ],
-    exports: [
-        CommonModule,
-        FormsModule,
-        ReactiveFormsModule,
-        HttpClientModule,
-        HttpClientJsonpModule,
-        TranslateModule,
-        TimeFromDatePipe,
-        TimeWithoutSsPipe,
+  exports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    HttpClientJsonpModule,
+    TranslateModule,
+    TimeFromDatePipe,
+    TimeWithoutSsPipe,
+  ],
+    imports: [
     ],
-  imports: [],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: CSRFInterceptor, multi: true}
   ]

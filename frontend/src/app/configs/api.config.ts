@@ -25,9 +25,9 @@ export const ApiConfig = {
       base: 'api/department/achievements/',
       retrieve: (id: string | number) => `api/department/achievements/${id}/`,
       redact: {
-        all: 'api/admin/achievements/achievement/',
+        all: 'api/department/achievements/achievement/',
         one: (id: string | number) =>
-          `api/admin/achievements/achievement/${id}/change/`,
+          `achievements/achievement/${id}/change/`,
       },
     },
     employee: {

@@ -17,6 +17,11 @@
     (click)="openAchievementById(achievement)"
     [ngClass]="{'even-item': index % 2 === 0, 'odd-item': index % 2 !== 0}">
 
+    <app-edit-button
+      class="edit-btn"
+      (edit)="redirectToEditPage(achievement.id)">
+    </app-edit-button>
+
     <div class="achievement-image">
       <img [src]="achievement.image" alt="Achievement Image"/>
     </div>
@@ -35,6 +40,7 @@
       [itemsPerPage]="itemsPerPage"
       [totalItems]="response.count"
       (pageChanged)="pageChanged($event)"
+      [maxSize] = maxSize
       [ngModel]="page"
       nextText=">"
       previousText="<"

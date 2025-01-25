@@ -90,10 +90,10 @@ export class AnnouncementsComponent extends PostsBaseComponent implements OnInit
   pageChanged($event: PageChangedEvent) {
     let {limit, offset} = this.paginationService.getPaginationParams();
     if (!limit) {limit = this.defaultLimit;}
+    if (!offset) {offset = this.defaultLimit;}
     const newOffset = (limit * ($event.page - 1));
     this.page = $event.page;
     this.paginationService.setPaginationParams(limit, newOffset).then(ok => {
-      console.log(limit, newOffset, this.page);
       this.setPosts();
     });
   }

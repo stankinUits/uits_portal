@@ -1,10 +1,10 @@
 import { ActivatedRoute, Router } from '@angular/router';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-
+import { Component, OnInit } from '@angular/core';
 import { AchievementService } from '../achievement.service';
-
-import { AuthService } from '@app/shared/services/auth.service';
-import { ApiConfig } from '@app/configs/api.config';
+import {PagesConfig} from '@app/configs/pages.config';
+import {BehaviorSubject} from 'rxjs';
+import {Achievement} from '@app/shared/types/models/achievement';
+import {AlertService} from '@app/shared/services/alert.service';
 
 
 @Component({
@@ -13,58 +13,36 @@ import { ApiConfig } from '@app/configs/api.config';
   styleUrls: ['./achievement-detail.component.scss']
 })
 export class AchievementDetailComponent implements OnInit {
-  achievement: any = null;
+  achievement$: BehaviorSubject<Achievement> = new BehaviorSubject<Achievement>(null);
+  id: number;
   errorMessage: string | null = null;
-  isLoading: boolean = true;
-
-  isAdmin: boolean = false;
-
+  isLoading = true;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private achievementService: AchievementService,
-
-    public authService: AuthService,
-    private cdr: ChangeDetectorRef
+    private alertService: AlertService,
   ) { }
 
   ngOnInit(): void {
-    this.checkAdminRights();
-
-
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      this.loadAchievement(id);
-    } else {
-      this.errorMessage = 'ID достижения не найден';
+    this.isLoading = true;
+    this.route.params.subscribe(params => {
+      this.id = +params.id;
+      this.getAchievement();
       this.isLoading = false;
-    }
-  }
-
-  checkAdminRights(): void {
-    this.authService.canEdit().subscribe((canEdit: boolean) => {
-
-      this.isAdmin = canEdit;
-      this.cdr.detectChanges();
-
     });
   }
 
-  loadAchievement(id: string): void {
-    this.achievementService.getAchievementByID(id).subscribe({
-      next: (data) => {
-        this.achievement = data;
-        this.isLoading = false;
-
-        this.cdr.detectChanges();
-
+  getAchievement() {
+    this.achievementService.getAchievementByID(this.id).subscribe({
+      next: (achievement) => {
+        console.log(achievement);
+        this.achievement$.next(achievement);
       },
-      error: (err) => {
-        console.error('Ошибка загрузки данных:', err);
-        this.errorMessage = 'Ошибка загрузки данных достижения';
-        this.isLoading = false;
-        this.cdr.detectChanges();
+      error: (error) => {
+        this.errorMessage = error;
+        this.alertService.add('Произошла ошибка при загрузке данных', 'danger');
       }
     });
   }
@@ -75,10 +53,8 @@ export class AchievementDetailComponent implements OnInit {
 
 
   redirectToEditPage(): void {
-    if (this.achievement?.id) {
-      const adminUrl = ApiConfig.department.achievements.redact.one(this.achievement.id);
-
-      window.open(adminUrl, '_blank');
+    if (this.id) {
+      window.open(PagesConfig.admin + '/achievements/achievement/' + this.id + '/change', '_blank');
     }
   }
 }

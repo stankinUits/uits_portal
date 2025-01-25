@@ -10,6 +10,7 @@ import {AlertService} from '@app/shared/services/alert.service';
 import {Pagination} from '@app/shared/types/paginate.interface';
 import {PaginationService} from '@app/shared/services/pagination.service';
 import {PageChangedEvent} from 'ngx-bootstrap/pagination';
+import {ApiConfig} from '@app/configs/api.config';
 
 @Component({
   selector: 'app-achievement-list',
@@ -20,8 +21,7 @@ export class AchievementListComponent implements OnInit {
   page = 1;
   defaultLimit = 7;
   defaultOffset = 0;
-  achievements$: BehaviorSubject<ListAchievement[]> = new BehaviorSubject<ListAchievement[]>([]);
-
+  maxSize = 5;
   isLoading = true;
   errorMessage: string | null = null;
 
@@ -34,7 +34,7 @@ export class AchievementListComponent implements OnInit {
   ) {
   }
 
-  get response$(): BehaviorSubject<Pagination<ListAchievement>>  {
+  get response$(): BehaviorSubject<Pagination<ListAchievement>> {
     return this.achievementService.paginatedResponse$;
   }
 
@@ -52,12 +52,9 @@ export class AchievementListComponent implements OnInit {
 
   getAchievements(): void {
     const {limit, offset} = this.paginationService.getPaginationParams();
-    console.log('limit', limit);
-    console.log('offset', offset);
     this.achievementService.getAchievements(limit, offset)
       .pipe(
-        tap(response => {
-          this.achievements$.next(response.results);
+        tap(() => {
           this.isLoading = false;
         }),
         catchError((error: HttpErrorResponse) => this.setError(error))
@@ -74,8 +71,12 @@ export class AchievementListComponent implements OnInit {
 
   pageChanged($event: PageChangedEvent) {
     let {limit, offset} = this.paginationService.getPaginationParams();
-    if (!limit) {limit = this.defaultLimit;}
-    if (!offset) {offset = this.defaultOffset;}
+    if (!limit) {
+      limit = this.defaultLimit;
+    }
+    if (!offset) {
+      offset = this.defaultOffset;
+    }
     const newOffset = (limit * ($event.page - 1));
     this.page = $event.page;
     this.paginationService.setPaginationParams(limit, newOffset)
@@ -91,5 +92,11 @@ export class AchievementListComponent implements OnInit {
 
   redirectToAdminPanel(): void {
     window.open(PagesConfig.admin + '/achievements/achievement/add', '_blank');
+  }
+
+  redirectToEditPage(id: number): void {
+    if (id) {
+      window.open(PagesConfig.admin + '/achievements/achievement/' + id + '/change', '_blank');
+    }
   }
 }

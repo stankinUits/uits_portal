@@ -36,18 +36,7 @@ export class AchievementService {
       );
   }
 
-  // getAchievements(limit?: number, offset?: number): Observable<any> {
-    // return this.http
-    //   .get<any[]>(ApiConfig.department.achievements.base)
-    //   .pipe(
-    //     map((achievements) => {
-    //       this.achievements$.next(achievements);
-    //       return achievements;
-    //     }),
-    //     catchError(this.handleError)
-    //   );
-
-  getAchievementByID(id: string): Observable<Achievement> {
+  getAchievementByID(id: number): Observable<Achievement> {
     return this.http.get<Achievement>(ApiConfig.department.achievements.retrieve(id))
       .pipe(
         map((response: Achievement) => new Achievement(response)),
@@ -55,15 +44,6 @@ export class AchievementService {
       );
   }
 
-  // Получить одно достижение по ID
-  // retrieveAchievement(id: string): Observable<any> {
-  //   return this.http
-  //     .get<any>(ApiConfig.department.achievements.retrieve(id))
-  //     .pipe(catchError(this.handleError));
-  // }
-
-
-  // Обработчик ошибок
   private handleError(error: HttpErrorResponse) {
     let errorMessage = 'Произошла ошибка';
     if (error.error instanceof ErrorEvent) {
