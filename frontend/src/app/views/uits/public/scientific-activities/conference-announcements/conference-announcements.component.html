@@ -23,7 +23,7 @@
     </app-edit-button>
     </div>
   </div>
-  <ng-container *ngIf="conferences.count > itemsPerPage" class="pagination">
+  <div *ngIf="conferences.count > itemsPerPage" class="pagination">
     <pagination
       [itemsPerPage]="itemsPerPage"
       [totalItems]="conferences.count"
@@ -33,7 +33,7 @@
       nextText=">"
       previousText="<"
     ></pagination>
-  </ng-container>
+  </div>
 </ng-container>
 
 <ng-template #empty>

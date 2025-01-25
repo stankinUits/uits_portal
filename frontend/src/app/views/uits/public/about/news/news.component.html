@@ -12,7 +12,7 @@
       <ng-container *ngTemplateOutlet="gridMobile;context:{posts: response.results}"></ng-container>
     </ng-container>
   </div>
-  <ng-container *ngIf="response.count > itemsPerPage">
+  <div *ngIf="response.count > itemsPerPage" class="pagination">
     <pagination
       [itemsPerPage]="itemsPerPage"
       [totalItems]="response.count"
@@ -22,7 +22,7 @@
       nextText=">"
       previousText="<"
     ></pagination>
-  </ng-container>
+  </div>
 </ng-container>
 
 

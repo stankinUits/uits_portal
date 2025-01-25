@@ -36,7 +36,7 @@
     </app-edit-button>
   </div>
 
-  <ng-container *ngIf="response.count > itemsPerPage" class="pagination">
+  <div *ngIf="response.count > itemsPerPage" class="pagination">
     <pagination
       [itemsPerPage]="itemsPerPage"
       [totalItems]="response.count"
@@ -46,7 +46,7 @@
       nextText=">"
       previousText="<"
     ></pagination>
-  </ng-container>
+  </div>
 </div>
 
 
