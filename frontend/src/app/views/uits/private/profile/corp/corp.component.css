@@ -129,7 +129,8 @@
 }
 
 .go-back-btn {
-  background-color: #b3e8f5;
+  margin-top: 35px;
+  background-color: white;
   border: none;
   border-radius: 5px;
   padding: 10px 12px;
