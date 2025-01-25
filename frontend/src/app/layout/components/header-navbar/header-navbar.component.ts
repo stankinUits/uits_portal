@@ -2,9 +2,6 @@ import { Component, OnInit, Input } from '@angular/core';
 import { NavMenu } from '@app/shared/types/nav-menu.interface';
 import { navConfiguration } from '@app/configs/nav.config';
 import { NavMenuColor } from '@app/shared/types/app-config.interface';
-import { Router, NavigationEnd } from '@angular/router';
-import { filter } from 'rxjs/operators';
-import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
     selector: 'header-navbar',
@@ -17,38 +14,13 @@ import { ChangeDetectorRef } from '@angular/core';
 })
 export class HeaderNavbarComponent implements OnInit {
 
-    menu: NavMenu[] = []; // Меню для отображения
+    menu: NavMenu[] = [];
     @Input() color: NavMenuColor = 'light';
-    isProfilePage: boolean = false; // Флаг для определения корпоративной страницы
 
     constructor(
-      private router: Router,
-      private cdr: ChangeDetectorRef
     ) { }
 
     ngOnInit(): void {
-        // Инициализация меню при загрузке компонента
-        this.updateMenuVisibility();
-
-        // Подписка на изменения маршрута для обновления видимости меню
-        this.router.events.pipe(
-            filter(event => event instanceof NavigationEnd)
-        ).subscribe(() => {
-            this.updateMenuVisibility();
-        });
-    }
-
-    updateMenuVisibility(): void {
-        // Проверяем, находится ли текущий URL в разделе корпоративного портала
-        this.isProfilePage = this.router.url.startsWith('/corp');
-
-        if (this.isProfilePage) {
-            this.menu = []; // Очистка меню
-        } else {
-            this.menu = navConfiguration; // Установка стандартной конфигурации меню
-        }
-
-        // Принудительное обновление представления
-        this.cdr.detectChanges();
+      this.menu = navConfiguration;
     }
 }

@@ -1,4 +1,4 @@
-<div class="container" *ngIf="!isProfilePage">
+<div class="container">
   <nav-menu mode="horizontal" [border]="false">
     <ng-container *ngFor="let item of menu">
       <ng-container *ngIf="item.submenu.length > 0 && item.type === 'title'">
