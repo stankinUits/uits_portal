@@ -1,23 +1,23 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
 import {AchievementService} from '../achievement.service';
 import {AuthService} from '@app/shared/services/auth.service';
 import {Router} from '@angular/router';
 import {PagesConfig} from '@app/configs/pages.config';
-import {BehaviorSubject, catchError, Observable, tap} from 'rxjs';
+import {BehaviorSubject, catchError, Observable, Subject, Subscription, takeUntil, tap} from 'rxjs';
 import {ListAchievement} from '@app/shared/types/models/achievement';
 import {HttpErrorResponse} from '@angular/common/http';
 import {AlertService} from '@app/shared/services/alert.service';
 import {Pagination} from '@app/shared/types/paginate.interface';
 import {PaginationService} from '@app/shared/services/pagination.service';
 import {PageChangedEvent} from 'ngx-bootstrap/pagination';
-import {ApiConfig} from '@app/configs/api.config';
 
 @Component({
   selector: 'app-achievement-list',
   templateUrl: './achievement-list.component.html',
   styleUrls: ['./achievement-list.component.scss'],
 })
-export class AchievementListComponent implements OnInit {
+export class AchievementListComponent implements OnInit, OnDestroy {
+  destroy$: Subject<void> = new Subject<void>();
   page = 1;
   defaultLimit = 7;
   defaultOffset = 0;
@@ -50,6 +50,11 @@ export class AchievementListComponent implements OnInit {
     this.getAchievements();
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   getAchievements(): void {
     const {limit, offset} = this.paginationService.getPaginationParams();
     this.achievementService.getAchievements(limit, offset)
@@ -57,6 +62,7 @@ export class AchievementListComponent implements OnInit {
         tap(() => {
           this.isLoading = false;
         }),
+        takeUntil(this.destroy$),
         catchError((error: HttpErrorResponse) => this.setError(error))
       )
       .subscribe();

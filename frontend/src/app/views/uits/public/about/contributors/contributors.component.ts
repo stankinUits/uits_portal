@@ -86,15 +86,9 @@ export class ContributorsComponent implements OnInit {
     },
     {
       id: 13,
-      name: 'Бадян Ксения',
+      name: 'Бадян Ксения и Анастасия',
       description: 'Frontend-разработчик',
-      image: AVATAR_DEFAULT_URL,
-    },
-    {
-      id: 14,
-      name: 'Бадян Анастасия',
-      description: 'Frontend-разработчик',
-      image: AVATAR_DEFAULT_URL,
+      image: 'assets/images/contributors/badyan.jpg',
     },
     {
       id: 15,

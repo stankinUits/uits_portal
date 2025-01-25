@@ -24,7 +24,7 @@ export class CSRFInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const csrfCookie = getCookie('csrftoken');
-    console.log('Current method is ' + req.method + ' url: ' + req.url);
+    // console.log('Current method is ' + req.method + ' url: ' + req.url);
     if (csrfCookie){
       req = req.clone({
         setHeaders: {

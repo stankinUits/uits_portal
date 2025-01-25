@@ -27,7 +27,6 @@ export class AchievementService {
       .pipe(
         map((response: Pagination<ListAchievement>) => {
           const achievements: ListAchievement[] = response.results.map(achievement => new ListAchievement(achievement));
-          console.log(achievements);
           const camelResponse: Pagination<ListAchievement> = {...response, results: achievements};
           this.paginatedResponse$.next(camelResponse);
           return camelResponse;
