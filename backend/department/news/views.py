@@ -48,3 +48,4 @@ class ConferenceAnnouncementViewSet(ModelViewSet):
     queryset = ConferenceAnnouncement.objects.filter(is_hidden=False).order_by('-created_at')
     serializer_class = ConferenceAnnouncementSerializer
     permission_classes = [IsModeratorOrReadOnly]
+    pagination_class = PostLimitOffsetPagination
