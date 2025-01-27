@@ -83,7 +83,7 @@ class UserEventsNotificationsAPIView(GenericAPIView):
 
         # Отправка уведомления
         notification_message = f"Напоминание от {user.last_name} {user.first_name}"
-        user_event.notify(notification_message)
+        # user_event.notify(notification_message)
 
         logger.info(f"Notification sent for event ID {event_pk} by user {user.id}")
         return Response({"status": "Notification sent successfully."}, status=200)
