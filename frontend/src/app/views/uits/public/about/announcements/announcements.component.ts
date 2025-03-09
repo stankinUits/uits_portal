@@ -1,23 +1,30 @@
-import {Component, HostListener, Input, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {AnnouncementsService} from '@app/views/uits/public/about/announcements/announcements.service';
-import {BsModalService} from 'ngx-bootstrap/modal';
-import {ru} from 'date-fns/locale';
-import {AuthService} from '@app/shared/services/auth.service';
-import {Profile} from '@app/shared/types/models/auth';
-import {BehaviorSubject, Observable, Subject, takeUntil} from 'rxjs';
-import {ListPost} from '@app/shared/types/models/news';
-import {PagesConfig} from '@app/configs/pages.config';
-import {PostsBaseComponent} from '@app/views/uits/base/posts-base/posts-base.component';
-import {Pagination} from '@app/shared/types/paginate.interface';
-import {PageChangedEvent} from 'ngx-bootstrap/pagination';
-import {PaginationService} from '@app/shared/services/pagination.service';
+import {
+  Component,
+  HostListener,
+  Input,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
+import { AnnouncementsService } from '@app/views/uits/public/about/announcements/announcements.service';
+import { AuthService } from '@app/shared/services/auth.service';
+import { Profile } from '@app/shared/types/models/auth';
+import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
+import { ListPost } from '@app/shared/types/models/news';
+import { PagesConfig } from '@app/configs/pages.config';
+import { PostsBaseComponent } from '@app/views/uits/base/posts-base/posts-base.component';
+import { Pagination } from '@app/shared/types/paginate.interface';
+import { PageChangedEvent } from 'ngx-bootstrap/pagination';
+import { PaginationService } from '@app/shared/services/pagination.service';
 
 @Component({
   selector: 'app-announcements',
   templateUrl: './announcements.component.html',
-  styleUrls: ['./announcements.component.css']
+  styleUrls: ['./announcements.component.css'],
 })
-export class AnnouncementsComponent extends PostsBaseComponent implements OnInit, OnDestroy {
+export class AnnouncementsComponent
+  extends PostsBaseComponent
+  implements OnInit, OnDestroy
+{
   defaultLimit = this.paginationService.defaultLimit;
   maxSize = this.paginationService.maxSize;
   defaultOffset = 0;
@@ -25,9 +32,11 @@ export class AnnouncementsComponent extends PostsBaseComponent implements OnInit
   destroy$: Subject<void> = new Subject<void>();
   isMobile: boolean;
 
-  constructor(private announcementService: AnnouncementsService,
-              public authService: AuthService,
-              private paginationService: PaginationService) {
+  constructor(
+    private announcementService: AnnouncementsService,
+    public authService: AuthService,
+    private paginationService: PaginationService
+  ) {
     super();
     this.isMobile = window.innerWidth < 992;
   }
@@ -59,7 +68,7 @@ export class AnnouncementsComponent extends PostsBaseComponent implements OnInit
   }
 
   ngOnInit(): void {
-    const {limit, offset} = this.paginationService.getPaginationParams();
+    const { limit, offset } = this.paginationService.getPaginationParams();
     if (limit !== undefined && offset !== undefined) {
       this.page = Math.round(offset / limit) + 1;
     }
@@ -72,12 +81,12 @@ export class AnnouncementsComponent extends PostsBaseComponent implements OnInit
     this.destroy$.complete();
   }
 
-
   setPosts() {
-    const {limit, offset} = this.paginationService.getPaginationParams();
-    this.announcementService.getPosts(limit, offset).pipe(
-      takeUntil(this.destroy$)
-    ).subscribe();
+    const { limit, offset } = this.paginationService.getPaginationParams();
+    this.announcementService
+      .getPosts(limit, offset)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe();
   }
 
   getPostURL(id: number) {
@@ -89,12 +98,16 @@ export class AnnouncementsComponent extends PostsBaseComponent implements OnInit
   }
 
   pageChanged($event: PageChangedEvent) {
-    let {limit, offset} = this.paginationService.getPaginationParams();
-    if (!limit) {limit = this.defaultLimit;}
-    if (!offset) {offset = this.defaultLimit;}
-    const newOffset = (limit * ($event.page - 1));
+    let { limit, offset } = this.paginationService.getPaginationParams();
+    if (!limit) {
+      limit = this.defaultLimit;
+    }
+    if (!offset) {
+      offset = this.defaultLimit;
+    }
+    const newOffset = limit * ($event.page - 1);
     this.page = $event.page;
-    this.paginationService.setPaginationParams(limit, newOffset).then(ok => {
+    this.paginationService.setPaginationParams(limit, newOffset).then((ok) => {
       this.setPosts();
     });
   }

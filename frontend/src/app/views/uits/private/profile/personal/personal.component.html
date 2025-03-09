@@ -9,13 +9,13 @@
   <div class="col" style="max-width: 200px;">
     <div>
       <div class="mb-3">
-        <img class="img-fluid w-100 rounded" 
-             [src]="(authService.profile$ | async)?.avatar || defaultAvatar" 
+        <img class="img-fluid w-100 rounded"
+             [src]="(authService.profile$ | async)?.avatar || defaultAvatar"
              alt="avatar">
       </div>
     </div>
   </div>
-  
+
   <div class="col-md">
     <table class="table" *ngIf="(authService.profile$ | async) as person">
       <tbody>
@@ -47,7 +47,7 @@
               <span *ngSwitchCase="false">{{ person.telegramCode }}</span>
               <span *ngSwitchCase="true" class="user-select-none">************</span>
               <i class="feather icon-copy cursor-pointer" (click)="copyCode(person.telegramCode)"></i>
-              <i class="feather ms-1 cursor-pointer" 
+              <i class="feather ms-1 cursor-pointer"
                  [ngClass]="{ 'icon-eye': !hideIntegrationCode, 'icon-eye-off': hideIntegrationCode }"
                  (click)="toggleViewIntegrationCode()"></i>
             </div>
@@ -55,11 +55,11 @@
               <div *ngIf="person.telegramUser">
                 <span class="user-select-none">Привязан к: </span>
                 <a href="https://t.me/{{person.telegramUser.username}}">@{{ person.telegramUser.username }}</a>
-                <i class="feather icon-x cursor-pointer font-size-lg ms-2" style="color: red;" 
+                <i class="feather icon-x cursor-pointer font-size-lg ms-2" style="color: red;"
                    (click)="openModal(deleteIntegrationConfirmModal)"></i>
               </div>
               <div *ngIf="!person.telegramUser">
-                <img class="me-1" src="assets/images/telegram_16px.png" alt="telegram" width="16" height="16"> 
+                <img class="me-1" src="assets/images/telegram_16px.png" alt="telegram" width="16" height="16">
                 <a href="https://t.me/uits_notify_bot" tooltip="Для привязки профиля к телеграм пришлите этому боту код">@uits_notify_bot</a>
               </div>
             </div>
@@ -101,6 +101,6 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="closeModal()">Отмена</button>
-    <button type="button" class="btn btn-danger" (click)="deleteIntegration()">Удалить</button>
+<!--    <button type="button" class="btn btn-danger" (click)="deleteIntegration()">Удалить</button>-->
   </div>
 </ng-template>

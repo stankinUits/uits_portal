@@ -1,10 +1,10 @@
-import {CalendarEvent} from "angular-calendar";
-import {addWeeks} from "date-fns";
+import {CalendarEvent} from 'angular-calendar';
+import {addWeeks} from 'date-fns';
 
-const CLASS_TIME_HOUR_START_ARRAY = [8, 10, 12, 14, 16, 18, 19, 21]
-const CLASS_TIME_HOUR_END_ARRAY = [10, 12, 14, 15, 17, 19, 21, 22]
-const CLASS_TIME_MINUTE_START_ARRAY = [30, 20, 20, 10, 0, 0, 40, 20]
-const CLASS_TIME_MINUTE_END_ARRAY = [10, 0, 0, 50, 40, 30, 10, 50]
+const CLASS_TIME_HOUR_START_ARRAY = [8, 10, 12, 14, 16, 18, 19, 21];
+const CLASS_TIME_HOUR_END_ARRAY = [10, 12, 14, 15, 17, 19, 21, 22];
+const CLASS_TIME_MINUTE_START_ARRAY = [30, 20, 20, 10, 0, 0, 40, 20];
+const CLASS_TIME_MINUTE_END_ARRAY = [10, 0, 0, 50, 40, 30, 10, 50];
 
 export type CalendarEventMetaLesson = {
   id: number,
@@ -12,7 +12,7 @@ export type CalendarEventMetaLesson = {
   cabinet: string,
   type: string,
   subgroup: string
-}
+};
 
 export enum WeekNumbers {
   MONDAY = 1,
@@ -35,10 +35,10 @@ export enum ClassNumbers {
 }
 
 export class ScheduleLessonDate {
-  id: number
-  startDate: string
-  endDate: string | null
-  alternativelyPeriod: boolean
+  id: number;
+  startDate: string;
+  endDate: string | null;
+  alternativelyPeriod: boolean;
 
   constructor(id: number, start_date: string, end_date: string | null, alternatively_period: boolean) {
     this.id = id;
@@ -104,27 +104,27 @@ export class ScheduleLesson {
   }
 
   getHourStart(): number {
-    return CLASS_TIME_HOUR_START_ARRAY[this.classTime - 1]
+    return CLASS_TIME_HOUR_START_ARRAY[this.classTime - 1];
   }
 
   getHourEnd(): number {
-    return CLASS_TIME_HOUR_END_ARRAY[this.classTime - 1]
+    return CLASS_TIME_HOUR_END_ARRAY[this.classTime - 1];
   }
 
   getMinuteStart(): number {
-    return CLASS_TIME_MINUTE_START_ARRAY[this.classTime - 1]
+    return CLASS_TIME_MINUTE_START_ARRAY[this.classTime - 1];
   }
 
   getMinuteEnd(): number {
-    return CLASS_TIME_MINUTE_END_ARRAY[this.classTime - 1]
+    return CLASS_TIME_MINUTE_END_ARRAY[this.classTime - 1];
   }
 }
 
 
 export class Schedule {
   lessons: ScheduleLesson[];
-  id: number
-  teacher: number
+  id: number;
+  teacher: number;
 
   constructor(id: number, teacher: number, lessons: ScheduleLesson[]) {
     this.id = id;
@@ -139,31 +139,33 @@ export class Schedule {
 
   toCalendarEvents(): CalendarEvent[] {
     const now = new Date();
-  
+
     const events: CalendarEvent[] = [];
-  
+
     for (const lesson of this.lessons) {
       for (const date of lesson.dates) {
         const startMonth = parseInt(date.startDate.split('.')[1]);
         const startDay = parseInt(date.startDate.split('.')[0]);
-  
+
         if (date.endDate) {
           const endMonth = parseInt(date.endDate.split('.')[1]);
           const endDay = parseInt(date.endDate.split('.')[0]);
-  
+
           const startPeriodDate = new Date(now.getFullYear(), startMonth - 1, startDay);
           const endPeriodDate = new Date(now.getFullYear(), endMonth - 1, endDay);
           let iterFromStart = startPeriodDate;
-  
+
           while (iterFromStart <= endPeriodDate) {
             events.push({
               id: `${lesson.weekNumber}_${lesson.id}_${date.id}_period_${iterFromStart.getMonth()}.${iterFromStart.getDate()}`,
               title: lesson.name,
-              start: new Date(now.getFullYear(), iterFromStart.getMonth(), iterFromStart.getDate(), lesson.getHourStart(), lesson.getMinuteStart(), 0),
-              end: new Date(now.getFullYear(), iterFromStart.getMonth(), iterFromStart.getDate(), lesson.getHourEnd(), lesson.getMinuteEnd(), 0),
+              start: new Date(now.getFullYear(), iterFromStart.getMonth(), iterFromStart.getDate(),
+                lesson.getHourStart(), lesson.getMinuteStart(), 0),
+              end: new Date(now.getFullYear(), iterFromStart.getMonth(), iterFromStart.getDate(),
+                lesson.getHourEnd(), lesson.getMinuteEnd(), 0),
               color: {
-                primary: "#11a1fd",
-                secondary: "#e8e4f5"
+                primary: '#11a1fd',
+                secondary: '#e8e4f5'
               },
               meta: {
                 id: lesson.id,
@@ -174,10 +176,10 @@ export class Schedule {
                 teacherId: lesson.teacherId // Добавляем teacherId в meta
               }
             });
-  
+
             iterFromStart = addWeeks(iterFromStart, date.alternativelyPeriod ? 2 : 1);
           }
-  
+
         } else {
           events.push({
             id: `${lesson.weekNumber}_${lesson.classTime}_${lesson.id}_${date.id}_noperiod`,
@@ -185,8 +187,8 @@ export class Schedule {
             start: new Date(now.getFullYear(), startMonth - 1, startDay, lesson.getHourStart(), lesson.getMinuteStart(), 0),
             end: new Date(now.getFullYear(), startMonth - 1, startDay, lesson.getHourEnd(), lesson.getMinuteEnd(), 0),
             color: {
-              primary: "#11a1fd",
-              secondary: "#e8e4f5"
+              primary: '#11a1fd',
+              secondary: '#e8e4f5'
             },
             meta: {
               id: lesson.id,
@@ -200,7 +202,7 @@ export class Schedule {
         }
       }
     }
-  
+
     return events;
   }
 }
