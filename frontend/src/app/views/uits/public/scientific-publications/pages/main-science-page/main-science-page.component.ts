@@ -46,7 +46,6 @@ export class MainSciencePageComponent implements OnInit {
   isHiddenSourcePage: boolean = false;
 
   authorsMap: Map<string, string> = new Map();
-  selectedAuthors: string[] = [];
 
   searchString: string = '';
 
@@ -61,6 +60,7 @@ export class MainSciencePageComponent implements OnInit {
     this.scienceService.getALLTagsRest().subscribe(v => {
       // заполняем все для карточек теги
       this.initTagsWithStylesMapForEditingCards(v);
+      console.log(this.profilesTags);
 
       //делаем запрос карточек
       this.scienceService.getListOfCards().subscribe(value => {
@@ -190,11 +190,6 @@ export class MainSciencePageComponent implements OnInit {
       this.yearsMap.set(year, AppSettings.ONCLICK_TAG_STYLE);
       this.filterThrewAllSearch();
     }
-  }
-
-  selectChange(event: any) {
-    console.log(event);
-    this.onAuthorClick(this.selectedAuthors[this.selectedAuthors.length - 1]);
   }
 
   onAuthorClick(name: string) {

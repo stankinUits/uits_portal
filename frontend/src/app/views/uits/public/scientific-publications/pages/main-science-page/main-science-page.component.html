@@ -51,23 +51,38 @@
             </ul>
           </div>
           <button class="button" role="button" (click)="onChooseForTagsClick()">По тегу</button>
-          <ul class="tags_page_style" *ngIf="isHiddenTagPage">
-            <li *ngFor="let tag of profilesTags.keys(); trackBy: trackByFn" (click)="onTagsClick(tag)">
-              <button role="button" [ngClass]="profilesTags.get(tag)">{{ tag }}</button>
-            </li>
-          </ul>
+          <div class="select-menu" *ngIf="isHiddenTagPage">
+            <ul class="select-item">
+              <li
+                *ngFor="let tag of profilesTags.keys(); trackBy: trackByFn"
+                (click)="onTagsClick(tag)"
+              >
+                <button [ngClass]="profilesTags.get(tag)">{{ tag.name }}</button>
+              </li>
+            </ul>
+          </div>
           <button class="button" role="button" (click)="onChooseForYearClick()">По году</button>
-          <ul class="tags_page_style" *ngIf="isHiddenYearPage">
-            <li *ngFor="let year of yearsMap.keys(); trackBy: trackByFn" (click)="onYearClick(year)">
-              <button role="button" [ngClass]="yearsMap.get(year)">{{ year }}</button>
-            </li>
-          </ul>
+          <div class="select-menu" *ngIf="isHiddenYearPage">
+            <ul class="select-item">
+              <li
+                *ngFor="let year of yearsMap.keys(); trackBy: trackByFn"
+                (click)="onYearClick(year)"
+              >
+                <button [ngClass]="yearsMap.get(year)">{{ year }}</button>
+              </li>
+            </ul>
+          </div>
           <button class="button" role="button" (click)="onChooseForSourceClick()">По источнику</button>
-          <ul class="tags_page_style" *ngIf="isHiddenSourcePage">
-            <li *ngFor="let source of sourceMap.keys(); trackBy: trackByFn" (click)="onSourceClick(source)">
-              <button role="button" [ngClass]="sourceMap.get(source)">{{ source }}</button>
-            </li>
-          </ul>
+          <div class="select-menu" *ngIf="isHiddenSourcePage">
+            <ul class="select-item">
+              <li
+                *ngFor="let source of sourceMap.keys(); trackBy: trackByFn"
+                (click)="onSourceClick(source)"
+              >
+                <button [ngClass]="sourceMap.get(source)">{{ source }}</button>
+              </li>
+            </ul>
+          </div>
           <hr class="line">
           <button class="button-clear" (click)="cleanFilter()">Очистить фильтр</button>
         </div>
