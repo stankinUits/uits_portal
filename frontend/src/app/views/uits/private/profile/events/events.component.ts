@@ -27,39 +27,51 @@ import {
   styleUrls: ['./events.component.css']
 })
 export class EventsComponent implements OnInit {
+  protected readonly CalendarView = CalendarView;
+
   locale = ru;
 
   viewDate: Date = new Date();
   today: Date = startOfDay(new Date());
-  view: CalendarView = CalendarView.Day;
+  view: CalendarView = CalendarView.Month;
 
-  // create/edit form
+  // Форма для создания/редактирования события
   formGroup: FormGroup<EditEventFormGroup>;
-  // for calendar view
+
+  // События, отображаемые в виде "календарь"
   events$: BehaviorSubject<CalendarEvent<CalendarUserEventMeta>[]> = new BehaviorSubject([]);
-  // for list view
+
+  // События, отображаемые в виде "список"
   groupedEvents: BehaviorSubject<{ day: string, events: CalendarEvent[] }[]> = new BehaviorSubject([]);
-  // users-teachers. only teachers can be assigned to event
+
+  // Хранит пользователей с ролью преподаватель (только преподаватели могут быть назначены на событие)
   usersCanBeAssigned: BehaviorSubject<Profile[]> = new BehaviorSubject([]);
 
-  // create/edit modal
   modalRef: BsModalRef;
-  // confirm notify assigned users of event
+
   modalNotifyConfirmRef: BsModalRef;
-  // mode. creating or editing
+
+  // Мод для модального окна: добавить или редактировать
   modalMode: 'add' | 'edit' = 'add';
+
+  // Модалка для создания/редактирования события
   @ViewChild('eventModal') eventModal: TemplateRef<any>;
+
+  // Модалка для отправки уведомления
   @ViewChild('notificationConfirm') notificationConfirm: TemplateRef<any>;
-  // event id chosen for notification modal
+
+  // Модалка для подтверждения удаления
+  @ViewChild('confirmDeleteModal') confirmDeleteModal: TemplateRef<any>;
+
+  // ID события для отправки уведомления
   confirmNotificationEventId = null;
 
-  // Modal window for confirmation
-@ ViewChild('yesNoModal') yesNoModal: TemplateRef<any>;
   yesNoModalNotify: BsModalRef;
-  // vars for confirmation of deleting
-  yesNoModalEventId = null;
 
+  // ID события для удаления
+  deleteEvenByID = null;
 
+  currentUser: Profile = null;
 
   getEvents(): Observable<CalendarEvent<CalendarUserEventMeta>[]> {
     return this.events$;
@@ -79,6 +91,8 @@ export class EventsComponent implements OnInit {
 
   ngOnInit(): void {
     this.localeService.use('ru');
+    this.currentUser = this.authService.profile$.getValue();
+
     this.initEditForm();
 
     // check if assigned users form state is correct
@@ -98,7 +112,9 @@ export class EventsComponent implements OnInit {
     ).subscribe(arr => {
       console.log('changed checkbox', arr);
       const users = this.usersCanBeAssigned.getValue();
-      if (users.length === 0) {return;}
+      if (users.length === 0) {
+        return;
+      }
       const assignedUsersControl = this.formGroup.get('assignedUsers');
       // @ts-ignore TODO: this is not right
       if (arr.length) {
@@ -109,6 +125,8 @@ export class EventsComponent implements OnInit {
     });
   }
 
+
+  /*  ------ Методы для работы с формой начало ------------------------------ */
   initEditForm() {
     this.formGroup = this.formBuilder.group({
       id: [null],
@@ -133,12 +151,12 @@ export class EventsComponent implements OnInit {
     this.onSwitchAllDayControl({checked: allDay.value});
   }
 
+  // Проверка, что у преподавателя в контроле только он сам
   checkAssignedUsersStateForm() {
-    const profile = this.authService.profile$.getValue();
     const assigned = this.formGroup.get('assignedUsers');
-    if (this.isTeacherProfile(profile)) {
-      if (!(assigned.value.length === 1 && assigned.value[0] === profile.pk)) {
-        assigned.setValue([profile.pk]);
+    if (this.isTeacherProfile(this.currentUser)) {
+      if (!(assigned.value.length === 1 && assigned.value[0] === this.currentUser.pk)) {
+        assigned.setValue([this.currentUser.pk]);
       }
       if (!assigned.disabled) {
         assigned.disable();
@@ -195,7 +213,6 @@ export class EventsComponent implements OnInit {
     return data;
   }
 
-
   resetForm() {
     this.modalMode = 'add';
     this.formGroup.setValue({
@@ -215,9 +232,137 @@ export class EventsComponent implements OnInit {
 
     this.checkStateForm();
   }
+  /*  ------ Методы для работы с формой конец ------------------------------ */
 
 
-  addEvent(): void {
+  /*  ------ Методы для работы с событиями начало -------------------------- */
+  refreshEvents() {
+    const teacherUsers = this.usersCanBeAssigned.getValue();
+
+    this.eventService.read().subscribe((events: IEvent[]) => {
+      this.events$.next(events.map(ev => ({
+        id: ev.id,
+        start: new Date(ev.startedAt),
+        end: new Date(ev.endedAt),
+        title: ev.name,
+        allDay: ev.allDay,
+        color: {
+          primary: ev.color,
+          secondary: '#e4eef5'
+        },
+        meta: {
+          description: ev.description,
+          assigned: ev.assignedUsers.map(uId => {
+            const founded = teacherUsers.filter(tU => tU.pk === uId);
+            if (founded.length === 0) {
+              return {
+                pk: uId,
+                username: 'Пользователь ' + uId,
+                firstName: '',
+                lastName: ''
+              };
+            }
+            return founded[0];
+          }),
+          owner: ev.user,
+          notificationFrequency: ev.notificationFrequency,
+          status: ev.status
+        }
+      })));
+
+      const grouped = this.getEventDates();
+      this.groupedEvents.next(grouped);
+    });
+  }
+
+  getEventDates(): { day: string, events: CalendarEvent[] }[] {
+    const events = this.events$.getValue();
+    return this.eventService.groupEventsByDate(events, this.locale);
+  }
+
+  eventClicked($event: { event: CalendarEvent<CalendarUserEventMeta> | { id: number }, sourceEvent: any }) {
+    this.openEditEventModal(this.eventModal, $event.event.id);
+  }
+  /*  ------ Методы для работы с событиями конец -------------------------- */
+
+
+  /*  ------ Методы для работы с модальными окнами начало ----------------- */
+  onModalClose() {
+    const _combine = combineLatest(
+      this.modalRef.onHide,
+      this.modalRef.onHidden
+    ).subscribe(() => this.cdr.markForCheck());
+    this.modalRef.onHide.subscribe((reason: string | any) => {
+      this.resetForm();
+    });
+  }
+  /*  ------ Методы для работы с модальными окнами конец ----------------- */
+
+
+  /*  ------ Методы для работы с уведомлениями начало ---------------- */
+  openNotificationModalConfirm(id: number) {
+    this.confirmNotificationEventId = id;
+    this.modalNotifyConfirmRef = this.modalService.show(this.notificationConfirm, {id: 2, class: 'second '});
+  }
+
+  confirmNotification() {
+    if (this.confirmNotificationEventId !== null) {
+      this.telegramService.userEventNotify(this.confirmNotificationEventId).subscribe(ok => {
+        this.alertService.add('Уведомление отправлено', 'success');
+        this.modalNotifyConfirmRef.hide();
+      }, err => {
+        this.alertService.add('Ошибка... Что то пошло не так', 'danger');
+        this.modalNotifyConfirmRef.hide();
+      });
+    }
+  }
+
+  declineNotification() {
+    this.confirmNotificationEventId = null;
+    this.modalNotifyConfirmRef.hide();
+  }
+  /*  ------ Методы для работы с уведомлениями конец ---------------- */
+
+
+  /*  ------ Методы для работы с удалением событий начало ----------- */
+  deleteEvent(id: number) {
+    console.log(id);
+    this.eventService.delete(id).subscribe(_ => {
+      console.log(id, 'deleted');
+      this.refreshEvents();
+      this.modalRef.hide();
+      this.resetForm();
+    });
+  }
+
+  showConfirmDeleteModal(id: number) {
+    this.deleteEvenByID = id;
+    this.yesNoModalNotify = this.modalService.show(this.confirmDeleteModal, {id: 10, class: 'second '});
+  }
+
+  deleteModalConfirm(id: number) {
+    this.telegramService.userEventNotify(this.deleteEvenByID).subscribe({
+      next: (ok) => {
+        this.alertService.add('Событие удалено. Уведомление отправлено', 'success');
+        this.yesNoModalNotify.hide();
+        this.deleteEvent(this.deleteEvenByID);
+      },
+      error: (err) => {
+        this.alertService.add('Ошибка... Что-то пошло не так', 'danger');
+        this.yesNoModalNotify.hide();
+      }
+    });
+  }
+
+  confirmDeleteModalDecline() {
+    this.yesNoModalNotify.hide();
+  }
+  /*  ------ Методы для работы с удалением событий конец ----------- */
+
+
+
+  /*  ------ Методы для работы с добавлением событий начало ---------- */
+   addEvent(): void {
     const data = this.getDataFromForm();
     console.log('DATA:', data);
 
@@ -229,6 +374,15 @@ export class EventsComponent implements OnInit {
     });
   }
 
+  openAddEventModal(template: TemplateRef<any>) {
+    this.modalMode = 'add';
+    this.modalRef = this.modalService.show(template, {id: 1});
+    this.onModalClose();
+  }
+  /*  ------ Методы для работы с добавлением событий конец ----------- */
+
+
+  /*  ------ Методы для работы с редактированием событий начало ------ */
   editEvent() {
     const data = this.getDataFromForm();
     this.eventService.update(data.id, data).subscribe(ev => {
@@ -240,95 +394,9 @@ export class EventsComponent implements OnInit {
     });
   }
 
-  showYesNoModal(id: number){
-    this.yesNoModalEventId = id;
-    this.yesNoModalNotify = this.modalService.show(this.yesNoModal, {id: 10, class: 'second '});
-  }
-
-  yesNoModalConfirm(id: number) {
-  this.telegramService.userEventNotify(this.yesNoModalEventId).subscribe({
-    next: (ok) => {
-      this.alertService.add('Событие удалено. Уведомление отправлено', 'success');
-      this.yesNoModalNotify.hide();
-      this.deleteEvent(this.yesNoModalEventId);
-    },
-    error: (err) => {
-      this.alertService.add('Ошибка... Что-то пошло не так', 'danger');
-      this.yesNoModalNotify.hide();
-    }
-  });
-}
-
-  yesNoModaldecline() {
-    this.yesNoModalNotify.hide();
-  }
-
-
-  deleteEvent(id: number) {
-    console.log(id);
-    this.eventService.delete(id).subscribe(_ => {
-      console.log(id, 'deleted');
-      this.refreshEvents();
-      this.modalRef.hide();
-      this.resetForm();
-    });
-  }
-
-
-  refreshEvents() {
-
-    const teacherUsers = this.usersCanBeAssigned.getValue();
-
-    this.eventService.read().subscribe((events: IEvent[]) => {
-      this.events$.next(events.map(ev => ({
-          id: ev.id,
-          start: new Date(ev.startedAt),
-          end: new Date(ev.endedAt),
-          title: ev.name,
-          allDay: ev.allDay,
-          color: {
-            primary: ev.color,
-            secondary: '#e4eef5'
-          },
-          meta: {
-            description: ev.description,
-            assigned: ev.assignedUsers.map(uId => {
-              const founded = teacherUsers.filter(tU => tU.pk === uId);
-              if (founded.length === 0) {return {
-                pk: uId,
-                username: 'Пользователь ' + uId,
-                firstName: '',
-                lastName: ''
-              };}
-              return founded[0];
-            }),
-            owner: ev.user,
-            notificationFrequency: ev.notificationFrequency,
-            status: ev.status
-          }
-        })));
-
-      const grouped = this.getEventDates();
-      this.groupedEvents.next(grouped);
-    });
-  }
-
-
-  setView(view: CalendarView) {
-    this.view = view;
-  }
-
-  protected readonly CalendarView = CalendarView;
-
-  openAddEventModal(template: TemplateRef<any>) {
-    this.modalMode = 'add';
-    this.modalRef = this.modalService.show(template, {id: 1});
-    this.onModalClose();
-  }
-
   openEditEventModal(template: TemplateRef<any>, id: string | number) {
     const data = this.events$.getValue().filter(elm => elm.id === id)[0];
-    if (data.meta.owner !== this.authService.profile$.getValue().pk) {
+    if (data.meta.owner !== this.currentUser.pk) {
       this.alertService.add('Вы не можете изменить это событие, т.к. его создатель не вы', 'warning');
       return;
     }
@@ -351,53 +419,10 @@ export class EventsComponent implements OnInit {
     this.onModalClose();
     this.checkStateForm();
   }
-
-  onModalClose() {
-    const _combine = combineLatest(
-      this.modalRef.onHide,
-      this.modalRef.onHidden
-    ).subscribe(() => this.cdr.markForCheck());
-    this.modalRef.onHide.subscribe((reason: string | any) => {
-      this.resetForm();
-    });
-  }
-
-  getEventDates(): { day: string, events: CalendarEvent[] }[] {
-    const events = this.events$.getValue();
-    return this.eventService.groupEventsByDate(events, this.locale);
-  }
-
-  eventClicked($event: { event: CalendarEvent<CalendarUserEventMeta> | { id: number }, sourceEvent: any }) {
-    this.openEditEventModal(this.eventModal, $event.event.id);
-  }
-
-  convertAssignedUsers(assignedUsers: CalendarUserEventMeta['assigned']) {
-    return assignedUsers.map(user => (user.lastName) ? user.lastName + ' ' + user.firstName : user.username).join(', ');
-  }
-
-  openNotificationModalConfirm(id: number) {
-    this.confirmNotificationEventId = id;
-    this.modalNotifyConfirmRef = this.modalService.show(this.notificationConfirm, {id: 2, class: 'second '});
-  }
-
-  confirmNotifification() {
-    if (this.confirmNotificationEventId !== null) {
-      this.telegramService.userEventNotify(this.confirmNotificationEventId).subscribe(ok => {
-        this.alertService.add('Уведомление отправлено', 'success');
-        this.modalNotifyConfirmRef.hide();
-      }, err => {
-        this.alertService.add('Ошибка... Что то пошло не так', 'danger');
-        this.modalNotifyConfirmRef.hide();
-      });
-    }
-  }
-
-  declineNotifification() {
-    this.confirmNotificationEventId = null;
-    this.modalNotifyConfirmRef.hide();
-  }
+  /*  ------ Методы для работы с редактированием событий конец ------ */
 
 
+  /*  ------ Дополнительные методы начало ----------- */
   filterUsersIfTeacher(users: Profile[]) {
     const profile = this.authService.profile$.getValue();
     if (this.isTeacherProfile(profile)) {
@@ -407,12 +432,17 @@ export class EventsComponent implements OnInit {
     }
   }
 
-  isTeacher() {
-    const profile = this.authService.profile$.getValue();
-    return this.isTeacherProfile(profile);
-  }
-
   isTeacherProfile(profile: Profile) {
     return profile.isTeacher && !profile.isSuperuser;
   }
+
+
+  setView(view: CalendarView) {
+    this.view = view;
+  }
+
+  convertAssignedUsers(assignedUsers: CalendarUserEventMeta['assigned']) {
+    return assignedUsers.map(user => (user.lastName) ? user.lastName + ' ' + user.firstName : user.username).join(', ');
+  }
+  /*  ------ Дополнительные методы конец ----------- */
 }

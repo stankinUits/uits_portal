@@ -1,11 +1,11 @@
 import {HttpClient} from '@angular/common/http';
 import {inject, Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
+import {map, Observable} from 'rxjs';
 import {SciencePublicationResponseInterface} from '../interface/science-publication-response.interface';
 import {AppSettings} from '../utils/settings';
 import {ScienceReadyPublication} from '../interface/profile.interface';
 import {AuthorInfo} from '../interface/autrhor_info.interface';
-import {ResponseOnSave} from "../interface/response_on_save_object.interface";
+import {ResponseOnSave} from '../interface/response_on_save_object.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -21,18 +21,14 @@ export class RegisterScienceService {
     return this.http.get<SciencePublicationResponseInterface>(`${AppSettings.BASE_URL}/search_for_scientist/${name}`);
   }
 
-  saveNewTags(tag: string[]) {
-    const objectToSend = {
-      tags: tag
-    };
-
+  saveNewTags(tags: string[]) {
     return this.http.post(`${AppSettings.BASE_URL}/save_new_tags/`, {//не работает
-      objectToSend
+      tags
     });
   }
 
   saveCard(publication: ScienceReadyPublication) {
-    return this.http.post(`${AppSettings.BASE_URL}/save_card/`, {publication});
+    return this.http.post(`${AppSettings.BASE_URL}/save_card/`, {...publication});
   }
 
   onSaveCard(publication: ScienceReadyPublication) {
@@ -59,12 +55,22 @@ export class RegisterScienceService {
   }
 
   getListOfCards(): Observable<ScienceReadyPublication[]> {
-    return this.http.get<ScienceReadyPublication[]>(`${AppSettings.BASE_URL}/get_cards`);
+    return this.http.get<ScienceReadyPublication[]>(`${AppSettings.BASE_URL}/get_cards`).pipe(
+      map(cards => {
+        cards.map(card => {
+          if (typeof card.author === 'string') {
+            return card.author = [card.author];
+          }
+        })
+        return cards;
+      })
+    );
   }
 
-  getAllAuthors(profiles: ScienceReadyPublication[]): string[] {
+  getAllAuthors(publications: ScienceReadyPublication[]): string[] {
+    console.log(publications)
     const authorsSet: Set<string> = new Set();
-    profiles.forEach(pr => pr.author.forEach(a => authorsSet.add(a)));
+    publications.forEach(pr => pr.author.forEach(a => authorsSet.add(a)));
     return Array.from(authorsSet);
   }
 

@@ -1,70 +1,81 @@
-<div class="page-style">
-  <ul class="status_buttons_bar">
-    <li>
-      <div class="input_style">
-        <input
-          id="search-tag_input"
-          (keyup)="searchScienceCards()"
-          class="input_style"
-          placeholder="Искать по названию"
-          [(ngModel)]="searchString"
-          type="text"
-        />
+<div class="container">
+  <div class="navbar">
+    <div class="header">
+      <i class="la la-cog icon"></i>
+      <h1 class="heading">
+        Панель управления публикациями
+      </h1>
+    </div>
+    <hr class="line">
+    <div>
+      <input
+        id="search-tag_input"
+        (keyup)="searchScienceCards()"
+        class="form-control"
+        placeholder="Искать по названию"
+        [(ngModel)]="searchString"
+        type="text"
+      />
+    </div>
+    <hr class="line" *ngIf="authService.canEdit() | async">
+    <div class="admin-menu" *ngIf="authService.canEdit() | async">
+      <p class="sub-heading">Перейти на страницы: </p>
+      <ul>
+        <li *ngFor="let menuItem of adminMenu">
+          <a
+            [routerLink]="menuItem.route"
+            routerLinkActive="active"
+          >
+            <i [class]="menuItem.icon" class="icon"></i>
+            <span class="menu-text">
+              {{ menuItem.title }}
+            </span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <hr class="line">
+    <div>
+      <p class="sub-heading">Фильтровать публикации: </p>
+      <div class="buttons">
+        <div class="button-select-wrapper">
+          <button class="button" role="button" (click)="onChooseForScientistsClick()">По автору</button>
+          <div class="select-menu" *ngIf="isHiddenScientistPage">
+            <ul class="select-item">
+              <li
+                *ngFor="let author of authorsMap.keys(); trackBy: trackByFn"
+                (click)="onAuthorClick(author)"
+              >
+                <button [ngClass]="authorsMap.get(author)">{{ author }}</button>
+              </li>
+            </ul>
+          </div>
+          <button class="button" role="button" (click)="onChooseForTagsClick()">По тегу</button>
+          <ul class="tags_page_style" *ngIf="isHiddenTagPage">
+            <li *ngFor="let tag of profilesTags.keys(); trackBy: trackByFn" (click)="onTagsClick(tag)">
+              <button role="button" [ngClass]="profilesTags.get(tag)">{{ tag }}</button>
+            </li>
+          </ul>
+          <button class="button" role="button" (click)="onChooseForYearClick()">По году</button>
+          <ul class="tags_page_style" *ngIf="isHiddenYearPage">
+            <li *ngFor="let year of yearsMap.keys(); trackBy: trackByFn" (click)="onYearClick(year)">
+              <button role="button" [ngClass]="yearsMap.get(year)">{{ year }}</button>
+            </li>
+          </ul>
+          <button class="button" role="button" (click)="onChooseForSourceClick()">По источнику</button>
+          <ul class="tags_page_style" *ngIf="isHiddenSourcePage">
+            <li *ngFor="let source of sourceMap.keys(); trackBy: trackByFn" (click)="onSourceClick(source)">
+              <button role="button" [ngClass]="sourceMap.get(source)">{{ source }}</button>
+            </li>
+          </ul>
+          <hr class="line">
+          <button class="button-clear" (click)="cleanFilter()">Очистить фильтр</button>
+        </div>
       </div>
-    </li>
-    <li *ngIf="isAdmin">
-      <button routerLink="/scientific-activities/publications/create_new_author" class="cards_button">
-        Создать преподавателя, поиск по google scholar
-      </button>
-    </li>
-    <li *ngIf="isAdmin">
-      <button routerLink="/scientific-activities/publications/edit_author" class="cards_button">
-        Редактировать публикации преподавателя
-      </button>
-    </li>
-    <li *ngIf="isAdmin">
-      <button routerLink="/scientific-activities/publications/manage_tags" class="cards_button">
-        Редактировать теги
-      </button>
-    </li>
-    <li>
-      <button class="cards_button" role="button" (click)="onChooseForScientistsClick()">Выбрать автора</button>
-      <ul class="tags_page_style" *ngIf="isHiddenScientistPage">
-        <li *ngFor="let author of authorsMap.keys(); trackBy: trackByFn" (click)="onAuthorClick(author)">
-          <button [ngClass]="authorsMap.get(author)">{{ author }}</button>
-        </li>
-      </ul>
-    </li>
-    <li>
-      <button class="cards_button" role="button" (click)="onChooseForTagsClick()">Выбрать тег</button>
-      <ul class="tags_page_style" *ngIf="isHiddenTagPage">
-        <li *ngFor="let tag of profilesTags.keys(); trackBy: trackByFn" (click)="onTagsClick(tag)">
-          <button role="button" [ngClass]="profilesTags.get(tag)">{{ tag }}</button>
-        </li>
-      </ul>
-    </li>
-    <li>
-      <button class="cards_button" role="button" (click)="onChooseForYearClick()">Выбрать год</button>
-      <ul class="tags_page_style" *ngIf="isHiddenYearPage">
-        <li *ngFor="let year of yearsMap.keys(); trackBy: trackByFn" (click)="onYearClick(year)">
-          <button role="button" [ngClass]="yearsMap.get(year)">{{ year }}</button>
-        </li>
-      </ul>
-    </li>
-    <li>
-      <button class="cards_button" role="button" (click)="onChooseForSourceClick()">Выбрать источник</button>
-      <ul class="tags_page_style" *ngIf="isHiddenSourcePage">
-        <li *ngFor="let source of sourceMap.keys(); trackBy: trackByFn" (click)="onSourceClick(source)">
-          <button role="button" [ngClass]="sourceMap.get(source)">{{ source }}</button>
-        </li>
-      </ul>
-    </li>
-    <li>
-      <button class="cards_button" (click)="cleanFilter()">Отчистить фильтр</button>
-    </li>
-  </ul>
-  <div class="cards_paging_above" >
-    <div class="cards_paging">
+    </div>
+  </div>
+  <div class="content">
+    <div *ngIf="profilesMap.size > 0" class="cards">
       <div *ngFor="let profile of profilesMap.keys(); trackBy: trackByFn">
         <app-profile-card
           [profile]="profile"
@@ -72,6 +83,6 @@
         ></app-profile-card>
       </div>
     </div>
+    <div *ngIf="profilesMap.size === 0">Публикаций пока нет</div>
   </div>
-
 </div>

@@ -5,6 +5,7 @@ import {NgClass, NgForOf, NgIf} from '@angular/common';
 import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
 import {AppSettings} from '../../utils/settings';
 import {FormsModule} from '@angular/forms';
+import {tr} from "date-fns/locale";
 
 @Component({
   selector: 'app-editable-publication-card',
@@ -147,6 +148,7 @@ export class EditablePublicationCardComponent {
   }
 
   clickOnSave() {
+    console.log('save 1')
     const url = document.getElementById(this.id_url!) as HTMLInputElement;
     if (url && url.value !== this.DEFAULT_URL) {
       this.publication.url = url.value;
@@ -200,25 +202,26 @@ export class EditablePublicationCardComponent {
       );
     }
 
-    let isValid = false;
+    let isValid = true;
 
-    //проверки перед сохранением
-    if (this.publication.author.length < 1 || this.publication.author[0] === this.DEFAULT_AUTHOR) {
-      this.alertCall('Требуется добавить автора публикации');
-      if (this.publication.name === '' || this.publication.name === undefined || this.publication.name === this.DEFAULT_NAME) {
-        this.alertCall('Требуется добавить название публикации');
-        if ((this.publication.url === '' || this.publication.url === undefined) && (this.publication.file === undefined)) {
-          this.alertCall('Требуется добавить файл публикации, или ссылку на нее');
-          if (this.publication.year === undefined || this.publication.year === 0) {
-            this.alertCall('Требуется добавить год публикации');
-          } else {
-            isValid = true;
-          }
-        }
-      }
-    }
+    // //проверки перед сохранением
+    // if (this.publication.author.length < 1 || this.publication.author[0] === this.DEFAULT_AUTHOR) {
+    //   this.alertCall('Требуется добавить автора публикации');
+    //   if (this.publication.name === '' || this.publication.name === undefined || this.publication.name === this.DEFAULT_NAME) {
+    //     this.alertCall('Требуется добавить название публикации');
+    //     if ((this.publication.url === '' || this.publication.url === undefined) && (this.publication.file === undefined)) {
+    //       this.alertCall('Требуется добавить файл публикации, или ссылку на нее');
+    //       if (this.publication.year === undefined || this.publication.year === 0) {
+    //         this.alertCall('Требуется добавить год публикации');
+    //       } else {
+    //         isValid = true;
+    //       }
+    //     }
+    //   }
+    // }
 
     if (isValid) {
+      console.log('valid')
       this.scienceService.saveCard(this.publication).subscribe((data: HttpResponse<any>) => {
           if (data.status === 200 || data.status === 202) {
             this.alertCall(`Успешно сохранено`);

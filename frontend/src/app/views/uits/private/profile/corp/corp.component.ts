@@ -31,19 +31,16 @@ export class CorporateComponent implements OnInit {
     this.authService.profile$.pipe(
       map(profile => {
         const userPermissions = getUserPermissions(profile);
-        if (userPermissions.includes(Permission.MODERATOR)) {
+        if (userPermissions.includes(Permission.SUPERUSER)) {
           this.corporateMenu = [
             { title: 'Профиль', route: 'personal', icon: 'feather icon-user', key: 'Аккаунт' },
             { title: 'Модульные журналы', route: '/modular_journals', icon: 'feather icon-book', key: 'Журнал' },
-            { title: 'Статистика модульных журналов', route: 'statistics', icon: 'feather icon-loader', key: 'Статистика' },
             { title: 'Календарь событий', route: 'calendar', icon: 'feather icon-calendar', key: 'Календарь событий' },
           ];
-        } else if (userPermissions.includes(Permission.TEACHER) || userPermissions.includes(Permission.SUPERUSER)) {
+        } else if (userPermissions.includes(Permission.TEACHER)) {
           this.isTeacher = true;
           this.corporateMenu = [
             { title: 'Профиль', route: 'personal', icon: 'feather icon-user', key: 'Аккаунт' },
-            { title: 'Публикации', route: 'publications', icon: 'feather icon-book', key: 'Публикации' },
-            { title: 'Достижения', route: 'achievements', icon: 'feather icon-star', key: 'Достижения' },
             { title: 'Модульные журналы', route: 'modular_journals', icon: 'feather icon-book', key: 'Журнал' },
             { title: 'Календарь событий', route: 'calendar', icon: 'feather icon-calendar', key: 'Календарь событий' },
           ];

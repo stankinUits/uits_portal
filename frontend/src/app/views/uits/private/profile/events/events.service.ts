@@ -62,7 +62,7 @@ export class EventsService {
     })).sort((a, b) => {
       const dateA = parseISO(a.day);
       const dateB = parseISO(b.day);
-      return dateA.getTime() - dateB.getTime();
+      return dateB.getTime() - dateA.getTime();
     }).map(obj => ({day: format(parseISO(obj.day), "dd MMMM yyyy", {locale: locale}), events: obj.events}));
   }
 }

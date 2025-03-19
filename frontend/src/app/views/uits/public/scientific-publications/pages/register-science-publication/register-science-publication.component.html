@@ -5,7 +5,7 @@
         id="search-author_input"
         formControlName="search_string"
         (keyup)="updateField()"
-        class="input_style"
+        class="form-control"
         placeholder="Введите полное имя преподавателя"
         type="text"
       />
@@ -65,6 +65,6 @@
   </div>
 </div>
 
-<h2 class="text_alarm_style" *ngIf="!form.value.search_string">
-  На месяц доступно только 100 запросов.
-</h2>
+<!--<h2 class="text_alarm_style" *ngIf="!form.value.search_string">-->
+<!--  На месяц доступно только 100 запросов.-->
+<!--</h2>-->

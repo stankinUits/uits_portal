@@ -1,4 +1,5 @@
 from django.db import models
+import uuid
 
 class Tag(models.Model):
     name = models.CharField(max_length=100, unique=True)
@@ -18,7 +19,7 @@ class ScientificPublication(models.Model):
     pages = models.CharField(max_length=50, null=True, blank=True, verbose_name="Страницы")
     vol_n = models.CharField(max_length=100, null=True, blank=True, verbose_name="Том и номер")
     isbn = models.CharField(max_length=20, null=True, blank=True, verbose_name="ISBN")
-    id_for_unique_identify_component = models.CharField(max_length=50, unique=True, verbose_name="Уникальный идентификатор", default='default_id')
+    id_for_unique_identify_component = models.CharField(max_length=50, unique=True, verbose_name="Уникальный идентификатор", default=uuid.uuid4)
 
     def __str__(self):
         return self.name

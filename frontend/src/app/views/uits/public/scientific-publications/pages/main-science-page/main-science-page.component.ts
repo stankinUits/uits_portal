@@ -1,7 +1,7 @@
-import {Component, inject} from '@angular/core';
+import {ChangeDetectorRef, Component, inject, OnInit} from '@angular/core';
 import {RegisterScienceService} from '../../service/register-science-service.service';
 import {ScienceReadyPublication} from '../../interface/profile.interface';
-import {NgClass, NgForOf, NgIf} from '@angular/common';
+import {AsyncPipe, JsonPipe, NgClass, NgForOf, NgIf} from '@angular/common';
 import {RouterModule} from '@angular/router';
 import {AppSettings} from '../../utils/settings';
 import {
@@ -9,20 +9,27 @@ import {
 } from '@app/views/uits/public/scientific-publications/common-ui/profile-card/profile-card.component';
 import {AuthService} from "@app/shared/services/auth.service";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {NgSelectModule} from "@ng-select/ng-select";
+
+interface adminMenu {
+  title: string;
+  icon: string;
+  route: string;
+}
 
 @Component({
   selector: 'app-main-science-page',
   standalone: true,
   imports: [
-    ProfileCardComponent, NgClass, RouterModule, NgIf, NgForOf, ReactiveFormsModule, FormsModule
+    ProfileCardComponent, NgClass, RouterModule, NgIf, NgForOf, ReactiveFormsModule, FormsModule, AsyncPipe, NgSelectModule, JsonPipe
   ],
   templateUrl: './main-science-page.component.html',
   styleUrls: ['./main-science-page.component.css']
 })
-export class MainSciencePageComponent {
+export class MainSciencePageComponent implements OnInit {
   scienceService = inject(RegisterScienceService);
   authService: AuthService = inject(AuthService);
-  isAdmin = false;
+  cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
 
   profilesMap: Map<ScienceReadyPublication, Map<string, string>> = new Map();
   originalProfilesMap: Map<ScienceReadyPublication, Map<string, string>> = new Map();
@@ -39,12 +46,17 @@ export class MainSciencePageComponent {
   isHiddenSourcePage: boolean = false;
 
   authorsMap: Map<string, string> = new Map();
+  selectedAuthors: string[] = [];
 
   searchString: string = '';
 
+  adminMenu: adminMenu[] = [];
   constructor() {
-    //authenticate
-    this.authService.canEdit().subscribe(v => this.isAdmin = v);
+
+  }
+
+  ngOnInit() {
+    this.initAdminMenu();
 
     this.scienceService.getALLTagsRest().subscribe(v => {
       // заполняем все для карточек теги
@@ -58,8 +70,30 @@ export class MainSciencePageComponent {
         //заполняем кнопки для поиска
         this.fillSearchButtons();
         this.filterThrewAllSearch();
+        this.cdr.detectChanges();
+        console.log(this.profilesMap);
       });
     });
+  }
+
+  initAdminMenu(): void {
+    this.adminMenu = [
+      {
+        title: 'Создать преподавателя, поиск по google scholar',
+        route: '/scientific-activities/publications/create_new_author',
+        icon: 'feather icon-user'
+      },
+      {
+        title: 'Редактировать публикации преподавателя',
+        route: '/scientific-activities/publications/edit_author',
+        icon: 'feather icon-user'
+      },
+      {
+        title: 'Редактировать теги',
+        route: '/scientific-activities/publications/manage_tags',
+        icon: 'feather icon-user'
+      },
+    ];
   }
 
   fillSearchButtons() {
@@ -156,6 +190,11 @@ export class MainSciencePageComponent {
       this.yearsMap.set(year, AppSettings.ONCLICK_TAG_STYLE);
       this.filterThrewAllSearch();
     }
+  }
+
+  selectChange(event: any) {
+    console.log(event);
+    this.onAuthorClick(this.selectedAuthors[this.selectedAuthors.length - 1]);
   }
 
   onAuthorClick(name: string) {

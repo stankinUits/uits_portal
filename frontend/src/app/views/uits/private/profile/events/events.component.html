@@ -30,6 +30,12 @@
           <ng-container *ngTemplateOutlet="eventList"></ng-container>
         </div>
       </tab>
+      <tab heading="Архив">
+<!--        TODO архив для событий старше месяца-->
+        <div class="py-3">
+          <ng-container *ngTemplateOutlet="eventList"></ng-container>
+        </div>
+      </tab>
     </tabset>
   </div>
 </ng-template>
@@ -85,7 +91,7 @@
       [events]="_events"
       [tooltipTemplate]="tooltipTemplate"
       (eventClicked)="eventClicked($event)"
-      weekStartsOn="1"
+
       locale="ru"
     >
     </mwl-calendar-week-view>
@@ -94,7 +100,6 @@
       [viewDate]="viewDate"
       [events]="_events"
       locale="ru"
-      weekStartsOn="1"
       (eventClicked)="eventClicked($event)"
       [tooltipTemplate]="tooltipTemplate"
     >
@@ -132,18 +137,72 @@
   </accordion>
 </ng-template>
 
-<!-- yesNoModal template -->
-<ng-template #yesNoModal>
+<!-- calendar tooltip template -->
+<ng-template
+  #tooltipTemplate
+  let-contents="contents"
+  let-placement="placement"
+  let-event="event"
+>
+  <div class="cal-tooltip" [ngClass]="'cal-tooltip-' + placement">
+    <div class="cal-tooltip-arrow"></div>
+    <div class="cal-tooltip-inner">
+      <div class="d-flex">
+        <div>
+          <div class="d-flex">
+            <span class="badge-dot" [ngStyle]="{'background-color': event.color.primary, 'margin-top': '7px'}"></span>
+            <div class="ms-2">
+              <h5 class="mb-1">{{ event.title }}</h5>
+              <div class="text-muted" *ngIf="!event.allDay">
+                <span>{{ event.start | dfnsFormat: 'd MMMM yyyy, HH:mm' :{locale} }}</span>
+                <span class="mx-1" *ngIf="event.end">~</span>
+                <span *ngIf="event.end">{{ event.end | dfnsFormat: 'd MMMM yyyy, HH:mm' :{locale} }}</span>
+              </div>
+              <div class="text-muted" *ngIf="event.allDay">
+                <span>Весь день: с {{ event.start | dfnsFormat: 'd MMMM yyyy':{locale} }}
+                  по {{ event.end | dfnsFormat: 'd MMMM yyyy':{locale} }}</span>
+              </div>
+              <p class="mt-3 mb-0">{{ event.meta.description }}</p>
+              <p
+                *ngIf="!isTeacherProfile(currentUser)"
+                class="mt-3 mb-0"
+              >
+                Назначено на: {{ convertAssignedUsers(event.meta.assigned) }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<!-- notification confirm modal -->
+<ng-template #notificationConfirm>
+  <div class="modal-header">
+    <h4 class="modal-title">Подтверждение отправки уведомления</h4>
+  </div>
+  <div class="modal-body">
+    <p>
+      Уверены что хотите отправить уведомление о событии пользователям?
+      Его увидят все привязанные к событию пользователи, у которых есть интеграция с аккаунтом Telegram
+    </p>
+    <button type="button" class="btn btn-primary mx-2" (click)="confirmNotification()">Подтвердить</button>
+    <button type="button" class="btn btn-default" (click)="declineNotification()">Отмена</button>
+  </div>
+</ng-template>
+
+<!-- confirmDeleteModal template -->
+<ng-template #confirmDeleteModal>
   <div class="modal-header">
     <h4 class="modal-title">Подтверджение удаления</h4>
   </div>
   <div class="modal-body">
     <p>
-      Уверены что хотите удалить событие и отправить уведомление об удалении пользователям?
-      Его увидят все привязанные к событию пользователи, у которых есть интеграция с аккаунтом Telegram
+      Уверены что хотите удалить событие?
     </p>
-    <button type="button" class="btn btn-default" (click)="yesNoModalConfirm(formGroup.value.id)">Подтвердить</button>
-    <button type="button" class="btn btn-primary" (click)="yesNoModaldecline()">Отмена</button>
+    <button type="button" class="btn btn-primary mx-2" (click)="deleteModalConfirm(formGroup.value.id)">Подтвердить</button>
+    <button type="button" class="btn btn-default" (click)="confirmDeleteModalDecline()">Отмена</button>
   </div>
 </ng-template>
 
@@ -151,7 +210,13 @@
 <ng-template #eventModal>
   <div class="modal-header">
     <h4 class="modal-title">{{ modalMode === 'add' ? 'Создать' : 'Изменить' }} событие</h4>
-    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modalRef.hide()"
+      style="margin-left: auto;"
+    >
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
@@ -201,7 +266,7 @@
         <switch formControlName="allDay" (onChange)="onSwitchAllDayControl($event)">Весь день?</switch>
       </div>
 
-      <div class="form-group mb-3">
+      <div class="form-group mb-3" *ngIf="!isTeacherProfile(currentUser)">
         <label class="form-label">Назначить</label>
         <ng-select
           [items]="filterUsersIfTeacher(usersCanBeAssigned | async)"
@@ -213,7 +278,8 @@
           <ng-template ng-label-tmp let-item="item" let-clear="clear">
             {{ (item.lastName) ? item.lastName + " " + item.firstName : item.username }}
             <button type="button" class="btn btn-link p-0 ml-1" (click)="clear(item)">
-              <svg width="12" height="12" viewBox="2 3 20 20" fill="none" stroke="currentColor" stroke-width="2" class="align-middle">
+              <svg width="12" height="12" viewBox="2 3 20 20" fill="none" stroke="currentColor" stroke-width="2"
+                   class="align-middle">
                 <line x1="18" y1="6" x2="6" y2="18"></line>
                 <line x1="6" y1="6" x2="18" y2="18"></line>
               </svg>
@@ -224,7 +290,7 @@
           </ng-template>
         </ng-select>
       </div>
-      <div class="form-group mb-3">
+      <div class="form-group mb-3" *ngIf="!currentUser.isTeacher">
         <checkbox formControlName="assignedUsersSelectAll">Выбрать всех</checkbox>
       </div>
       <div class="form-group mb-3">
@@ -243,76 +309,36 @@
         </select>
       </div>
       <div class="text-end" *ngIf="modalMode === 'add'">
-        <button class="btn btn-primary" type="submit">Создать</button>
-      </div>
-      <div class="text-end" *ngIf="modalMode === 'add'">
-        <button class="btn btn-outline-secondary me-3" type="button"
-                (click)="openNotificationModalConfirm(formGroup.value.id)"><img class="me-1"
-                                                                                ngSrc="assets/images/telegram_16px.png"
-                                                                                alt="telegram" width="16" height="16">
+        <button class="btn btn-outline-secondary me-3 mx-2"
+                type="button"
+                (click)="openNotificationModalConfirm(formGroup.value.id)"
+        >
+          <img class="me-1"
+               ngSrc="assets/images/telegram_16px.png"
+               alt="telegram"
+               width="16"
+               height="16"
+          >
           Уведомление
         </button>
+        <button class="btn btn-primary" type="submit">Создать</button>
       </div>
       <div class="text-end" *ngIf="modalMode === 'edit'">
         <button class="btn btn-outline-secondary me-3" type="button"
-                (click)="openNotificationModalConfirm(formGroup.value.id)"><img class="me-1"
-                                                                                ngSrc="assets/images/telegram_16px.png"
-                                                                                alt="telegram" width="16" height="16">
+                (click)="openNotificationModalConfirm(formGroup.value.id)">
+          <img class="me-1"
+               ngSrc="assets/images/telegram_16px.png"
+               alt="telegram" width="16" height="16">
           Уведомление
         </button>
-        <button class="btn btn-danger me-3" (click)="showYesNoModal(formGroup.value.id)" type="button">Удалить</button>
+        <button
+          class="btn btn-danger me-3"
+          (click)="showConfirmDeleteModal(formGroup.value.id)"
+          type="button"
+        >Удалить
+        </button>
         <button class="btn btn-primary" type="submit">Изменить</button>
       </div>
     </form>
-  </div>
-</ng-template>
-
-<!-- notification confirm modal -->
-<ng-template #notificationConfirm>
-  <div class="modal-header">
-    <h4 class="modal-title">Подтверждение отправки уведомления</h4>
-  </div>
-  <div class="modal-body">
-    <p>
-      Уверены что хотите отправить уведомление о событии пользователям?
-      Его увидят все привязанные к событию пользователи, у которых есть интеграция с аккаунтом Telegram
-    </p>
-    <button type="button" class="btn btn-default" (click)="confirmNotifification()">Подтвердить</button>
-    <button type="button" class="btn btn-primary" (click)="declineNotifification()">Отмена</button>
-  </div>
-</ng-template>
-
-<!-- calendar tooltip template -->
-<ng-template
-  #tooltipTemplate
-  let-contents="contents"
-  let-placement="placement"
-  let-event="event"
->
-  <div class="cal-tooltip" [ngClass]="'cal-tooltip-' + placement">
-    <div class="cal-tooltip-arrow"></div>
-    <div class="cal-tooltip-inner">
-      <div class="d-flex">
-        <div>
-          <div class="d-flex">
-            <span class="badge-dot" [ngStyle]="{'background-color': event.color.primary, 'margin-top': '7px'}"></span>
-            <div class="ms-2">
-              <h5 class="mb-1">{{ event.title }}</h5>
-              <div class="text-muted" *ngIf="!event.allDay">
-                <span>{{ event.start | dfnsFormat: 'd MMMM yyyy, HH:mm' :{locale} }}</span>
-                <span class="mx-1" *ngIf="event.end">~</span>
-                <span *ngIf="event.end">{{ event.end | dfnsFormat: 'd MMMM yyyy, HH:mm' :{locale} }}</span>
-              </div>
-              <div class="text-muted" *ngIf="event.allDay">
-                <span>Весь день: с {{ event.start | dfnsFormat: 'd MMMM yyyy':{locale} }}
-                  по {{ event.end | dfnsFormat: 'd MMMM yyyy':{locale} }}</span>
-              </div>
-              <p class="mt-3 mb-0">{{ event.meta.description }}</p>
-              <p class="mt-3 mb-0">Назначено на: {{ convertAssignedUsers(event.meta.assigned) }}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 </ng-template>

@@ -1,82 +1,86 @@
-
-
-li {
-  list-style-type: none;
+/* Основные стили для кнопок */
+.button_layout {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
 }
 
 .button {
-  padding: 12px 12px 12px 12px;
-  margin: 20px 20px 20px 20px;
-
-  display: inline-block;
-  border: 2px solid black;
-  width: -webkit-fill-available;
-  font-size: 16px;
-  font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
   border-radius: 5px;
-  background-color: rgba(255, 255, 255, 0.8);
-  transition: all 0.3s ease;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
 }
 
 .button:hover {
-  background-color: gray;
+  background-color: #0056b3;
 }
 
+/* Стили для списка преподавателей */
 .ul_style {
   list-style-type: none;
-  padding-left: 0;
-  justify-content: start;
-  align-items: start;
-}
-
-.button_layout {
-  display: flex;
-}
-
-.tags_style {
-  border: none;
-  padding: 6px 6px 6px 6px;
-  background-color: transparent;
-  width: 100%;
-}
-
-.tags_style:hover {
-  background-color: gray;
+  padding: 0;
+  margin: 0;
 }
 
 .tags_page_style {
   list-style-type: none;
-  border: 2px solid black;
-  background-color: var(--light-color);
-  margin: 5px 10px 10px 20px;
-  padding-left: 0;
-  width: max-content;
-  border-radius: 5px;
+  padding: 0;
+  margin: 10px 0 0 20px;
 }
 
-.tags_style_onClick {
-  border: none;
-  padding: 6px 6px 6px 6px;
-  margin-bottom: 3px;
-  background-color: gray;
-  width: 100%;
-  border-radius: 5px;
+.tags_page_style li {
+  margin-bottom: 5px;
 }
 
+.tags_page_style button {
+  background-color: #f8f9fa;
+  color: #212529;
+  border: 1px solid #ced4da;
+  padding: 5px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.tags_page_style button:hover {
+  background-color: #e2e6ea;
+}
+
+/* Стили для карточек публикаций */
 .page_style {
-  align-items: center;
-  justify-content: center;
-  display: grid;
-}
-
-.cards_style {
-  margin-bottom: 2%;
-  display: flex;
-  justify-content: center;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 5px;
 }
 
 .h4_form_style {
-  text-align: center;
+  font-size: 20px;
+  margin-bottom: 15px;
+  color: #343a40;
+}
+
+.cards_style {
+  margin-bottom: 20px;
+}
+
+/* Стили для карточки публикации */
+app-editable-publication-card {
+  display: block;
+  background-color: white;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
+}
+
+/* Дополнительные стили для карточки, если необходимо */
+app-editable-publication-card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }

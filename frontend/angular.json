@@ -58,7 +58,7 @@
               "src/styles.scss",
 
               "node_modules/bootstrap-markdown/css/bootstrap-markdown.min.css",
-              "node_modules/font-awesome/css/font-awesome.css"
+              "node_modules/font-awesome/css/font-awesome.css",
               "node_modules/prismjs/themes/prism.css"
             ],
             "stylePreprocessorOptions": {
