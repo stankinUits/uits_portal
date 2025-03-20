@@ -114,6 +114,7 @@
 
 .content {
   margin-top: 0;
+  padding: 15px;
   background-color: #fff;
   border-radius: 6px;
 }
@@ -121,6 +122,8 @@
 .cards {
   display: grid;
   grid-template-columns: 50% 50%;
+  grid-gap: 15px;
+  margin: 0 auto;
 }
 
 .button-select-wrapper {

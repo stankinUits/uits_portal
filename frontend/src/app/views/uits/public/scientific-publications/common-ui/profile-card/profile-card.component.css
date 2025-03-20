@@ -1,51 +1,79 @@
-.profile-card {
-    padding: 12px 12px 12px 16px;
-    margin: 20px 20px 20px 20px;
-    border-radius: 5px;
-    max-height: 100%;
-    min-width: 350px;
-    min-height: -webkit-fill-available;
-    max-width: 350px;
-    background-color: rgba(255, 255, 255, 0.8);
-    font-size: 16px;
-    font-weight: bold;
-    letter-spacing: 0.5px;
-    color: black;
-    border: 2px solid black;
-    /*min-height: 800px;*/
+.publication-card {
+  width: 480px;
+  height: 400px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  border: 1px solid #c4c9cc;
+  padding: 20px 10px 20px 20px;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 10px rgba(0, 176, 232, 0.15);
+  transition: box-shadow 0.3s ease;
 }
 
-.button_edit {
-  background-color: wheat;
+
+.publication-card__tag {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 10px;
+
+  .tag {
+    background-color: #e8fcd9;
+    color: #2e7d32;
+    font-weight: 500;
+    padding: 4px 12px;
+    font-size: 13px;
+    border-radius: 12px;
+    border: 1px solid #c0e6a8;
+  }
 }
 
-.profile-card__description {
-    margin: 10px 10px 10px 10px;
+
+.publication-card__name h4 {
+  font-size: 24px;
+  color: #333;
 }
 
-.profile-card__author {
-    margin: 10px 10px 10px 10px;
-}
-.profile-card__name {
-    margin: 10px 10px 10px 10px;
+
+.publication-card__author {
+  font-size: 14px;
+  font-style: italic;
+  color: #666;
+  margin: 5px 0;
 }
 
-.tag {
-    padding: 4px 8px;
-    border-radius: 5px;
-    border: 2px solid black;
-    display: inline-block;
-    margin: 10px 10px 10px 10px;
-    gap: 8px;
+
+.publication-card__description {
+  font-size: 1em;
+  color: #444;
+  margin: 10px 0;
 }
 
-.profile-card__tag {
-    display: inline-block;
+.circle-action-btns {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+
+  action-btn {
+    margin: 0;
+    padding: 0;
+  }
 }
 
-.button {
-    padding: 4px 8px;
-    margin: 10px 10px 10px 10px;
-    border-radius: 5px;
-    border: 2px solid black;
+.publication-card:hover .circle-action-btns {
+  opacity: 1;
+  visibility: visible;
+}
+
+.card-divider {
+  border: none;
+  border-top: 1px solid #b5b5b5;
+  margin: 10px 0;
 }

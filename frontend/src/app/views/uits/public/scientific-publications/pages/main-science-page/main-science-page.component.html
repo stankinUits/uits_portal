@@ -93,10 +93,10 @@
   </div>
   <div class="content">
     <div *ngIf="publications.size > 0" class="cards">
-      <div *ngFor="let profile of publications.keys(); trackBy: trackByFn">
+      <div *ngFor="let publication of publications.keys(); trackBy: trackByFn">
         <app-profile-card
-          [profile]="profile"
-          [tagsMap]="publications.get(profile)!"
+          [publication]="publication"
+          [tagsMap]="publications.get(publication)!"
         ></app-profile-card>
       </div>
     </div>

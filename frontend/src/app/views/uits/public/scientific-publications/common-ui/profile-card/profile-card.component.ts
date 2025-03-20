@@ -3,8 +3,10 @@ import { ScienceReadyPublication } from '../../interface/profile.interface';
 import { AppSettings } from '../../utils/settings';
 import {EditablePublicationCardComponent} from '../editable-publication-card/editable-publication-card.component';
 import {RegisterScienceService} from '../../service/register-science-service.service';
-import {NgForOf, NgIf} from '@angular/common';
+import {AsyncPipe, NgForOf, NgIf} from '@angular/common';
 import {AuthService} from "@app/shared/services/auth.service";
+import {EditButtonComponent} from "@app/shared/components/edit-button/edit-button.component";
+import {TooltipModule} from "ngx-bootstrap/tooltip";
 
 @Component({
   selector: 'app-profile-card',
@@ -12,27 +14,28 @@ import {AuthService} from "@app/shared/services/auth.service";
   imports: [
     EditablePublicationCardComponent,
     NgIf,
-    NgForOf
+    NgForOf,
+    AsyncPipe,
+    EditButtonComponent,
+    TooltipModule
   ],
   templateUrl: './profile-card.component.html',
   styleUrls: ['./profile-card.component.css']
 })
 export class ProfileCardComponent {
   scienceService: RegisterScienceService = inject(RegisterScienceService);
-  @Input() profile!: ScienceReadyPublication;
+  @Input() publication!: ScienceReadyPublication;
   @Input() tagsMap!: Map<string, string>;
   isEditing = false;
   authService: AuthService = inject(AuthService);
-  isAdmin = false;
 
   constructor() {
-    if (this.profile) {
-      this.authService.canEdit().subscribe(v => this.isAdmin = v);
-      if (!this.profile.id_for_unique_identify_component) {
-        this.profile.id_for_unique_identify_component = '';
-        this.profile.id_for_unique_identify_component = AppSettings.generateRandomString(30);
+    if (this.publication) {
+      if (!this.publication.id_for_unique_identify_component) {
+        this.publication.id_for_unique_identify_component = '';
+        this.publication.id_for_unique_identify_component = AppSettings.generateRandomString(30);
       } else {
-        this.profile.id_for_unique_identify_component = AppSettings.generateRandomString(30);
+        this.publication.id_for_unique_identify_component = AppSettings.generateRandomString(30);
       }
     }
   }
@@ -42,7 +45,7 @@ export class ProfileCardComponent {
   }
 
   deleteCard() {
-    this.scienceService.deleteCard(this.profile!);
+    this.scienceService.deleteCard(this.publication!);
   }
 
   downloadFile(file: string) {

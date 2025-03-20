@@ -1,52 +1,74 @@
-<div *ngIf="profile && !isEditing" class="profile-card">
-  <div class="profile-card__name">
-    <h4><b>{{ profile.name }}</b></h4>
+<div *ngIf="publication && !isEditing" class="publication-card">
+  <div class="publication-card__tag">
+    <div *ngFor="let tag of publication.tags" class="tag">{{ tag.name }}</div>
   </div>
-  <div class="profile-card__author">
-    <span>{{ profile.author?.join(', ') }}</span>
+  <div class="publication-card__name">
+    <h4><b>{{ publication.name }}</b></h4>
   </div>
-  <div class="profile-card__description">
-    <span>{{ profile.description }}</span>
+  <div class="publication-card__author">
+    <span>{{ publication.author?.join(', ') }}</span>
   </div>
-  <div class="profile-card__tag">
-    <div *ngFor="let tag of profile.tags" class="tag">{{ tag }}</div>
+  <hr class="card-divider" />
+  <div class="publication-card__description">
+    <span>{{ publication.description }}</span>
   </div>
-  <div *ngIf="profile.pages" class="profile-card__author">
-    <span>Страницы: {{ profile.pages }}</span>
+  <div *ngIf="publication.pages" class="publication-card__author">
+    <span>Страницы: {{ publication.pages }}</span>
   </div>
-  <div *ngIf="profile.vol_n" class="profile-card__author">
-    <span>Номер тома: {{ profile.vol_n }}</span>
+  <div *ngIf="publication.vol_n" class="publication-card__author">
+    <span>Номер тома: {{ publication.vol_n }}</span>
   </div>
-  <div *ngIf="profile.isbn" class="profile-card__author">
-    <span>Isbn: {{ profile.isbn }}</span>
+  <div *ngIf="publication.isbn" class="publication-card__author">
+    <span>Isbn: {{ publication.isbn }}</span>
   </div>
-  <div *ngIf="profile.source" class="profile-card__author">
-    <span>Источник: {{ profile.source }}</span>
+  <div *ngIf="publication.source" class="publication-card__author">
+    <span>Источник: {{ publication.source }}</span>
   </div>
-  <div *ngIf="profile.year" class="profile-card__author">
-    <span>Год издания: {{ profile.year }}</span>
+  <div *ngIf="publication.year" class="publication-card__author">
+    <span>Год издания: {{ publication.year }}</span>
   </div>
-  <a *ngIf="profile.url" [href]="profile.url" target="_blank">
-    <div class="profile-card__button">
-      <button class="button">Перейти к источнику</button>
+
+  <div class="circle-action-btns">
+    <app-edit-button
+      (edit)="onEditCard()">
+    </app-edit-button>
+
+    <div *ngIf="publication.file" class="action-btn">
+      <div
+        class="btn-add__item font-size-lg mb-3"
+        (click)="downloadFile(publication.file)"
+        tooltip="Скачать статью"
+        placement="left"
+      >
+        <i class="feather icon-download"></i>
+      </div>
     </div>
-  </a>
-  <div *ngIf="profile.file" class="profile-card__button">
-    <button class="button" (click)="downloadFile(profile.file)">Скачать статью</button>
+
+    <div *ngIf="publication.url" class="action-btn">
+      <a
+        [href]="publication.url"
+        target="_blank"
+        tooltip="Перейти к источнику"
+        placement="left"
+      >
+        <div
+          class="btn-add__item font-size-lg"
+        >
+          <i class="feather icon-arrow-up-right"></i>
+        </div>
+      </a>
+    </div>
   </div>
-  <div *ngIf="isAdmin">
-    <br>
-    <button type="button" (click)="onEditCard()" class="button button_edit">Редактировать</button>
-  </div>
+
 </div>
 
 <app-editable-publication-card
-  *ngIf="profile && isEditing"
-  [publication]="profile"
+  *ngIf="publication && isEditing"
+  [publication]="publication"
   [tagsWithStylesMap]="tagsMap"
   (delete)="deleteCard()"
 ></app-editable-publication-card>
 
-<div *ngIf="!profile">
+<div *ngIf="!publication">
   <span>Публикаций нет</span>
 </div>
