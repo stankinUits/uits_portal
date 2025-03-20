@@ -32,6 +32,9 @@
     <app-edit-button
       (edit)="openEditModal()">
     </app-edit-button>
+    <app-delete-button
+      (delete)="deleteCard()">
+    </app-delete-button>
 
     <div *ngIf="publication.file" class="action-btn">
       <div

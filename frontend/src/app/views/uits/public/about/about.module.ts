@@ -51,6 +51,7 @@ import { ManagementComponent } from './employee/teachers/teacher/components/mana
 import { PublicationsTeacherComponent } from './employee/teachers/teacher/components/publications/publications-teacher.component';
 import { AchievementsTeacherComponent } from './employee/teachers/teacher/components/achievements/achievements-teacher.component';
 import { DetailsModalComponent } from './employee/teachers/teacher/components/disciplines/details-modal/details-modal.component';
+import {DeleteButtonComponent} from "@app/shared/components/delete-button/delete-button.component";
 
 registerLocaleData(localeRu);
 
@@ -123,6 +124,7 @@ class CustomDateFormatter extends CalendarNativeDateFormatter {
     LayoutModule,
     CreateButtonComponent,
     EditButtonComponent,
+    DeleteButtonComponent,
     PaginationModule,
   ],
   providers: [

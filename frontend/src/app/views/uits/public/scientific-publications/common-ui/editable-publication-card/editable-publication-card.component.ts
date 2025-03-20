@@ -160,9 +160,4 @@ export class EditablePublicationCardComponent implements OnInit {
       this.edit.emit(formData);
     }
   }
-
-  clickOnDelete() {
-    this.delete.emit();
-    this.scienceService.deleteCard(this.publication);
-  }
 }

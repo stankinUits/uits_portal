@@ -1,0 +1,8 @@
+<div *ngIf="authService.canEdit() | async"
+     class="btn-add__item font-size-lg mb-3"
+     (click)="edit.emit()"
+     tooltip="Удалить"
+     placement="left"
+>
+  <i class="feather icon-x"></i>
+</div>

@@ -13,6 +13,8 @@ import {AlertService} from "@app/shared/services/alert.service";
 import {
   PublicationResponse
 } from "@app/views/uits/public/scientific-publications/interface/publication-response.interface";
+import {SharedModule} from "@app/shared/shared.module";
+import {DeleteButtonComponent} from "@app/shared/components/delete-button/delete-button.component";
 
 @Component({
   selector: 'app-profile-card',
@@ -23,7 +25,9 @@ import {
     NgForOf,
     AsyncPipe,
     EditButtonComponent,
-    TooltipModule
+    TooltipModule,
+    SharedModule,
+    DeleteButtonComponent
   ],
   templateUrl: './profile-card.component.html',
   styleUrls: ['./profile-card.component.css']

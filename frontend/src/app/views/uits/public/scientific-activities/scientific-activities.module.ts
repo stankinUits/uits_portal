@@ -22,12 +22,7 @@ import {
   ScientificWorkComponent
 } from '@app/views/uits/public/scientific-activities/deprecated/scientific-work/scientific-work.component';
 import {AchievementDetailComponent} from './achievements/achievement-detail/achievement-detail.component';
-import {MainSciencePageComponent}
-  from '../scientific-publications/pages/main-science-page/main-science-page.component';
-import {RegisterSciencePublicationComponent}
-  from '../scientific-publications/pages/register-science-publication/register-science-publication.component';
-import {EditAuthorPublicationPageComponent}
-  from '../scientific-publications/pages/edit-author-publication-page/edit-author-publication-page.component';
+
 import {QuillViewComponent} from 'ngx-quill';
 import {EditButtonComponent} from '@app/shared/components/edit-button/edit-button.component';
 import {CreateButtonComponent} from '@app/shared/components/create-button/create-button.component';
@@ -38,6 +33,7 @@ import {SharedModule} from '@app/shared/shared.module';
 import { ResearchComponent } from './research/research.component';
 import { ForumComponent } from './forum/forum.component';
 import {PaginationModule} from 'ngx-bootstrap/pagination';
+import {DeleteButtonComponent} from "@app/shared/components/delete-button/delete-button.component";
 
 @NgModule({
   declarations: [
@@ -63,6 +59,7 @@ import {PaginationModule} from 'ngx-bootstrap/pagination';
         MarkdownModule.forRoot(),
         QuillViewComponent,
         EditButtonComponent,
+        DeleteButtonComponent,
         CreateButtonComponent,
         NgxDatatableModule,
         SharedModule,

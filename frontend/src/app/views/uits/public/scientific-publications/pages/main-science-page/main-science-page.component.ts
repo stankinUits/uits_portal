@@ -1,6 +1,6 @@
-import {ChangeDetectorRef, Component, inject, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, HostListener, inject, OnInit, ViewChild} from '@angular/core';
 import {RegisterScienceService} from '../../service/register-science-service.service';
-import {ScienceReadyPublication} from '../../interface/profile.interface';
+import {ITag, ScienceReadyPublication} from '../../interface/profile.interface';
 import {AsyncPipe, JsonPipe, NgClass, NgForOf, NgIf, NgStyle} from '@angular/common';
 import {RouterModule} from '@angular/router';
 import {AppSettings} from '../../utils/settings';
@@ -36,6 +36,8 @@ export class MainSciencePageComponent implements OnInit {
   authService: AuthService = inject(AuthService);
   cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
 
+  @ViewChild('filterContainer') filterContainer!: ElementRef;
+
   adminMenu: adminMenu[] = [];
 
   publications: Map<ScienceReadyPublication, Map<string, string>> = new Map();
@@ -55,15 +57,24 @@ export class MainSciencePageComponent implements OnInit {
     sources: false,
   }
 
-  constructor() {
+  constructor(private elementRef: ElementRef) {
 
+  }
+
+  @HostListener('document:click', ['$event'])
+  handleClickOutside(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+    if (this.filterContainer && !this.filterContainer.nativeElement.contains(target)) {
+      console.log('436')
+      this.closeAllFilters();
+    }
   }
 
   ngOnInit() {
     this.initAdminMenu();
 
     // Инициализация тегов
-    this.scienceService.getALLTagsRest().subscribe(tags => {
+    this.scienceService.getALLTags().subscribe(tags => {
       this.initTagsMap(tags);
 
       // Получаем все публикации
@@ -157,9 +168,9 @@ export class MainSciencePageComponent implements OnInit {
       && (filterNames.length === 0 || filterNames.some(item => item.toLowerCase().includes(publication.name.toLowerCase()))))!;
   }
 
-  initTagsMap(tags: string[]) {
+  initTagsMap(tags: ITag[]) {
     tags.forEach(tag => {
-      this.tagsMap.set(tag, AppSettings.DEFAULT_TAG_STYLE)
+      this.tagsMap.set(tag.name, AppSettings.DEFAULT_TAG_STYLE)
     });
   }
 
@@ -190,7 +201,11 @@ export class MainSciencePageComponent implements OnInit {
   }
 
   toggleFilterVisible(filterName: keyof typeof this.visibilityMap) {
-    this.visibilityMap[filterName] = !this.visibilityMap[filterName];
+    for(const key in this.visibilityMap) {
+      if (this.visibilityMap.hasOwnProperty(key)) {
+        this.visibilityMap[key] = key === filterName ? !this.visibilityMap[key] : false;
+      }
+    }
   }
 
   cleanFilter() {
@@ -201,5 +216,14 @@ export class MainSciencePageComponent implements OnInit {
 
   searchScienceCards() {
     this.filterThrewAllSearch();
+  }
+
+  closeAllFilters() {
+    this.visibilityMap = {
+      authors: false,
+      tags: false,
+      years: false,
+      sources: false
+    };
   }
 }

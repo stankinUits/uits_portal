@@ -7,6 +7,7 @@ import {CSRFInterceptor} from '@app/shared/interceptor/csrf.interceptor';
 import {ResizableComponent} from '@app/shared/components/base/resizable.component';
 import { TimeFromDatePipe } from './pipes/time-from-date.pipe';
 import { TimeWithoutSsPipe } from './pipes/time-without-ss.pipe';
+import {TooltipModule} from "ngx-bootstrap/tooltip";
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { TimeWithoutSsPipe } from './pipes/time-without-ss.pipe';
     TimeWithoutSsPipe,
   ],
     imports: [
+        TooltipModule
     ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: CSRFInterceptor, multi: true}

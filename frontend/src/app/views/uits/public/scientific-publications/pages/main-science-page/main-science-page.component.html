@@ -39,7 +39,7 @@
     <hr class="line">
     <div>
       <p class="sub-heading">Фильтровать публикации: </p>
-      <div class="buttons">
+      <div class="buttons" #filterContainer>
         <div class="button-select-wrapper">
           <button class="button" role="button" (click)="toggleFilterVisible('authors')">По автору</button>
           <div class="select-menu" *ngIf="visibilityMap.authors">
