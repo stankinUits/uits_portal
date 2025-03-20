@@ -1,11 +1,13 @@
-import {Component, EventEmitter, inject, Input, Output} from '@angular/core';
-import {ScienceReadyPublication} from '../../interface/profile.interface';
+import {Component, EventEmitter, inject, Input, OnInit, Output} from '@angular/core';
+import {ITag, ScienceReadyPublication} from '../../interface/profile.interface';
 import {RegisterScienceService} from '../../service/register-science-service.service';
 import {NgClass, NgForOf, NgIf} from '@angular/common';
 import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
 import {AppSettings} from '../../utils/settings';
-import {FormsModule} from '@angular/forms';
+import {FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {tr} from "date-fns/locale";
+import {BsModalRef} from "ngx-bootstrap/modal";
+import {NgSelectModule} from "@ng-select/ng-select";
 
 @Component({
   selector: 'app-editable-publication-card',
@@ -14,70 +16,61 @@ import {tr} from "date-fns/locale";
     NgClass,
     FormsModule,
     NgIf,
-    NgForOf
+    NgForOf,
+    ReactiveFormsModule,
+    NgSelectModule
   ],
   templateUrl: './editable-publication-card.component.html',
   styleUrls: ['./editable-publication-card.component.css']
 })
-export class EditablePublicationCardComponent {
+export class EditablePublicationCardComponent implements OnInit {
+  scienceService: RegisterScienceService = inject(RegisterScienceService);
+
   @Input() publication!: ScienceReadyPublication;
   @Input() tagsWithStylesMap!: Map<string, string>;
-  scienceService: RegisterScienceService = inject(RegisterScienceService);
   @Output() delete = new EventEmitter<any>();
 
-  isTagsOpen = false;
+  form: FormGroup;
+  selectedTags: ITag[] = [];
+  allTags: ITag[] = [];
+
   alertMessage: string | undefined = undefined;
-  newTags: string[] = [];
-  DEFAULT_URL = "Введите ссылку на публикацию, если она есть"
-  DEFAULT_DESCRIPTION = "Введите описание статьи"
-  DEFAULT_SOURCE = "Веедите название источника"
-  DEFAULT_YEAR = "Введите год публикации статьи"
-  DEFAULT_NAME = "Введите название публикации"
-  DEFAULT_AUTHOR = "Введите авторов публикации"
-  id_name_card: string | null = null;
-  id_author_name: string | null = null;
-  id_description: string | null = null;
-  id_url: string | null = null;
-  id_source: string | null = null;
-  id_year: string | null = null;
-  id_pages: string | null = null;
-  id_isbn: string | null = null;
-  id_vol_n: string | null = null;
 
-  constructor() {
-    this.id_name_card = this.generateRandomString(25);
-    this.id_author_name = this.generateRandomString(25);
-    this.id_description = this.generateRandomString(25);
-    this.id_url = this.generateRandomString(25);
-    this.id_year = this.generateRandomString(25);
-    this.id_source = this.generateRandomString(25);
-    this.id_pages = this.generateRandomString(25);
-    this.id_isbn = this.generateRandomString(25);
-    this.id_vol_n = this.generateRandomString(25);
+  constructor(public bsModalRef: BsModalRef, private formBuilder: FormBuilder) {
+
   }
 
-  private generateRandomString(length: number): string {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let result = '';
-    for (let i = 0; i < length; i++) {
-      result += characters.charAt(Math.floor(Math.random() * characters.length));
+  ngOnInit() {
+    this.form = this.formBuilder.group({
+      "name": [this.publication.name, Validators.required],
+      "year": [this.publication.year, Validators.required],
+      "tags": [this.selectedTags],
+      "author": [this.publication.author.join(';'), Validators.required],
+      "description": [this.publication.description],
+      "pages": [this.publication.pages],
+      "vol_n": [this.publication.vol_n],
+      "isbn": [this.publication.isbn],
+      "source": [this.publication.source],
+      "url": [this.publication.url],
+      "file": [null]
+    })
+
+    if (this.publication.tags) {
+      this.publication.tags.forEach(tag => {
+        this.selectedTags.push(tag);
+      });
     }
-    return result;
+
+    this.scienceService.getALLTagsRest1().subscribe(res => {
+      this.allTags = res;
+    })
+
+    console.log(this.form.value);
   }
 
-
-  onNewTag() {
-    const input = document.getElementById(this.publication.name!) as HTMLInputElement;
-    if (input) {
-      const inputValue = input.value;
-      if (inputValue.length > 0) {
-        this.newTags.push(inputValue);
-
-        this.tagsWithStylesMap.delete(AppSettings.EMPTY_TAG_SEARCH_TEXT);
-        this.tagsWithStylesMap.set(inputValue, AppSettings.ONCLICK_TAG_STYLE);
-        this.tagsWithStylesMap.set(AppSettings.EMPTY_TAG_SEARCH_TEXT, AppSettings.DEFAULT_TAG_STYLE);
-      }
-    }
+  onTagsChange(selectedTags: ITag[]) {
+    this.selectedTags = selectedTags;
+    this.form.get('tags')?.setValue(selectedTags);
   }
 
   onFileSelected(event: Event): void {
@@ -89,6 +82,7 @@ export class EditablePublicationCardComponent {
       this.encodeFileToBase64(file).then((base64String) => {
 
         this.publication.file = base64String;
+        this.form.get('file')?.setValue(base64String);
         this.alertMessage = undefined;
         console.log('File encoded to Base64:', base64String);
       }).catch((error) => {
@@ -118,126 +112,11 @@ export class EditablePublicationCardComponent {
     });
   }
 
-  onTagClick(tag: string) {
-    if (AppSettings.EMPTY_TAG_SEARCH_TEXT === tag) {
-      this.tagsWithStylesMap.forEach((v, k) => this.tagsWithStylesMap.set(k, AppSettings.DEFAULT_TAG_STYLE));
-    } else if (this.tagsWithStylesMap.get(tag) === AppSettings.DEFAULT_TAG_STYLE) {
-      this.tagsWithStylesMap.set(tag, AppSettings.ONCLICK_TAG_STYLE);
-      if (!this.publication.tags) {
-        this.publication.tags = [];
-      }
-      // TODO временный коммит
-      // this.publication.tags?.push(tag);
-    } else {
-      this.tagsWithStylesMap.set(tag, AppSettings.DEFAULT_TAG_STYLE);
-      // TODO временный коммит
-      // this.publication.tags = this.publication.tags?.filter(t => t !== tag);
-    }
-  }
-
-  onChooseTag() {
-    // TODO временный коммит
-    // this.publication.tags?.forEach((tag) => {
-    //   if (this.tagsWithStylesMap.has(tag)) {
-    //     this.tagsWithStylesMap.set(tag, AppSettings.ONCLICK_TAG_STYLE);
-    //   }
-    // });
-
-    if (this.tagsWithStylesMap.size === 0) {
-      this.scienceService.getALLTagsRest().subscribe(v => v.forEach(val => this.tagsWithStylesMap.set(val, AppSettings.DEFAULT_TAG_STYLE)));
-    }
-
-    this.isTagsOpen = !this.isTagsOpen;
-  }
 
   clickOnSave() {
-    console.log('save 1')
-    const url = document.getElementById(this.id_url!) as HTMLInputElement;
-    if (url && url.value !== this.DEFAULT_URL) {
-      this.publication.url = url.value;
-    }
-
-    const name_card = document.getElementById(this.id_name_card!) as HTMLInputElement;
-    if (name_card) {
-      this.publication.name = name_card.value;
-    }
-
-    const author_name = document.getElementById(this.id_author_name!) as HTMLInputElement;
-    if (author_name) {
-      this.publication.author = author_name.value.split(';');
-    }
-
-    const description = document.getElementById(this.id_description!) as HTMLInputElement;
-    if (description && description.value !== this.DEFAULT_DESCRIPTION) {
-      this.publication.description = description.value;
-    }
-
-    const source = document.getElementById(this.id_source!) as HTMLInputElement;
-    if (source && source.value !== this.DEFAULT_SOURCE) {
-      this.publication.source = source.value;
-    }
-
-
-    const year = document.getElementById(this.id_year!) as HTMLInputElement;
-    if (year && year.value !== this.DEFAULT_YEAR) {
-      this.publication.year = Number(year.value);
-    }
-
-    const pages = document.getElementById(this.id_pages!) as HTMLInputElement;
-    if (pages && pages.value !== '') {
-      this.publication.pages = pages.value;
-    }
-
-    const vol_n = document.getElementById(this.id_vol_n!) as HTMLInputElement;
-    if (vol_n && vol_n.value !== '') {
-      this.publication.vol_n = vol_n.value;
-    }
-
-    const isbn = document.getElementById(this.id_isbn!) as HTMLInputElement;
-    if (isbn && isbn.value !== '') {
-      this.publication.isbn = isbn.value;
-    }
-
-    // TODO временный коммит
-    // if (this.publication.tags && this.publication.tags.length > 0) {
-    //   this.publication.tags = Array.from(
-    //     [...this.tagsWithStylesMap.entries()].filter(([_, value]) => value === AppSettings.ONCLICK_TAG_STYLE),
-    //     ([key, _]) => key
-    //   );
-    // }
-
-    let isValid = true;
-
-    // //проверки перед сохранением
-    // if (this.publication.author.length < 1 || this.publication.author[0] === this.DEFAULT_AUTHOR) {
-    //   this.alertCall('Требуется добавить автора публикации');
-    //   if (this.publication.name === '' || this.publication.name === undefined || this.publication.name === this.DEFAULT_NAME) {
-    //     this.alertCall('Требуется добавить название публикации');
-    //     if ((this.publication.url === '' || this.publication.url === undefined) && (this.publication.file === undefined)) {
-    //       this.alertCall('Требуется добавить файл публикации, или ссылку на нее');
-    //       if (this.publication.year === undefined || this.publication.year === 0) {
-    //         this.alertCall('Требуется добавить год публикации');
-    //       } else {
-    //         isValid = true;
-    //       }
-    //     }
-    //   }
-    // }
-
-    if (isValid) {
-      console.log('valid')
-      this.scienceService.saveCard(this.publication).subscribe((data: HttpResponse<any>) => {
-          if (data.status === 200 || data.status === 202) {
-            this.alertCall(`Успешно сохранено`);
-          }
-        },
-        (err: HttpErrorResponse) => {
-          if (err.status === 403) {
-            this.alertCall('Ошибка при сохранении');
-          }
-        });
-
-      this.scienceService.saveNewTags(this.newTags).subscribe((data: HttpResponse<any>) => {
+    console.log('done', this.form.value);
+    if (this.form.valid) {
+      this.scienceService.saveCard(this.form.value).subscribe((data: HttpResponse<any>) => {
           if (data.status === 200 || data.status === 202) {
             this.alertCall(`Успешно сохранено`);
           }

@@ -42,8 +42,9 @@ class ScientificPublicationsSearchView(View):
 
 class GetAllTagsView(View):
     def get(self, request):
-        tags = Tag.objects.all().values_list('name', flat=True)
-        return JsonResponse(list(tags), safe=False)
+        tags = Tag.objects.all()
+        serializer = TagSerializer(tags, many=True)
+        return JsonResponse(serializer.data, safe=False)
 
 @method_decorator(csrf_exempt, name='dispatch')
 class SaveCardView(View):

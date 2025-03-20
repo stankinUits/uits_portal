@@ -7,6 +7,7 @@ import {AsyncPipe, NgForOf, NgIf} from '@angular/common';
 import {AuthService} from "@app/shared/services/auth.service";
 import {EditButtonComponent} from "@app/shared/components/edit-button/edit-button.component";
 import {TooltipModule} from "ngx-bootstrap/tooltip";
+import {BsModalRef, BsModalService} from "ngx-bootstrap/modal";
 
 @Component({
   selector: 'app-profile-card',
@@ -29,7 +30,9 @@ export class ProfileCardComponent {
   isEditing = false;
   authService: AuthService = inject(AuthService);
 
-  constructor() {
+  bsModalRef: BsModalRef;
+
+  constructor(private modalService: BsModalService) {
     if (this.publication) {
       if (!this.publication.id_for_unique_identify_component) {
         this.publication.id_for_unique_identify_component = '';
@@ -38,6 +41,16 @@ export class ProfileCardComponent {
         this.publication.id_for_unique_identify_component = AppSettings.generateRandomString(30);
       }
     }
+  }
+
+  openEditModal() {
+    const initialState = {
+      publication: this.publication,
+      tagsWithStylesMap: this.tagsMap,
+    };
+    this.bsModalRef = this.modalService.show(EditablePublicationCardComponent, {
+      initialState
+    });
   }
 
   onEditCard() {

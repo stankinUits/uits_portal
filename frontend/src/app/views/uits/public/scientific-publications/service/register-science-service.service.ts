@@ -3,7 +3,7 @@ import {inject, Injectable} from '@angular/core';
 import {map, Observable} from 'rxjs';
 import {SciencePublicationResponseInterface} from '../interface/science-publication-response.interface';
 import {AppSettings} from '../utils/settings';
-import {ScienceReadyPublication} from '../interface/profile.interface';
+import {ITag, ScienceReadyPublication} from '../interface/profile.interface';
 import {AuthorInfo} from '../interface/autrhor_info.interface';
 import {ResponseOnSave} from '../interface/response_on_save_object.interface';
 
@@ -52,6 +52,10 @@ export class RegisterScienceService {
 
   getALLTagsRest(): Observable<string[]> {
     return this.http.get<string[]>(`${AppSettings.BASE_URL}/get_all_tags`);
+  }
+
+  getALLTagsRest1(): Observable<ITag[]> {
+    return this.http.get<ITag[]>(`${AppSettings.BASE_URL}/get_all_tags`);
   }
 
   getListOfCards(): Observable<ScienceReadyPublication[]> {
