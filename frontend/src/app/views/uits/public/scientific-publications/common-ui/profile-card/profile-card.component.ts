@@ -1,6 +1,6 @@
-import {Component, inject, Input} from '@angular/core';
-import { ScienceReadyPublication } from '../../interface/profile.interface';
-import { AppSettings } from '../../utils/settings';
+import {ChangeDetectorRef, Component, inject, Input} from '@angular/core';
+import {ScienceReadyPublication} from '../../interface/profile.interface';
+import {AppSettings} from '../../utils/settings';
 import {EditablePublicationCardComponent} from '../editable-publication-card/editable-publication-card.component';
 import {RegisterScienceService} from '../../service/register-science-service.service';
 import {AsyncPipe, NgForOf, NgIf} from '@angular/common';
@@ -8,6 +8,11 @@ import {AuthService} from "@app/shared/services/auth.service";
 import {EditButtonComponent} from "@app/shared/components/edit-button/edit-button.component";
 import {TooltipModule} from "ngx-bootstrap/tooltip";
 import {BsModalRef, BsModalService} from "ngx-bootstrap/modal";
+import {HttpErrorResponse, HttpResponse} from "@angular/common/http";
+import {AlertService} from "@app/shared/services/alert.service";
+import {
+  PublicationResponse
+} from "@app/views/uits/public/scientific-publications/interface/publication-response.interface";
 
 @Component({
   selector: 'app-profile-card',
@@ -32,7 +37,10 @@ export class ProfileCardComponent {
 
   bsModalRef: BsModalRef;
 
-  constructor(private modalService: BsModalService) {
+  constructor(private modalService: BsModalService,
+              private alertService: AlertService,
+              private cdr: ChangeDetectorRef,
+              ) {
     if (this.publication) {
       if (!this.publication.id_for_unique_identify_component) {
         this.publication.id_for_unique_identify_component = '';
@@ -51,6 +59,9 @@ export class ProfileCardComponent {
     this.bsModalRef = this.modalService.show(EditablePublicationCardComponent, {
       initialState
     });
+    this.bsModalRef.content.edit.subscribe((formData: PublicationResponse) => {
+      this.editCard(formData);
+    });
   }
 
   onEditCard() {
@@ -59,6 +70,23 @@ export class ProfileCardComponent {
 
   deleteCard() {
     this.scienceService.deleteCard(this.publication!);
+  }
+
+  editCard(formData: PublicationResponse) {
+    this.scienceService.editCard(formData).subscribe(
+      (res: { status: string, publication: ScienceReadyPublication }) => {
+        this.bsModalRef.hide();
+        this.alertService.add('Успешно отредактировано', 'success');
+        console.log('do', this.publication);
+        this.publication = res.publication;
+        console.log('posle', this.publication);
+        this.cdr.detectChanges();
+      },
+      (err: HttpErrorResponse) => {
+        this.alertService.add('danger', 'Что-то пошло не так')
+        console.error(err);
+      }
+    );
   }
 
   downloadFile(file: string) {
@@ -72,9 +100,9 @@ export class ProfileCardComponent {
         uint8Array[i] = binaryString.charCodeAt(i);
       }
 
-      const blob = new Blob([uint8Array], { type: AppSettings.PDF_MIME_TYPE });
+      const blob = new Blob([uint8Array], {type: AppSettings.PDF_MIME_TYPE});
 
-      const file_O = new File([blob], AppSettings.generateRandomString(30), { type: AppSettings.PDF_MIME_TYPE });
+      const file_O = new File([blob], AppSettings.generateRandomString(30), {type: AppSettings.PDF_MIME_TYPE});
 
       if (file_O) {
         const url = window.URL.createObjectURL(file_O);

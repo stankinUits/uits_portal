@@ -1,4 +1,4 @@
-import {Component, EventEmitter, inject, Input, OnInit, Output} from '@angular/core';
+import {ChangeDetectorRef, Component, EventEmitter, inject, Input, OnInit, Output, TemplateRef} from '@angular/core';
 import {ITag, ScienceReadyPublication} from '../../interface/profile.interface';
 import {RegisterScienceService} from '../../service/register-science-service.service';
 import {NgClass, NgForOf, NgIf} from '@angular/common';
@@ -6,8 +6,9 @@ import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
 import {AppSettings} from '../../utils/settings';
 import {FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {tr} from "date-fns/locale";
-import {BsModalRef} from "ngx-bootstrap/modal";
+import {BsModalRef, BsModalService} from "ngx-bootstrap/modal";
 import {NgSelectModule} from "@ng-select/ng-select";
+import {AlertService} from "@app/shared/services/alert.service";
 
 @Component({
   selector: 'app-editable-publication-card',
@@ -29,15 +30,18 @@ export class EditablePublicationCardComponent implements OnInit {
   @Input() publication!: ScienceReadyPublication;
   @Input() tagsWithStylesMap!: Map<string, string>;
   @Output() delete = new EventEmitter<any>();
+  @Output() edit = new EventEmitter<any>();
 
   form: FormGroup;
   selectedTags: ITag[] = [];
   allTags: ITag[] = [];
+  compareTags = (t1: ITag, t2: ITag) => t1?.id === t2?.id;
 
-  alertMessage: string | undefined = undefined;
-
-  constructor(public bsModalRef: BsModalRef, private formBuilder: FormBuilder) {
-
+  constructor(private modalService: BsModalService,
+              public bsModalRef: BsModalRef,
+              private formBuilder: FormBuilder,
+              private alertService: AlertService,
+              private cdr: ChangeDetectorRef) {
   }
 
   ngOnInit() {
@@ -45,7 +49,7 @@ export class EditablePublicationCardComponent implements OnInit {
       "name": [this.publication.name, Validators.required],
       "year": [this.publication.year, Validators.required],
       "tags": [this.selectedTags],
-      "author": [this.publication.author.join(';'), Validators.required],
+      "author": this.formBuilder.array([]),
       "description": [this.publication.description],
       "pages": [this.publication.pages],
       "vol_n": [this.publication.vol_n],
@@ -55,22 +59,47 @@ export class EditablePublicationCardComponent implements OnInit {
       "file": [null]
     })
 
+    this.initTags();
+    this.initAuthors();
+  }
+
+  initTags() {
     if (this.publication.tags) {
       this.publication.tags.forEach(tag => {
         this.selectedTags.push(tag);
       });
     }
 
-    this.scienceService.getALLTagsRest1().subscribe(res => {
+    this.scienceService.getALLTags().subscribe(res => {
       this.allTags = res;
     })
+  }
 
-    console.log(this.form.value);
+  initAuthors() {
+    if (this.publication.author.length) {
+      const authorsArray = this.form.get('author') as FormArray;
+      this.publication.author.forEach(author => {
+        authorsArray.push(this.formBuilder.control(author, Validators.required));
+      })
+    }
+  }
+
+  get authors(): FormArray {
+    return this.form.get('author') as FormArray;
+  }
+
+  addAuthor(): void {
+    this.authors.push(this.formBuilder.control('', Validators.required));
+  }
+
+  removeAuthor(index: number): void {
+    this.authors.removeAt(index);
   }
 
   onTagsChange(selectedTags: ITag[]) {
+    console.log(selectedTags);
     this.selectedTags = selectedTags;
-    this.form.get('tags')?.setValue(selectedTags);
+    this.form.get('tags').setValue(selectedTags);
   }
 
   onFileSelected(event: Event): void {
@@ -78,22 +107,16 @@ export class EditablePublicationCardComponent implements OnInit {
     const file = (target.files as FileList)[0];
 
     if (file && file.type === AppSettings.PDF_MIME_TYPE) {
-
       this.encodeFileToBase64(file).then((base64String) => {
-
         this.publication.file = base64String;
         this.form.get('file')?.setValue(base64String);
-        this.alertMessage = undefined;
-        console.log('File encoded to Base64:', base64String);
       }).catch((error) => {
-        this.alertMessage = 'Ошибка при кодировании файла в Base64';
-        console.error('Error encoding file to Base64:', error);
+        this.alertService.add('danger', 'Ошибка при кодировании файла в Base64')
       });
     } else {
-      this.alertMessage = 'Можно прикрепить только файл формата pdf';
+      this.alertService.add('danger', 'Можно прикрепить только файл формата pdf')
     }
   }
-
 
   encodeFileToBase64(file: File): Promise<string> {
     return new Promise((resolve, reject) => {
@@ -112,29 +135,29 @@ export class EditablePublicationCardComponent implements OnInit {
     });
   }
 
-
   clickOnSave() {
-    console.log('done', this.form.value);
     if (this.form.valid) {
-      this.scienceService.saveCard(this.form.value).subscribe((data: HttpResponse<any>) => {
-          if (data.status === 200 || data.status === 202) {
-            this.alertCall(`Успешно сохранено`);
-          }
-        },
-        (err: HttpErrorResponse) => {
-          if (err.status === 403) {
-            this.alertCall('Ошибка при сохранении');
-          }
-        });
+      const formData = {
+        id: this.publication.id,
+        name: this.form.get('name')?.value,
+        year: this.form.get('year')?.value,
+        author: this.form.get('author')?.value,
+        description: this.form.get('description')?.value,
+        tags: this.selectedTags.map(tag => tag.name),
+        pages: this.form.get('pages')?.value,
+        vol_n: this.form.get('vol_n')?.value,
+        isbn: this.form.get('isbn')?.value,
+        source: this.form.get('source')?.value,
+        url: this.form.get('url')?.value,
+        file: this.form.get('file')?.value,
+      };
+
+      this.edit.emit(formData);
     }
   }
 
   clickOnDelete() {
     this.delete.emit();
     this.scienceService.deleteCard(this.publication);
-  }
-
-  alertCall(message: string) {
-    alert(message);
   }
 }

@@ -6,6 +6,9 @@ import {AppSettings} from '../utils/settings';
 import {ITag, ScienceReadyPublication} from '../interface/profile.interface';
 import {AuthorInfo} from '../interface/autrhor_info.interface';
 import {ResponseOnSave} from '../interface/response_on_save_object.interface';
+import {
+  PublicationResponse
+} from "@app/views/uits/public/scientific-publications/interface/publication-response.interface";
 
 @Injectable({
   providedIn: 'root'
@@ -31,6 +34,10 @@ export class RegisterScienceService {
     return this.http.post(`${AppSettings.BASE_URL}/save_card/`, {...publication});
   }
 
+  editCard(publication: PublicationResponse) {
+    return this.http.post(`${AppSettings.BASE_URL}/edit_card/`, {...publication});
+  }
+
   onSaveCard(publication: ScienceReadyPublication) {
     this.saveCard(publication).subscribe(
       (response: ResponseOnSave) => {
@@ -54,7 +61,7 @@ export class RegisterScienceService {
     return this.http.get<string[]>(`${AppSettings.BASE_URL}/get_all_tags`);
   }
 
-  getALLTagsRest1(): Observable<ITag[]> {
+  getALLTags(): Observable<ITag[]> {
     return this.http.get<ITag[]>(`${AppSettings.BASE_URL}/get_all_tags`);
   }
 

@@ -65,6 +65,38 @@ class SaveCardView(View):
         return JsonResponse({'id': publication.id})
 
 @method_decorator(csrf_exempt, name='dispatch')
+class EditCardView(View):
+    def post(self, request):
+        data = json.loads(request.body)
+        try:
+            publication = ScientificPublication.objects.get(id=data['id'])
+        except ScientificPublication.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': 'Publication not found'}, status=404)
+
+        # Обновляем поля
+        publication.name = data['name']
+        publication.author = data['author']
+        publication.description = data['description']
+        publication.url = data['url']
+        publication.file = data['file']
+        publication.year = data['year']
+        publication.source = data['source']
+        publication.pages = data.get('pages', '')
+        publication.vol_n = data.get('vol_n', '')
+        publication.isbn = data.get('isbn', '')
+        publication.save()
+
+        # Обновляем теги
+        publication.tags.clear()
+        for tag_name in data['tags']:
+            tag, created = Tag.objects.get_or_create(name=tag_name)
+            publication.tags.add(tag)
+
+        # Сериализуем обновленную карточку
+        serializer = ScientificPublicationSerializer(publication)
+        return JsonResponse({'status': 'success', 'publication': serializer.data})
+
+@method_decorator(csrf_exempt, name='dispatch')
 class SaveNewTagsView(View):
     def post(self, request):
         data = json.loads(request.body)

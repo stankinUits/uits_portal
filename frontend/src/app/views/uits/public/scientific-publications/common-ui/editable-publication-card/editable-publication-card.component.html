@@ -1,89 +1,123 @@
-<div *ngIf="publication" class="container">
-  <form [formGroup]="form">
+<div class="modal-header">
+  <h4 class="modal-title pull-left">Редактировать публикацию</h4>
+  <button
+    type="button"
+    class="close pull-right"
+    aria-label="Close"
+    (click)="bsModalRef.hide()"
+    style="margin-left: auto;"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div *ngIf="publication" class="container">
+    <form [formGroup]="form">
 
-    <div class="form-group mb-3">
-      <label class="form-label">Название публикации </label>
-      <input class="form-control" formControlName="name">
-    </div>
+      <div class="form-group mb-3">
+        <label class="form-label">Название публикации </label>
+        <input class="form-control" formControlName="name">
+      </div>
 
-    <div class="form-group mb-3">
-      <label class="form-label">Год публикации </label>
-      <input class="form-control" formControlName="year">
-    </div>
+      <div class="form-group mb-3">
+        <label class="form-label">Год публикации </label>
+        <input class="form-control" formControlName="year">
+      </div>
 
-    <div class="form-group mb-3">
-      <label>Полное имя автора (Если авторов несколько, укажите их через ';')</label>
-      <input class="form-control" formControlName="author">
-    </div>
+      <div class="form-group mb-3">
+        <div formArrayName="author">
+          <div *ngFor="let authorCtrl of authors.controls; let i = index"
+               class="d-flex mb-2 gap-2 align-items-center">
+            <input class="form-control" [formControlName]="i" placeholder="ФИО автора">
+            <button
+              type="button"
+              class="btn btn-danger btn-sm"
+              (click)="removeAuthor(i)" *ngIf="authors.length > 1"
+            >
+              −
+            </button>
+          </div>
+          <button class="btn btn-outline-secondary btn-sm mt-2"
+                  type="button" (click)="addAuthor()"
+          >
+            Добавить автора
+          </button>
+        </div>
+        <!--        <input class="form-control" formControlName="author">-->
+      </div>
 
-    <div class="form-group mb-3">
-      <label>Описание</label>
-      <textarea class="form-control" formControlName="description"></textarea>
-    </div>
+      <div class="form-group mb-3">
+        <label>Описание</label>
+        <textarea class="form-control" formControlName="description"></textarea>
+      </div>
 
-    <div class="form-group mb-3">
-      <label>Теги (не более 4х)</label>
-      <ng-select
-        [multiple]="true"
-        formControlName="tags"
-        [hideSelected]="true"
-        [closeOnSelect]="false"
-        bindLabel="name"
-        (change)="onTagsChange($event)"
-      >
-        <ng-option *ngFor="let tag of allTags" [value]="tag.id">{{ tag.name }}</ng-option>
-      </ng-select>
-    </div>
+      <div class="form-group mb-3">
+        <label>Теги (желательно не больше 4х)</label>
+        <ng-select
+          [multiple]="true"
+          formControlName="tags"
+          [hideSelected]="true"
+          [closeOnSelect]="false"
+          bindLabel="name"
+          [compareWith]="compareTags"
+          (change)="onTagsChange($event)"
+        >
+          <ng-option *ngFor="let tag of allTags" [value]="tag">{{ tag.name }}</ng-option>
+        </ng-select>
+      </div>
 
-    <div class="form-group mb-3">
-      <label>Страницы</label>
-      <input class="form-control" formControlName="pages">
-    </div>
+      <div class="form-group mb-3">
+        <label>Страницы</label>
+        <input class="form-control" formControlName="pages">
+      </div>
 
-    <div class="form-group mb-3">
-      <label>Номер тома</label>
-      <input class="form-control" formControlName="vol_n">
-    </div>
+      <div class="form-group mb-3">
+        <label>Номер тома</label>
+        <input class="form-control" formControlName="vol_n">
+      </div>
 
-    <div class="form-group mb-3">
-      <label>Номер isbn\issn</label>
-      <input class="form-control" formControlName="isbn">
-    </div>
+      <div class="form-group mb-3">
+        <label>Номер isbn\issn</label>
+        <input class="form-control" formControlName="isbn">
+      </div>
 
-    <div class="form-group mb-3">
-      <label>Название источника</label>
-      <input class="form-control" formControlName="source">
-    </div>
+      <div class="form-group mb-3">
+        <label>Название источника</label>
+        <input class="form-control" formControlName="source">
+      </div>
 
-    <div class="form-group mb-3">
-      <label>Ссылка на источник</label>
-      <input class="form-control" formControlName="url">
-    </div>
+      <div class="form-group mb-3">
+        <label>Ссылка на источник</label>
+        <input class="form-control" formControlName="url">
+      </div>
 
-    <div class="form-group mb-3">
-      <label>Файл (если имеется, только в формате pdf)</label>
-      <input class="form-control" type="file" (change)="onFileSelected($event)" accept=".pdf">
-    </div>
+      <div class="form-group mb-3">
+        <label>Файл (если имеется, только в формате pdf)</label>
+        <input class="form-control" type="file" (change)="onFileSelected($event)" accept=".pdf">
+      </div>
 
-    <div class="modal-body text-center">
-      <button
-        class="btn btn-primary"
-        style="margin-right: 10px"
-        (click)="clickOnSave()"
-        [disabled]="form.invalid"
-      >
-        Сохранить
-      </button>
-      <button
-        class="btn btn-danger"
-        (click)="clickOnDelete()"
-      >
-        Удалить
-      </button>
-    </div>
+      <div class="modal-body text-right">
+        <button
+          class="btn btn-primary"
+          style="margin-right: 10px"
+          (click)="clickOnSave()"
+          [disabled]="form.invalid"
+        >
+          Сохранить
+        </button>
+        <!--        <button-->
+        <!--          class="btn btn-danger"-->
+        <!--          (click)="clickOnDelete()"-->
+        <!--        >-->
+        <!--          Удалить-->
+        <!--        </button>-->
+        <button type="button" class="btn btn-default" (click)="bsModalRef.hide()">Отменить</button>
+      </div>
 
-  </form>
+    </form>
+  </div>
 </div>
 <div *ngIf="!publication">
   <span>Результатов нет</span>
 </div>
+

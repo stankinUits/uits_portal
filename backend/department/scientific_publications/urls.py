@@ -8,7 +8,7 @@ from .views import (
     DeleteTagView,
     GetAllCardsView,
     GetByNameView,
-    GetAllAuthorsView
+    GetAllAuthorsView, EditCardView
 )
 
 urlpatterns = [
@@ -21,4 +21,5 @@ urlpatterns = [
     path('get_cards/', GetAllCardsView.as_view(), name='get_cards'),
     path('get/<str:name>/', GetByNameView.as_view(), name='get_by_name'),
     path('get_all_authors/', GetAllAuthorsView.as_view(), name='get_all_authors'),
+    path('edit_card/', EditCardView.as_view(), name='edit_card'),
 ]
