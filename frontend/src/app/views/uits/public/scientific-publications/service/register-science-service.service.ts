@@ -22,7 +22,7 @@ export class RegisterScienceService {
   }
 
   saveNewTags(tags: string[]) {
-    return this.http.post(`${AppSettings.BASE_URL}/save_new_tags/`, {//не работает
+    return this.http.post(`${AppSettings.BASE_URL}/save_new_tags/`, {
       tags
     });
   }
@@ -68,21 +68,20 @@ export class RegisterScienceService {
   }
 
   getAllAuthors(publications: ScienceReadyPublication[]): string[] {
-    console.log(publications)
     const authorsSet: Set<string> = new Set();
     publications.forEach(pr => pr.author.forEach(a => authorsSet.add(a)));
     return Array.from(authorsSet);
   }
 
-  getAllYears(profiles: ScienceReadyPublication[]): number[] {
+  getAllYears(publications: ScienceReadyPublication[]): number[] {
     const yearsSet: Set<number> = new Set();
-    profiles.forEach(pr => yearsSet.add(pr.year));
+    publications.forEach(pr => yearsSet.add(pr.year));
     return Array.from(yearsSet);
   }
 
-  getAllSource(profiles: ScienceReadyPublication[]): string[] {
+  getAllSource(publications: ScienceReadyPublication[]): string[] {
     const sourceSet: Set<string> = new Set();
-    profiles.forEach(pr => sourceSet.add(pr.source));
+    publications.forEach(pr => sourceSet.add(pr.source));
     return Array.from(sourceSet);
   }
 

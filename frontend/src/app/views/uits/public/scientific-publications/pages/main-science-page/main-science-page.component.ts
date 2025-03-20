@@ -1,7 +1,7 @@
 import {ChangeDetectorRef, Component, inject, OnInit} from '@angular/core';
 import {RegisterScienceService} from '../../service/register-science-service.service';
 import {ScienceReadyPublication} from '../../interface/profile.interface';
-import {AsyncPipe, JsonPipe, NgClass, NgForOf, NgIf} from '@angular/common';
+import {AsyncPipe, JsonPipe, NgClass, NgForOf, NgIf, NgStyle} from '@angular/common';
 import {RouterModule} from '@angular/router';
 import {AppSettings} from '../../utils/settings';
 import {
@@ -21,35 +21,38 @@ interface adminMenu {
   selector: 'app-main-science-page',
   standalone: true,
   imports: [
-    ProfileCardComponent, NgClass, RouterModule, NgIf, NgForOf, ReactiveFormsModule, FormsModule, AsyncPipe, NgSelectModule, JsonPipe
+    ProfileCardComponent,
+    NgClass, RouterModule,
+    NgIf, NgForOf, ReactiveFormsModule,
+    FormsModule, AsyncPipe, NgSelectModule,
+    JsonPipe, NgStyle
   ],
   templateUrl: './main-science-page.component.html',
   styleUrls: ['./main-science-page.component.css']
 })
 export class MainSciencePageComponent implements OnInit {
+  // Внедрение зависимостей
   scienceService = inject(RegisterScienceService);
   authService: AuthService = inject(AuthService);
   cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
 
-  profilesMap: Map<ScienceReadyPublication, Map<string, string>> = new Map();
-  originalProfilesMap: Map<ScienceReadyPublication, Map<string, string>> = new Map();
+  adminMenu: adminMenu[] = [];
 
-  tagsWithStylesMapForEditingCards: Map<string, string> = new Map();
-  profilesTags: Map<string, string> = new Map<string, string>();
+  publications: Map<ScienceReadyPublication, Map<string, string>> = new Map();
+  copyPublications: Map<ScienceReadyPublication, Map<string, string>> = new Map();
 
+  tagsMap: Map<string, string> = new Map();
   yearsMap: Map<string, string> = new Map();
   sourceMap: Map<string, string> = new Map();
+  authorsMap: Map<string, string> = new Map();
 
   isHiddenTagPage: boolean = false;
   isHiddenScientistPage: boolean = false;
   isHiddenYearPage: boolean = false;
   isHiddenSourcePage: boolean = false;
 
-  authorsMap: Map<string, string> = new Map();
-
   searchString: string = '';
 
-  adminMenu: adminMenu[] = [];
   constructor() {
 
   }
@@ -57,21 +60,21 @@ export class MainSciencePageComponent implements OnInit {
   ngOnInit() {
     this.initAdminMenu();
 
-    this.scienceService.getALLTagsRest().subscribe(v => {
-      // заполняем все для карточек теги
-      this.initTagsWithStylesMapForEditingCards(v);
-      console.log(this.profilesTags);
+    // Инициализация тегов
+    this.scienceService.getALLTagsRest().subscribe(tags => {
+      this.initTagsMap(tags);
 
-      //делаем запрос карточек
-      this.scienceService.getListOfCards().subscribe(value => {
-        value.forEach(v => this.profilesMap.set(v, new Map(this.tagsWithStylesMapForEditingCards)));
-        value.forEach(v => this.originalProfilesMap.set(v, new Map(this.tagsWithStylesMapForEditingCards)));
+      // Получаем все публикации
+      this.scienceService.getListOfCards().subscribe(publications => {
+        publications.forEach(publication => {
+          this.publications.set(publication, new Map(this.tagsMap));
+          this.copyPublications.set(publication, new Map(this.tagsMap));
+        });
 
-        //заполняем кнопки для поиска
+        //заполняем кнопки для фильтров
         this.fillSearchButtons();
         this.filterThrewAllSearch();
         this.cdr.detectChanges();
-        console.log(this.profilesMap);
       });
     });
   }
@@ -97,21 +100,14 @@ export class MainSciencePageComponent implements OnInit {
   }
 
   fillSearchButtons() {
-    this.scienceService.getAllAuthors(Array.from(this.profilesMap.keys()))
-      .forEach(val => this.authorsMap.set(val, AppSettings.DEFAULT_TAG_STYLE));
+    this.scienceService.getAllAuthors(Array.from(this.publications.keys()))
+      .forEach(author => this.authorsMap.set(author, AppSettings.DEFAULT_TAG_STYLE));
 
-    this.scienceService.getAllYears(Array.from(this.profilesMap.keys()))
-      .forEach(val => this.yearsMap.set(val.toString(), AppSettings.DEFAULT_TAG_STYLE));
+    this.scienceService.getAllYears(Array.from(this.publications.keys()))
+      .forEach(year => this.yearsMap.set(year.toString(), AppSettings.DEFAULT_TAG_STYLE));
 
-    this.scienceService.getAllSource(Array.from(this.profilesMap.keys()))
-      .forEach(val => this.sourceMap.set(val, AppSettings.DEFAULT_TAG_STYLE));
-
-    const tagsFromKeys = [];
-
-    Array.from(this.profilesMap.keys()).forEach(val => val.tags.forEach(t => tagsFromKeys.push(t)));
-
-    tagsFromKeys.filter(v => v !== undefined)
-      .forEach(val => this.profilesTags.set(val, AppSettings.DEFAULT_TAG_STYLE));
+    this.scienceService.getAllSource(Array.from(this.publications.keys()))
+      .forEach(source => this.sourceMap.set(source, AppSettings.DEFAULT_TAG_STYLE));
   }
 
   //фильтруем карточки по фильтрам
@@ -121,15 +117,16 @@ export class MainSciencePageComponent implements OnInit {
     const forFilterSource = Array.from(this.sourceMap.keys()).filter(v => this.sourceMap.get(v) === AppSettings.ONCLICK_TAG_STYLE);
     const forFilterYear = Array.from(this.yearsMap.keys()).filter(v => this.yearsMap.get(v) === AppSettings.ONCLICK_TAG_STYLE);
     const forFilterAuthors = Array.from(this.authorsMap.keys()).filter(v => this.authorsMap.get(v) === AppSettings.ONCLICK_TAG_STYLE);
-    const forFilterTag = Array.from(this.profilesTags.keys()).filter(v => this.profilesTags.get(v) === AppSettings.ONCLICK_TAG_STYLE);
+    const forFilterTag = Array.from(this.tagsMap.keys()).filter(v => this.tagsMap.get(v) === AppSettings.ONCLICK_TAG_STYLE);
     let filterNames: string[] = [];
 
+
     if (this.searchString.trim() !== '') {
-      filterNames = Array.from(this.profilesMap.keys()).filter(v => v.name.toLowerCase().includes(this.searchString)).map(v => v.name);
+      filterNames = Array.from(this.publications.keys()).filter(v => v.name.toLowerCase().includes(this.searchString)).map(v => v.name);
     }
 
     const copyMap: Map<any, any> = new Map();
-    Array.from(this.originalProfilesMap.keys())
+    Array.from(this.copyPublications.keys())
       .sort((a, b) => {
         const yearA = Number(a.year);
         const yearB = Number(b.year);
@@ -137,9 +134,9 @@ export class MainSciencePageComponent implements OnInit {
         return yearB - yearA;
       })
       .filter(v => this.containsTsOrEmpty(forFilterSource, forFilterYear, forFilterAuthors, forFilterTag, filterNames, v))
-      .map(v => copyMap.set(v, new Map(this.tagsWithStylesMapForEditingCards)));
+      .map(v => copyMap.set(v, new Map(this.tagsMap)));
 
-    this.profilesMap = copyMap;
+    this.publications = copyMap;
   }
 
   containsTsOrEmpty(forFilterSource: string[],
@@ -153,21 +150,22 @@ export class MainSciencePageComponent implements OnInit {
     return ((forFilterSource.length === 0 || forFilterSource.some(item => item === publication.source))
       && (forFilterYear.length === 0 || forFilterYear.some(item => item === publication.year?.toString()))
       && (forFilterAuthors.length === 0 || publication.author?.some(item => forFilterAuthors.includes(item)))
-      && (forFilterTag.length === 0 || publication.tags?.some(item => forFilterTag.includes(item)))
+      && (forFilterTag.length === 0 || publication.tags?.some(item => forFilterTag.includes(item.name)))
       && (filterNames.length === 0 || filterNames.some(item => item.toLowerCase().includes(publication.name.toLowerCase()))))!;
   }
 
-  initTagsWithStylesMapForEditingCards(v: string[]) {
-    v.forEach(val => this.tagsWithStylesMapForEditingCards.set(val, AppSettings.DEFAULT_TAG_STYLE));
-    this.tagsWithStylesMapForEditingCards.set(AppSettings.EMPTY_TAG_SEARCH_TEXT, AppSettings.DEFAULT_TAG_STYLE);
+  initTagsMap(tags: string[]) {
+    tags.forEach(tag => {
+      this.tagsMap.set(tag, AppSettings.DEFAULT_TAG_STYLE)
+    });
   }
 
   onTagsClick(tag: string) {
-    if (this.profilesTags.get(tag) === AppSettings.ONCLICK_TAG_STYLE) {
-      this.profilesTags.set(tag, AppSettings.DEFAULT_TAG_STYLE);
+    if (this.tagsMap.get(tag) === AppSettings.ONCLICK_TAG_STYLE) {
+      this.tagsMap.set(tag, AppSettings.DEFAULT_TAG_STYLE);
       this.filterThrewAllSearch();
     } else {
-      this.profilesTags.set(tag, AppSettings.ONCLICK_TAG_STYLE);
+      this.tagsMap.set(tag, AppSettings.ONCLICK_TAG_STYLE);
       this.filterThrewAllSearch();
     }
   }
@@ -219,7 +217,7 @@ export class MainSciencePageComponent implements OnInit {
   }
 
   cleanFilter() {
-    this.profilesMap = new Map(this.originalProfilesMap);
+    this.publications = new Map(this.copyPublications);
     this.fillSearchButtons();
     this.filterThrewAllSearch();
   }

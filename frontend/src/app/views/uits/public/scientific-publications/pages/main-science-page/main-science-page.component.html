@@ -1,5 +1,7 @@
 <div class="container">
-  <div class="navbar">
+  <div class="navbar"
+       [ngStyle]="(authService.canEdit() | async) === true ? { 'height': '760px' } : { 'height': '530px' }"
+  >
     <div class="header">
       <i class="la la-cog icon"></i>
       <h1 class="heading">
@@ -54,10 +56,10 @@
           <div class="select-menu" *ngIf="isHiddenTagPage">
             <ul class="select-item">
               <li
-                *ngFor="let tag of profilesTags.keys(); trackBy: trackByFn"
+                *ngFor="let tag of tagsMap.keys(); trackBy: trackByFn"
                 (click)="onTagsClick(tag)"
               >
-                <button [ngClass]="profilesTags.get(tag)">{{ tag.name }}</button>
+                <button [ngClass]="tagsMap.get(tag)">{{ tag }}</button>
               </li>
             </ul>
           </div>
@@ -90,14 +92,14 @@
     </div>
   </div>
   <div class="content">
-    <div *ngIf="profilesMap.size > 0" class="cards">
-      <div *ngFor="let profile of profilesMap.keys(); trackBy: trackByFn">
+    <div *ngIf="publications.size > 0" class="cards">
+      <div *ngFor="let profile of publications.keys(); trackBy: trackByFn">
         <app-profile-card
           [profile]="profile"
-          [tagsMap]="profilesMap.get(profile)!"
+          [tagsMap]="publications.get(profile)!"
         ></app-profile-card>
       </div>
     </div>
-    <div *ngIf="profilesMap.size === 0">Публикаций пока нет</div>
+    <div *ngIf="publications.size === 0">Публикаций пока нет</div>
   </div>
 </div>

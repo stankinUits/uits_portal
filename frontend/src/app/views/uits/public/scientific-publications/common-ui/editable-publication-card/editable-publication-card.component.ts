@@ -126,19 +126,22 @@ export class EditablePublicationCardComponent {
       if (!this.publication.tags) {
         this.publication.tags = [];
       }
-      this.publication.tags?.push(tag);
+      // TODO временный коммит
+      // this.publication.tags?.push(tag);
     } else {
       this.tagsWithStylesMap.set(tag, AppSettings.DEFAULT_TAG_STYLE);
-      this.publication.tags = this.publication.tags?.filter(t => t !== tag);
+      // TODO временный коммит
+      // this.publication.tags = this.publication.tags?.filter(t => t !== tag);
     }
   }
 
   onChooseTag() {
-    this.publication.tags?.forEach((tag) => {
-      if (this.tagsWithStylesMap.has(tag)) {
-        this.tagsWithStylesMap.set(tag, AppSettings.ONCLICK_TAG_STYLE);
-      }
-    });
+    // TODO временный коммит
+    // this.publication.tags?.forEach((tag) => {
+    //   if (this.tagsWithStylesMap.has(tag)) {
+    //     this.tagsWithStylesMap.set(tag, AppSettings.ONCLICK_TAG_STYLE);
+    //   }
+    // });
 
     if (this.tagsWithStylesMap.size === 0) {
       this.scienceService.getALLTagsRest().subscribe(v => v.forEach(val => this.tagsWithStylesMap.set(val, AppSettings.DEFAULT_TAG_STYLE)));
@@ -195,12 +198,13 @@ export class EditablePublicationCardComponent {
       this.publication.isbn = isbn.value;
     }
 
-    if (this.publication.tags && this.publication.tags.length > 0) {
-      this.publication.tags = Array.from(
-        [...this.tagsWithStylesMap.entries()].filter(([_, value]) => value === AppSettings.ONCLICK_TAG_STYLE),
-        ([key, _]) => key
-      );
-    }
+    // TODO временный коммит
+    // if (this.publication.tags && this.publication.tags.length > 0) {
+    //   this.publication.tags = Array.from(
+    //     [...this.tagsWithStylesMap.entries()].filter(([_, value]) => value === AppSettings.ONCLICK_TAG_STYLE),
+    //     ([key, _]) => key
+    //   );
+    // }
 
     let isValid = true;
 
