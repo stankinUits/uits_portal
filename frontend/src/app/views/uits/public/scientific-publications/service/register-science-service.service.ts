@@ -49,8 +49,8 @@ export class RegisterScienceService {
     );
   }
 
-  deleteCard(publication: ScienceReadyPublication) {
-    return this.http.post(`${AppSettings.BASE_URL}/delete_card/`, {publication});
+  deleteCard(id: number) {
+    return this.http.post(`${AppSettings.BASE_URL}/delete_card/`, {id});
   }
 
   deleteTag(tag: string) {

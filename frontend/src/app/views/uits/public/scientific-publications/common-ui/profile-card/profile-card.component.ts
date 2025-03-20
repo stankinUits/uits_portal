@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, inject, Input} from '@angular/core';
+import {ChangeDetectorRef, Component, EventEmitter, inject, Input, Output} from '@angular/core';
 import {ScienceReadyPublication} from '../../interface/profile.interface';
 import {AppSettings} from '../../utils/settings';
 import {EditablePublicationCardComponent} from '../editable-publication-card/editable-publication-card.component';
@@ -36,6 +36,8 @@ export class ProfileCardComponent {
   scienceService: RegisterScienceService = inject(RegisterScienceService);
   @Input() publication!: ScienceReadyPublication;
   @Input() tagsMap!: Map<string, string>;
+  @Output() delete: EventEmitter<number> = new EventEmitter<number>();
+
   isEditing = false;
   authService: AuthService = inject(AuthService);
 
@@ -68,12 +70,8 @@ export class ProfileCardComponent {
     });
   }
 
-  onEditCard() {
-    this.isEditing = true;
-  }
-
   deleteCard() {
-    this.scienceService.deleteCard(this.publication!);
+    this.delete.emit(this.publication.id);
   }
 
   editCard(formData: PublicationResponse) {
@@ -87,7 +85,7 @@ export class ProfileCardComponent {
         this.cdr.detectChanges();
       },
       (err: HttpErrorResponse) => {
-        this.alertService.add('danger', 'Что-то пошло не так')
+        this.alertService.add('Произошла ошибка', 'danger');
         console.error(err);
       }
     );

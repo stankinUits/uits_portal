@@ -1,6 +1,6 @@
 <div *ngIf="authService.canEdit() | async"
      class="btn-add__item font-size-lg mb-3"
-     (click)="edit.emit()"
+     (click)="delete.emit()"
      tooltip="Удалить"
      placement="left"
 >

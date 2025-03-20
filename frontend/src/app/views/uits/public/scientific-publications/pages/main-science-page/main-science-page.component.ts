@@ -10,6 +10,7 @@ import {
 import {AuthService} from "@app/shared/services/auth.service";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {NgSelectModule} from "@ng-select/ng-select";
+import {AlertService} from "@app/shared/services/alert.service";
 
 interface adminMenu {
   title: string;
@@ -57,7 +58,7 @@ export class MainSciencePageComponent implements OnInit {
     sources: false,
   }
 
-  constructor(private elementRef: ElementRef) {
+  constructor(private alertService: AlertService) {
 
   }
 
@@ -72,24 +73,33 @@ export class MainSciencePageComponent implements OnInit {
 
   ngOnInit() {
     this.initAdminMenu();
+    this.initTags();
+  }
 
-    // Инициализация тегов
+  initTags() {
     this.scienceService.getALLTags().subscribe(tags => {
       this.initTagsMap(tags);
-
-      // Получаем все публикации
-      this.scienceService.getListOfCards().subscribe(publications => {
-        publications.forEach(publication => {
-          this.publications.set(publication, new Map(this.tagsMap));
-          this.copyPublications.set(publication, new Map(this.tagsMap));
-        });
-
-        //заполняем кнопки для фильтров
-        this.fillDataForFilters();
-        this.filterThrewAllSearch();
-        this.cdr.detectChanges();
-      });
+      this.initPublications();
     });
+  }
+
+  initPublications() {
+    // Получаем все публикации
+    this.scienceService.getListOfCards().subscribe(publications => {
+      publications.forEach(publication => {
+        this.publications.set(publication, new Map(this.tagsMap));
+        this.copyPublications.set(publication, new Map(this.tagsMap));
+      });
+
+      this.fillFilters();
+      this.cdr.detectChanges();
+    });
+  }
+
+  fillFilters() {
+    //заполняем кнопки для фильтров
+    this.fillDataForFilters();
+    this.filterThrewAllSearch();
   }
 
   initAdminMenu(): void {
@@ -184,6 +194,21 @@ export class MainSciencePageComponent implements OnInit {
     this.filterThrewAllSearch();
   }
 
+  deleteCard(id: number) {
+    this.scienceService.deleteCard(id).subscribe({
+      next: () => {
+        this.alertService.add('Публикация удалена', 'success');
+        this.publications.clear();
+        this.copyPublications.clear();
+        this.initPublications();
+      },
+      error: (err) => {
+        this.alertService.add('Произошла ошибка', 'danger');
+        console.error(err);
+      }
+    });
+  }
+
   onTagsClick(tag: string) {
     this.toggleFilterStyle(this.tagsMap, tag);
   }
@@ -201,7 +226,7 @@ export class MainSciencePageComponent implements OnInit {
   }
 
   toggleFilterVisible(filterName: keyof typeof this.visibilityMap) {
-    for(const key in this.visibilityMap) {
+    for (const key in this.visibilityMap) {
       if (this.visibilityMap.hasOwnProperty(key)) {
         this.visibilityMap[key] = key === filterName ? !this.visibilityMap[key] : false;
       }

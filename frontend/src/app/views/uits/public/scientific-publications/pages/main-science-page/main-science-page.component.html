@@ -97,6 +97,7 @@
         <app-profile-card
           [publication]="publication"
           [tagsMap]="publications.get(publication)!"
+          (delete)="deleteCard($event)"
         ></app-profile-card>
       </div>
     </div>
