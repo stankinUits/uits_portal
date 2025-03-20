@@ -37,7 +37,7 @@ export class EditablePublicationCardComponent implements OnInit {
   allTags: ITag[] = [];
   compareTags = (t1: ITag, t2: ITag) => t1?.id === t2?.id;
 
-  constructor(private modalService: BsModalService,
+  constructor(
               public bsModalRef: BsModalRef,
               private formBuilder: FormBuilder,
               private alertService: AlertService,
@@ -48,13 +48,13 @@ export class EditablePublicationCardComponent implements OnInit {
     this.form = this.formBuilder.group({
       "name": [this.publication.name, Validators.required],
       "year": [this.publication.year, Validators.required],
-      "tags": [this.selectedTags],
+      "tags": [this.selectedTags, Validators.required],
       "author": this.formBuilder.array([]),
       "description": [this.publication.description],
-      "pages": [this.publication.pages],
+      "pages": [this.publication.pages, Validators.required],
       "vol_n": [this.publication.vol_n],
       "isbn": [this.publication.isbn],
-      "source": [this.publication.source],
+      "source": [this.publication.source, Validators.required],
       "url": [this.publication.url],
       "file": [null]
     })
@@ -100,6 +100,11 @@ export class EditablePublicationCardComponent implements OnInit {
     console.log(selectedTags);
     this.selectedTags = selectedTags;
     this.form.get('tags').setValue(selectedTags);
+  }
+
+  isInvalid(controlName: string): boolean {
+    const control = this.form.get(controlName);
+    return !!(control && control.invalid && (control.dirty || control.touched));
   }
 
   onFileSelected(event: Event): void {

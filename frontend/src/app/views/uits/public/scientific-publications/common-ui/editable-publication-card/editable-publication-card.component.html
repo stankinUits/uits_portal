@@ -16,19 +16,35 @@
 
       <div class="form-group mb-3">
         <label class="form-label">Название публикации </label>
-        <input class="form-control" formControlName="name">
+        <input class="form-control" formControlName="name"
+               [ngClass]="{ 'is-invalid': isInvalid('name') }">
+        <div class="invalid-feedback" *ngIf="isInvalid('name')">
+          Заполните имя
+        </div>
       </div>
 
       <div class="form-group mb-3">
         <label class="form-label">Год публикации </label>
-        <input class="form-control" formControlName="year">
+        <input class="form-control" formControlName="year"
+               [ngClass]="{ 'is-invalid': isInvalid('year') }">
+        <div class="invalid-feedback" *ngIf="isInvalid('year')">
+          Заполните год
+        </div>
       </div>
 
       <div class="form-group mb-3">
         <div formArrayName="author">
           <div *ngFor="let authorCtrl of authors.controls; let i = index"
                class="d-flex mb-2 gap-2 align-items-center">
-            <input class="form-control" [formControlName]="i" placeholder="ФИО автора">
+            <input class="form-control"
+                   [formControlName]="i"
+                   placeholder="ФИО автора"
+                   [ngClass]="{ 'is-invalid': authorCtrl.invalid && (authorCtrl.dirty || authorCtrl.touched) }"
+            >
+            <br>
+            <div class="invalid-feedback" *ngIf="authorCtrl.invalid && (authorCtrl.dirty || authorCtrl.touched)">
+              Укажите автора
+            </div>
             <button
               type="button"
               class="btn btn-danger btn-sm"
@@ -43,7 +59,6 @@
             Добавить автора
           </button>
         </div>
-        <!--        <input class="form-control" formControlName="author">-->
       </div>
 
       <div class="form-group mb-3">
@@ -61,38 +76,50 @@
           bindLabel="name"
           [compareWith]="compareTags"
           (change)="onTagsChange($event)"
+          [ngClass]="{ 'is-invalid': isInvalid('tags') }"
         >
           <ng-option *ngFor="let tag of allTags" [value]="tag">{{ tag.name }}</ng-option>
         </ng-select>
+        <div class="invalid-feedback d-block" *ngIf="isInvalid('tags')">
+          Выберите хотя бы один тег
+        </div>
       </div>
 
       <div class="form-group mb-3">
         <label>Страницы</label>
-        <input class="form-control" formControlName="pages">
+        <input class="form-control" formControlName="pages"
+               [ngClass]="{ 'is-invalid': isInvalid('pages') }">
+        <div class="invalid-feedback" *ngIf="isInvalid('pages')">
+          Заполните страницы
+        </div>
       </div>
 
       <div class="form-group mb-3">
-        <label>Номер тома</label>
+        <label>Номер тома (при наличии)</label>
         <input class="form-control" formControlName="vol_n">
       </div>
 
       <div class="form-group mb-3">
-        <label>Номер isbn\issn</label>
+        <label>Номер ISBN/ISSN (при наличии)</label>
         <input class="form-control" formControlName="isbn">
       </div>
 
       <div class="form-group mb-3">
         <label>Название источника</label>
-        <input class="form-control" formControlName="source">
+        <input class="form-control" formControlName="source"
+               [ngClass]="{ 'is-invalid': isInvalid('source') }">
+        <div class="invalid-feedback" *ngIf="isInvalid('source')">
+          Укажите источник
+        </div>
       </div>
 
       <div class="form-group mb-3">
-        <label>Ссылка на источник</label>
+        <label>Ссылка на источник (при наличии)</label>
         <input class="form-control" formControlName="url">
       </div>
 
       <div class="form-group mb-3">
-        <label>Файл (если имеется, только в формате pdf)</label>
+        <label>Файл (при наличии, только в формате .pdf)</label>
         <input class="form-control" type="file" (change)="onFileSelected($event)" accept=".pdf">
       </div>
 
