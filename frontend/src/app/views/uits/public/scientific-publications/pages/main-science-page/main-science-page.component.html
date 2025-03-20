@@ -41,8 +41,8 @@
       <p class="sub-heading">Фильтровать публикации: </p>
       <div class="buttons">
         <div class="button-select-wrapper">
-          <button class="button" role="button" (click)="onChooseForScientistsClick()">По автору</button>
-          <div class="select-menu" *ngIf="isHiddenScientistPage">
+          <button class="button" role="button" (click)="toggleFilterVisible('authors')">По автору</button>
+          <div class="select-menu" *ngIf="visibilityMap.authors">
             <ul class="select-item">
               <li
                 *ngFor="let author of authorsMap.keys(); trackBy: trackByFn"
@@ -52,8 +52,8 @@
               </li>
             </ul>
           </div>
-          <button class="button" role="button" (click)="onChooseForTagsClick()">По тегу</button>
-          <div class="select-menu" *ngIf="isHiddenTagPage">
+          <button class="button" role="button" (click)="toggleFilterVisible('tags')">По тегу</button>
+          <div class="select-menu" *ngIf="visibilityMap.tags">
             <ul class="select-item">
               <li
                 *ngFor="let tag of tagsMap.keys(); trackBy: trackByFn"
@@ -63,8 +63,8 @@
               </li>
             </ul>
           </div>
-          <button class="button" role="button" (click)="onChooseForYearClick()">По году</button>
-          <div class="select-menu" *ngIf="isHiddenYearPage">
+          <button class="button" role="button" (click)="toggleFilterVisible('years')">По году</button>
+          <div class="select-menu" *ngIf="visibilityMap.years">
             <ul class="select-item">
               <li
                 *ngFor="let year of yearsMap.keys(); trackBy: trackByFn"
@@ -74,8 +74,8 @@
               </li>
             </ul>
           </div>
-          <button class="button" role="button" (click)="onChooseForSourceClick()">По источнику</button>
-          <div class="select-menu" *ngIf="isHiddenSourcePage">
+          <button class="button" role="button" (click)="toggleFilterVisible('sources')">По источнику</button>
+          <div class="select-menu" *ngIf="visibilityMap.sources">
             <ul class="select-item">
               <li
                 *ngFor="let source of sourceMap.keys(); trackBy: trackByFn"

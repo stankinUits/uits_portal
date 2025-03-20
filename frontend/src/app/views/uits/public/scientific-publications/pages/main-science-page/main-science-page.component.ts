@@ -46,12 +46,14 @@ export class MainSciencePageComponent implements OnInit {
   sourceMap: Map<string, string> = new Map();
   authorsMap: Map<string, string> = new Map();
 
-  isHiddenTagPage: boolean = false;
-  isHiddenScientistPage: boolean = false;
-  isHiddenYearPage: boolean = false;
-  isHiddenSourcePage: boolean = false;
-
   searchString: string = '';
+
+  visibilityMap = {
+    authors: false,
+    tags: false,
+    years: false,
+    sources: false,
+  }
 
   constructor() {
 
@@ -72,7 +74,7 @@ export class MainSciencePageComponent implements OnInit {
         });
 
         //заполняем кнопки для фильтров
-        this.fillSearchButtons();
+        this.fillDataForFilters();
         this.filterThrewAllSearch();
         this.cdr.detectChanges();
       });
@@ -99,7 +101,7 @@ export class MainSciencePageComponent implements OnInit {
     ];
   }
 
-  fillSearchButtons() {
+  fillDataForFilters() {
     this.scienceService.getAllAuthors(Array.from(this.publications.keys()))
       .forEach(author => this.authorsMap.set(author, AppSettings.DEFAULT_TAG_STYLE));
 
@@ -122,7 +124,8 @@ export class MainSciencePageComponent implements OnInit {
 
 
     if (this.searchString.trim() !== '') {
-      filterNames = Array.from(this.publications.keys()).filter(v => v.name.toLowerCase().includes(this.searchString)).map(v => v.name);
+      filterNames = Array.from(this.publications.keys()).filter(v =>
+        v.name.toLowerCase().includes(this.searchString)).map(v => v.name);
     }
 
     const copyMap: Map<any, any> = new Map();
@@ -160,73 +163,43 @@ export class MainSciencePageComponent implements OnInit {
     });
   }
 
+  private toggleFilterStyle(map: Map<string, string>, key: string) {
+    const currentStyle = map.get(key);
+    const newStyle = currentStyle === AppSettings.ONCLICK_TAG_STYLE ?
+      AppSettings.DEFAULT_TAG_STYLE :
+      AppSettings.ONCLICK_TAG_STYLE;
+
+    map.set(key, newStyle);
+    this.filterThrewAllSearch();
+  }
+
   onTagsClick(tag: string) {
-    if (this.tagsMap.get(tag) === AppSettings.ONCLICK_TAG_STYLE) {
-      this.tagsMap.set(tag, AppSettings.DEFAULT_TAG_STYLE);
-      this.filterThrewAllSearch();
-    } else {
-      this.tagsMap.set(tag, AppSettings.ONCLICK_TAG_STYLE);
-      this.filterThrewAllSearch();
-    }
+    this.toggleFilterStyle(this.tagsMap, tag);
   }
 
   onSourceClick(source: string) {
-    if (this.sourceMap.get(source) === AppSettings.ONCLICK_TAG_STYLE) {
-      this.sourceMap.set(source, AppSettings.DEFAULT_TAG_STYLE);
-      this.filterThrewAllSearch();
-    } else {
-      this.sourceMap.set(source, AppSettings.ONCLICK_TAG_STYLE);
-      this.filterThrewAllSearch();
-    }
+    this.toggleFilterStyle(this.sourceMap, source);
   }
 
   onYearClick(year: string) {
-    if (this.yearsMap.get(year)! === AppSettings.ONCLICK_TAG_STYLE) {
-      this.yearsMap.set(year, AppSettings.DEFAULT_TAG_STYLE);
-      this.filterThrewAllSearch();
-    } else {
-      this.yearsMap.set(year, AppSettings.ONCLICK_TAG_STYLE);
-      this.filterThrewAllSearch();
-    }
+    this.toggleFilterStyle(this.yearsMap, year);
   }
 
   onAuthorClick(name: string) {
-    if (this.authorsMap.get(name) === AppSettings.ONCLICK_TAG_STYLE) {
-      this.authorsMap.set(name, AppSettings.DEFAULT_TAG_STYLE);
-      this.filterThrewAllSearch();
-    } else {
-      this.authorsMap.set(name, AppSettings.ONCLICK_TAG_STYLE);
-      this.filterThrewAllSearch();
-    }
+    this.toggleFilterStyle(this.authorsMap, name);
   }
 
-  onChooseForScientistsClick() {
-    this.isHiddenScientistPage = !this.isHiddenScientistPage;
-  }
-
-  onChooseForTagsClick() {
-    this.isHiddenTagPage = !this.isHiddenTagPage;
-  }
-
-  onChooseForYearClick() {
-    this.isHiddenYearPage = !this.isHiddenYearPage;
-  }
-
-  onChooseForSourceClick() {
-    this.isHiddenSourcePage = !this.isHiddenSourcePage;
+  toggleFilterVisible(filterName: keyof typeof this.visibilityMap) {
+    this.visibilityMap[filterName] = !this.visibilityMap[filterName];
   }
 
   cleanFilter() {
     this.publications = new Map(this.copyPublications);
-    this.fillSearchButtons();
+    this.fillDataForFilters();
     this.filterThrewAllSearch();
   }
 
   searchScienceCards() {
-    if (this.searchString.trim() !== '') {
-      this.filterThrewAllSearch();
-    } else {
-      this.filterThrewAllSearch();
-    }
+    this.filterThrewAllSearch();
   }
 }
