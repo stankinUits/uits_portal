@@ -20,17 +20,17 @@ const routes: Routes = [
       {
         path: 'personal',
         component: PersonalComponent,
+        canActivate: [AuthGuard],
         data: {
           hidePageHeader: true,
-          canActivate: [AuthGuard],
         },
       },
       {
         path: 'calendar',
         component: EventsComponent,
+        canActivate: [AuthGuard],
         data: {
           hidePageHeader: true,
-          canActivate: [AuthGuard],
         },
       },
     ]

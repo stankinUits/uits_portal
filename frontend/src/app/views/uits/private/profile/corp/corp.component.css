@@ -52,7 +52,7 @@
 .corporate-menu ul {
   list-style-type: none;
   padding: 0;
-  margin: 0;
+  margin: 0 0 35px 0;
 }
 
 .corporate-menu ul li {
@@ -126,30 +126,4 @@
   padding: 20px;
   overflow-y: auto;
   transition: margin-left 0.3s ease;
-}
-
-.go-back-btn {
-  margin-top: 35px;
-  background-color: white;
-  border: none;
-  border-radius: 5px;
-  padding: 10px 12px;
-  color: #007bff;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  text-decoration: none;
-  font-weight: 500;
-
-  &:hover {
-    color: #0056b3;
-  }
-
-  .go-back-btn__icon {
-    margin-right: 8px;
-  }
-
-  .go-back-btn__text {
-    text-align: left;
-  }
 }

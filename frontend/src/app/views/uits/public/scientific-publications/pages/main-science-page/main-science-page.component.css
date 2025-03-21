@@ -190,7 +190,7 @@
 }
 
 .activeFilter::after {
-  content: '✓'; /* Добавляем галочку */
+  content: '✓';
   position: absolute;
   right: 10px;
   font-size: 14px;

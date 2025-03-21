@@ -1,30 +1,52 @@
-<div class="page-style">
-  <div class="btn_align">
-    <button routerLink="/page/scientific-activity-publications" type="button" class="button">Вернуться на страницу просмотра</button>
-  </div>
-  <div class="tag-container">
-    <div class="input-group mb-3">
-      <div class="input_style" >
-        <input id="onInputNewTag" type="text" class="input_style" (keyup)="enableSaveButton()" [(ngModel)]="tagStringToSave" placeholder="Добавить новый  тег">
-        <button *ngIf="enableButton" role="button" class="btn btn-primary mt-1" [disabled]="!tagStringToSave" (click)="addTag()">Сохранить тег</button>
-      </div>
-      <div class="input_style">
+<h1>Страница управления тегами</h1>
+<div class="container">
+  <div class="navbar">
+    <button class="go-back-btn" routerLink="/scientific-activities/publications/main-science-page">
+      <i class="feather icon-arrow-left go-back-btn__icon"></i>
+      <span class="go-back-btn__text">Вернуться на страницу просмотра</span>
+    </button>
+    <div class="inputs-wrapper">
+      <div>
         <input
-          id="search-tag_input"
           (keyup)="searchTags()"
-          class="input_style"
+          style="width: 208px"
+          class="form-control input-style mx-4 mb-3"
           placeholder="Искать тег"
           [(ngModel)]="searchTerm"
           type="text"
-        />
+        >
+      </div>
+      <div class="save-wrapper">
+        <input
+               type="text"
+               class="form-control input-style mx-4"
+               [(ngModel)]="tagStringToSave"
+               placeholder="Добавить новый тег"
+        >
+        <button
+          role="button"
+          class="btn btn-primary btn-sm"
+          style="height: 36px"
+          [disabled]="!tagStringToSave"
+          (click)="addTag()">
+          <i class="la la-save"></i>
+        </button>
       </div>
     </div>
-
-    <div *ngFor="let tag of filteredTags; let i = index" class="tags">
-      <span>{{ tag }}</span>
-      <button role="button" class="btn btn-sm btn-danger ml-2" (click)="deleteTag(i)">Удалить тег</button>
+  </div>
+  <div class="tags-wrapper" *ngIf="filteredTags.length > 0">
+    <div *ngFor="let tag of filteredTags; let i = index" class="tag">
+      <span class="tag-name">{{ tag.name }}</span>
+      <button
+        role="button"
+        class="btn btn-danger btn-sm"
+        (click)="deleteTag(tag.name)"
+      >
+        <i class="la la-trash"></i>
+      </button>
     </div>
   </div>
+  <div *ngIf="filteredTags.length === 0">Теги не найдены</div>
 </div>
 
 

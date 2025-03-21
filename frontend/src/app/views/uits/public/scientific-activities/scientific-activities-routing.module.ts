@@ -24,6 +24,7 @@ import {
 } from '@app/views/uits/public/scientific-activities/conference-announcements/conference-announcement-detail/conference-announcement-detail.component';
 import {ResearchComponent} from '@app/views/uits/public/scientific-activities/research/research.component';
 import {ForumComponent} from '@app/views/uits/public/scientific-activities/forum/forum.component';
+import {AuthGuard} from "@app/shared/guards/auth.guard";
 
 const routes: Routes = [
   {path: 'achievements', component: AchievementListComponent},
@@ -34,9 +35,9 @@ const routes: Routes = [
   {path: 'research', component: ResearchComponent},
   {path: 'forum', component: ForumComponent},
   {path: 'publications/main-science-page', component: MainSciencePageComponent},
-  {path: 'publications/create_new_author', component: RegisterSciencePublicationComponent},
-  {path: 'publications/edit_author', component: EditAuthorPublicationPageComponent},
-  {path: 'publications/manage_tags', component: ManageTagsPageComponent}
+  {path: 'publications/create_new_author', component: RegisterSciencePublicationComponent, canActivate: [AuthGuard]},
+  {path: 'publications/edit_author', component: EditAuthorPublicationPageComponent, canActivate: [AuthGuard]},
+  {path: 'publications/manage_tags', component: ManageTagsPageComponent, canActivate: [AuthGuard]}
 ];
 
 @NgModule({

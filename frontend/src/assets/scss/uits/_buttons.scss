@@ -34,3 +34,28 @@ $add-actions-right: 3rem;
 .btn-add__item:hover {
   box-shadow: 0 1px 8px rgba(121, 149, 167, 0.8);
 }
+
+.go-back-btn {
+  background-color: transparent;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 12px;
+  color: #007bff;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  font-weight: 500;
+
+  &:hover {
+    color: #0056b3;
+  }
+
+  .go-back-btn__icon {
+    margin-right: 8px;
+  }
+
+  .go-back-btn__text {
+    text-align: left;
+  }
+}

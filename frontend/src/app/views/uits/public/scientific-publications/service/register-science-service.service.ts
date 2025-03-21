@@ -38,17 +38,6 @@ export class RegisterScienceService {
     return this.http.post(`${AppSettings.BASE_URL}/edit_card/`, {...publication});
   }
 
-  onSaveCard(publication: ScienceReadyPublication) {
-    this.saveCard(publication).subscribe(
-      (response: ResponseOnSave) => {
-        publication.id = response.id;
-      },
-      (error) => {
-        console.error('Error saving card:', error);
-      }
-    );
-  }
-
   deleteCard(id: number) {
     return this.http.post(`${AppSettings.BASE_URL}/delete_card/`, {id});
   }
