@@ -2,7 +2,7 @@ export interface PublicationResponse {
   id: number,
   name: string,
   year: number,
-  author: string,
+  author: string[],
   description: string,
   tags: string[],
   pages: number,
