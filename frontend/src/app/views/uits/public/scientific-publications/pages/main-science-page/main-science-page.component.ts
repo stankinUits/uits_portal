@@ -8,9 +8,17 @@ import {
   ProfileCardComponent
 } from '@app/views/uits/public/scientific-publications/common-ui/profile-card/profile-card.component';
 import {AuthService} from "@app/shared/services/auth.service";
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {NgSelectModule} from "@ng-select/ng-select";
 import {AlertService} from "@app/shared/services/alert.service";
+import {
+  EditablePublicationCardComponent
+} from "@app/views/uits/public/scientific-publications/common-ui/editable-publication-card/editable-publication-card.component";
+import {
+  PublicationResponse
+} from "@app/views/uits/public/scientific-publications/interface/publication-response.interface";
+import {BsModalRef, BsModalService} from "ngx-bootstrap/modal";
+import {modeType} from "@app/views/uits/public/scientific-publications/interface/mode.type";
 
 interface adminMenu {
   title: string;
@@ -65,7 +73,9 @@ export class MainSciencePageComponent implements OnInit {
     sources: false,
   }
 
-  constructor(private alertService: AlertService) {
+  constructor(private alertService: AlertService,
+              public bsModalRef: BsModalRef,
+              private modalService: BsModalService) {
 
   }
 
@@ -113,11 +123,6 @@ export class MainSciencePageComponent implements OnInit {
       {
         title: 'Создать преподавателя, поиск по google scholar',
         route: '/scientific-activities/publications/create_new_author',
-        icon: 'feather icon-user'
-      },
-      {
-        title: 'Редактировать публикации преподавателя',
-        route: '/scientific-activities/publications/edit_author',
         icon: 'feather icon-user'
       },
       {
@@ -277,5 +282,45 @@ export class MainSciencePageComponent implements OnInit {
       years: false,
       sources: false
     };
+  }
+
+  openEditModal() {
+    const emptyPublication: ScienceReadyPublication = {
+      name: "",
+      year: null,
+      tags: [],
+      author: [],
+      description: "",
+      pages: "",
+      vol_n: "",
+      isbn: "",
+      source: "",
+      url: "",
+      file: null
+    };
+
+    const initialState = {
+      publication: emptyPublication,
+      tagsWithStylesMap: this.tagsMap,
+      mode: 'add' as modeType
+    };
+    this.bsModalRef = this.modalService.show(EditablePublicationCardComponent, {
+      initialState
+    });
+    this.bsModalRef.content.edit.subscribe({
+      next: (formData: PublicationResponse) => {
+        this.alertService.add('Публикация успешно добавлена', 'success');
+        this.bsModalRef.hide();
+        this.scienceService.saveCard(formData).subscribe({
+            next: () => {
+              this.initPublications();
+            }
+          }
+        );
+      },
+      error: (err) => {
+        this.alertService.add('Что-то пошло не так', 'danger');
+      }
+    });
   }
 }

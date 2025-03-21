@@ -1,5 +1,7 @@
 <div class="modal-header">
-  <h4 class="modal-title pull-left">Редактировать публикацию</h4>
+  <h4 class="modal-title pull-left" *ngIf="mode === 'edit'">Редактировать публикацию</h4>
+    <h4 class="modal-title pull-left" *ngIf="mode === 'add'">Добавить публикацию</h4>
+
   <button
     type="button"
     class="close pull-right"

@@ -33,7 +33,7 @@ export class EditAuthorPublicationPageComponent implements OnInit {
   profileEmptyCardsMap: Map<ScienceReadyPublication, Map<string, string>> = new Map();
 
   constructor(private router: Router, private authService: AuthService) {
-    this.scienceService.getAllAuthorsByRest().subscribe(a => a.forEach(author => this.authors.set(author.name, AppSettings.DEFAULT_TAG_STYLE)));
+    this.scienceService.getAllAuthorsByRest().subscribe(a => a.forEach(author => this.authors.set(author, AppSettings.DEFAULT_TAG_STYLE)));
 
     this.scienceService.getALLTagsRest().subscribe(v => v.forEach(val => this.tagsWithStylesMap.set(val, AppSettings.DEFAULT_TAG_STYLE)));
     this.tagsWithStylesMap.set(AppSettings.EMPTY_TAG_SEARCH_TEXT, AppSettings.DEFAULT_TAG_STYLE);

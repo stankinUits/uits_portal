@@ -195,3 +195,12 @@
   right: 10px;
   font-size: 14px;
 }
+
+.create-button {
+  outline: none;
+  border: none;
+  color: #007bff;
+  font-weight: bold;
+  font-size: 16px;
+  background-color: transparent;
+}

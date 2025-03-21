@@ -9,6 +9,7 @@ import {tr} from "date-fns/locale";
 import {BsModalRef, BsModalService} from "ngx-bootstrap/modal";
 import {NgSelectModule} from "@ng-select/ng-select";
 import {AlertService} from "@app/shared/services/alert.service";
+import {modeType} from "@app/views/uits/public/scientific-publications/interface/mode.type";
 
 @Component({
   selector: 'app-editable-publication-card',
@@ -29,6 +30,8 @@ export class EditablePublicationCardComponent implements OnInit {
 
   @Input() publication!: ScienceReadyPublication;
   @Input() tagsWithStylesMap!: Map<string, string>;
+  @Input() mode: modeType = 'edit';
+
   @Output() delete = new EventEmitter<any>();
   @Output() edit = new EventEmitter<any>();
 
@@ -38,13 +41,19 @@ export class EditablePublicationCardComponent implements OnInit {
   compareTags = (t1: ITag, t2: ITag) => t1?.id === t2?.id;
 
   constructor(
-              public bsModalRef: BsModalRef,
-              private formBuilder: FormBuilder,
-              private alertService: AlertService,
-              private cdr: ChangeDetectorRef) {
+    public bsModalRef: BsModalRef,
+    private formBuilder: FormBuilder,
+    private alertService: AlertService,
+    private cdr: ChangeDetectorRef) {
   }
 
   ngOnInit() {
+    this.initForm();
+    this.initTags();
+    this.initAuthors();
+  }
+
+  initForm() {
     this.form = this.formBuilder.group({
       "name": [this.publication.name, Validators.required],
       "year": [this.publication.year, Validators.required],
@@ -58,9 +67,6 @@ export class EditablePublicationCardComponent implements OnInit {
       "url": [this.publication.url],
       "file": [null]
     })
-
-    this.initTags();
-    this.initAuthors();
   }
 
   initTags() {
@@ -76,11 +82,16 @@ export class EditablePublicationCardComponent implements OnInit {
   }
 
   initAuthors() {
-    if (this.publication.author.length) {
+    if (this.mode === 'edit') {
+      if (this.publication.author.length) {
+        const authorsArray = this.form.get('author') as FormArray;
+        this.publication.author.forEach(author => {
+          authorsArray.push(this.formBuilder.control(author, Validators.required));
+        })
+      }
+    } else {
       const authorsArray = this.form.get('author') as FormArray;
-      this.publication.author.forEach(author => {
-        authorsArray.push(this.formBuilder.control(author, Validators.required));
-      })
+      authorsArray.push(this.formBuilder.control('', Validators.required));
     }
   }
 

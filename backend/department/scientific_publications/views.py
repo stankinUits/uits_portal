@@ -50,6 +50,7 @@ class GetAllTagsView(View):
 class SaveCardView(View):
     def post(self, request):
         data = json.loads(request.body)
+
         publication = ScientificPublication.objects.create(
             name=data['name'],
             author=data['author'],
@@ -57,12 +58,18 @@ class SaveCardView(View):
             url=data['url'],
             file=data['file'],
             year=data['year'],
-            source=data['source']
+            source=data['source'],
+            pages=data.get('pages', ''),
+            vol_n=data.get('vol_n', ''),
+            isbn=data.get('isbn', '')
         )
+
         for tag_name in data['tags']:
             tag, created = Tag.objects.get_or_create(name=tag_name)
             publication.tags.add(tag)
+
         return JsonResponse({'id': publication.id})
+
 
 @method_decorator(csrf_exempt, name='dispatch')
 class EditCardView(View):

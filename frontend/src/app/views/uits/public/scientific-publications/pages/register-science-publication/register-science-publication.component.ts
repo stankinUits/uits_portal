@@ -34,9 +34,9 @@ export class RegisterSciencePublicationComponent implements OnInit {
   profileCardsReadyMap: Map<ScienceReadyPublication, Map<string, string>> = new Map();
 
   constructor(private router: Router, private authService: AuthService,) {
-    this.scienceService.getAllAuthorsByRest().subscribe(value => {
-      value.forEach(val => this.authors.set(val.name, AppSettings.DEFAULT_TAG_STYLE));
-    });
+    // this.scienceService.getAllAuthorsByRest().subscribe(value => {
+    //   value.forEach(val => this.authors.set(val.name, AppSettings.DEFAULT_TAG_STYLE));
+    // });
   }
 
   ngOnInit(): void {

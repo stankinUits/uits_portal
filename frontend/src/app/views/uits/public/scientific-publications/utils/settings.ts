@@ -1,5 +1,5 @@
 export class AppSettings {
-  public static BASE_URL='/api/department/scientific_publications';
+  public static BASE_URL = '/api/department/scientific_publications';
   public static DEFAULT_TAG_STYLE = 'tags_style';
   public static ONCLICK_TAG_STYLE = 'tags_style_onClick';
   public static EMPTY_TAG_SEARCH_TEXT = 'Без выбора';
@@ -13,5 +13,4 @@ export class AppSettings {
     }
     return result;
   }
-
 }

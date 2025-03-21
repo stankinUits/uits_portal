@@ -4,8 +4,6 @@ import {map, Observable} from 'rxjs';
 import {SciencePublicationResponseInterface} from '../interface/science-publication-response.interface';
 import {AppSettings} from '../utils/settings';
 import {ITag, ScienceReadyPublication} from '../interface/profile.interface';
-import {AuthorInfo} from '../interface/autrhor_info.interface';
-import {ResponseOnSave} from '../interface/response_on_save_object.interface';
 import {
   PublicationResponse
 } from "@app/views/uits/public/scientific-publications/interface/publication-response.interface";
@@ -30,7 +28,7 @@ export class RegisterScienceService {
     });
   }
 
-  saveCard(publication: ScienceReadyPublication) {
+  saveCard(publication: PublicationResponse) {
     return this.http.post(`${AppSettings.BASE_URL}/save_card/`, {...publication});
   }
 
@@ -85,8 +83,8 @@ export class RegisterScienceService {
     return Array.from(sourceSet);
   }
 
-  getAllAuthorsByRest(): Observable<AuthorInfo[]> {
-    return this.http.get<AuthorInfo[]>(`${AppSettings.BASE_URL}/get_all_authors`);
+  getAllAuthorsByRest(): Observable<string[]> {
+    return this.http.get<string[]>(`${AppSettings.BASE_URL}/get_all_authors`);
   }
 
   getAllCardsByAuthorName(name: string): Observable<ScienceReadyPublication[]> {
