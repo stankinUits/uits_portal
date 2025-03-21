@@ -13,19 +13,19 @@
     <span>{{ publication.description }}</span>
   </div>
   <div *ngIf="publication.pages" class="publication-card__author">
-    <span>Страницы: {{ publication.pages }}</span>
+    <span><b>Страницы:</b> {{ publication.pages }}</span>
   </div>
   <div *ngIf="publication.vol_n" class="publication-card__author">
-    <span>Номер тома: {{ publication.vol_n }}</span>
+    <span><b>Номер тома:</b> {{ publication.vol_n }}</span>
   </div>
   <div *ngIf="publication.isbn" class="publication-card__author">
-    <span>Isbn: {{ publication.isbn }}</span>
+    <span><b>ISBN/ISSN:</b> {{ publication.isbn }}</span>
   </div>
   <div *ngIf="publication.source" class="publication-card__author">
-    <span>Источник: {{ publication.source }}</span>
+    <span><b>Источник:</b> {{ publication.source }}</span>
   </div>
   <div *ngIf="publication.year" class="publication-card__author">
-    <span>Год издания: {{ publication.year }}</span>
+    <span><b>Год издания:</b> {{ publication.year }}</span>
   </div>
 
   <div class="circle-action-btns">

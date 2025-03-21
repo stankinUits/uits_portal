@@ -88,7 +88,7 @@
 
 .button {
   margin: 10px auto 0;
-  border: none;
+  border: 1px solid transparent;
   outline: none;
   padding: 9px 10px;
   color: white;
@@ -96,8 +96,14 @@
   border-radius: 5px;
   width: 210px;
   font-size: 14px;
-  /*margin-top: 10px;*/
   display: block;
+  transition: background-color 0.3s ease, color 0.3s ease, border 0.3s ease;
+}
+
+.button:hover {
+  border: 1px solid #007bff;
+  background-color: #fff;;
+  color: #007bff;
 }
 
 .button-clear {
@@ -174,4 +180,18 @@
 
 .tags_style_onClick {
   color: #007bff;
+}
+
+.activeFilter {
+  position: relative;
+  background-color: white;
+  border: 1px solid #007bff;
+  color: #007bff;
+}
+
+.activeFilter::after {
+  content: '✓'; /* Добавляем галочку */
+  position: absolute;
+  right: 10px;
+  font-size: 14px;
 }

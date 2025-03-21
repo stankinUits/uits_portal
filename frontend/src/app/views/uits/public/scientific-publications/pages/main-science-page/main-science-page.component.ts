@@ -58,6 +58,13 @@ export class MainSciencePageComponent implements OnInit {
     sources: false,
   }
 
+  activeFilter = {
+    authors: false,
+    tags: false,
+    years: false,
+    sources: false,
+  }
+
   constructor(private alertService: AlertService) {
 
   }
@@ -66,7 +73,6 @@ export class MainSciencePageComponent implements OnInit {
   handleClickOutside(event: MouseEvent) {
     const target = event.target as HTMLElement;
     if (this.filterContainer && !this.filterContainer.nativeElement.contains(target)) {
-      console.log('436')
       this.closeAllFilters();
     }
   }
@@ -131,6 +137,10 @@ export class MainSciencePageComponent implements OnInit {
 
     this.scienceService.getAllSource(Array.from(this.publications.keys()))
       .forEach(source => this.sourceMap.set(source, AppSettings.DEFAULT_TAG_STYLE));
+
+    for (const tag of this.tagsMap.keys()) {
+      this.tagsMap.set(tag, AppSettings.DEFAULT_TAG_STYLE);
+    }
   }
 
   //фильтруем карточки по фильтрам
@@ -138,9 +148,13 @@ export class MainSciencePageComponent implements OnInit {
 
   filterThrewAllSearch() {
     const forFilterSource = Array.from(this.sourceMap.keys()).filter(v => this.sourceMap.get(v) === AppSettings.ONCLICK_TAG_STYLE);
+    console.log(forFilterSource);
     const forFilterYear = Array.from(this.yearsMap.keys()).filter(v => this.yearsMap.get(v) === AppSettings.ONCLICK_TAG_STYLE);
+    console.log(forFilterYear);
     const forFilterAuthors = Array.from(this.authorsMap.keys()).filter(v => this.authorsMap.get(v) === AppSettings.ONCLICK_TAG_STYLE);
+    console.log(forFilterAuthors);
     const forFilterTag = Array.from(this.tagsMap.keys()).filter(v => this.tagsMap.get(v) === AppSettings.ONCLICK_TAG_STYLE);
+    console.log(forFilterTag);
     let filterNames: string[] = [];
 
 
@@ -184,13 +198,21 @@ export class MainSciencePageComponent implements OnInit {
     });
   }
 
-  private toggleFilterStyle(map: Map<string, string>, key: string) {
+  private toggleFilterStyle(map: Map<string, string>, key: string, filterName: string) {
     const currentStyle = map.get(key);
     const newStyle = currentStyle === AppSettings.ONCLICK_TAG_STYLE ?
       AppSettings.DEFAULT_TAG_STYLE :
       AppSettings.ONCLICK_TAG_STYLE;
 
     map.set(key, newStyle);
+    for (const keyMap of map.keys()) {
+      if (map.get(keyMap) === AppSettings.ONCLICK_TAG_STYLE) {
+        this.activeFilter[filterName] = true;
+        break;
+      } else {
+        this.activeFilter[filterName] = false;
+      }
+    }
     this.filterThrewAllSearch();
   }
 
@@ -209,20 +231,20 @@ export class MainSciencePageComponent implements OnInit {
     });
   }
 
-  onTagsClick(tag: string) {
-    this.toggleFilterStyle(this.tagsMap, tag);
+  onTagsClick(tag: string, filterName: string) {
+    this.toggleFilterStyle(this.tagsMap, tag, filterName);
   }
 
-  onSourceClick(source: string) {
-    this.toggleFilterStyle(this.sourceMap, source);
+  onSourceClick(source: string, filterName: string) {
+    this.toggleFilterStyle(this.sourceMap, source, filterName);
   }
 
-  onYearClick(year: string) {
-    this.toggleFilterStyle(this.yearsMap, year);
+  onYearClick(year: string, filterName: string) {
+    this.toggleFilterStyle(this.yearsMap, year, filterName);
   }
 
-  onAuthorClick(name: string) {
-    this.toggleFilterStyle(this.authorsMap, name);
+  onAuthorClick(name: string, filterName: string) {
+    this.toggleFilterStyle(this.authorsMap, name, filterName);
   }
 
   toggleFilterVisible(filterName: keyof typeof this.visibilityMap) {
@@ -237,6 +259,11 @@ export class MainSciencePageComponent implements OnInit {
     this.publications = new Map(this.copyPublications);
     this.fillDataForFilters();
     this.filterThrewAllSearch();
+    for (const key in this.activeFilter) {
+      if (this.activeFilter.hasOwnProperty(key)) {
+        this.activeFilter[key] = false;
+      }
+    }
   }
 
   searchScienceCards() {

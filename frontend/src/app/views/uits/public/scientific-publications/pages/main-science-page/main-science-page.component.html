@@ -41,45 +41,73 @@
       <p class="sub-heading">Фильтровать публикации: </p>
       <div class="buttons" #filterContainer>
         <div class="button-select-wrapper">
-          <button class="button" role="button" (click)="toggleFilterVisible('authors')">По автору</button>
+          <button
+            class="button"
+            [ngClass]="{'activeFilter': activeFilter.authors}"
+            role="button"
+            (click)="toggleFilterVisible('authors')"
+          >
+            По автору
+          </button>
           <div class="select-menu" *ngIf="visibilityMap.authors">
             <ul class="select-item">
               <li
                 *ngFor="let author of authorsMap.keys(); trackBy: trackByFn"
-                (click)="onAuthorClick(author)"
+                (click)="onAuthorClick(author, 'authors')"
               >
                 <button [ngClass]="authorsMap.get(author)">{{ author }}</button>
               </li>
             </ul>
           </div>
-          <button class="button" role="button" (click)="toggleFilterVisible('tags')">По тегу</button>
+          <button
+            class="button"
+            [ngClass]="{'activeFilter': activeFilter.tags}"
+            role="button"
+            (click)="toggleFilterVisible('tags')"
+          >
+            По тегу
+          </button>
           <div class="select-menu" *ngIf="visibilityMap.tags">
             <ul class="select-item">
               <li
                 *ngFor="let tag of tagsMap.keys(); trackBy: trackByFn"
-                (click)="onTagsClick(tag)"
+                (click)="onTagsClick(tag, 'tags')"
               >
                 <button [ngClass]="tagsMap.get(tag)">{{ tag }}</button>
               </li>
             </ul>
           </div>
-          <button class="button" role="button" (click)="toggleFilterVisible('years')">По году</button>
+          <button
+            class="button"
+            [ngClass]="{'activeFilter': activeFilter.years}"
+            role="button"
+            (click)="toggleFilterVisible('years')"
+          >
+            По году
+          </button>
           <div class="select-menu" *ngIf="visibilityMap.years">
             <ul class="select-item">
               <li
                 *ngFor="let year of yearsMap.keys(); trackBy: trackByFn"
-                (click)="onYearClick(year)"
+                (click)="onYearClick(year, 'years')"
               >
                 <button [ngClass]="yearsMap.get(year)">{{ year }}</button>
               </li>
             </ul>
           </div>
-          <button class="button" role="button" (click)="toggleFilterVisible('sources')">По источнику</button>
+          <button
+            class="button"
+            [ngClass]="{'activeFilter': activeFilter.sources}"
+            role="button"
+            (click)="toggleFilterVisible('sources')"
+          >
+            По источнику
+          </button>
           <div class="select-menu" *ngIf="visibilityMap.sources">
             <ul class="select-item">
               <li
                 *ngFor="let source of sourceMap.keys(); trackBy: trackByFn"
-                (click)="onSourceClick(source)"
+                (click)="onSourceClick(source, 'sources')"
               >
                 <button [ngClass]="sourceMap.get(source)">{{ source }}</button>
               </li>
