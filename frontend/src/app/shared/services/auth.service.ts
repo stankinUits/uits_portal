@@ -3,7 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {LoginForm} from '@app/shared/types/models/forms';
 import {ApiConfig} from '@app/configs/api.config';
 import {createAnonymousProfile, Profile} from '@app/shared/types/models/auth';
-import {map} from 'rxjs/operators';
+import {map, tap} from 'rxjs/operators';
 import {SnakeObjectToCamelCase} from '@app/shared/utils/SnakeToCamelCase';
 import {BehaviorSubject, catchError, Observable, of, throwError} from 'rxjs';
 
@@ -68,6 +68,12 @@ export class AuthService {
       // console.log('This user can edit - ', profile.isModerator || profile.isSuperuser)
        (profile.isModerator || profile.isSuperuser) && !profile.isAnonymous
     ));
+  }
+
+  isAdmin(): Observable<boolean> {
+    return this.profile$.pipe(
+      map(profile => profile.isSuperuser)
+    )
   }
 
   isTeacher(): Observable<boolean> {

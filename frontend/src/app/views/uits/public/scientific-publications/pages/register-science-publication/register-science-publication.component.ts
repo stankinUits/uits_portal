@@ -1,7 +1,7 @@
-import { Component, inject } from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import { FormsModule, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RegisterScienceService } from '../../service/register-science-service.service';
-import {RouterLink} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import {ScienceRawPublication} from '../../interface/science-publications-from-scholar.interface';
 import {
   EditablePublicationCardComponent
@@ -9,6 +9,7 @@ import {
 import {ScienceReadyPublication} from '../../interface/profile.interface';
 import {AppSettings} from '../../utils/settings';
 import {NgClass, NgForOf, NgIf} from '@angular/common';
+import {AuthService} from "@app/shared/services/auth.service";
 
 @Component({
   selector: 'app-register-science-publication',
@@ -17,7 +18,7 @@ import {NgClass, NgForOf, NgIf} from '@angular/common';
   templateUrl: './register-science-publication.component.html',
   styleUrls: ['./register-science-publication.component.css']
 })
-export class RegisterSciencePublicationComponent {
+export class RegisterSciencePublicationComponent implements OnInit {
   scienceService = inject(RegisterScienceService);
   data_from_scholar: ScienceRawPublication[] | null = null;
   isSearch: boolean = false;
@@ -32,10 +33,18 @@ export class RegisterSciencePublicationComponent {
   profileCardsForEmptyMap: Map<ScienceReadyPublication, Map<string, string>> = new Map();
   profileCardsReadyMap: Map<ScienceReadyPublication, Map<string, string>> = new Map();
 
-  constructor() {
+  constructor(private router: Router, private authService: AuthService,) {
     this.scienceService.getAllAuthorsByRest().subscribe(value => {
       value.forEach(val => this.authors.set(val.name, AppSettings.DEFAULT_TAG_STYLE));
     });
+  }
+
+  ngOnInit(): void {
+    this.authService.isAdmin().subscribe(isAdmin => {
+      if (!isAdmin) {
+        this.router.navigate(['/scientific-activities/publications/main-science-page']);
+      }
+    })
   }
 
   form = new FormGroup({

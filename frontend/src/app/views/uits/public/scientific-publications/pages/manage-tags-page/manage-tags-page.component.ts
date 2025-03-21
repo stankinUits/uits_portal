@@ -1,12 +1,8 @@
 import {ChangeDetectorRef, Component, inject, OnInit} from '@angular/core';
-import {
-  RegisterScienceService
-} from "@app/views/uits/public/scientific-publications/service/register-science-service.service";
-import {
-  ITag,
-  ScienceReadyPublication
-} from "@app/views/uits/public/scientific-publications/interface/profile.interface";
-import {AppSettings} from "@app/views/uits/public/scientific-publications/utils/settings";
+import {RegisterScienceService} from "@app/views/uits/public/scientific-publications/service/register-science-service.service";
+import {ITag} from "@app/views/uits/public/scientific-publications/interface/profile.interface";
+import {AuthService} from "@app/shared/services/auth.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-manage-tags-page',
@@ -15,7 +11,9 @@ import {AppSettings} from "@app/views/uits/public/scientific-publications/utils/
 })
 export class ManageTagsPageComponent implements OnInit {
   scienceService: RegisterScienceService = inject(RegisterScienceService);
+  authService: AuthService = inject(AuthService);
   cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
+  router: Router = inject(Router);
 
   searchTerm: string = '';
   tagStringToSave: string = '';
@@ -27,6 +25,11 @@ export class ManageTagsPageComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.authService.isAdmin().subscribe(isAdmin => {
+      if (!isAdmin) {
+        this.router.navigate(['/scientific-activities/publications/main-science-page']);
+      }
+    })
     this.getAllTags();
   }
 

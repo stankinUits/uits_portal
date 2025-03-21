@@ -8,12 +8,14 @@ import {ResizableComponent} from '@app/shared/components/base/resizable.componen
 import { TimeFromDatePipe } from './pipes/time-from-date.pipe';
 import { TimeWithoutSsPipe } from './pipes/time-without-ss.pipe';
 import {TooltipModule} from "ngx-bootstrap/tooltip";
+import { NotAllowedComponent } from './pages/not-allowed/not-allowed.component';
 
 @NgModule({
   declarations: [
     ResizableComponent,
     TimeFromDatePipe,
     TimeWithoutSsPipe,
+    NotAllowedComponent,
   ],
   exports: [
     CommonModule,

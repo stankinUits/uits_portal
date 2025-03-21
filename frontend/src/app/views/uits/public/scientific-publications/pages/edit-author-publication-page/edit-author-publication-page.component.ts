@@ -1,12 +1,13 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {
   EditablePublicationCardComponent
 } from '../../common-ui/editable-publication-card/editable-publication-card.component';
 import {ScienceReadyPublication} from '../../interface/profile.interface';
 import {RegisterScienceService} from '../../service/register-science-service.service';
-import {RouterLink} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import {AppSettings} from '../../utils/settings';
 import {NgClass, NgForOf, NgIf} from '@angular/common';
+import {AuthService} from "@app/shared/services/auth.service";
 
 @Component({
   selector: 'app-edit-author-publication-page',
@@ -21,7 +22,7 @@ import {NgClass, NgForOf, NgIf} from '@angular/common';
   templateUrl: './edit-author-publication-page.component.html',
   styleUrls: ['./edit-author-publication-page.component.css']
 })
-export class EditAuthorPublicationPageComponent {
+export class EditAuthorPublicationPageComponent implements OnInit {
   scienceService: RegisterScienceService = inject(RegisterScienceService);
   trackByFn: any;
 
@@ -31,11 +32,19 @@ export class EditAuthorPublicationPageComponent {
   profileCardsMap: Map<ScienceReadyPublication, Map<string, string>> = new Map();
   profileEmptyCardsMap: Map<ScienceReadyPublication, Map<string, string>> = new Map();
 
-  constructor() {
+  constructor(private router: Router, private authService: AuthService) {
     this.scienceService.getAllAuthorsByRest().subscribe(a => a.forEach(author => this.authors.set(author.name, AppSettings.DEFAULT_TAG_STYLE)));
 
     this.scienceService.getALLTagsRest().subscribe(v => v.forEach(val => this.tagsWithStylesMap.set(val, AppSettings.DEFAULT_TAG_STYLE)));
     this.tagsWithStylesMap.set(AppSettings.EMPTY_TAG_SEARCH_TEXT, AppSettings.DEFAULT_TAG_STYLE);
+  }
+
+  ngOnInit() {
+    this.authService.isAdmin().subscribe(isAdmin => {
+      if (!isAdmin) {
+        this.router.navigate(['/scientific-activities/publications/main-science-page']);
+      }
+    })
   }
 
   onAuthorClick(name: string) {
