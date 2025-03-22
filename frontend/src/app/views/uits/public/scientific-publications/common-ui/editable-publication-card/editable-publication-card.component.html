@@ -1,6 +1,11 @@
 <div class="modal-header">
   <h4 class="modal-title pull-left" *ngIf="mode === 'edit'">Редактировать публикацию</h4>
-    <h4 class="modal-title pull-left" *ngIf="mode === 'add'">Добавить публикацию</h4>
+    <h4
+      class="modal-title pull-left"
+      *ngIf="mode === 'add' || mode === 'serp-api'"
+      [ngStyle]="mode === 'serp-api' ? { 'margin': '5px auto' } : {}"
+    >
+      Добавить публикацию</h4>
 
   <button
     type="button"
@@ -8,6 +13,7 @@
     aria-label="Close"
     (click)="bsModalRef.hide()"
     style="margin-left: auto;"
+    *ngIf="mode !== 'serp-api'"
   >
     <span aria-hidden="true">&times;</span>
   </button>
@@ -18,8 +24,9 @@
 
       <div class="form-group mb-3">
         <label class="form-label">Название публикации </label>
-        <input class="form-control" formControlName="name"
-               [ngClass]="{ 'is-invalid': isInvalid('name') }">
+        <textarea class="form-control" formControlName="name"
+                  [ngClass]="{ 'is-invalid': isInvalid('name') }">
+        </textarea>
         <div class="invalid-feedback" *ngIf="isInvalid('name')">
           Заполните имя
         </div>
@@ -108,8 +115,9 @@
 
       <div class="form-group mb-3">
         <label>Название источника</label>
-        <input class="form-control" formControlName="source"
-               [ngClass]="{ 'is-invalid': isInvalid('source') }">
+        <textarea class="form-control" formControlName="source"
+                  [ngClass]="{ 'is-invalid': isInvalid('source') }">
+        </textarea>
         <div class="invalid-feedback" *ngIf="isInvalid('source')">
           Укажите источник
         </div>

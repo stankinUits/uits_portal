@@ -121,7 +121,7 @@ export class MainSciencePageComponent implements OnInit {
   initAdminMenu(): void {
     this.adminMenu = [
       {
-        title: 'Создать преподавателя, поиск по google scholar',
+        title: 'Поиск по google scholar',
         route: '/scientific-activities/publications/create_new_author',
         icon: 'feather icon-user'
       },

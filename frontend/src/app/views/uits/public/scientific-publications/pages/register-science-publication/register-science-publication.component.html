@@ -1,76 +1,67 @@
-<div class="login-form">
-  <form class="form-style" [formGroup]="form" (ngSubmit)="onSubmit()">
-    <div class="input_style">
-      <input
-        id="search-author_input"
-        formControlName="search_string"
-        (keyup)="updateField()"
-        class="form-control"
-        placeholder="Введите полное имя преподавателя"
-        type="text"
-      />
-    </div>
-    <button *ngIf="form.value.search_string" class="button" type="submit">Искать</button>
-    <button class="button" type="button" (click)="onChooseForScientistsClick()">
-      Выбрать преподавателя из списка
+<div class="container">
+  <div class="navbar">
+    <button class="go-back-btn"
+            routerLink="/scientific-activities/publications/main-science-page"
+    >
+      <i class="feather icon-arrow-left go-back-btn__icon"></i>
+      <span class="go-back-btn__text">Вернуться на страницу просмотра</span>
     </button>
-    <ul class="tags_page_style" *ngIf="isHiddenScientistPage">
-      <li *ngFor="let author of authors.keys()" (click)="onAuthorClick(author)">
-        <button type="button" [ngClass]="authors.get(author)">{{ author }}</button>
-      </li>
-    </ul>
-    <div>
-      <button type="button" class="button" (click)="addNewEmptyCard()">Добавить новую публикацию</button>
+    <hr class="line">
+    <div class="inputs-wrapper mx-auto">
+      <form class="form-style" [formGroup]="form" (ngSubmit)="onSubmit()">
+        <input
+          formControlName="search_string"
+          style="width: 210px"
+          class="form-control input-style"
+          placeholder="Введите полное имя автора"
+          type="text"
+        />
+        <button
+          [disabled]="form.invalid"
+          class="btn btn-primary btn-sm"
+          style="width: 37px; height: 37px"
+          type="submit">
+          <i class="la la-search"></i>
+        </button>
+      </form>
     </div>
+    <hr class="line">
+    <p class="sub-heading">Вы можете выбрать автора из списка: </p>
     <div>
-      <button
-        routerLink="/scientific-activities/publications/main-science-page"
-        type="button"
-        class="button"
+      <ng-select
+        *ngIf="authorsName.length > 0"
+        #selectAuthor
+        [items]="authorsName"
+        [(ngModel)]="selectedAuthor"
+        (change)="onChange($event)"
+        style="width: 270px"
       >
-        Вернуться на страницу просмотра
-      </button>
-    </div>
-  </form>
-  <div class="cards_page_style">
-    <h4 class="h4_form_style" *ngIf="isSearch">Выполняется поиск.</h4>
-    <h4 class="h4_form_style" *ngIf="isOverRequested">Превышен лимит запросов, доступно ручное редактирование.</h4>
-
-    <div class="cards_page_style_div" *ngIf="profileCardsForEditingMap.size > 0">
-      <h4 class="h4_form_style">Результаты поиска.</h4>
-      <div class="cards_style" *ngFor="let publication of profileCardsForEditingMap.keys()">
-        <app-editable-publication-card
-          [publication]="publication"
-          [tagsWithStylesMap]="profileCardsForEditingMap.get(publication)!"
-          (delete)="deleteCard(publication.id_for_unique_identify_component!)"
-        ></app-editable-publication-card>
-      </div>
-    </div>
-
-    <div class="cards_page_style_div" *ngIf="profileCardsReadyMap.size > 0">
-      <h4 class="h4_form_style">Уже сохраненные работы автора.</h4>
-      <div class="cards_style" *ngFor="let publication of profileCardsReadyMap.keys()">
-        <app-editable-publication-card
-          [publication]="publication"
-          [tagsWithStylesMap]="profileCardsReadyMap.get(publication)!"
-          (delete)="deleteCard(publication.id_for_unique_identify_component!)"
-        ></app-editable-publication-card>
-      </div>
-    </div>
-
-    <div class="cards_page_style_div" *ngIf="profileCardsForEmptyMap.size > 0">
-      <h4 class="h4_form_style">Новые пустые публикации</h4>
-      <div class="cards_style" *ngFor="let publication of profileCardsForEmptyMap.keys()">
-        <app-editable-publication-card
-          [publication]="publication"
-          [tagsWithStylesMap]="profileCardsForEmptyMap.get(publication)!"
-          (delete)="deleteCard(publication.id_for_unique_identify_component!)"
-        ></app-editable-publication-card>
-      </div>
+      </ng-select>
     </div>
   </div>
-</div>
 
-<!--<h2 class="text_alarm_style" *ngIf="!form.value.search_string">-->
-<!--  На месяц доступно только 100 запросов.-->
-<!--</h2>-->
+  <ng-container *ngIf="isLoading$ | async; else content">
+    <span class="loader"></span>
+  </ng-container>
+
+  <ng-template #content>
+    <div class="content-publications">
+      <ng-container *ngIf="isOverRequested; else publications">
+        <h4 class="h4_form_style">Превышен лимит запросов</h4>
+      </ng-container>
+
+      <ng-template #publications>
+        <div class="publications-wrapper" *ngIf="profileCardsForEditingMap.size > 0">
+          <div class="publication" *ngFor="let publication of profileCardsForEditingMap.keys()">
+            <app-editable-publication-card
+              [publication]="publication"
+              [mode]="'serp-api'"
+              [tagsWithStylesMap]="profileCardsForEditingMap.get(publication)!"
+              (edit)="saveCard($event)"
+            ></app-editable-publication-card>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+  </ng-template>
+</div>

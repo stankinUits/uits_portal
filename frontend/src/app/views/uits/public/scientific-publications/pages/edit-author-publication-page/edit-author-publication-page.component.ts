@@ -40,7 +40,7 @@ export class EditAuthorPublicationPageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.authService.isAdmin().subscribe(isAdmin => {
+    this.authService.canEdit().subscribe(isAdmin => {
       if (!isAdmin) {
         this.router.navigate(['/scientific-activities/publications/main-science-page']);
       }

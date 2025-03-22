@@ -1,7 +1,7 @@
 import {ChangeDetectorRef, Component, EventEmitter, inject, Input, OnInit, Output, TemplateRef} from '@angular/core';
 import {ITag, ScienceReadyPublication} from '../../interface/profile.interface';
 import {RegisterScienceService} from '../../service/register-science-service.service';
-import {NgClass, NgForOf, NgIf} from '@angular/common';
+import {NgClass, NgForOf, NgIf, NgStyle} from '@angular/common';
 import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
 import {AppSettings} from '../../utils/settings';
 import {FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
@@ -20,7 +20,8 @@ import {modeType} from "@app/views/uits/public/scientific-publications/interface
     NgIf,
     NgForOf,
     ReactiveFormsModule,
-    NgSelectModule
+    NgSelectModule,
+    NgStyle
   ],
   templateUrl: './editable-publication-card.component.html',
   styleUrls: ['./editable-publication-card.component.css']
@@ -51,6 +52,7 @@ export class EditablePublicationCardComponent implements OnInit {
     this.initForm();
     this.initTags();
     this.initAuthors();
+    console.log(this.publication);
   }
 
   initForm() {
@@ -82,16 +84,17 @@ export class EditablePublicationCardComponent implements OnInit {
   }
 
   initAuthors() {
+    const authorsArray = this.form.get('author') as FormArray;
     if (this.mode === 'edit') {
       if (this.publication.author.length) {
-        const authorsArray = this.form.get('author') as FormArray;
         this.publication.author.forEach(author => {
           authorsArray.push(this.formBuilder.control(author, Validators.required));
         })
       }
-    } else {
-      const authorsArray = this.form.get('author') as FormArray;
+    } else if (this.mode === 'add') {
       authorsArray.push(this.formBuilder.control('', Validators.required));
+    } else {
+      authorsArray.push(this.formBuilder.control(this.publication.author[0], Validators.required));
     }
   }
 

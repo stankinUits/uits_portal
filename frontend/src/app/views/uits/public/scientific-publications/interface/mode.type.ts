@@ -1,1 +1,1 @@
-export type modeType = "add" | "edit";
+export type modeType = "add" | "edit" | "serp-api";

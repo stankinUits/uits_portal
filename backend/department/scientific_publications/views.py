@@ -14,26 +14,41 @@ class ScientificPublicationsSearchView(View):
         # Пример запроса к Google Scholar
         search_url = f"https://serpapi.com/search.json?engine=google_scholar&q={name}&api_key={api_key}"
 
-        response = requests.get(search_url)
-
-        if response.status_code != 200:
-            return JsonResponse({
-                'isOverRequested': True,
-                'sciencePublicationCards': []
-            })
-
-        data = response.json()
-        organic_results = data.get('organic_results', [])
-
         science_publication_cards = []
-        for result in organic_results:
-            publication = {
-                'title': result.get('title', ''),
-                'link': result.get('link', ''),
-                'name': name,
-                'source': result.get('snippet', '')
-            }
-            science_publication_cards.append(publication)
+        current_page = 1
+
+        while True:
+            response = requests.get(search_url)
+
+            if response.status_code != 200:
+                return JsonResponse({
+                    'isOverRequested': True,
+                    'sciencePublicationCards': []
+                })
+
+            data = response.json()
+            organic_results = data.get('organic_results', [])
+
+            # science_publication_cards = []
+            for result in organic_results:
+                publication = {
+                    'title': result.get('title', ''),
+                    'link': result.get('link', ''),
+                    'name': name,
+                    'source': result.get('snippet', '')
+                }
+                science_publication_cards.append(publication)
+
+            # Проверяем, есть ли следующая страница
+            serpapi_pagination = data.get('serpapi_pagination', {})
+            next_page_url = serpapi_pagination.get('next')
+
+            if not next_page_url:
+                break  # Если следующей страницы нет, выходим из цикла
+
+            search_url = f"{next_page_url}&api_key={api_key}"
+            print(search_url) # Обновляем URL для следующего запроса
+            current_page += 1
 
         return JsonResponse({
             'isOverRequested': False,
