@@ -58,7 +58,7 @@ export class ContributorsComponent implements OnInit {
       id: 8,
       name: 'Рябцев Михаил',
       description: 'Backend-разработчик',
-      image: 'assets/images/contributors/ryabtsev-michail.jpg',
+      image: 'assets/images/contributors/ryabtcev.jpg',
     },
     {
       id: 9,
@@ -82,7 +82,7 @@ export class ContributorsComponent implements OnInit {
       id: 12,
       name: 'Станьков Дмитрий',
       description: 'Frontend-разработчик',
-      image: AVATAR_DEFAULT_URL,
+      image: 'assets/images/contributors/stankov.jpg',
     },
     {
       id: 13,
