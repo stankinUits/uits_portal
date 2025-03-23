@@ -40,6 +40,10 @@ export const ApiConfig = {
           retrieve: (id: number) =>
             `api/department/employee/teachers/${id}/schedule`,
         },
+        exam_schedule: {
+          with_graduation: '/api/department/employee/teachers/with-graduation-exam-schedule/',
+          with_non_graduation: '/api/department/employee/teachers/with-non-graduation-exam-schedule/',
+        },
         subject: {
           disciplines: (teacherId: number) => `api/department/employee/teachers/${teacherId}/subject`
         },

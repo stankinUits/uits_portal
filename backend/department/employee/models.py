@@ -58,6 +58,14 @@ class Teacher(models.Model):
     
     subjects = models.ManyToManyField(Subject, related_name='subjects', verbose_name="Дисциплины")
 
+    # Ссылки для хранения PDF для экзаменов
+    exam_schedule_graduation = models.URLField(
+        blank=True, null=True, verbose_name="Расписание экзаменов (выпускные курсы)"
+    )
+    exam_schedule_non_graduation = models.URLField(
+        blank=True, null=True, verbose_name="Расписание экзаменов (невыпускные курсы)"
+    )
+
     def __str__(self):
         return self.full_name
 

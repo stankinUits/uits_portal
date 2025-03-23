@@ -1,1 +1,23 @@
-<p>exam-schedule works!</p>
+<h1>Экзамены у невыпускных курсов</h1>
+<div class="schedule-grid">
+  <div *ngFor="let teacher of teachersWithNonGraduationExam" class="teacher-card">
+    <h3>{{ teacher.last_name }} {{ teacher.first_name }}</h3>
+    <iframe [src]="getSafeUrl(teacher.exam_schedule_non_graduation)"
+            class="schedule-iframe"
+            frameborder="0"
+            sandbox="allow-scripts allow-same-origin allow-forms allow-popups">
+    </iframe>
+  </div>
+</div>
+
+<h1>Экзамены у выпускных курсов</h1>
+<div class="schedule-grid">
+  <div *ngFor="let teacher of teachersWithGraduationExam" class="teacher-card">
+    <h3>{{ teacher.last_name }} {{ teacher.first_name }}</h3>
+    <iframe [src]="getSafeUrl(teacher.exam_schedule_graduation)"
+            class="schedule-iframe"
+            frameborder="0"
+            sandbox="allow-scripts allow-same-origin allow-forms allow-popups">
+    </iframe>
+  </div>
+</div>

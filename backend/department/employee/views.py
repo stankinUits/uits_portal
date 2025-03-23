@@ -68,6 +68,26 @@ class TeacherAPIViewSet(ModelViewSet):
 
         return Response(serializer.data)
 
+    @action(detail=False, methods=['get'], url_path='with-graduation-exam-schedule')
+    def get_teachers_with_graduation_exam_schedule(self, request):
+        """
+        Получить преподавателей с расписанием экзаменов для выпускных курсов.
+        """
+        # Фильтруем преподавателей, у которых есть расписание для выпускных курсов
+        teachers = Teacher.objects.filter(exam_schedule_graduation__isnull=False)
+        serializer = self.get_serializer(teachers, many=True)
+        return Response(serializer.data)
+
+    @action(detail=False, methods=['get'], url_path='with-non-graduation-exam-schedule')
+    def get_teachers_with_non_graduation_exam_schedule(self, request):
+        """
+        Получить преподавателей с расписанием экзаменов для невыпускных курсов.
+        """
+        # Фильтруем преподавателей, у которых есть расписание для невыпускных курсов
+        teachers = Teacher.objects.filter(exam_schedule_non_graduation__isnull=False)
+        serializer = self.get_serializer(teachers, many=True)
+        return Response(serializer.data)
+
     def partial_update(self, request, *args, **kwargs):
         kwargs['partial'] = True
         return self.update(request, *args, **kwargs)

@@ -23,8 +23,10 @@ class TeacherSerializer(serializers.ModelSerializer):
             'education',
             'qualification',
             'bio',
-            'schedule'
-            ]
+            'schedule',
+            'exam_schedule_graduation',
+            'exam_schedule_non_graduation'
+        ]
 
 
 class HelpersEmployeeSerializer(serializers.ModelSerializer):

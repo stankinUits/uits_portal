@@ -33,5 +33,13 @@ urlpatterns = [
   
     path('teachers/all-schedule', TeacherAPIViewSet.as_view({
         'get': 'retrieve_all_schedule',
-    }))
+    })),
+
+    # Маршруты для расписания экзаменов
+    path('teachers/with-graduation-exam-schedule/', TeacherAPIViewSet.as_view({
+        'get': 'get_teachers_with_graduation_exam_schedule',
+    })),
+    path('teachers/with-non-graduation-exam-schedule/', TeacherAPIViewSet.as_view({
+        'get': 'get_teachers_with_non_graduation_exam_schedule',
+    })),
 ]

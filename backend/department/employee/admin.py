@@ -9,72 +9,82 @@ from department.employee.models import Teacher, HelpersEmployee
 
 @admin.register(Teacher)
 class TeacherAdmin(admin.ModelAdmin):
-    fieldsets = [
+  fieldsets = [
 
-        (
-            "Аватар", {
-                "fields": ["avatar", "avatar_preview"],
-            }
-        ),
-        (
-            "Общая информация", {"fields": ["last_name", "first_name", "patronymic",
-                                            "degree", "rank", "position",
-                                            "experience", "professional_experience"
-                                            ] }
-        ),
-        (
-            "Преподаваемые дисциплины", {"fields": ["subjects"]}
-        ),
-        (
-            "Контакты", {
-                "classes": ["collapse"],
-                "fields": ["phone_number", "email", "messenger"]
-                }
-        ),
-        (
-            "Образование и квалификация", {
-                "classes": ["collapse"],
-                "fields": ["education", "qualification"] 
-                }
-        ),
-        (
-            "Биография", {
-                "classes": ["collapse"],
-                "fields": ["bio"]
-            }
+    (
+      "Аватар", {
+        "fields": ["avatar", "avatar_preview"],
+      }
+    ),
+    (
+      "Общая информация", {"fields": ["last_name", "first_name", "patronymic",
+                                      "degree", "rank", "position",
+                                      "experience", "professional_experience"
+                                      ] }
+    ),
+    (
+      "Преподаваемые дисциплины", {"fields": ["subjects"]}
+    ),
+    (
+      "Контакты", {
+        "classes": ["collapse"],
+        "fields": ["phone_number", "email", "messenger"]
+      }
+    ),
+    (
+      "Образование и квалификация", {
+        "classes": ["collapse"],
+        "fields": ["education", "qualification"]
+      }
+    ),
+    (
+      "Биография", {
+        "classes": ["collapse"],
+        "fields": ["bio"]
+      }
+    ),
+    (
+      "Расписание экзаменов", {
+        "fields": ["exam_schedule_graduation", "exam_schedule_non_graduation"],
+        "description": mark_safe(
+          '<div style="margin-bottom: 10px; color: #666;">'
+          'Формат ссылки: <code>https://drive.google.com/file/d/&lt;FILE_ID&gt;/preview</code>'
+          '</div>'
         )
+      }
+    ),
 
-    ]
-    readonly_fields = ["avatar_preview"]
-    search_fields = ('full_name',)
+  ]
+  readonly_fields = ["avatar_preview"]
+  search_fields = ('full_name',)
 
-    def avatar_preview(self, obj):
-        if obj.avatar:
-            return mark_safe(f'<img src="{obj.avatar.url}" width="150" height="150" style="object-fit: cover;" />')
-        return "Аватар не загружен"
+  def avatar_preview(self, obj):
+    if obj.avatar:
+      return mark_safe(f'<img src="{obj.avatar.url}" width="150" height="150" style="object-fit: cover;" />')
+    return "Аватар не загружен"
 
-    avatar_preview.short_description = "Предпросмотр аватара"
+  avatar_preview.short_description = "Предпросмотр аватара"
 
 
 @admin.register(HelpersEmployee)
 class HelpersEmployeeAdmin(admin.ModelAdmin):
-    fieldsets = [
-        (
-            "Аватар", {
-                "fields": ["avatar", "avatar_preview"],
-            }
-        ),
-        (
-            "Общая информация", {
-                "fields": ["last_name", "first_name", "patronymic", "position"]
-            }
-        )
-    ]
-    readonly_fields = ["avatar_preview"]
+  fieldsets = [
+    (
+      "Аватар", {
+        "fields": ["avatar", "avatar_preview"],
+      }
+    ),
+    (
+      "Общая информация", {
+        "fields": ["last_name", "first_name", "patronymic", "position"]
+      }
+    )
+  ]
+  readonly_fields = ["avatar_preview"]
 
-    def avatar_preview(self, obj):
-        if obj.avatar:
-            return mark_safe(f'<img src="{obj.avatar.url}" width="150" height="150" style="object-fit: cover;" />')
-        return "Аватар не загружен"
+  def avatar_preview(self, obj):
+    if obj.avatar:
+      return mark_safe(f'<img src="{obj.avatar.url}" width="150" height="150" style="object-fit: cover;" />')
+    return "Аватар не загружен"
 
-    avatar_preview.short_description = "Предпросмотр аватара"
+  avatar_preview.short_description = "Предпросмотр аватара"

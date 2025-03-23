@@ -20,4 +20,7 @@ export interface IEmployee {
   qualification?: string;
 
   bio?: string;
+
+  exam_schedule_graduation?: string;
+  exam_schedule_non_graduation?: string
 }
