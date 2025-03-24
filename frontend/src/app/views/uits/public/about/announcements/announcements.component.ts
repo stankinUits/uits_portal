@@ -25,10 +25,9 @@ export class AnnouncementsComponent
   extends PostsBaseComponent
   implements OnInit, OnDestroy
 {
-  defaultLimit = this.paginationService.defaultLimit;
-  maxSize = this.paginationService.maxSize;
-  defaultOffset = 0;
-  _page = 1;
+  maxSize: number;
+  itemsPerPage: number;
+
   destroy$: Subject<void> = new Subject<void>();
   isMobile: boolean;
 
@@ -48,30 +47,15 @@ export class AnnouncementsComponent
   get response$(): BehaviorSubject<Pagination<ListPost>> {
     return this.announcementService.paginatedResponse$;
   }
-  get itemsPerPage(): number {
-    return this.defaultLimit - this.defaultOffset;
-  }
 
-  get page(): number {
-    return this._page;
-  }
-
-  set page(value: number) {
-    this._page = value;
-  }
   @HostListener('window:resize', ['$event']) onWindowResize(event) {
-    if (event.target.innerWidth < 992) {
-      this.isMobile = true;
-    } else {
-      this.isMobile = false;
-    }
+    this.isMobile = event.target.innerWidth < 992;
   }
 
   ngOnInit(): void {
-    const { limit, offset } = this.paginationService.getPaginationParams();
-    if (limit !== undefined && offset !== undefined) {
-      this.page = Math.round(offset / limit) + 1;
-    }
+    this.itemsPerPage = this.paginationService.defaultLimit;
+    this.maxSize = this.paginationService.maxSize;
+
     this.setPosts();
   }
 
@@ -97,18 +81,7 @@ export class AnnouncementsComponent
     return new Date(dateISO);
   }
 
-  pageChanged($event: PageChangedEvent) {
-    let { limit, offset } = this.paginationService.getPaginationParams();
-    if (!limit) {
-      limit = this.defaultLimit;
-    }
-    if (!offset) {
-      offset = this.defaultLimit;
-    }
-    const newOffset = limit * ($event.page - 1);
-    this.page = $event.page;
-    this.paginationService.setPaginationParams(limit, newOffset).then((ok) => {
-      this.setPosts();
-    });
+  pageChanged(): void {
+    this.setPosts();
   }
 }

@@ -13,15 +13,12 @@
     </ng-container>
   </div>
   <div *ngIf="response.count > itemsPerPage" class="pagination">
-    <pagination
-      [itemsPerPage]="itemsPerPage"
+    <app-pagination
       [totalItems]="response.count"
-      [maxSize] = maxSize
-      (pageChanged)="pageChanged($event)"
-      [ngModel]="page"
-      nextText=">"
-      previousText="<"
-    ></pagination>
+      (pageChange)="pageChanged()"
+      [itemsPerPage]="itemsPerPage"
+      [maxSize]="maxSize"
+    ></app-pagination>
   </div>
 </ng-container>
 

@@ -24,15 +24,12 @@
     </div>
   </div>
   <div *ngIf="conferences.count > itemsPerPage" class="pagination">
-    <pagination
-      [itemsPerPage]="itemsPerPage"
+    <app-pagination
       [totalItems]="conferences.count"
-      (pageChanged)="pageChanged($event)"
-      [maxSize] = maxSize
-      [ngModel]="page"
-      nextText=">"
-      previousText="<"
-    ></pagination>
+      (pageChange)="pageChanged()"
+      [itemsPerPage]="itemsPerPage"
+      [maxSize]="maxSize"
+    ></app-pagination>
   </div>
 </ng-container>
 

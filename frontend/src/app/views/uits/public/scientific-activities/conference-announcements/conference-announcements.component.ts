@@ -19,25 +19,18 @@ export class ConferenceAnnouncementsComponent implements OnInit, OnDestroy {
   response$: BehaviorSubject<Pagination<IConferenceAnnouncements>> = new BehaviorSubject(null);
   destroy$: Subject<void> = new Subject<void>();
 
-  page = 1;
-  maxSize = this.paginationService.maxSize;
-  limitDefault = this.paginationService.defaultLimit;
-  offsetDefault = 0;
+  maxSize: number;
+  itemsPerPage: number;
 
   constructor(private conferenceAnnouncementsService: ConferenceAnnouncementsService,
               private paginationService: PaginationService,
               private router: Router) {
   }
 
-  get itemsPerPage(): number {
-    return this.limitDefault - this.offsetDefault;
-  }
-
   ngOnInit(): void {
-    const {limit, offset} = this.paginationService.getPaginationParams();
-    if (limit !== undefined && offset !== undefined) {
-      this.page = Math.round(offset / limit) + 1;
-    }
+    this.itemsPerPage = this.paginationService.defaultLimit;
+    this.maxSize = this.paginationService.maxSize;
+
     this.getAnnouncements();
   }
 
@@ -52,17 +45,8 @@ export class ConferenceAnnouncementsComponent implements OnInit, OnDestroy {
       });
   }
 
-  pageChanged($event: PageChangedEvent) {
-    let {limit} = this.paginationService.getPaginationParams();
-    if (!limit) {
-      limit = this.limitDefault;
-    }
-
-    const newOffset = (limit * ($event.page - 1));
-    this.page = $event.page;
-    this.paginationService.setPaginationParams(limit, newOffset).then(
-      () => this.getAnnouncements()
-    );
+  pageChanged(): void {
+    this.getAnnouncements();
   }
 
   redirectToDetail(id: number | string): void {

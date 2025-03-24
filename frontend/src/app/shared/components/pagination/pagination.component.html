@@ -1,0 +1,9 @@
+<pagination
+  [itemsPerPage]="itemsPerPage"
+  [totalItems]="totalItems"
+  (pageChanged)="onPageChanged($event)"
+  [maxSize]=maxSize
+  [ngModel]="currentPage"
+  nextText=">"
+  previousText="<"
+></pagination>

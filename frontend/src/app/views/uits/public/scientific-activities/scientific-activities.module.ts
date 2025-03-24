@@ -34,6 +34,7 @@ import { ResearchComponent } from './research/research.component';
 import { ForumComponent } from './forum/forum.component';
 import {PaginationModule} from 'ngx-bootstrap/pagination';
 import {DeleteButtonComponent} from "@app/shared/components/delete-button/delete-button.component";
+import {PaginationComponent} from "@app/shared/components/pagination/pagination.component";
 
 @NgModule({
   declarations: [
@@ -52,19 +53,20 @@ import {DeleteButtonComponent} from "@app/shared/components/delete-button/delete
     ForumComponent
 
   ],
-    imports: [
-        CommonModule,
-        ScientificActivitiesRoutingModule,
-        LayoutModule,
-        MarkdownModule.forRoot(),
-        QuillViewComponent,
-        EditButtonComponent,
-        DeleteButtonComponent,
-        CreateButtonComponent,
-        NgxDatatableModule,
-        SharedModule,
-        PaginationModule
-    ]
+  imports: [
+    CommonModule,
+    ScientificActivitiesRoutingModule,
+    LayoutModule,
+    MarkdownModule.forRoot(),
+    QuillViewComponent,
+    EditButtonComponent,
+    DeleteButtonComponent,
+    CreateButtonComponent,
+    NgxDatatableModule,
+    SharedModule,
+    PaginationModule,
+    PaginationComponent
+  ]
 })
 export class ScientificActivitiesModule {
 }

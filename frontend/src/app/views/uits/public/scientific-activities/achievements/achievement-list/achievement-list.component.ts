@@ -18,10 +18,10 @@ import {PageChangedEvent} from 'ngx-bootstrap/pagination';
 })
 export class AchievementListComponent implements OnInit, OnDestroy {
   destroy$: Subject<void> = new Subject<void>();
-  page = 1;
-  defaultLimit = this.paginationService.defaultLimit;
-  defaultOffset = 0;
-  maxSize = this.paginationService.maxSize;
+
+  maxSize: number;
+  itemsPerPage: number;
+
   isLoading = true;
   errorMessage: string | null = null;
 
@@ -38,15 +38,10 @@ export class AchievementListComponent implements OnInit, OnDestroy {
     return this.achievementService.paginatedResponse$;
   }
 
-  get itemsPerPage(): number {
-    return this.defaultLimit - this.defaultOffset;
-  }
-
   ngOnInit(): void {
-    const {limit, offset} = this.paginationService.getPaginationParams();
-    if (limit !== undefined && offset !== undefined) {
-      this.page = Math.round(offset / limit) + 1;
-    }
+    this.itemsPerPage = this.paginationService.defaultLimit;
+    this.maxSize = this.paginationService.maxSize;
+
     this.getAchievements();
   }
 
@@ -75,18 +70,8 @@ export class AchievementListComponent implements OnInit, OnDestroy {
     throw error;
   }
 
-  pageChanged($event: PageChangedEvent) {
-    let {limit, offset} = this.paginationService.getPaginationParams();
-    if (!limit) {
-      limit = this.defaultLimit;
-    }
-    if (!offset) {
-      offset = this.defaultOffset;
-    }
-    const newOffset = (limit * ($event.page - 1));
-    this.page = $event.page;
-    this.paginationService.setPaginationParams(limit, newOffset)
-      .then(() => this.getAchievements());
+  pageChanged(): void {
+    this.getAchievements();
   }
 
   openAchievementById(achievement: any): void {
