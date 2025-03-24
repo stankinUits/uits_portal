@@ -15,7 +15,11 @@ export class TeacherComponent implements OnInit {
 
   get fullName() {
     const teacher = this.teacher$.getValue();
-    return `${teacher.last_name} ${teacher.first_name} ${teacher.patronymic}`;
+    if (teacher.patronymic) {
+      return `${teacher.last_name} ${teacher.first_name} ${teacher.patronymic}`;
+    } else {
+      return `${teacher.last_name} ${teacher.first_name}`;
+    }
   }
 
   constructor(
@@ -28,7 +32,6 @@ export class TeacherComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.id = +params.id;
-      console.log('Params:', this.id);
       this.employeeService.retrieveTeacher(this.id).subscribe(teacher => {
         this.teacher$.next(teacher);
       });

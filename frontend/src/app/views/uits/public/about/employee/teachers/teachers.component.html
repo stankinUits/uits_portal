@@ -47,16 +47,13 @@
         <div class="overlay-content">
           <img
             [src]="(!employee.avatar)?AVATAR_DEFAULT_URL: employee.avatar"
-            class="card-img-top mx-auto mx-5 rounded-circle"
+            class="card-img-top mx-auto mx-5 rounded-circle image"
             alt="avatar"
           >
 
-          <p>Дополнительная информация о сотруднике
-            <br>
-            <b>{{ employee.last_name }} {{ employee.first_name }} {{ employee.patronymic }}
-            </b>
-          </p>
-          <button class="btn btn-info" (click)="moveToEmployee(employee.id)">Подробнее</button>
+<!--          <p class="text">Дополнительная информация</p>-->
+          <p class="text">{{ employee.last_name }} {{ employee.first_name }} {{ employee.patronymic }}</p>
+          <button class="btn btn-primary" (click)="moveToEmployee(employee.id)">Подробнее</button>
         </div>
       </div>
     </div>

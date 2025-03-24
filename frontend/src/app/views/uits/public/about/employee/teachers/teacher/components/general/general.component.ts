@@ -27,7 +27,11 @@ export class GeneralComponent implements OnInit {
 
   get fullName() {
     const teacher = this.teacher$.getValue();
-    return `${teacher.last_name} ${teacher.first_name} ${teacher.patronymic}`;
+    if (teacher.patronymic) {
+      return `${teacher.last_name} ${teacher.first_name} ${teacher.patronymic}`;
+    } else {
+      return `${teacher.last_name} ${teacher.first_name}`;
+    }
   }
 
   get shortName() {
@@ -63,17 +67,15 @@ export class GeneralComponent implements OnInit {
     return this.teacher$.getValue().qualification;
   }
 
-  get bio(){
+  get bio() {
     return this.teacher$.getValue().bio;
   }
 
   ngOnInit(): void {
     this.route.parent?.paramMap.subscribe(params => {
       this.teacherID = +params.get('id')!;
-      console.log('Para3432432ms:', this.teacherID);
       this.employeeService.retrieveTeacher(this.teacherID).subscribe(teacher => {
         this.teacher$.next(teacher);
-        console.log('dfgfdgf', teacher);
       });
     });
   }
