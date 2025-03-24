@@ -35,7 +35,7 @@ class ScientificPublicationsSearchView(View):
                     'title': result.get('title', ''),
                     'link': result.get('link', ''),
                     'name': name,
-                    'source': result.get('snippet', '')
+                    'description': result.get('snippet', '')
                 }
                 science_publication_cards.append(publication)
 

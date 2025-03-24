@@ -6,6 +6,7 @@ import { IEmployee } from '@app/shared/types/models/employee';
 import { Schedule } from '@app/shared/types/models/schedule';
 import { Subject as Discipline } from '@app/shared/types/models/subject';
 import {TeacherAchievements} from '@app/shared/types/models/teacher-achievements';
+import {ScienceReadyPublication} from "@app/views/uits/public/scientific-publications/interface/profile.interface";
 
 @Injectable({
   providedIn: 'root'
@@ -37,6 +38,10 @@ export class EmployeeService {
           return uvp;
         })
       );
+  }
+
+  getPublicationsByAuthorName(name: string) {
+    return this.http.get<ScienceReadyPublication[]>(ApiConfig.department.employee.teacher.publications(name));
   }
 
   retrieveTeacher(id: number): Observable<IEmployee> {

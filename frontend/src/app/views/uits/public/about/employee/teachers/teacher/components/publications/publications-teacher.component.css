@@ -1,0 +1,10 @@
+.wrapper {
+  display: grid;
+  gap: 40px;
+  grid-template-columns: minmax(280px, 480px);
+  justify-content: center;
+
+  @media (min-width: 1000px) { /* 480*2 + 40 + доп. отступы */
+    grid-template-columns: repeat(2, 480px);
+  }
+}

@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, EventEmitter, inject, Input, Output} from '@angular/core';
+import {ChangeDetectorRef, Component, EventEmitter, inject, Input, OnInit, Output} from '@angular/core';
 import {ScienceReadyPublication} from '../../interface/profile.interface';
 import {AppSettings} from '../../utils/settings';
 import {EditablePublicationCardComponent} from '../editable-publication-card/editable-publication-card.component';
@@ -32,7 +32,7 @@ import {DeleteButtonComponent} from "@app/shared/components/delete-button/delete
   templateUrl: './profile-card.component.html',
   styleUrls: ['./profile-card.component.css']
 })
-export class ProfileCardComponent {
+export class ProfileCardComponent implements OnInit {
   scienceService: RegisterScienceService = inject(RegisterScienceService);
   @Input() publication!: ScienceReadyPublication;
   @Input() tagsMap!: Map<string, string>;
@@ -41,13 +41,19 @@ export class ProfileCardComponent {
   isEditing = false;
   authService: AuthService = inject(AuthService);
 
+  shortAuthorsView:string[] = [];
+
   bsModalRef: BsModalRef;
 
   constructor(private modalService: BsModalService,
               private alertService: AlertService,
               private cdr: ChangeDetectorRef,
               ) {
+  }
+
+  ngOnInit() {
     if (this.publication) {
+      this.makeShortName();
       if (!this.publication.id_for_unique_identify_component) {
         this.publication.id_for_unique_identify_component = '';
         this.publication.id_for_unique_identify_component = AppSettings.generateRandomString(30);
@@ -89,6 +95,24 @@ export class ProfileCardComponent {
         console.error(err);
       }
     );
+  }
+
+  makeShortName() {
+    this.publication.author.forEach((author) => {
+      const parts = author.split(' ');
+      const lastName = parts[0];
+      const firstName = parts[1].charAt(0) + '.';
+      let name = ''
+
+      if (parts.length === 3) {
+        const surname = parts[2].charAt(0) + '.';
+        name = `${lastName} ${firstName}${surname}`;
+      } else {
+        name = `${lastName} ${firstName}`;
+      }
+
+      this.shortAuthorsView.push(name);
+    })
   }
 
   downloadFile(file: string) {

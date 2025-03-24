@@ -60,7 +60,6 @@ export class EditAuthorPublicationPageComponent implements OnInit {
   }
 
   onChooseForScientistsClick() {
-    console.log(this.authors);
     this.isHiddenScientistPage = !this.isHiddenScientistPage;
   }
 

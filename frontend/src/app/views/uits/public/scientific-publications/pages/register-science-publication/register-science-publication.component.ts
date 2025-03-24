@@ -38,55 +38,7 @@ export class RegisterSciencePublicationComponent implements OnInit {
 
   authors: Map<string, string> = new Map();
   profileCardsForEditing: ScienceReadyPublication[] = [];
-  profileCardsReady: ScienceReadyPublication[] = [];
   profileCardsForEditingMap: Map<ScienceReadyPublication, Map<string, string>> = new Map();
-  profileCardsForEmptyMap: Map<ScienceReadyPublication, Map<string, string>> = new Map();
-  profileCardsReadyMap: Map<ScienceReadyPublication, Map<string, string>> = new Map();
-
-  mockData: ScienceRawPublication[] = [
-    {
-      title: 'title 1',
-      link: 'link 1',
-      name: 'name 1',
-      source: 'source 1',
-    },
-    {
-      title: 'title 2',
-      link: 'link 2',
-      name: 'name 2',
-      source: 'source 2',
-    },
-    {
-      title: 'title 3',
-      link: 'link 3',
-      name: 'name 3',
-      source: 'source 3',
-    },
-    {
-      title: 'title 4',
-      link: 'link 4',
-      name: 'name 4',
-      source: 'source 4',
-    },
-    {
-      title: 'title 5',
-      link: 'link 5',
-      name: 'name 5',
-      source: 'source 5',
-    },
-    {
-      title: 'title 6',
-      link: 'link 6',
-      name: 'name 6',
-      source: 'source 6',
-    },
-    {
-      title: 'title 7',
-      link: 'link 7',
-      name: 'name 7',
-      source: 'source 7',
-    }
-  ]
 
   form = new FormGroup({
     search_string: new FormControl('', Validators.required)
@@ -132,7 +84,7 @@ export class RegisterSciencePublicationComponent implements OnInit {
             name: publication.title,
             url: publication.link,
             author: [this.form.value.search_string!],
-            source: publication.source
+            description: publication.description
           });
         });
 

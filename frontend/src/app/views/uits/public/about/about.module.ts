@@ -53,6 +53,9 @@ import { AchievementsTeacherComponent } from './employee/teachers/teacher/compon
 import { DetailsModalComponent } from './employee/teachers/teacher/components/disciplines/details-modal/details-modal.component';
 import {DeleteButtonComponent} from "@app/shared/components/delete-button/delete-button.component";
 import {PaginationComponent} from "@app/shared/components/pagination/pagination.component";
+import {
+  ProfileCardComponent
+} from "@app/views/uits/public/scientific-publications/common-ui/profile-card/profile-card.component";
 
 registerLocaleData(localeRu);
 
@@ -101,34 +104,35 @@ class CustomDateFormatter extends CalendarNativeDateFormatter {
     PostActionsComponent,
     NewsComponent,
   ],
-    imports: [
-        CommonModule,
-        AboutRoutingModule,
-        QuillViewComponent,
-        ModalModule,
-        QuillEditorComponent,
-        QuillConfigModule.forRoot({
-            modules
-        }),
-        SharedModule,
-        NgBootstrapFormValidationModule,
-        CrudActionModule,
-        DateFnsModule,
-        NgSelectModule,
-        NgOptimizedImage,
-        CalendarModule.forRoot({
-            provide: DateAdapter,
-            useFactory: adapterFactory
-        }),
-        AngularMarkdownEditorModule.forRoot({iconlibrary: 'fa'}),
-        MarkdownModule.forRoot(),
-        LayoutModule,
-        CreateButtonComponent,
-        EditButtonComponent,
-        DeleteButtonComponent,
-        PaginationModule,
-        PaginationComponent,
-    ],
+  imports: [
+    CommonModule,
+    AboutRoutingModule,
+    QuillViewComponent,
+    ModalModule,
+    QuillEditorComponent,
+    QuillConfigModule.forRoot({
+      modules
+    }),
+    SharedModule,
+    NgBootstrapFormValidationModule,
+    CrudActionModule,
+    DateFnsModule,
+    NgSelectModule,
+    NgOptimizedImage,
+    CalendarModule.forRoot({
+      provide: DateAdapter,
+      useFactory: adapterFactory
+    }),
+    AngularMarkdownEditorModule.forRoot({iconlibrary: 'fa'}),
+    MarkdownModule.forRoot(),
+    LayoutModule,
+    CreateButtonComponent,
+    EditButtonComponent,
+    DeleteButtonComponent,
+    PaginationModule,
+    PaginationComponent,
+    ProfileCardComponent,
+  ],
   providers: [
     {provide: CalendarDateFormatter, useClass: CustomDateFormatter}
   ]

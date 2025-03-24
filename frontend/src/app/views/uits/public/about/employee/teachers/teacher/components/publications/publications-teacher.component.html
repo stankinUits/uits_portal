@@ -1,1 +1,8 @@
-<p>publications works!</p>
+<div class="wrapper" *ngIf="publications$ | async as publications">
+  <app-profile-card
+    *ngFor="let publication of publications"
+    [publication]="publication"
+    [tagsMap]="tagsMap"
+  >
+  </app-profile-card>
+</div>
