@@ -1,6 +1,12 @@
 <ng-container *ngIf="teacher$ | async as teacher; else loading">
 
   <h2>{{ fullName }}</h2>
+  <button class="go-back-btn"
+            routerLink="/about/employee/teachers"
+    >
+      <i class="feather icon-arrow-left go-back-btn__icon"></i>
+      <span class="go-back-btn__text">Вернуться к списку преподавателей</span>
+    </button>
 
   <div>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">

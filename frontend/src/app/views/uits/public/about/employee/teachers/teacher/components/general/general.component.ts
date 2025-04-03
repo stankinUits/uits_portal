@@ -44,31 +44,45 @@ export class GeneralComponent implements OnInit {
   }
 
   get degree() {
-    return TeacherDegree[this.teacher$.getValue().degree];
+    return TeacherDegree[this.teacher$.getValue().degree] ? TeacherDegree[this.teacher$.getValue().degree] : '-';
   }
 
   get rank() {
-    return TeacherRank[this.teacher$.getValue().rank];
+    return TeacherRank[this.teacher$.getValue().rank] ? TeacherRank[this.teacher$.getValue().rank] : '-';
   }
 
   get professional_experience() {
-    return this.teacher$.getValue().professional_experience;
+    return this.teacher$.getValue().professional_experience ? this.teacher$.getValue().professional_experience : '-';
   }
 
   get experience() {
-    return this.teacher$.getValue().experience;
+    return this.teacher$.getValue().experience ? this.teacher$.getValue().experience : '-';
   }
 
   get education() {
-    return this.teacher$.getValue().education.split('\n');
+    const edu = this.teacher$.getValue().education;
+    return edu ? edu.replace(/;/g, '<br><br>') : '-';
   }
 
   get qualification() {
-    return this.teacher$.getValue().qualification;
+    const qual = this.teacher$.getValue().qualification;
+    return qual ? qual.replace(/;/g, '<br><br>') : '-';
   }
 
   get bio() {
-    return this.teacher$.getValue().bio;
+    return this.teacher$.getValue().bio ? this.teacher$.getValue().bio : '-';
+  }
+
+  get phone() {
+    return this.teacher$.getValue().phone_number ? this.teacher$.getValue().phone_number : '-';
+  }
+
+  get email() {
+    return this.teacher$.getValue().email ? this.teacher$.getValue().email : '-';
+  }
+
+  get messenger() {
+    return this.teacher$.getValue().messenger ? this.teacher$.getValue().messenger : '-';
   }
 
   ngOnInit(): void {

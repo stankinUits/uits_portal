@@ -25,9 +25,9 @@
         <div class="card mb-4">
           <div class="card-body">
             <h4 class="card-title color-heading">Контакты</h4>
-            <p><b>Телефон</b>: {{ teacher.phone_number }}</p>
-            <p><b>Почта</b>: {{ teacher.email }}</p>
-            <p><b>Мессенджер</b>: {{ teacher.messenger }}</p>
+            <p><b>Телефон</b>: {{ phone }}</p>
+            <p><b>Почта</b>: {{ email }}</p>
+            <p><b>Мессенджер</b>: {{ messenger }}</p>
           </div>
         </div>
       </div>
@@ -36,14 +36,16 @@
     <div *ngIf="teacher.education" class="card mb-4">
       <div class="card-body">
         <h4 class="card-title color-heading">Образование</h4>
-        <p>{{ education }}</p>
+<!--        <p>{{ education }}</p>-->
+        <div [innerHTML]="education"></div>
       </div>
     </div>
 
     <div *ngIf="teacher.qualification" class="card mb-4">
       <div class="card-body">
         <h4 class="card-title color-heading">Данные о повышении квалификации и (или) профессиональной переподготовке (за последние 5 лет)</h4>
-        <p>{{ qualification }}</p>
+<!--        <p>{{ qualification }}</p>-->
+        <div [innerHTML]="qualification"></div>
       </div>
     </div>
 

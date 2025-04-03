@@ -1,8 +1,14 @@
-<div class="wrapper" *ngIf="publications$ | async as publications">
-  <app-profile-card
-    *ngFor="let publication of publications"
-    [publication]="publication"
-    [tagsMap]="tagsMap"
-  >
-  </app-profile-card>
-</div>
+<ng-container *ngIf="publications$ | async as publications">
+  <div class="wrapper" *ngIf="publications.length; else empty">
+    <app-profile-card
+      *ngFor="let publication of publications"
+      [publication]="publication"
+      [tagsMap]="tagsMap"
+    >
+    </app-profile-card>
+  </div>
+</ng-container>
+
+<ng-template #empty>
+  Публикаций пока нет
+</ng-template>
