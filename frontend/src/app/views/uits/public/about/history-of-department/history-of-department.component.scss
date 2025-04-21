@@ -1,57 +1,253 @@
+//.history-container {
+//  padding: 20px;
+//  max-width: 1100px;
+//  margin: 0 auto;
+//  font-family: Arial, sans-serif;
+//}
+//
+//.logo-section {
+//  text-align: center;
+//  margin-bottom: 20px;
+//}
+//
+//.university-logo {
+//  max-width: 200px;
+//  height: auto;
+//}
+//
+//.history-section {
+//  font-size: 16px;
+//  margin-bottom: 40px;
+//  background: #ffffff; /* Белый фон */
+//  border-radius: 12px; /* Закругленные углы для карточки */
+//  padding: 20px; /* Отступы внутри карточки */
+//  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Небольшая тень для объема */
+//  transition: transform 0.2s ease-in-out; /* Добавляем анимацию увеличения */
+//}
+//
+//.history-section:hover {
+//  transform: scale(1.05) translateY(-5px);
+//  z-index: 1; /* Поднимаем карту наверх, чтобы она перекрывала другие карты */
+//  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Увеличиваем тень для немного большего объема */
+//}
+//
+//.history-section h2 {
+//  font-size: 1.5em;
+//  margin-bottom: 10px;
+//}
+//
+//.history-section p {
+//  font-size: 1.2em;
+//  line-height: 1.6;
+//  margin-bottom: 15px;
+//}
+//
+//.history-section img {
+//  max-width: 100%;
+//  height: auto;
+//  display: block;
+//  margin: 20px auto;
+//  border-radius: 8px;
+//  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+//}
+//
+//
+//.history-container h1 {
+//  font-size: 2.5em;
+//  margin-bottom: 30px;
+//  text-align: center;
+//  color: #2c3e50;
+//  position: relative;
+//  padding-bottom: 15px;
+//
+//  &::after {
+//    content: '';
+//    position: absolute;
+//    bottom: 0;
+//    left: 50%;
+//    transform: translateX(-50%);
+//    width: 100px;
+//    height: 3px;
+//    background: linear-gradient(to right, #3498db, #2c3e50);
+//    border-radius: 3px;
+//  }
+//}
+
 .history-container {
-  padding: 20px;
-  max-width: 800px;
+  max-width: 1200px;
   margin: 0 auto;
-  font-family: Arial, sans-serif;
+  padding: 40px 20px;
+  font-family: 'Arial', sans-serif;
+  line-height: 1.7;
+  color: #333;
 }
 
 .logo-section {
   text-align: center;
-  margin-bottom: 20px;
-}
-
-.university-logo {
-  max-width: 200px;
-  height: auto;
-}
-
-.history-container h1 {
-  font-size: 2em;
-  margin-bottom: 20px;
-  text-align: center;
-}
-
-.history-section {
   margin-bottom: 40px;
-  background: #ffffff; /* Белый фон */
-  border-radius: 6px; /* Закругленные углы для карточки */
-  padding: 20px; /* Отступы внутри карточки */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Небольшая тень для объема */
-  transition: transform 0.2s ease-in-out; /* Добавляем анимацию увеличения */
+  padding: 20px 0;
+
+  img {
+    max-width: 280px;
+    height: auto;
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
 }
 
-.history-section:hover {
-  transform: scale(1.05) translateY(-5px);
-  z-index: 1; /* Поднимаем карту наверх, чтобы она перекрывала другие карты */
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Увеличиваем тень для немного большего объема */
+h1 {
+  font-size: 2.8rem;
+  text-align: center;
+  color: #3992ef;
+  margin-bottom: 50px;
+  position: relative;
+  font-weight: 600;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 4px;
+    background: linear-gradient(to right, #3498db, #2c3e50);
+    border-radius: 2px;
+  }
 }
 
-.history-section h2 {
-  font-size: 1.5em;
-  margin-bottom: 10px;
+.history-timeline {
+  position: relative;
+  padding: 20px 0;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50px;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(to bottom, #509ef8, #2c3e50);
+    border-radius: 2px;
+  }
 }
 
-.history-section p {
-  font-size: 1.2em;
-  line-height: 1.6;
-  margin-bottom: 15px;
+.timeline-block {
+  display: flex;
+  margin-bottom: 40px;
+  position: relative;
+
+  &.full-width {
+    .timeline-content {
+      width: 100%;
+      margin-left: 0;
+      padding-left: 80px;
+    }
+  }
 }
 
-.history-section img {
-  max-width: 100%;
-  height: auto;
-  display: block;
-  margin: 20px auto;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.timeline-year {
+  width: 60px;
+  height: 60px;
+  background: #007bff;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  font-weight: bold;
+  flex-shrink: 0;
+  margin-right: 20px;
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+  z-index: 1;
+
+  &:last-child {
+    background: #2c3e50;
+  }
+}
+
+.timeline-content {
+  background: white;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  width: calc(100% - 80px);
+  margin-left: 20px;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+  }
+}
+
+h2 {
+  font-size: 1.6rem;
+  color: #2c3e50;
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.timeline-text {
+  p {
+    font-size: 1.1rem;
+    color: #555;
+    margin-bottom: 20px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.timeline-image {
+  margin-top: 20px;
+
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+}
+
+@media (max-width: 768px) {
+  .history-timeline {
+    &::before {
+      left: 30px;
+    }
+  }
+
+  .timeline-block {
+    flex-direction: column;
+
+    &.full-width {
+      .timeline-content {
+        padding-left: 30px;
+      }
+    }
+  }
+
+  .timeline-year {
+    margin-bottom: 20px;
+    margin-left: 10px;
+  }
+
+  .timeline-content {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  h1 {
+    font-size: 2.2rem;
+  }
+
+  .timeline-content {
+    padding: 25px;
+  }
 }
