@@ -27,6 +27,12 @@ def notify_monthly():
     process_notifications(NotificationFrequency.MONTHLY)
 
 
+@shared_task
+def notify_test():
+    """Тестовая задача для отправки уведомлений каждую минуту."""
+    process_notifications(NotificationFrequency.DAILY)
+
+
 def process_notifications(frequency):
     """
     Обработка уведомлений для заданной частоты событий.

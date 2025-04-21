@@ -23,7 +23,7 @@ class EventSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         instance = super().create(validated_data)
-        # instance.notify("Уведомление о создании события")
+        instance.notify("Уведомление о создании события")
         return instance
 
     def update(self, instance, validated_data):

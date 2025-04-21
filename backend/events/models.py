@@ -83,3 +83,18 @@ class UserEvent(models.Model):
     def mark_as_completed(self):
         self.status = StatusChoice.COMPLETED
         self.save()
+
+    def notify(self, notification_name: str):
+        tz = pytz.timezone('Europe/Moscow')
+        started_at = self.started_at.astimezone(tz).strftime("%Y-%m-%d %H:%M:%S" if not self.all_day else "%Y-%m-%d")
+        ended_at = self.ended_at.astimezone(tz).strftime("%Y-%m-%d %H:%M:%S" if not self.all_day else "%Y-%m-%d")
+        duration = f"{started_at} - {ended_at}" if not self.all_day else f"Весь день с {started_at} по {ended_at}"
+        assigned_at = ", ".join(map(lambda u: u.last_name + " " + u.first_name, self.assigned_users.all()))
+        for user in self.assigned_users.all():
+            try:
+                tg_user = user.telegram_user
+                tg_user.send_message(
+                    f"""{notification_name}\n\n\nСобытие: "{self.name}"\n\nВремя: {duration}\n\nНазначено на: {assigned_at}\n\nОписание: {self.description}\n\nСоздатель: {self.user.last_name} {self.user.first_name}"""
+                )
+            except User.telegram_user.RelatedObjectDoesNotExist:
+                print(f"Does not exist")

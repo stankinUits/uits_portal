@@ -273,6 +273,10 @@ CELERY_BROKER_URL = "redis://localhost:6379/0"
 CELERY_RESULT_BACKEND = "redis://localhost:6379/1"
 CELERY_TIMEZONE = "Europe/Moscow"
 CELERY_BEAT_SCHEDULE = {
+    'notify-test': {
+        'task': 'events.tasks.notify_test',
+        'schedule': 60.0,  # каждую минуту
+    },
     'notify-daily': {
         'task': 'events.tasks.notify_daily',
         'schedule': 86400.0,  # раз в день
@@ -293,7 +297,8 @@ TELEGRAM_BOT = {
     'WEBHOOK_SECRET': env('TG_SECRET_TOKEN')
 }
 
-TELEGRAM_BOT_TOKEN = os.getenv('TG_BOT_TOKEN')
+TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT')
+# TELEGRAM_BOT_TOKEN = env('TG_BOT_TOKEN')
 
 # CORS settings
 CORS_ALLOW_ALL_ORIGINS = True  # Разрешает доступ со всех доменов (не рекомендуется для production)
