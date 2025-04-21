@@ -5,8 +5,8 @@ import {AchievementDetailComponent} from './achievements/achievement-detail/achi
 import {AchievementListComponent} from './achievements/achievement-list/achievement-list.component';
 import {MainSciencePageComponent} from '../scientific-publications/pages/main-science-page/main-science-page.component';
 import {
-  RegisterSciencePublicationComponent
-} from '../scientific-publications/pages/register-science-publication/register-science-publication.component';
+  SerpApiSearchComponent
+} from '../scientific-publications/pages/register-science-publication/serp-api-search.component';
 import {
   EditAuthorPublicationPageComponent
 } from '../scientific-publications/pages/edit-author-publication-page/edit-author-publication-page.component';
@@ -35,7 +35,7 @@ const routes: Routes = [
   {path: 'research', component: ResearchComponent},
   {path: 'forum', component: ForumComponent},
   {path: 'publications/main-science-page', component: MainSciencePageComponent},
-  {path: 'publications/create_new_author', component: RegisterSciencePublicationComponent, canActivate: [AuthGuard]},
+  {path: 'publications/serp-api-search', component: SerpApiSearchComponent, canActivate: [AuthGuard]},
   {path: 'publications/edit_author', component: EditAuthorPublicationPageComponent, canActivate: [AuthGuard]},
   {path: 'publications/manage_tags', component: ManageTagsPageComponent, canActivate: [AuthGuard]}
 ];

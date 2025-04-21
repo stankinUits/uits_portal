@@ -1,4 +1,14 @@
-import {ChangeDetectorRef, Component, EventEmitter, inject, Input, OnInit, Output} from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  inject,
+  Input,
+  OnInit,
+  Output,
+  TemplateRef,
+  ViewChild
+} from '@angular/core';
 import {ScienceReadyPublication} from '../../interface/profile.interface';
 import {AppSettings} from '../../utils/settings';
 import {EditablePublicationCardComponent} from '../editable-publication-card/editable-publication-card.component';
@@ -44,12 +54,12 @@ export class ProfileCardComponent implements OnInit {
   shortAuthorsView:string[] = [];
 
   bsModalRef: BsModalRef;
+  @ViewChild('deleteModal') deleteModal: TemplateRef<any>;
 
   constructor(private modalService: BsModalService,
               private alertService: AlertService,
               private cdr: ChangeDetectorRef,
-              ) {
-  }
+              ) {}
 
   ngOnInit() {
     if (this.publication) {
@@ -85,9 +95,7 @@ export class ProfileCardComponent implements OnInit {
       (res: { status: string, publication: ScienceReadyPublication }) => {
         this.bsModalRef.hide();
         this.alertService.add('Успешно отредактировано', 'success');
-        console.log('do', this.publication);
         this.publication = res.publication;
-        console.log('posle', this.publication);
         this.cdr.detectChanges();
       },
       (err: HttpErrorResponse) => {
@@ -141,6 +149,15 @@ export class ProfileCardComponent implements OnInit {
         document.body.removeChild(link);
       }
     }
+  }
+
+  openDeleteModal() {
+    this.modalService.show(this.deleteModal);
+  }
+
+  hideDeleteModal() {
+    // @ts-ignore
+    this.modalService.hide(this.deleteModal);
   }
 
   protected readonly AppSettings = AppSettings;

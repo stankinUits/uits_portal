@@ -33,7 +33,7 @@
       (edit)="openEditModal()">
     </app-edit-button>
     <app-delete-button
-      (delete)="deleteCard()">
+      (delete)="openDeleteModal()">
     </app-delete-button>
 
     <div *ngIf="publication.file" class="action-btn">
@@ -69,9 +69,22 @@
   *ngIf="publication && isEditing"
   [publication]="publication"
   [tagsWithStylesMap]="tagsMap"
-  (delete)="deleteCard()"
+  (delete)="openDeleteModal()"
 ></app-editable-publication-card>
 
 <div *ngIf="!publication">
   <span>Публикаций нет</span>
 </div>
+
+<ng-template #deleteModal>
+  <div class="modal-header">
+    <h4 class="modal-title">Подтверджение удаления</h4>
+  </div>
+  <div class="modal-body">
+    <p>
+      Уверены что хотите удалить событие?
+    </p>
+    <button type="button" class="btn btn-primary mx-2" (click)="deleteCard()">Подтвердить</button>
+    <button type="button" class="btn btn-default" (click)="hideDeleteModal()">Отмена</button>
+  </div>
+</ng-template>

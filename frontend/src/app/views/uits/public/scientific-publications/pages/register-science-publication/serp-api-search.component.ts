@@ -18,13 +18,13 @@ import {
 } from "@app/views/uits/public/scientific-publications/interface/publication-response.interface";
 
 @Component({
-  selector: 'app-register-science-publication',
+  selector: 'serp-api-search',
   standalone: true,
   imports: [FormsModule, ReactiveFormsModule, RouterLink, EditablePublicationCardComponent, NgClass, NgIf, NgForOf, AsyncPipe, NgSelectModule],
-  templateUrl: './register-science-publication.component.html',
-  styleUrls: ['./register-science-publication.component.css']
+  templateUrl: './serp-api-search.component.html',
+  styleUrls: ['./serp-api-search.component.css']
 })
-export class RegisterSciencePublicationComponent implements OnInit {
+export class SerpApiSearchComponent implements OnInit {
   scienceService = inject(RegisterScienceService);
 
   data_from_scholar: ScienceRawPublication[] | null = null;

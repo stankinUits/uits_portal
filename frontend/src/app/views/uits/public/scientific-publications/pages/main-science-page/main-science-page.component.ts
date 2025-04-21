@@ -122,7 +122,7 @@ export class MainSciencePageComponent implements OnInit {
     this.adminMenu = [
       {
         title: 'Поиск по google scholar',
-        route: '/scientific-activities/publications/create_new_author',
+        route: '/scientific-activities/publications/serp-api-search',
         icon: 'feather icon-user'
       },
       {
