@@ -37,7 +37,7 @@ interface TeacherInfo {
   phone_number: string;
   email: string;
   messenger: string;
-  avatar: string;
+  avatar: string | File;
 }
 
 @Component({
@@ -64,6 +64,8 @@ export class PersonalComponent implements OnInit {
   // Добавим свойства для селектов
   teacherDegrees = Object.entries(TeacherDegree).map(([key, value]) => ({key, value}));
   teacherRanks = Object.entries(TeacherRank).map(([key, value]) => ({key, value}));
+
+  teacherAvatarFile: File | null = null;
 
   constructor(
     public authService: AuthService,
@@ -114,36 +116,33 @@ export class PersonalComponent implements OnInit {
   }
 
   saveTeacherProfile() {
-    if (!this.teacherInfo) return;
+  if (!this.teacherInfo) return;
 
-    // Создаем FormData для отправки файлов
-    const formData = new FormData();
+  const formData = new FormData();
 
-    // Добавляем все текстовые данные
-    Object.keys(this.teacherInfo).forEach(key => {
-      if (key !== 'avatar' && this.teacherInfo[key] !== null) {
-        formData.append(key, this.teacherInfo[key]);
-      }
-    });
-
-    // Если avatar - это строка (уже существующий путь), не добавляем его
-    // Если это File - добавляем
-    // @ts-ignore
-    if (this.teacherInfo.avatar instanceof File) {
-      formData.append('avatar', this.teacherInfo.avatar);
+  Object.entries(this.teacherInfo).forEach(([key, value]) => {
+    if (key === 'avatar') return; // игнорируем preview-url
+    if (value !== null && value !== undefined) {
+      formData.append(key, value as string);
     }
+  });
 
-    this.privateService.updateTeacherInfo(formData).subscribe({
-      next: (updatedTeacher) => {
-        this.teacherInfo = updatedTeacher;
-        this.closeModal();
-        this.cdr.detectChanges();
-      },
-      error: (err) => {
-        console.error('Ошибка при обновлении данных преподавателя:', err);
-      }
-    });
+  if (this.teacherAvatarFile instanceof File) {
+    formData.append('avatar', this.teacherAvatarFile);
   }
+
+  this.privateService.updateTeacherInfo(formData).subscribe({
+    next: (data) => {
+      this.teacherInfo = data;
+      this.teacherAvatarFile = null;
+      this.closeModal();
+      this.cdr.detectChanges();
+    },
+    error: (err) => {
+      console.error('Ошибка при обновлении преподавателя:', err);
+    },
+  });
+}
 
   getFullName(): string {
     if (!this.teacherInfo) return '';
@@ -202,36 +201,32 @@ export class PersonalComponent implements OnInit {
     return TeacherDegree[this.teacherInfo.degree]
   }
 
-  onAvatarSelected(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      if (!this.teacherInfo) {
-        this.teacherInfo = {} as TeacherInfo;
-      }
+  onAvatarSelected(event: Event) {
+  const input = event.target as HTMLInputElement;
+  if (!input.files || input.files.length === 0) return;
 
-      // Проверка типа файла
-      if (!file.type.match(/image\/*/)) {
-        alert('Пожалуйста, выберите файл изображения');
-        return;
-      }
-
-      // Проверка размера файла (например, не более 2MB)
-      if (file.size > 2 * 1024 * 1024) {
-        alert('Размер файла не должен превышать 2MB');
-        return;
-      }
-
-      // Сохраняем файл для отправки
-      this.teacherInfo.avatar = file;
-
-      // Предпросмотр изображения
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        // Временное отображение выбранного изображения
-        this.teacherInfo.avatar = e.target.result;
-        this.cdr.detectChanges();
-      };
-      reader.readAsDataURL(file);
-    }
+  const file = input.files[0];
+  if (!file.type.startsWith('image/')) {
+    alert('Файл должен быть изображением.');
+    return;
   }
+
+  if (file.size > 2 * 1024 * 1024) {
+    alert('Изображение не должно превышать 2MB.');
+    return;
+  }
+
+  if (!this.teacherInfo) {
+    this.teacherInfo = {} as TeacherInfo;
+  }
+
+  // Сохраняем файл отдельно, но показываем превью
+  const reader = new FileReader();
+  reader.onload = (e: ProgressEvent<FileReader>) => {
+    this.teacherInfo.avatar = e.target?.result as string;
+    this.teacherAvatarFile = file; // сохраняем отдельно
+    this.cdr.detectChanges();
+  };
+  reader.readAsDataURL(file);
+}
 }
