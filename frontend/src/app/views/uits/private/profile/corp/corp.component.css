@@ -33,8 +33,9 @@
   height: 70dvh;
   padding: 20px;
   font-family: Arial, sans-serif;
-  border-radius: 6px;
+  border-radius: 1rem;
   transition: width 0.3s ease;
+  flex-shrink: 0;
 }
 
 .corporate-menu.collapsed {
