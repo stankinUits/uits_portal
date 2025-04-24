@@ -1,93 +1,252 @@
-<div class="mb-4 d-md-flex align-items-center justify-content-between">
-  <div>
-    <h4>{{ 'Информация об аккаунте' }}</h4>
-    <p>{{ 'Здесь находится информация об авторизованном пользователе' }}</p>
-  </div>
-</div>
+<div class="profile-container">
+  <div class="user-card">
+    <div class="profile-header">
+      <h4>{{ "Информация об аккаунте" }}</h4>
+      <p>{{ "Здесь находится информация об авторизованном пользователе" }}</p>
+    </div>
 
-<div class="row">
-  <div class="col" style="max-width: 200px;">
-    <div>
-      <div class="mb-3">
-        <img class="img-fluid w-100 rounded"
-             [src]="(authService.profile$ | async)?.avatar || defaultAvatar"
-             alt="avatar">
+    <div class="row">
+      <div class="col-md-3">
+        <div class="avatar-container">
+          <img
+            class="avatar"
+            [src]="(authService.profile$ | async)?.avatar || defaultAvatar"
+            alt="avatar"
+          />
+        </div>
       </div>
+
+      <div class="col-md-9">
+        <div class="user-info" *ngIf="authService.profile$ | async as person">
+          <div class="info-item">
+            <div class="label">Имя пользователя</div>
+            <div class="value">{{ person.username }}</div>
+          </div>
+
+          <div class="info-item" *ngIf="person.isStaff">
+            <div class="label">Пароль</div>
+            <div class="value">
+              <a class="text-primary" href="/admin/password_change"
+                >Изменить пароль</a
+              >
+            </div>
+          </div>
+
+          <div class="info-item">
+            <div class="label">Электронная почта</div>
+            <div class="value">{{ person.email }}</div>
+          </div>
+
+          <div class="info-item">
+            <div class="label">Фамилия Имя</div>
+            <div class="value">
+              {{ person.lastName }} {{ person.firstName }}
+            </div>
+          </div>
+
+          <div
+            class="info-item"
+            *ngIf="person.isModerator || person.isSuperuser"
+          >
+            <div class="label">Уровень доступа</div>
+            <div class="value">
+              <span *ngIf="person.isModerator && !person.isSuperuser"
+                >Модератор</span
+              >
+              <span *ngIf="person.isSuperuser">Суперпользователь</span>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <div class="label">Интеграция</div>
+            <div class="value">
+              <div
+                class="d-flex flex-column gap-3"
+                [ngSwitch]="hideIntegrationCode"
+              >
+                <div [ngSwitch]="hideIntegrationCode">
+                  <span *ngSwitchCase="false">{{ person.telegramCode }}</span>
+                  <span *ngSwitchCase="true" class="user-select-none"
+                    >************</span
+                  >
+                  <i
+                    class="feather icon-copy cursor-pointer"
+                    (click)="copyCode(person.telegramCode)"
+                  ></i>
+                  <i
+                    class="feather ms-1 cursor-pointer"
+                    [ngClass]="{
+                      'icon-eye': !hideIntegrationCode,
+                      'icon-eye-off': hideIntegrationCode
+                    }"
+                    (click)="toggleViewIntegrationCode()"
+                  ></i>
+                </div>
+                <div>
+                  <div *ngIf="person.telegramUser">
+                    <span class="user-select-none">Привязан к: </span>
+                    <a href="https://t.me/{{ person.telegramUser.username }}"
+                      >@{{ person.telegramUser.username }}</a
+                    >
+                    <i
+                      class="feather icon-x cursor-pointer font-size-lg ms-2"
+                      style="color: red"
+                      (click)="openModal(deleteIntegrationConfirmModal)"
+                    ></i>
+                  </div>
+                  <div *ngIf="!person.telegramUser">
+                    <img
+                      class="me-1"
+                      src="assets/images/telegram_16px.png"
+                      alt="telegram"
+                      width="16"
+                      height="16"
+                    />
+                    <a
+                      href="https://t.me/uits_notify_bot"
+                      tooltip="Для привязки профиля к телеграм пришлите этому боту код"
+                      >@uits_notify_bot</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-buttons">
+      <button class="btn btn-primary" (click)="openEditProfileModal()">
+        Редактировать профиль
+      </button>
     </div>
   </div>
 
-  <div class="col-md">
-    <table class="table" *ngIf="(authService.profile$ | async) as person">
-      <tbody>
-        <tr>
-          <th class="py-4">Имя пользователя</th>
-          <td class="py-4">{{ person.username }}</td>
-        </tr>
-        <tr *ngIf="person.isStaff">
-          <th class="py-4">Пароль</th>
-          <td class="py-4"><a class="text-primary" href="/admin/password_change">Изменить пароль</a></td>
-        </tr>
-        <tr>
-          <th class="py-4">Электронная почта</th>
-          <td class="py-4">{{ person.email }}</td>
-        </tr>
-        <tr>
-          <th class="py-4">Фамилия Имя</th>
-          <td class="py-4">{{ person.lastName }} {{ person.firstName }}</td>
-        </tr>
-        <tr *ngIf="person.isModerator || person.isSuperuser">
-          <th class="py-4">Уровень доступа</th>
-          <td class="py-4" *ngIf="person.isModerator && !person.isSuperuser">Модератор</td>
-          <td class="py-4" *ngIf="person.isSuperuser">Суперпользователь</td>
-        </tr>
-        <tr>
-          <th class="py-4">Интеграция</th>
-          <td class="py-4 d-flex flex-column gap-3" [ngSwitch]="hideIntegrationCode">
-            <div [ngSwitch]="hideIntegrationCode">
-              <span *ngSwitchCase="false">{{ person.telegramCode }}</span>
-              <span *ngSwitchCase="true" class="user-select-none">************</span>
-              <i class="feather icon-copy cursor-pointer" (click)="copyCode(person.telegramCode)"></i>
-              <i class="feather ms-1 cursor-pointer"
-                 [ngClass]="{ 'icon-eye': !hideIntegrationCode, 'icon-eye-off': hideIntegrationCode }"
-                 (click)="toggleViewIntegrationCode()"></i>
+  <!-- Информация о преподавателе -->
+  <div class="teacher-section" *ngIf="teacherInfo || isLoadingTeacherInfo">
+    <div class="teacher-header">
+      <h4>{{ "Информация о преподавателе" }}</h4>
+      <p>
+        {{
+          "Здесь находится информация о преподавателе, связанном с вашим аккаунтом"
+        }}
+      </p>
+    </div>
+
+    <div *ngIf="!isLoadingTeacherInfo && teacherInfo">
+      <div class="teacher-profile">
+        <div class="teacher-avatar">
+          <img
+            [src]="teacherInfo.avatar || defaultAvatar"
+            alt="Аватар преподавателя"
+          />
+        </div>
+
+        <div class="teacher-details">
+          <h5 class="teacher-name">{{ getFullName() }}</h5>
+
+          <div class="info-grid">
+            <div class="info-item">
+              <div class="label">Должность</div>
+              <div class="value">{{ teacherInfo.position }}</div>
             </div>
-            <div>
-              <div *ngIf="person.telegramUser">
-                <span class="user-select-none">Привязан к: </span>
-                <a href="https://t.me/{{person.telegramUser.username}}">@{{ person.telegramUser.username }}</a>
-                <i class="feather icon-x cursor-pointer font-size-lg ms-2" style="color: red;"
-                   (click)="openModal(deleteIntegrationConfirmModal)"></i>
-              </div>
-              <div *ngIf="!person.telegramUser">
-                <img class="me-1" src="assets/images/telegram_16px.png" alt="telegram" width="16" height="16">
-                <a href="https://t.me/uits_notify_bot" tooltip="Для привязки профиля к телеграм пришлите этому боту код">@uits_notify_bot</a>
+            <div class="info-item">
+              <div class="label">Ученая степень</div>
+              <div class="value">{{ degree }}</div>
+            </div>
+            <div class="info-item">
+              <div class="label">Ученое звание</div>
+              <div class="value">{{ rank }}</div>
+            </div>
+            <div class="info-item">
+              <div class="label">Общий стаж</div>
+              <div class="value">{{ teacherInfo.experience }} лет</div>
+            </div>
+            <div class="info-item">
+              <div class="label">Педагогический стаж</div>
+              <div class="value">
+                {{ teacherInfo.professional_experience }} лет
               </div>
             </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+            <div class="info-item">
+              <div class="label">Образование</div>
+              <div class="value">{{ teacherInfo.education }}</div>
+            </div>
+            <div class="info-item">
+              <div class="label">Квалификация</div>
+              <div class="value">{{ teacherInfo.qualification }}</div>
+            </div>
+          </div>
+
+          <div class="contact-info">
+            <div class="contact-item" *ngIf="teacherInfo.phone_number">
+              <i class="feather icon-phone"></i>
+              <span>{{ teacherInfo.phone_number }}</span>
+            </div>
+            <div class="contact-item" *ngIf="teacherInfo.email">
+              <i class="feather icon-mail"></i>
+              <span>{{ teacherInfo.email }}</span>
+            </div>
+            <div class="contact-item" *ngIf="teacherInfo.messenger">
+              <i class="feather icon-message-square"></i>
+              <span>{{ teacherInfo.messenger }}</span>
+            </div>
+          </div>
+
+          <div class="bio-section" *ngIf="teacherInfo.bio">
+            <h6>Биография</h6>
+            <p>{{ teacherInfo.bio }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="loading-spinner" *ngIf="isLoadingTeacherInfo">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Загрузка...</span>
+      </div>
+    </div>
+
+    <div class="error-message" *ngIf="teacherError">
+      {{ teacherError }}
+    </div>
   </div>
 </div>
 
-<div class="text-end mt-4">
-  <button class="btn btn-primary" (click)="openEditProfileModal()">Редактировать профиль</button>
-</div>
-
+<!-- Модальные окна -->
 <ng-template #editProfileModal bsModal>
   <div class="modal-header">
     <h5 class="modal-title">Редактировать профиль</h5>
-    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closeModal()"></button>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="modal"
+      aria-label="Close"
+      (click)="closeModal()"
+    ></button>
   </div>
   <div class="modal-body">
     <form (ngSubmit)="saveProfile()">
       <div class="mb-3">
         <label for="username">Имя пользователя:</label>
-        <input id="username" [(ngModel)]="userProfile.username" name="username" required class="form-control">
+        <input
+          id="username"
+          [(ngModel)]="userProfile.username"
+          name="username"
+          required
+          class="form-control"
+        />
       </div>
       <div class="mb-3">
         <label for="email">Email:</label>
-        <input id="email" [(ngModel)]="userProfile.email" name="email" required class="form-control">
+        <input
+          id="email"
+          [(ngModel)]="userProfile.email"
+          name="email"
+          required
+          class="form-control"
+        />
       </div>
       <button type="submit" class="btn btn-primary">Сохранить изменения</button>
     </form>
@@ -97,10 +256,22 @@
 <ng-template #deleteIntegrationConfirmModal>
   <div class="modal-header">
     <h5 class="modal-title">Хотите удалить интеграцию с телеграм?</h5>
-    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closeModal()"></button>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="modal"
+      aria-label="Close"
+      (click)="closeModal()"
+    ></button>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="closeModal()">Отмена</button>
-<!--    <button type="button" class="btn btn-danger" (click)="deleteIntegration()">Удалить</button>-->
+    <button
+      type="button"
+      class="btn btn-secondary"
+      data-bs-dismiss="modal"
+      (click)="closeModal()"
+    >
+      Отмена
+    </button>
   </div>
 </ng-template>
