@@ -56,7 +56,8 @@ export const ApiConfig = {
     },
   },
   teacher_user: {
-    info: 'api/users/teacher_info/'
+    info: 'api/users/teacher_info/',
+    update_teacher_info: 'api/users/update_teacher_info/',
   },
   editableContentPage: 'api/editable-pages/',
   events: {

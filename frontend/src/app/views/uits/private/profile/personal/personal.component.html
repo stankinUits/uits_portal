@@ -27,7 +27,7 @@
             <div class="label">Пароль</div>
             <div class="value">
               <a class="text-primary" href="/admin/password_change"
-                >Изменить пароль</a
+              >Изменить пароль</a
               >
             </div>
           </div>
@@ -51,7 +51,7 @@
             <div class="label">Уровень доступа</div>
             <div class="value">
               <span *ngIf="person.isModerator && !person.isSuperuser"
-                >Модератор</span
+              >Модератор</span
               >
               <span *ngIf="person.isSuperuser">Суперпользователь</span>
             </div>
@@ -67,7 +67,7 @@
                 <div [ngSwitch]="hideIntegrationCode">
                   <span *ngSwitchCase="false">{{ person.telegramCode }}</span>
                   <span *ngSwitchCase="true" class="user-select-none"
-                    >************</span
+                  >************</span
                   >
                   <i
                     class="feather icon-copy cursor-pointer"
@@ -86,7 +86,7 @@
                   <div *ngIf="person.telegramUser">
                     <span class="user-select-none">Привязан к: </span>
                     <a href="https://t.me/{{ person.telegramUser.username }}"
-                      >@{{ person.telegramUser.username }}</a
+                    >@{{ person.telegramUser.username }}</a
                     >
                     <i
                       class="feather icon-x cursor-pointer font-size-lg ms-2"
@@ -105,7 +105,7 @@
                     <a
                       href="https://t.me/uits_notify_bot"
                       tooltip="Для привязки профиля к телеграм пришлите этому боту код"
-                      >@uits_notify_bot</a
+                    >@uits_notify_bot</a
                     >
                   </div>
                 </div>
@@ -211,6 +211,12 @@
     <div class="error-message" *ngIf="teacherError">
       {{ teacherError }}
     </div>
+
+    <div class="action-buttons" *ngIf="teacherInfo">
+      <button class="btn btn-primary" (click)="openEditTeacherModal()">
+        Редактировать данные преподавателя
+      </button>
+    </div>
   </div>
 </div>
 
@@ -273,5 +279,117 @@
     >
       Отмена
     </button>
+  </div>
+</ng-template>
+
+<!-- Модальное окно редактирования преподавателя -->
+<ng-template #editTeacherModal bsModal>
+  <div class="modal-header">
+    <h5 class="modal-title">Редактировать данные преподавателя</h5>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="modal"
+      aria-label="Close"
+      (click)="closeModal()"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <form (ngSubmit)="saveTeacherProfile()" *ngIf="teacherInfo">
+      <div class="mb-3">
+        <label for="avatar">Аватар:</label>
+        <input
+          type="file"
+          id="avatar"
+          (change)="onAvatarSelected($event)"
+          accept="image/*"
+          class="form-control"
+        >
+      </div>
+
+      <div class="mb-3">
+        <label for="position">Должность:</label>
+        <input
+          id="position"
+          [(ngModel)]="teacherInfo.position"
+          name="position"
+          class="form-control"
+        />
+      </div>
+      <div class="mb-3">
+        <label for="degree">Ученая степень:</label>
+        <select
+          id="degree"
+          [(ngModel)]="teacherInfo.degree"
+          name="degree"
+          class="form-control"
+        >
+          <option *ngFor="let deg of teacherDegrees" [value]="deg.key">{{ deg.value }}</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="rank">Ученое звание:</label>
+        <select
+          id="rank"
+          [(ngModel)]="teacherInfo.rank"
+          name="rank"
+          class="form-control"
+        >
+          <option *ngFor="let r of teacherRanks" [value]="r.key">{{ r.value }}</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="phone">Телефон:</label>
+        <input
+          id="phone"
+          [(ngModel)]="teacherInfo.phone_number"
+          name="phone_number"
+          class="form-control"
+        />
+      </div>
+
+      <div class="mb-3">
+        <label for="mail">Почта:</label>
+        <input
+          id="mail"
+          [(ngModel)]="teacherInfo.email"
+          name="mail"
+          class="form-control"
+        />
+      </div>
+
+      <div class="mb-3">
+        <label for="messenger">Мессенджер:</label>
+        <input
+          id="messenger"
+          [(ngModel)]="teacherInfo.messenger"
+          name="messenger"
+          class="form-control"
+        />
+      </div>
+
+      <div class="mb-3">
+        <label for="edu">Образование:</label>
+        <textarea
+          id="edu"
+          [(ngModel)]="teacherInfo.education"
+          name="edu"
+          class="form-control"
+          rows="4"
+        ></textarea>
+      </div>
+
+      <div class="mb-3">
+        <label for="qua">Квалификация:</label>
+        <textarea
+          id="qua"
+          [(ngModel)]="teacherInfo.qualification"
+          name="qua"
+          class="form-control"
+          rows="4"
+        ></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+    </form>
   </div>
 </ng-template>

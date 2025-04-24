@@ -48,18 +48,27 @@ class UserViewSet(viewsets.ModelViewSet):
             raise NotFound('User not found')
 
     @action(detail=False, methods=['post'])
-    def update_profile(self, request):
-        user = request.user
-        data = request.data
+    def update_teacher_info(self, request):
+        if not hasattr(request.user, 'teacher'):
+            raise NotFound(detail="No teacher associated with this user")
 
-        # Используем ваш UserDetailsSerializer
-        serializer = UserDetailsSerializer(
-            user,
+        teacher = request.user.teacher
+        data = request.POST.dict() if request.POST else {}
+        files = request.FILES
+
+        # Обновляем аватар только если был передан новый файл
+        if 'avatar' in files:
+            data['avatar'] = files['avatar']
+        elif 'avatar' in data:
+            # Удаляем поле avatar из данных, если оно есть, но не является файлом
+            del data['avatar']
+
+        serializer = TeacherSerializer(
+            teacher,
             data=data,
-            partial=True,  # Разрешаем частичное обновление
-            context={'request': request}  # Передаем request в контекст, если нужно
+            partial=True,
+            context={'request': request}
         )
-
         serializer.is_valid(raise_exception=True)
         serializer.save()
 
