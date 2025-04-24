@@ -33,4 +33,15 @@ class UserModelAdmin(UserAdmin):
             "is_teacher"
         )}),
         (_("Important dates"), {"fields": ("last_login", "date_joined")}),
+        (_('Teacher'), {'fields': ('teacher',)}),
     )
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('username', 'password1', 'password2', 'is_staff', 'is_active', 'is_moderator', 'is_teacher', 'teacher'),
+        }),
+    )
+    list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff', 'is_moderator', 'is_teacher', 'teacher')
+    list_filter = ('is_staff', 'is_superuser', 'is_active', 'is_moderator', 'is_teacher', 'groups')
+    search_fields = ('username', 'first_name', 'last_name', 'email')
+    ordering = ('username',)

@@ -5,6 +5,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { AuthService } from '@app/shared/services/auth.service';
 import { Profile } from '@app/shared/types/models/auth';
 import { AVATAR_DEFAULT_URL } from '@app/configs/app.config';
+import {PrivateServiceService} from "@app/views/uits/private/private-service.service";
 
 interface PersonalInfo {
   username: string;
@@ -28,15 +29,17 @@ export class PersonalComponent implements OnInit {
   @ViewChild('editProfileModal') editProfileModal: TemplateRef<any>;
   modalRef: BsModalRef;
 
-  userProfile: PersonalInfo = { username: '', email: '' }; 
+  userProfile: PersonalInfo = { username: '', email: '' };
   constructor(
     public authService: AuthService,
+    private privateService: PrivateServiceService,
     private clipboard: Clipboard,
     private modalService: BsModalService
   ) { }
 
   ngOnInit() {
-    this.loadUserProfile(); 
+    this.loadUserProfile();
+    this.getTeacherInfo();
   }
 
   loadUserProfile() {
@@ -46,6 +49,12 @@ export class PersonalComponent implements OnInit {
         this.userProfile.email = profile.email;
       }
     });
+  }
+
+  getTeacherInfo() {
+    this.privateService.getTeacherInfo().subscribe(response => {
+      console.log(response);
+    })
   }
 
   openModal(template: TemplateRef<any>) {
@@ -59,6 +68,7 @@ export class PersonalComponent implements OnInit {
   openEditProfileModal() {
     this.modalRef = this.modalService.show(this.editProfileModal, { class: 'modal-dialog-centered' });
   }
+
   saveProfile() {
     const profileUpdate = {
       username: this.userProfile.username,
@@ -71,7 +81,7 @@ export class PersonalComponent implements OnInit {
 
       const updatedProfile: Profile = {
         ...this.authService.profile$.getValue(),
-        ...profileUpdate 
+        ...profileUpdate
       };
 
       this.authService.profile$.next(updatedProfile);
@@ -99,6 +109,6 @@ export class PersonalComponent implements OnInit {
 
   copyCode(telegramCode: string) {
     this.clipboard.copy(telegramCode);
-  
+
   }
 }

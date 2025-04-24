@@ -287,16 +287,16 @@ const scientificActivity: NavMenu[] = [
     icon: 'la-superscript',
     key: 'scientificActivity',
     submenu: [
-      {
-        path: PagesConfig.scientificActivities.research,
-        title: 'ScientificActivity/Research',
-        translateKey: 'NAV.SCIENTIFIC_ACTIVITY.RESEARCH',
-        type: 'item',
-        iconType: 'line-awesome',
-        icon: 'la-flask',
-        key: 'scientificActivity/research',
-        submenu: []
-      },
+      // {
+      //   path: PagesConfig.scientificActivities.research,
+      //   title: 'ScientificActivity/Research',
+      //   translateKey: 'NAV.SCIENTIFIC_ACTIVITY.RESEARCH',
+      //   type: 'item',
+      //   iconType: 'line-awesome',
+      //   icon: 'la-flask',
+      //   key: 'scientificActivity/research',
+      //   submenu: []
+      // },
       {
         path: PagesConfig.scientificActivities.postgraduate,
         title: 'ScientificActivity/PostGraduate',
@@ -337,16 +337,16 @@ const scientificActivity: NavMenu[] = [
         key: 'scientificActivity/conferences',
         submenu: []
       },
-      {
-        path: PagesConfig.scientificActivities.forum,
-        title: 'Forum',
-        translateKey: 'NAV.SCIENTIFIC_ACTIVITY.FORUM',
-        type: 'item',
-        iconType: 'line-awesome',
-        icon: 'la la-users',
-        key: 'scientificActivity/forum',
-        submenu: []
-      }
+      // {
+      //   path: PagesConfig.scientificActivities.forum,
+      //   title: 'Forum',
+      //   translateKey: 'NAV.SCIENTIFIC_ACTIVITY.FORUM',
+      //   type: 'item',
+      //   iconType: 'line-awesome',
+      //   icon: 'la la-users',
+      //   key: 'scientificActivity/forum',
+      //   submenu: []
+      // }
     ]
   }
 ];

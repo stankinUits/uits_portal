@@ -52,6 +52,9 @@ export const ApiConfig = {
       },
     },
   },
+  teacher_user: {
+    info: 'api/users/teacher_info/'
+  },
   editableContentPage: 'api/editable-pages/',
   events: {
     read: 'api/users/events/',

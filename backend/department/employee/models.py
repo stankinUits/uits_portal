@@ -67,7 +67,7 @@ class Teacher(models.Model):
     )
 
     def __str__(self):
-        return self.full_name
+        return f"{self.last_name} {self.first_name} {self.patronymic or ''} ({self.position})"
 
     def get_subjects(self):
         return self.subjects.filter(id = self.id)
