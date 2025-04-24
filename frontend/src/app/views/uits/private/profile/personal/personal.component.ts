@@ -201,14 +201,6 @@ export class PersonalComponent implements OnInit {
     this.clipboard.copy(telegramCode);
   }
 
-  get rank() {
-    return TeacherRank[this.teacherInfo.rank]
-  }
-
-  get degree() {
-    return TeacherDegree[this.teacherInfo.degree]
-  }
-
   onAvatarSelected(event: Event) {
     const input = event.target as HTMLInputElement;
     if (!input.files || input.files.length === 0) return;
@@ -261,5 +253,51 @@ export class PersonalComponent implements OnInit {
       this.cdr.detectChanges();
     };
     reader.readAsDataURL(file);
+  }
+
+  get position() {
+    return this.teacherInfo.position;
+  }
+
+  get degree() {
+    return TeacherDegree[this.teacherInfo.degree] ? TeacherDegree[this.teacherInfo.degree] : '-';
+  }
+
+  get rank() {
+    return TeacherRank[this.teacherInfo.rank] ? TeacherRank[this.teacherInfo.rank] : '-';
+  }
+
+  get professional_experience() {
+    return this.teacherInfo.professional_experience ? this.teacherInfo.professional_experience : '-';
+  }
+
+  get experience() {
+    return this.teacherInfo.experience ? this.teacherInfo.experience : '-';
+  }
+
+  get education() {
+    const edu = this.teacherInfo.education;
+    return edu ? edu.replace(/;/g, '<br><br>') : '-';
+  }
+
+  get qualification() {
+    const qual = this.teacherInfo.qualification;
+    return qual ? qual.replace(/;/g, '<br><br>') : '-';
+  }
+
+  get bio() {
+    return this.teacherInfo.bio ? this.teacherInfo.bio : '-';
+  }
+
+  get phone() {
+    return this.teacherInfo.phone_number ? this.teacherInfo.phone_number : '-';
+  }
+
+  get email() {
+    return this.teacherInfo.email ? this.teacherInfo.email : '-';
+  }
+
+  get messenger() {
+    return this.teacherInfo.messenger ? this.teacherInfo.messenger : '-';
   }
 }
