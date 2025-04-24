@@ -127,32 +127,18 @@ export class PersonalComponent implements OnInit {
     const profileUpdate = {
       username: this.userProfile.username,
       email: this.userProfile.email,
-    };
+    }
 
-    setTimeout(() => {
-      console.log('Мок: профиль успешно обновлен:', profileUpdate);
-
-      const updatedProfile: Profile = {
-        ...this.authService.profile$.getValue(),
-        ...profileUpdate,
-      };
-
-      this.authService.profile$.next(updatedProfile);
-
-      this.closeModal();
-    }, 500);
-
-    // Реальный вызов будет выглядеть так:
-    // this.authService.updateProfile(profileUpdate).subscribe({
-    //   next: (updatedProfile) => {
-    //     console.log('Профиль успешно обновлен:', updatedProfile);
-    //     this.closeModal();
-    //     this.loadUserProfile(); // Загружаем обновлённый профиль
-    //   },
-    //   error: (err) => {
-    //     console.error('Ошибка при обновлении профиля:', err);
-    //   }
-    // });
+    this.authService.updateProfile(profileUpdate).subscribe({
+      next: (updatedProfile) => {
+        console.log('Профиль успешно обновлен:', updatedProfile);
+        this.closeModal();
+        // this.loadUserProfile();
+      },
+      error: (err) => {
+        console.error('Ошибка при обновлении профиля:', err);
+      }
+    });
   }
 
   toggleViewIntegrationCode() {

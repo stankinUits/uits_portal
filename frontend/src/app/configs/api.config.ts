@@ -11,6 +11,9 @@ export const ApiConfig = {
     login: 'api/users/auth/login/',
     logout: 'api/users/auth/logout/',
   },
+  user: {
+    update_info: 'api/users/update_profile/'
+  },
   department: {
     postgraduate: 'api/department/postgraduate',
     news: {

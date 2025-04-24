@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django_filters.rest_framework import DjangoFilterBackend
+# from pip._vendor.rich.console.Console import status
 from rest_framework import viewsets, permissions
 from django.contrib.auth import get_user_model
 from rest_framework.decorators import action
@@ -45,3 +46,21 @@ class UserViewSet(viewsets.ModelViewSet):
             return Response(serializer.data)
         except User.DoesNotExist:
             raise NotFound('User not found')
+
+    @action(detail=False, methods=['post'])
+    def update_profile(self, request):
+        user = request.user
+        data = request.data
+
+        # Используем ваш UserDetailsSerializer
+        serializer = UserDetailsSerializer(
+            user,
+            data=data,
+            partial=True,  # Разрешаем частичное обновление
+            context={'request': request}  # Передаем request в контекст, если нужно
+        )
+
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(serializer.data)

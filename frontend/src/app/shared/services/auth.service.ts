@@ -84,8 +84,9 @@ export class AuthService {
   }
 
   updateProfile(profileData: any): Observable<any> {
-    return this.http.put<Profile>('/api/profile', profileData).pipe(
-      map(updatedProfile => {
+    return this.http.post<Profile>(ApiConfig.user.update_info, profileData)
+      .pipe(
+        map(updatedProfile => {
         const camelCaseProfile = SnakeObjectToCamelCase(updatedProfile) as Profile;
         this.profile$.next(camelCaseProfile);
         return camelCaseProfile;
@@ -96,7 +97,6 @@ export class AuthService {
       })
     );
   }
-
 }
 
 
