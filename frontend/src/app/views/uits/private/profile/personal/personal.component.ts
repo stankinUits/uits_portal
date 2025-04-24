@@ -19,6 +19,7 @@ import {TeacherDegree, TeacherRank} from "@app/views/uits/public/about/employee/
 interface PersonalInfo {
   username: string;
   email: string;
+  avatar?: string | File;
 }
 
 interface TeacherInfo {
@@ -66,6 +67,7 @@ export class PersonalComponent implements OnInit {
   teacherRanks = Object.entries(TeacherRank).map(([key, value]) => ({key, value}));
 
   teacherAvatarFile: File | null = null;
+  userAvatarFile: File | null = null;
 
   constructor(
     public authService: AuthService,
@@ -116,33 +118,33 @@ export class PersonalComponent implements OnInit {
   }
 
   saveTeacherProfile() {
-  if (!this.teacherInfo) return;
+    if (!this.teacherInfo) return;
 
-  const formData = new FormData();
+    const formData = new FormData();
 
-  Object.entries(this.teacherInfo).forEach(([key, value]) => {
-    if (key === 'avatar') return; // игнорируем preview-url
-    if (value !== null && value !== undefined) {
-      formData.append(key, value as string);
+    Object.entries(this.teacherInfo).forEach(([key, value]) => {
+      if (key === 'avatar') return; // игнорируем preview-url
+      if (value !== null && value !== undefined) {
+        formData.append(key, value as string);
+      }
+    });
+
+    if (this.teacherAvatarFile instanceof File) {
+      formData.append('avatar', this.teacherAvatarFile);
     }
-  });
 
-  if (this.teacherAvatarFile instanceof File) {
-    formData.append('avatar', this.teacherAvatarFile);
+    this.privateService.updateTeacherInfo(formData).subscribe({
+      next: (data) => {
+        this.teacherInfo = data;
+        this.teacherAvatarFile = null;
+        this.closeModal();
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Ошибка при обновлении преподавателя:', err);
+      },
+    });
   }
-
-  this.privateService.updateTeacherInfo(formData).subscribe({
-    next: (data) => {
-      this.teacherInfo = data;
-      this.teacherAvatarFile = null;
-      this.closeModal();
-      this.cdr.detectChanges();
-    },
-    error: (err) => {
-      console.error('Ошибка при обновлении преподавателя:', err);
-    },
-  });
-}
 
   getFullName(): string {
     if (!this.teacherInfo) return '';
@@ -168,16 +170,22 @@ export class PersonalComponent implements OnInit {
   }
 
   saveProfile() {
-    const profileUpdate = {
-      username: this.userProfile.username,
-      email: this.userProfile.email,
+    const formData = new FormData();
+
+    // Добавляем текстовые данные
+    formData.append('username', this.userProfile.username);
+    formData.append('email', this.userProfile.email);
+
+    // Добавляем файл аватара, если он был выбран
+    if (this.userAvatarFile instanceof File) {
+      formData.append('avatar', this.userAvatarFile);
     }
 
-    this.authService.updateProfile(profileUpdate).subscribe({
+    this.authService.updateProfile(formData).subscribe({
       next: (updatedProfile) => {
         console.log('Профиль успешно обновлен:', updatedProfile);
+        this.userAvatarFile = null;
         this.closeModal();
-        // this.loadUserProfile();
       },
       error: (err) => {
         console.error('Ошибка при обновлении профиля:', err);
@@ -202,31 +210,56 @@ export class PersonalComponent implements OnInit {
   }
 
   onAvatarSelected(event: Event) {
-  const input = event.target as HTMLInputElement;
-  if (!input.files || input.files.length === 0) return;
+    const input = event.target as HTMLInputElement;
+    if (!input.files || input.files.length === 0) return;
 
-  const file = input.files[0];
-  if (!file.type.startsWith('image/')) {
-    alert('Файл должен быть изображением.');
-    return;
+    const file = input.files[0];
+    if (!file.type.startsWith('image/')) {
+      alert('Файл должен быть изображением.');
+      return;
+    }
+
+    if (file.size > 2 * 1024 * 1024) {
+      alert('Изображение не должно превышать 2MB.');
+      return;
+    }
+
+    if (!this.teacherInfo) {
+      this.teacherInfo = {} as TeacherInfo;
+    }
+
+    // Сохраняем файл отдельно, но показываем превью
+    const reader = new FileReader();
+    reader.onload = (e: ProgressEvent<FileReader>) => {
+      this.teacherInfo.avatar = e.target?.result as string;
+      this.teacherAvatarFile = file; // сохраняем отдельно
+      this.cdr.detectChanges();
+    };
+    reader.readAsDataURL(file);
   }
 
-  if (file.size > 2 * 1024 * 1024) {
-    alert('Изображение не должно превышать 2MB.');
-    return;
-  }
+  onUserAvatarSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (!input.files || input.files.length === 0) return;
 
-  if (!this.teacherInfo) {
-    this.teacherInfo = {} as TeacherInfo;
-  }
+    const file = input.files[0];
+    if (!file.type.startsWith('image/')) {
+      alert('Файл должен быть изображением.');
+      return;
+    }
 
-  // Сохраняем файл отдельно, но показываем превью
-  const reader = new FileReader();
-  reader.onload = (e: ProgressEvent<FileReader>) => {
-    this.teacherInfo.avatar = e.target?.result as string;
-    this.teacherAvatarFile = file; // сохраняем отдельно
-    this.cdr.detectChanges();
-  };
-  reader.readAsDataURL(file);
-}
+    if (file.size > 2 * 1024 * 1024) {
+      alert('Изображение не должно превышать 2MB.');
+      return;
+    }
+
+    // Сохраняем файл отдельно, но показываем превью
+    const reader = new FileReader();
+    reader.onload = (e: ProgressEvent<FileReader>) => {
+      this.userProfile.avatar = e.target?.result as string;
+      this.userAvatarFile = file; // сохраняем отдельно
+      this.cdr.detectChanges();
+    };
+    reader.readAsDataURL(file);
+  }
 }

@@ -73,3 +73,21 @@ class UserViewSet(viewsets.ModelViewSet):
         serializer.save()
 
         return Response(serializer.data)
+
+    @action(detail=False, methods=['post'])
+    def update_profile(self, request):
+        user = request.user
+        data = request.data
+
+        # Используем ваш UserDetailsSerializer
+        serializer = UserDetailsSerializer(
+            user,
+            data=data,
+            partial=True,  # Разрешаем частичное обновление
+            context={'request': request}  # Передаем request в контекст, если нужно
+        )
+
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(serializer.data)

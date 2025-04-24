@@ -234,6 +234,27 @@
   </div>
   <div class="modal-body">
     <form (ngSubmit)="saveProfile()">
+      <!-- Аватар -->
+      <div class="mb-3">
+        <label for="user_avatar">Аватар:</label>
+        <div class="avatar-preview mb-2">
+          <img
+            [src]="userProfile.avatar || (authService.profile$ | async)?.avatar || defaultAvatar"
+            alt="Аватар"
+            class="avatar-img rounded-circle"
+            style="width: 100px; height: 100px; object-fit: cover;"
+          />
+        </div>
+        <input
+          type="file"
+          id="user_avatar"
+          (change)="onUserAvatarSelected($event)"
+          accept="image/*"
+          class="form-control"
+        >
+        <small class="text-muted">Максимальный размер: 2MB. Форматы: JPG, PNG</small>
+      </div>
+
       <div class="mb-3">
         <label for="username">Имя пользователя:</label>
         <input
@@ -298,6 +319,14 @@
     <form (ngSubmit)="saveTeacherProfile()" *ngIf="teacherInfo">
       <div class="mb-3">
         <label for="avatar">Аватар:</label>
+        <div class="avatar-preview mb-2">
+          <img
+            [src]="teacherInfo.avatar || defaultAvatar"
+            alt="Аватар"
+            class="avatar-img rounded-circle"
+            style="width: 100px; height: 100px; object-fit: cover;"
+          />
+        </div>
         <input
           type="file"
           id="avatar"
