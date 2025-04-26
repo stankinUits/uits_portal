@@ -1,0 +1,225 @@
+import os
+import pandas as pd
+from django.conf import settings
+
+
+from parcing_data_from_excel.models import (
+    CodeDirection, Discipline, LessonType,
+    Teacher, Group, Semester, GroupCourse, Student
+)
+
+
+def read_excel_file(file_name):
+    """Helper function to read an Excel file."""
+    file_path = os.path.join(settings.MEDIA_ROOT, 'excel_files', file_name)
+    if not os.path.exists(file_path):
+        raise FileNotFoundError(f"Excel file not found: {file_path}")
+    try:
+        df = pd.read_excel(file_path)
+        return df
+    except Exception as e:
+        raise ValueError(f"Error reading Excel file: {e}")
+
+
+def sync_data(model, data, field):
+    """Helper function to sync data in a model."""
+    current_data = set(model.objects.values_list(field, flat=True))
+    new_data_set = set(data)
+    to_delete = current_data - new_data_set
+    to_add = new_data_set - current_data
+
+    if to_delete:
+        model.objects.filter(**{f"{field}__in": to_delete}).delete()
+        print(f"Deleted: {to_delete}")
+
+    if to_add:
+        model.objects.bulk_create([model(**{field: item}) for item in to_add])
+        print(f"Added: {to_add}")
+
+    print(f"Successfully synchronized '{model.__name__}' table with data.")
+
+
+def parse_excel_data_to_code_directions():
+    df = read_excel_file('Data_for_module_gradebook.xlsx')
+    if "Направление подготовки" in df.columns:
+        directions = df["Направление подготовки"].dropna().unique().tolist()
+        sync_data(CodeDirection, directions, 'name')
+    else:
+        print("Column 'Направление подготовки' not found in the Excel file.")
+
+
+def parse_excel_data_to_disciplines():
+    df = read_excel_file('Data_for_module_gradebook.xlsx')
+    if "Дисциплина" in df.columns:
+        disciplines = df["Дисциплина"].dropna().unique().tolist()
+        sync_data(Discipline, disciplines, 'name')
+    else:
+        print("Column 'Дисциплина' not found in the Excel file.")
+
+
+def parse_excel_data_to_lesson_types():
+    df = read_excel_file('Data_for_module_gradebook.xlsx')
+    if "Вид занятия" in df.columns:
+        lesson_types = df["Вид занятия"].dropna().unique().tolist()
+        sync_data(LessonType, lesson_types, 'name')
+    else:
+        print("Column 'Вид занятия' not found in the Excel file.")
+
+
+def parse_excel_data_to_teachers():
+    df = read_excel_file('Data_for_module_gradebook.xlsx')
+    if "Преподаватель" in df.columns:
+        teachers = df["Преподаватель"].dropna().unique().tolist()
+        sync_data(Teacher, teachers, 'name')
+    else:
+        print("Column 'Преподаватель' not found in the Excel file.")
+
+
+def parse_excel_data_to_groups():
+    df = read_excel_file('Data_for_module_gradebook.xlsx')
+    if "Группа" in df.columns:
+        groups = df["Группа"].dropna().unique().tolist()
+        sync_data(Group, groups, 'name')
+    else:
+        print("Column 'Группа' not found in the Excel file.")
+
+
+def parse_excel_data_to_semesters():
+    df = read_excel_file('Data_for_module_gradebook.xlsx')
+    if "Семестр" in df.columns:
+        semesters = df["Семестр"].dropna().unique().tolist()
+        valid_semesters = [int(sem) for sem in semesters if int(sem) > 0]
+        sync_data(Semester, valid_semesters, 'semester')
+    else:
+        print("Column 'Семестр' not found in the Excel file.")
+
+
+def parse_excel_data_to_group_courses():
+    df = read_excel_file('Data_for_module_gradebook.xlsx')
+    if "Курс" in df.columns:
+        courses = df["Курс"].dropna().unique().tolist()
+        valid_courses = [int(course) for course in courses if int(course) > 0]
+        sync_data(GroupCourse, valid_courses, 'course')
+    else:
+        print("Column 'Курс' not found in the Excel file.")
+
+
+
+import os
+import pandas as pd
+from django.conf import settings
+from parcing_data_from_excel.models import Student
+
+def parse_students_from_all_excels():
+    """
+    Parses all Excel files in the 'excel_files' directory for student data and saves it into the database.
+    Automatically overwrites existing data if the student already exists based on unique fields.
+    """
+
+    # Path to the Excel files directory
+    excel_directory = os.path.join(settings.MEDIA_ROOT, 'excel_files')
+
+    # Ensure the directory exists
+    if not os.path.exists(excel_directory):
+        raise FileNotFoundError(f"Excel directory not found: {excel_directory}")
+
+    # Define the group prefixes for identification
+    group_prefixes = ["ИДБ-", "АДБ-", "МДБ-", "ЭДБ-", "МДС-", "ЭДМ-", "АДМ-", "ИДМ-", "МДМ-", "ЭВМ-"]
+
+    # Collect all Excel files in the directory
+    excel_files = [file for file in os.listdir(excel_directory) if file.endswith(('.xls', '.xlsx'))]
+
+    # If no files are found, print a warning and return
+    if not excel_files:
+        print("No Excel files found in the specified directory.")
+        return
+
+    # Iterate over each Excel file
+    for excel_file in excel_files:
+        file_path = os.path.join(excel_directory, excel_file)
+        try:
+            print(f"\n📂 Processing file: {excel_file}")
+            xls = pd.ExcelFile(file_path)
+
+            # Iterate through all sheets in the Excel file
+            for sheet_name in xls.sheet_names:
+                df = pd.read_excel(file_path, sheet_name=sheet_name, header=None)
+                seen_positions = set()
+                group_cells = []
+
+                # Detect group headers in the sheet
+                for row_idx in range(df.shape[0]):
+                    row_values = df.iloc[row_idx].fillna("").astype(str).values
+                    for col_idx, cell_value in enumerate(row_values):
+                        if any(cell_value.startswith(pref) for pref in group_prefixes) and (row_idx, col_idx) not in seen_positions:
+                            group_cells.append((row_idx, col_idx, cell_value))
+                            seen_positions.add((row_idx, col_idx))
+
+                if not group_cells:
+                    print(f"⚠️ No groups detected in sheet: {sheet_name} of file: {excel_file}")
+                    continue
+
+                group_cells = sorted(group_cells, key=lambda x: (x[0], x[1]))
+                total_rows, total_cols = df.shape
+
+                # Process each group block
+                for row_start, group_col, group_text in group_cells:
+                    row_idx = row_start + 1  # Start after header row
+                    code_col = group_col + 2
+                    code_direction_str = str(df.iat[row_start, code_col]).strip() if code_col < total_cols else ""
+                    has_comma = "," in code_direction_str
+
+                    while row_idx < total_rows:
+                        # Stop if we detect another group header
+                        if any(str(df.iat[row_idx, col]).startswith(pref) for col in range(total_cols) for pref in group_prefixes):
+                            break
+
+                        # Validate student number
+                        try:
+                            student_num = int(df.iat[row_idx, group_col - 1]) if group_col - 1 >= 0 else None
+                        except (ValueError, TypeError):
+                            row_idx += 1
+                            continue
+
+                        # Extract student data
+                        first_name = str(df.iat[row_idx, group_col]).strip()
+                        middle_name = str(df.iat[row_idx, group_col + 1]).strip() if group_col + 1 < total_cols else ""
+                        last_name = str(df.iat[row_idx, group_col + 2]).strip() if group_col + 2 < total_cols else ""
+
+                        # Assign code direction
+                        if has_comma:
+                            student_code_col = group_col + 3
+                            student_code_direction = df.iat[row_idx, student_code_col] if student_code_col < total_cols else ""
+                        else:
+                            student_code_direction = code_direction_str
+
+                        student_code_direction = str(student_code_direction).strip() if not pd.isna(student_code_direction) else ""
+
+                        # ✅ Automatic Overwriting Logic:
+                        # If a student already exists (based on student_num_in_list, group_name, code_direction), update it.
+                        try:
+                            student, created = Student.objects.update_or_create(
+                                student_num_in_list=student_num,
+                                group_name=group_text,
+                                code_direction=student_code_direction,
+                                defaults={
+                                    "first_name": first_name,
+                                    "middle_name": middle_name,
+                                    "last_name": last_name,
+                                }
+                            )
+                            if created:
+                                print(f"✅ Added student: {first_name} {last_name} (Group: {group_text})")
+                            else:
+                                print(f"🔄 Updated student: {first_name} {last_name} (Group: {group_text})")
+                        except Exception as db_error:
+                            print(f"❌ Database Error in file '{excel_file}', sheet '{sheet_name}': {db_error}")
+
+                        row_idx += 1
+
+            print(f"✅ Successfully parsed and saved students for file: {excel_file}")
+
+        except Exception as e:
+            print(f"❌ Error processing file '{excel_file}': {e}")
+
+    print("✅ Finished parsing all available Excel files.")
