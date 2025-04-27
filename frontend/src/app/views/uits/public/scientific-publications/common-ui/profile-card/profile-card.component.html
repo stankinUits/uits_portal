@@ -78,13 +78,14 @@
 
 <ng-template #deleteModal>
   <div class="modal-header">
-    <h4 class="modal-title">Подтверджение удаления</h4>
+    <h4 class="modal-title">Подтверждение удаления</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="hideDeleteModal()"></button>
   </div>
   <div class="modal-body">
-    <p>
-      Уверены что хотите удалить событие?
-    </p>
-    <button type="button" class="btn btn-primary mx-2" (click)="deleteCard()">Подтвердить</button>
-    <button type="button" class="btn btn-default" (click)="hideDeleteModal()">Отмена</button>
+    <p>Вы уверены, что хотите удалить публикацию "{{publication?.name}}"?</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="hideDeleteModal()">Отмена</button>
+    <button type="button" class="btn btn-danger" (click)="confirmDelete()">Удалить</button>
   </div>
 </ng-template>

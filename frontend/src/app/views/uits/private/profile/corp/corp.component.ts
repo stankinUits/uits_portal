@@ -34,14 +34,12 @@ export class CorporateComponent implements OnInit {
         if (userPermissions.includes(Permission.SUPERUSER)) {
           this.corporateMenu = [
             { title: 'Профиль', route: 'personal', icon: 'feather icon-user', key: 'Аккаунт' },
-            { title: 'Модульные журналы', route: '/modular_journals', icon: 'feather icon-book', key: 'Журнал' },
             { title: 'Календарь событий', route: 'calendar', icon: 'feather icon-calendar', key: 'Календарь событий' },
           ];
         } else if (userPermissions.includes(Permission.TEACHER)) {
           this.isTeacher = true;
           this.corporateMenu = [
             { title: 'Профиль', route: 'personal', icon: 'feather icon-user', key: 'Аккаунт' },
-            { title: 'Модульные журналы', route: 'modular_journals', icon: 'feather icon-book', key: 'Журнал' },
             { title: 'Календарь событий', route: 'calendar', icon: 'feather icon-calendar', key: 'Календарь событий' },
           ];
         }

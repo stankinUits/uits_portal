@@ -152,12 +152,18 @@ export class ProfileCardComponent implements OnInit {
   }
 
   openDeleteModal() {
-    this.modalService.show(this.deleteModal);
+    this.bsModalRef = this.modalService.show(this.deleteModal, {
+      class: 'modal-dialog-centered'
+    });
   }
 
   hideDeleteModal() {
-    // @ts-ignore
-    this.modalService.hide(this.deleteModal);
+    this.bsModalRef?.hide();
+  }
+
+  confirmDelete() {
+    this.deleteCard();
+    this.hideDeleteModal();
   }
 
   protected readonly AppSettings = AppSettings;
