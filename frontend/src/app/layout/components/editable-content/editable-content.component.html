@@ -24,10 +24,15 @@
 </ng-template>
 
 <ng-template #content>
-  <markdown
+  <div
+    class="markdown-body"
+    [ngClass]="{'active-md' : content$ | async}"
+  >
+    <markdown
     [data]="content$ | async"
   >
   </markdown>
+  </div>
 </ng-template>
 
 <ng-template #editContent>
