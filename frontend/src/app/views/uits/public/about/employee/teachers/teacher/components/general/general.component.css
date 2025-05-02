@@ -16,6 +16,15 @@
   height: 429px;
 }
 
+.image {
+  height:80px;
+  width: 80px;
+  border-radius: 50%;
+  margin-bottom: 20px;
+  object-fit: cover;
+  object-position: center;
+}
+
 .card-title {
   color: #343a40;
   font-weight: bold;
@@ -31,10 +40,13 @@
 }
 
 .avatar {
-  width: 50%;
-  height: auto;
+  width: 200px;
+  height: 200px;
   border-radius: 50%;
   margin: 50px auto 30px;
+
+  object-fit: cover;
+  object-position: center;
 }
 
 .card-body p {

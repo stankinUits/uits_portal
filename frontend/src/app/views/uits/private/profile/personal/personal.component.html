@@ -27,7 +27,7 @@
             <div class="label">Пароль</div>
             <div class="value">
               <a class="text-primary" href="/admin/password_change"
-              >Изменить пароль</a
+                >Изменить пароль</a
               >
             </div>
           </div>
@@ -51,7 +51,7 @@
             <div class="label">Уровень доступа</div>
             <div class="value">
               <span *ngIf="person.isModerator && !person.isSuperuser"
-              >Модератор</span
+                >Модератор</span
               >
               <span *ngIf="person.isSuperuser">Суперпользователь</span>
             </div>
@@ -67,7 +67,7 @@
                 <div [ngSwitch]="hideIntegrationCode">
                   <span *ngSwitchCase="false">{{ person.telegramCode }}</span>
                   <span *ngSwitchCase="true" class="user-select-none"
-                  >************</span
+                    >************</span
                   >
                   <i
                     class="feather icon-copy cursor-pointer"
@@ -86,7 +86,7 @@
                   <div *ngIf="person.telegramUser">
                     <span class="user-select-none">Привязан к: </span>
                     <a href="https://t.me/{{ person.telegramUser.username }}"
-                    >@{{ person.telegramUser.username }}</a
+                      >@{{ person.telegramUser.username }}</a
                     >
                     <i
                       class="feather icon-x cursor-pointer font-size-lg ms-2"
@@ -105,7 +105,7 @@
                     <a
                       href="https://t.me/uits_notify_bot"
                       tooltip="Для привязки профиля к телеграм пришлите этому боту код"
-                    >@uits_notify_bot</a
+                      >@uits_notify_bot</a
                     >
                   </div>
                 </div>
@@ -228,10 +228,14 @@
           <label for="user_avatar">Аватар:</label>
           <div class="avatar-preview mb-2">
             <img
-              [src]="userProfile.avatar || (authService.profile$ | async)?.avatar || defaultAvatar"
+              [src]="
+                userProfile.avatar ||
+                (authService.profile$ | async)?.avatar ||
+                defaultAvatar
+              "
               alt="Аватар"
               class="avatar-img rounded-circle"
-              style="width: 100px; height: 100px; object-fit: cover;"
+              style="width: 100px; height: 100px; object-fit: cover"
             />
           </div>
           <input
@@ -240,8 +244,10 @@
             (change)="onUserAvatarSelected($event)"
             accept="image/*"
             class="form-control"
+          />
+          <small class="text-muted"
+            >Максимальный размер: 2MB. Форматы: JPG, PNG</small
           >
-          <small class="text-muted">Максимальный размер: 2MB. Форматы: JPG, PNG</small>
         </div>
 
         <div class="mb-3">
@@ -264,7 +270,9 @@
             class="form-control"
           />
         </div>
-        <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+        <button type="submit" class="btn btn-primary">
+          Сохранить изменения
+        </button>
       </form>
     </div>
   </ng-template>
@@ -313,7 +321,7 @@
               [src]="teacherInfo.avatar || defaultAvatar"
               alt="Аватар"
               class="avatar-img rounded-circle"
-              style="width: 100px; height: 100px; object-fit: cover;"
+              style="width: 100px; height: 100px; object-fit: cover"
             />
           </div>
           <input
@@ -322,7 +330,7 @@
             (change)="onAvatarSelected($event)"
             accept="image/*"
             class="form-control"
-          >
+          />
         </div>
 
         <div class="mb-3">
@@ -342,7 +350,9 @@
             name="degree"
             class="form-control"
           >
-            <option *ngFor="let deg of teacherDegrees" [value]="deg.key">{{ deg.value }}</option>
+            <option *ngFor="let deg of teacherDegrees" [value]="deg.key">
+              {{ deg.value }}
+            </option>
           </select>
         </div>
         <div class="mb-3">
@@ -353,7 +363,9 @@
             name="rank"
             class="form-control"
           >
-            <option *ngFor="let r of teacherRanks" [value]="r.key">{{ r.value }}</option>
+            <option *ngFor="let r of teacherRanks" [value]="r.key">
+              {{ r.value }}
+            </option>
           </select>
         </div>
         <div class="mb-3">
@@ -407,7 +419,10 @@
             rows="4"
           ></textarea>
         </div>
-        <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+        <button type="submit" class="btn btn-primary">
+          Сохранить изменения
+        </button>
       </form>
     </div>
   </ng-template>
+</div>

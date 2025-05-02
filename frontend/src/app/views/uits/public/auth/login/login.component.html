@@ -13,6 +13,7 @@
                                 <p class="text-muted">Войдите в свой аккаунт для продолжения</p>
                             </div>
                             <uits-login-form (onSubmit)="login($event)"></uits-login-form>
+                            <div *ngIf="hasError" class="text-center" style="color: red">Что-то пошло не так</div>
                             <div class="text-center mt-4">
                                 <p class="text-muted">Хотите вернуться обратно? <a href="/">Нажмите сюда</a></p>
                             </div>

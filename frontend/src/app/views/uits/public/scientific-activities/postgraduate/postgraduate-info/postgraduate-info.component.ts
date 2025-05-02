@@ -31,11 +31,11 @@ export class PostgraduateInfoComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.columns = [
       {name: '№', cellTemplate: this.indexColumnTemplate, sortable: false},
-      {name: 'Студент', prop: 'student.full_name'},
-      {name: 'Тема диплома', prop: 'student.diploma_theme'},
+      {name: 'Аспирант', prop: 'student.full_name'},
+      {name: 'Тема диссертации', prop: 'student.diploma_theme'},
       {name: 'Специальность', prop: 'student.speciality'},
       {name: 'Год поступления', prop: 'student.admission_year'},
-      {name: 'Преподаватель', prop: 'teacher.full_name'},
+      {name: 'Руководитель', prop: 'teacher.full_name'},
     ];
   }
 
