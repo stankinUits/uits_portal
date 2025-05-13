@@ -17,6 +17,8 @@ import { ScientificActivitiesModule } from './public/scientific-activities/scien
 import {
   EditablePublicationCardComponent
 } from '@app/views/uits/public/scientific-publications/common-ui/editable-publication-card/editable-publication-card.component';
+import { SerpApiComponent } from '@app/views/uits/public/scientific-publications/pages/serp-api/serp-api.component';
+import {NgSelectModule} from "@ng-select/ng-select";
 
 
 @NgModule({
@@ -24,7 +26,8 @@ import {
     HomeComponent,
     LatestNewsComponent,
     LatestAnnouncementsComponent,
-    CustomPageComponent
+    CustomPageComponent,
+    SerpApiComponent
   ],
   imports: [
     CommonModule,
@@ -38,7 +41,8 @@ import {
     LayoutModule,
     CalendarModule,
     ScientificActivitiesModule,
-    EditablePublicationCardComponent
+    EditablePublicationCardComponent,
+    NgSelectModule
   ],
   exports: [
 

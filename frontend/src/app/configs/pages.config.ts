@@ -49,7 +49,7 @@ export const PagesConfig = {
     scientificWork: sciActivitiesPrefix + '/scientific-work',
     // Добавляем пути для новых компонентов
     mainSciencePage: sciActivitiesPrefix + '/publications/main-science-page',
-    registerSciencePublication: sciActivitiesPrefix + '/publications/register-science-publication',
+    registerSciencePublication: sciActivitiesPrefix + '/publications/serp-api-search',
     editAuthorPublication: sciActivitiesPrefix + '/publications/edit-author-publication',
     achievements: sciActivitiesPrefix + '/achievements',
   },

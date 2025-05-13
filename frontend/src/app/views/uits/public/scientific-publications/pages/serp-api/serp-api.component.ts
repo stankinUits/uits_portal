@@ -1,32 +1,28 @@
-import {ChangeDetectorRef, Component, inject, OnInit, ViewChild} from '@angular/core';
-import {FormsModule, FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {RegisterScienceService} from '../../service/register-science-service.service';
-import {Router, RouterLink} from '@angular/router';
-import {ScienceRawPublication} from '../../interface/science-publications-from-scholar.interface';
+import {ChangeDetectorRef, Component, inject, OnInit} from '@angular/core';
 import {
-  EditablePublicationCardComponent
-} from '../../common-ui/editable-publication-card/editable-publication-card.component';
-import {ScienceReadyPublication} from '../../interface/profile.interface';
-import {AppSettings} from '../../utils/settings';
-import {AsyncPipe, NgClass, NgForOf, NgIf} from '@angular/common';
-import {AuthService} from "@app/shared/services/auth.service";
+  RegisterScienceService
+} from "@app/views/uits/public/scientific-publications/service/register-science-service.service";
+import {
+  ScienceRawPublication
+} from "@app/views/uits/public/scientific-publications/interface/science-publications-from-scholar.interface";
 import {BehaviorSubject} from "rxjs";
-import {NgSelectComponent, NgSelectModule} from "@ng-select/ng-select";
+import {ScienceReadyPublication} from "@app/views/uits/public/scientific-publications/interface/profile.interface";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {Router} from "@angular/router";
+import {AuthService} from "@app/shared/services/auth.service";
 import {AlertService} from "@app/shared/services/alert.service";
+import {AppSettings} from "@app/views/uits/public/scientific-publications/utils/settings";
 import {
   PublicationResponse
 } from "@app/views/uits/public/scientific-publications/interface/publication-response.interface";
 
 @Component({
-  selector: 'serp-api-search',
-  standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, RouterLink, EditablePublicationCardComponent, NgClass, NgIf, NgForOf, AsyncPipe, NgSelectModule],
-  templateUrl: './serp-api-search.component.html',
-  styleUrls: ['./serp-api-search.component.css']
+  selector: 'app-serp-api',
+  templateUrl: './serp-api.component.html',
+  styleUrls: ['./serp-api.component.css']
 })
-export class SerpApiSearchComponent implements OnInit {
+export class SerpApiComponent implements OnInit {
   scienceService = inject(RegisterScienceService);
-
   data_from_scholar: ScienceRawPublication[] | null = null;
 
   isLoading$ = new BehaviorSubject(false);
@@ -49,6 +45,7 @@ export class SerpApiSearchComponent implements OnInit {
               private cdr: ChangeDetectorRef,
               private alertService: AlertService,
   ) {
+    console.log('123213')
   }
 
   ngOnInit(): void {
@@ -77,6 +74,7 @@ export class SerpApiSearchComponent implements OnInit {
 
       this.scienceService.getInfoFromGoogleScholar(this.form.value.search_string).subscribe(res => {
         this.data_from_scholar = res.sciencePublicationCards;
+        console.log(res);
         this.isOverRequested = res.isOverRequested;
 
         this.data_from_scholar?.forEach(publication => {
@@ -112,4 +110,5 @@ export class SerpApiSearchComponent implements OnInit {
       }
     })
   }
+
 }

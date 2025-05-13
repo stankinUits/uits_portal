@@ -1,12 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-// import { CorporateComponent } from './private/profile/corp/corp.component';
 import { HomeComponent } from '@app/views/uits/public/home/home.component';
 import { CustomPageComponent } from '@app/views/uits/public/custom-page/custom-page.component';
-// import { PersonalComponent } from './private/profile/personal/personal.component'; // Импорт компонента Personal
-// import { EventsComponent } from './private/profile/events/events.component';
-import { DisciplinesComponent } from '@app/views/uits/public/about/employee/teachers/teacher/components/disciplines/disciplines.component';
-import {CorporateModule} from "@app/views/uits/private/profile/corp/corp.module";
 
 
 const routes: Routes = [

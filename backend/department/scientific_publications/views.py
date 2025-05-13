@@ -6,11 +6,13 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from .models import Tag, ScientificPublication
 from .serializers import ScientificPublicationSerializer, TagSerializer
+import os
 
 class ScientificPublicationsSearchView(View):
     def get(self, request, name):
         # Ваш API ключ для SERP API
-        api_key = '244d2e6ba5df5245f7599c14c6ab7a8f190ea5231f3083ac3320764d75046dbf'
+        api_key = os.environ.get('SERP_API_KEY')
+
         # Пример запроса к Google Scholar
         search_url = f"https://serpapi.com/search.json?engine=google_scholar&q={name}&api_key={api_key}"
 
