@@ -27,6 +27,7 @@ urlpatterns = [
     path('api/telegram/', include('tg_bot.urls')),
     path('api/events/', include('events.urls')),
     path('api/grades/', include('parcing_data_from_excel.urls')),
+    path('api/export/', include('excel_export.urls')),
     path('mdeditor/', include('mdeditor.urls')),
 
 ]

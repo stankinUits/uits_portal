@@ -61,6 +61,7 @@ LOCAL_INSTALLED_APPS = [
     'events',
     'tg_bot',
     'parcing_data_from_excel',
+    'excel_export',
 ]
 
 # Application definition
