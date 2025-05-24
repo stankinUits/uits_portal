@@ -63,7 +63,6 @@ class GetAllTagsView(View):
         serializer = TagSerializer(tags, many=True)
         return JsonResponse(serializer.data, safe=False)
 
-@method_decorator(csrf_exempt, name='dispatch')
 class SaveCardView(View):
     def post(self, request):
         data = json.loads(request.body)
@@ -88,7 +87,6 @@ class SaveCardView(View):
         return JsonResponse({'id': publication.id})
 
 
-@method_decorator(csrf_exempt, name='dispatch')
 class EditCardView(View):
     def post(self, request):
         data = json.loads(request.body)
@@ -120,7 +118,6 @@ class EditCardView(View):
         serializer = ScientificPublicationSerializer(publication)
         return JsonResponse({'status': 'success', 'publication': serializer.data})
 
-@method_decorator(csrf_exempt, name='dispatch')
 class SaveNewTagsView(View):
     def post(self, request):
         data = json.loads(request.body)
@@ -129,7 +126,6 @@ class SaveNewTagsView(View):
             Tag.objects.get_or_create(name=tag_name)
         return JsonResponse({'status': 'success'})
 
-@method_decorator(csrf_exempt, name='dispatch')
 class DeleteCardView(View):
     def post(self, request):
         data = json.loads(request.body)
@@ -141,7 +137,6 @@ class DeleteCardView(View):
         except ScientificPublication.DoesNotExist:
             return JsonResponse({'status': 'error', 'message': 'Publication not found'}, status=404)
 
-@method_decorator(csrf_exempt, name='dispatch')
 class DeleteTagView(View):
     def post(self, request, name):
         try:
