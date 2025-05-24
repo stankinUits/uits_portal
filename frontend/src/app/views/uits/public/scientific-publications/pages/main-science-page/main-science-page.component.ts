@@ -40,7 +40,6 @@ interface adminMenu {
   styleUrls: ['./main-science-page.component.css']
 })
 export class MainSciencePageComponent implements OnInit {
-  // Внедрение зависимостей
   scienceService = inject(RegisterScienceService);
   authService: AuthService = inject(AuthService);
   cdr: ChangeDetectorRef = inject(ChangeDetectorRef);

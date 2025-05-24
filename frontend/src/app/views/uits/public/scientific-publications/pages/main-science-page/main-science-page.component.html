@@ -20,8 +20,8 @@
         type="text"
       />
     </div>
-    <hr class="line">
-    <button class="create-button" (click)="openEditModal()">Создать публикацию</button>
+    <hr class="line" *ngIf="authService.canEdit() | async">
+    <button *ngIf="authService.canEdit() | async" class="create-button" (click)="openEditModal()">Создать публикацию</button>
     <hr class="line" *ngIf="authService.canEdit() | async">
     <div class="admin-menu" *ngIf="authService.canEdit() | async">
       <p class="sub-heading">Перейти на страницы: </p>

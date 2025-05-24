@@ -2,18 +2,17 @@ import json
 import requests
 from django.http import JsonResponse
 from django.views import View
-from django.views.decorators.csrf import csrf_exempt
-from django.utils.decorators import method_decorator
 from .models import Tag, ScientificPublication
 from .serializers import ScientificPublicationSerializer, TagSerializer
 import os
+from rest_framework.permissions import IsAuthenticated
 
 class ScientificPublicationsSearchView(View):
     def get(self, request, name):
-        # Ваш API ключ для SERP API
-        api_key = os.environ.get('SERP_API_KEY')
+        if not request.user.is_authenticated:
+            return JsonResponse({'error': 'Authentication required'}, status=401)
 
-        # Пример запроса к Google Scholar
+        api_key = os.environ.get('SERP_API_KEY')
         search_url = f"https://serpapi.com/search.json?engine=google_scholar&q={name}&api_key={api_key}"
 
         science_publication_cards = []
@@ -65,6 +64,9 @@ class GetAllTagsView(View):
 
 class SaveCardView(View):
     def post(self, request):
+        if not request.user.is_authenticated:
+            return JsonResponse({'error': 'Authentication required'}, status=401)
+
         data = json.loads(request.body)
 
         publication = ScientificPublication.objects.create(
@@ -89,6 +91,9 @@ class SaveCardView(View):
 
 class EditCardView(View):
     def post(self, request):
+        if not request.user.is_authenticated:
+            return JsonResponse({'error': 'Authentication required'}, status=401)
+
         data = json.loads(request.body)
         try:
             publication = ScientificPublication.objects.get(id=data['id'])
@@ -120,6 +125,9 @@ class EditCardView(View):
 
 class SaveNewTagsView(View):
     def post(self, request):
+        if not request.user.is_authenticated:
+            return JsonResponse({'error': 'Authentication required'}, status=401)
+
         data = json.loads(request.body)
         tags = data['tags']
         for tag_name in tags:
@@ -128,6 +136,9 @@ class SaveNewTagsView(View):
 
 class DeleteCardView(View):
     def post(self, request):
+        if not request.user.is_authenticated:
+            return JsonResponse({'error': 'Authentication required'}, status=401)
+
         data = json.loads(request.body)
         publication_id = data['id']
         try:
@@ -139,6 +150,9 @@ class DeleteCardView(View):
 
 class DeleteTagView(View):
     def post(self, request, name):
+        if not request.user.is_authenticated:
+            return JsonResponse({'error': 'Authentication required'}, status=401)
+
         try:
             tag = Tag.objects.get(name=name)
             tag.delete()

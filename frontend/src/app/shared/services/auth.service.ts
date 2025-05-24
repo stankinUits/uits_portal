@@ -86,6 +86,10 @@ export class AuthService {
     );
   }
 
+  isAuthenticated() {
+    return this.canEdit() || this.isTeacher();
+  }
+
   updateProfile(profileData: any): Observable<any> {
     return this.http
       .post<Profile>(ApiConfig.user.update_info, profileData)
