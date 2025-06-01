@@ -219,6 +219,7 @@
 
     <div class="command-container">
         <div class="command-title">Parse Output Module Grade</div>
+        <div class="description">This command will parse the input data and generate Excel files for each teacher-discipline combination. The files will be saved in the output directory.</div>
         <div class="command-box">
             curl -X POST http://localhost:8000/api/grades/parse-output-module-grade/
             <div class="action-buttons">
@@ -231,6 +232,7 @@
 
     <div class="command-container">
         <div class="command-title">Download Output Files</div>
+        <div class="description">Download all generated Excel files as a ZIP archive.</div>
         <div class="command-box">
             curl -X GET http://localhost:8000/api/grades/download-output-files/
             <div class="action-buttons">

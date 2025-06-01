@@ -124,8 +124,19 @@ class ParseAllStudentsView(APIView):
 class ParseDataForModuleGrade(APIView):
     def post(self, request):
         try:
+            # First parse the data
             parse_output_for_parcing_module_grade()
-            return Response({"message": "Output module grade parsed successfully"})
+            
+            # Then generate the Excel files
+            from excel_export.views import ExportModuleGradeByTeacherDisciplineView
+            export_view = ExportModuleGradeByTeacherDisciplineView()
+            response = export_view.get(request)
+            
+            if response.status_code == 200:
+                return Response({"message": "Output module grade parsed and files generated successfully"})
+            else:
+                return Response({"error": "Failed to generate output files"}, status=status.HTTP_400_BAD_REQUEST)
+                
         except FileNotFoundError as e:
             return Response({"error": str(e)}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
