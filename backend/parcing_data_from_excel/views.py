@@ -155,11 +155,31 @@ class DownloadOutputFilesView(APIView):
                 return Response({"error": "No files to download"}, status=status.HTTP_404_NOT_FOUND)
             
             zip_path = os.path.join(output_dir, 'all_output_files.zip')
+            
+            # Delete existing zip file if it exists
+            if os.path.exists(zip_path):
+                os.remove(zip_path)
+            
+            # Create new zip file
             with zipfile.ZipFile(zip_path, 'w') as zipf:
                 for file in files:
-                    zipf.write(os.path.join(output_dir, file), arcname=file)
+                    file_path = os.path.join(output_dir, file)
+                    zipf.write(file_path, arcname=file)
             
+            # Clean up old zip file after sending response
             response = FileResponse(open(zip_path, 'rb'), as_attachment=True, filename='all_output_files.zip')
+            response['Content-Disposition'] = 'attachment; filename="all_output_files.zip"'
+            
+            # Add cleanup callback
+            def cleanup():
+                try:
+                    if os.path.exists(zip_path):
+                        os.remove(zip_path)
+                except:
+                    pass
+            
+            response.closed = cleanup
             return response
+            
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
