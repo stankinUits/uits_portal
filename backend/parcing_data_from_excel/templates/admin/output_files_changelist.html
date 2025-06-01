@@ -1,0 +1,14 @@
+{% extends "admin/base_site.html" %}
+{% block content %}
+<h1>Output Excel Files</h1>
+<form method="get" action="download-all-zip/">
+    <button type="submit">Download All as ZIP</button>
+</form>
+<ul>
+  {% for file in files %}
+    <li>{{ file }}</li>
+  {% empty %}
+    <li>No files found.</li>
+  {% endfor %}
+</ul>
+{% endblock %} 
