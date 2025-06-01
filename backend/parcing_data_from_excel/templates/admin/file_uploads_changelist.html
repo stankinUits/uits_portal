@@ -1,0 +1,346 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block extrastyle %}
+{{ block.super }}
+<style>
+    .file-upload-container {
+        margin: 20px 0;
+        padding: 20px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        border: 1px solid #dee2e6;
+    }
+    .file-status {
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-size: 0.9em;
+        font-weight: bold;
+        margin-left: 10px;
+    }
+    .file-status.exists {
+        background-color: #d4edda;
+        color: #155724;
+    }
+    .file-status.missing {
+        background-color: #f8d7da;
+        color: #721c24;
+    }
+    .upload-form {
+        margin-top: 30px;
+        padding: 20px;
+        background-color: #fff;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+    }
+    .form-row {
+        margin-bottom: 20px;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 4px;
+        border: 1px solid #e9ecef;
+    }
+    .form-row label {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+        color: #495057;
+    }
+    .form-row .helptext {
+        font-size: 0.85em;
+        color: #6c757d;
+        margin-top: 5px;
+        display: block;
+    }
+    .form-row input[type="file"] {
+        display: block;
+        margin-top: 10px;
+        padding: 5px;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        width: 100%;
+        max-width: 500px;
+        background-color: #fff;
+        cursor: pointer;
+    }
+    .form-row input[type="file"]:hover {
+        background-color: #f8f9fa;
+        border-color: #80bdff;
+    }
+    .section-title {
+        font-size: 1.4em;
+        color: #343a40;
+        margin: 30px 0 20px 0;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #dee2e6;
+    }
+    .file-list {
+        list-style: none;
+        padding: 0;
+    }
+    .file-item {
+        padding: 10px;
+        margin-bottom: 10px;
+        background-color: #fff;
+        border: 1px solid #dee2e6;
+        border-radius: 4px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .file-name {
+        font-family: monospace;
+        font-size: 0.95em;
+        color: #495057;
+    }
+    .submit-button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 1.1em;
+        margin-top: 20px;
+    }
+    .submit-button:hover {
+        background-color: #0056b3;
+    }
+    .submit-button:disabled {
+        background-color: #6c757d;
+        cursor: not-allowed;
+    }
+    .description {
+        color: #666;
+        margin-bottom: 20px;
+        font-style: italic;
+    }
+    .status-summary {
+        background-color: #e9ecef;
+        padding: 15px;
+        border-radius: 4px;
+        margin-bottom: 20px;
+    }
+    .status-summary h3 {
+        margin-top: 0;
+        color: #495057;
+    }
+    .success-message {
+        background-color: #d4edda;
+        color: #155724;
+        padding: 10px;
+        border-radius: 4px;
+        margin-bottom: 20px;
+        border: 1px solid #c3e6cb;
+    }
+    .warning-message {
+        background-color: #fff3cd;
+        color: #856404;
+        padding: 10px;
+        border-radius: 4px;
+        margin-bottom: 20px;
+        border: 1px solid #ffeeba;
+    }
+    .file-selected {
+        font-size: 0.85em;
+        color: #28a745;
+        margin-top: 5px;
+        display: none;
+    }
+    .choose-file-btn {
+        display: inline-block;
+        padding: 8px 15px;
+        background-color: #28a745;
+        color: white;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: 10px;
+        font-size: 0.9em;
+    }
+    .choose-file-btn:hover {
+        background-color: #218838;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div id="content-main">
+    <h1>Excel File Management</h1>
+    
+    {% if messages %}
+        {% for message in messages %}
+            <div class="{% if message.tags == 'success' %}success-message{% else %}warning-message{% endif %}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    
+    <div class="description">
+        Upload Excel files required for the system. Files will be automatically renamed to their expected names.
+    </div>
+    
+    <div class="status-summary">
+        <h3>Current File Status</h3>
+        <ul class="file-list">
+            <li class="file-item">
+                <span class="file-name">Data_for_module_gradebook.xlsx</span>
+                <span class="file-status {% if file_status.data_for_module_gradebook %}exists">✓ Exists{% else %}missing">✗ Missing{% endif %}</span>
+            </li>
+            <li class="file-item">
+                <span class="file-name">input_data_for_excel_output.xlsx</span>
+                <span class="file-status {% if file_status.input_data_for_excel_output %}exists">✓ Exists{% else %}missing">✗ Missing{% endif %}</span>
+            </li>
+            <li class="file-item">
+                <span class="file-name">template_for_module.xlsx</span>
+                <span class="file-status {% if file_status.template_for_module %}exists">✓ Exists{% else %}missing">✗ Missing{% endif %}</span>
+            </li>
+            <li class="file-item">
+                <span class="file-name">1 курс.xlsx</span>
+                <span class="file-status {% if file_status.course_1 %}exists">✓ Exists{% else %}missing">✗ Missing{% endif %}</span>
+            </li>
+            <li class="file-item">
+                <span class="file-name">2 курс.xlsx</span>
+                <span class="file-status {% if file_status.course_2 %}exists">✓ Exists{% else %}missing">✗ Missing{% endif %}</span>
+            </li>
+            <li class="file-item">
+                <span class="file-name">3 курс.xlsx</span>
+                <span class="file-status {% if file_status.course_3 %}exists">✓ Exists{% else %}missing">✗ Missing{% endif %}</span>
+            </li>
+            <li class="file-item">
+                <span class="file-name">4 курс.xlsx</span>
+                <span class="file-status {% if file_status.course_4 %}exists">✓ Exists{% else %}missing">✗ Missing{% endif %}</span>
+            </li>
+            <li class="file-item">
+                <span class="file-name">1 курс магистратуры.xlsx</span>
+                <span class="file-status {% if file_status.masters_1 %}exists">✓ Exists{% else %}missing">✗ Missing{% endif %}</span>
+            </li>
+            <li class="file-item">
+                <span class="file-name">2 курс магистратуры.xlsx</span>
+                <span class="file-status {% if file_status.masters_2 %}exists">✓ Exists{% else %}missing">✗ Missing{% endif %}</span>
+            </li>
+        </ul>
+    </div>
+    
+    <div class="upload-form">
+        <h2 class="section-title">Upload Files</h2>
+        <form method="post" action="upload/" enctype="multipart/form-data" id="upload-form">
+            {% csrf_token %}
+            
+            <h3>Main Data Files</h3>
+            
+            <div class="form-row">
+                <label for="id_data_for_module_gradebook">Data for Module Gradebook (Data_for_module_gradebook.xlsx)</label>
+                <span class="helptext">Данные для модульных журналов</span>
+                <input type="file" name="data_for_module_gradebook" id="id_data_for_module_gradebook" accept=".xlsx,.xls">
+                <div class="file-selected" id="selected_data_for_module_gradebook"></div>
+            </div>
+            
+            <div class="form-row">
+                <label for="id_input_data_for_excel_output">Input Data for Excel Output (input_data_for_excel_output.xlsx)</label>
+                <span class="helptext">Данные для модульных журналов</span>
+                <input type="file" name="input_data_for_excel_output" id="id_input_data_for_excel_output" accept=".xlsx,.xls">
+                <div class="file-selected" id="selected_input_data_for_excel_output"></div>
+            </div>
+            
+            <div class="form-row">
+                <label for="id_template_for_module">Template for Module (template_for_module.xlsx)</label>
+                <span class="helptext">Template for generating output files</span>
+                <input type="file" name="template_for_module" id="id_template_for_module" accept=".xlsx,.xls">
+                <div class="file-selected" id="selected_template_for_module"></div>
+            </div>
+            
+            <h3>Student Data Files</h3>
+            
+            <div class="form-row">
+                <label for="id_course_1">1st Year Students (1 курс.xlsx)</label>
+                <span class="helptext">1st year student data</span>
+                <input type="file" name="course_1" id="id_course_1" accept=".xlsx,.xls">
+                <div class="file-selected" id="selected_course_1"></div>
+            </div>
+            
+            <div class="form-row">
+                <label for="id_course_2">2nd Year Students (2 курс.xlsx)</label>
+                <span class="helptext">2nd year student data</span>
+                <input type="file" name="course_2" id="id_course_2" accept=".xlsx,.xls">
+                <div class="file-selected" id="selected_course_2"></div>
+            </div>
+            
+            <div class="form-row">
+                <label for="id_course_3">3rd Year Students (3 курс.xlsx)</label>
+                <span class="helptext">3rd year student data</span>
+                <input type="file" name="course_3" id="id_course_3" accept=".xlsx,.xls">
+                <div class="file-selected" id="selected_course_3"></div>
+            </div>
+            
+            <div class="form-row">
+                <label for="id_course_4">4th Year Students (4 курс.xlsx)</label>
+                <span class="helptext">4th year student data</span>
+                <input type="file" name="course_4" id="id_course_4" accept=".xlsx,.xls">
+                <div class="file-selected" id="selected_course_4"></div>
+            </div>
+            
+            <div class="form-row">
+                <label for="id_masters_1">1st Year Masters (1 курс магистратуры.xlsx)</label>
+                <span class="helptext">1st year master's student data</span>
+                <input type="file" name="masters_1" id="id_masters_1" accept=".xlsx,.xls">
+                <div class="file-selected" id="selected_masters_1"></div>
+            </div>
+            
+            <div class="form-row">
+                <label for="id_masters_2">2nd Year Masters (2 курс магистратуры.xlsx)</label>
+                <span class="helptext">2nd year master's student data</span>
+                <input type="file" name="masters_2" id="id_masters_2" accept=".xlsx,.xls">
+                <div class="file-selected" id="selected_masters_2"></div>
+            </div>
+            
+            <button type="submit" class="submit-button" id="submit-btn">Upload Selected Files</button>
+        </form>
+    </div>
+</div>
+
+<script>
+// Add file selection listeners
+document.addEventListener('DOMContentLoaded', function() {
+    const fileInputs = document.querySelectorAll('input[type="file"]');
+    
+    fileInputs.forEach(input => {
+        input.addEventListener('change', function() {
+            const selectedDiv = document.getElementById('selected_' + this.name);
+            if (this.files.length > 0) {
+                selectedDiv.textContent = '✓ Selected: ' + this.files[0].name;
+                selectedDiv.style.display = 'block';
+            } else {
+                selectedDiv.style.display = 'none';
+            }
+            
+            // Enable/disable submit button based on file selection
+            updateSubmitButton();
+        });
+    });
+    
+    function updateSubmitButton() {
+        const submitBtn = document.getElementById('submit-btn');
+        const hasFiles = Array.from(fileInputs).some(input => input.files.length > 0);
+        
+        if (hasFiles) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Upload Selected Files';
+        } else {
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Select Files to Upload';
+        }
+    }
+    
+    // Initial state
+    updateSubmitButton();
+    
+    // Form submission
+    document.getElementById('upload-form').addEventListener('submit', function(e) {
+        const submitBtn = document.getElementById('submit-btn');
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Uploading...';
+    });
+});
+</script>
+{% endblock %} 
