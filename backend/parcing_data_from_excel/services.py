@@ -222,37 +222,51 @@ def parse_students_from_all_excels():
 def parse_output_for_parcing_module_grade():
     """
     Parses 'input_data_for_excel_output.xlsx' for teacher (col B), discipline (col C), and group_name (col G),
+    and parses 'Data_for_module_gradebook.xlsx' for id_teachers_in_discipline (col A),
     starting from row 2, and saves them to OutputForParcingModuleGrade.
     """
+    import numpy as np
+    # Parse id_teachers_in_discipline from Data_for_module_gradebook.xlsx
+    id_teachers_in_discipline_list = []
+    id_file_path = os.path.join(settings.MEDIA_ROOT, 'excel_files', 'Data_for_module_gradebook.xlsx')
+    if os.path.exists(id_file_path):
+        try:
+            id_df = pd.read_excel(id_file_path, header=0)
+            if id_df.shape[1] > 0:
+                id_teachers_in_discipline_list = id_df.iloc[:, 0].dropna().astype(str).tolist()
+        except Exception as e:
+            print(f"❌ Error parsing Data_for_module_gradebook.xlsx: {e}")
+    # Parse main data from input_data_for_excel_output.xlsx
     file_path = os.path.join(settings.MEDIA_ROOT, 'excel_files', 'input_data_for_excel_output.xlsx')
     if not os.path.exists(file_path):
         print(f"Excel file not found: {file_path}")
         return
     try:
         df = pd.read_excel(file_path, header=0)
-        # Ensure columns exist by index (B=1, C=2, G=6)
         required_cols = [1, 2, 6]
         max_col = df.shape[1] - 1
         if any(col > max_col for col in required_cols):
             print("One or more required columns (B, C, G) are missing in the Excel file.")
             return
-        # Drop rows where all three are NaN
         data = df.iloc[:, required_cols].dropna(how='all')
         data.columns = ['teacher', 'discipline', 'group_name']
         count = 0
-        for _, row in data.iterrows():
+        for idx, row in data.iterrows():
             teacher = str(row['teacher']).strip()
             discipline = str(row['discipline']).strip()
             group_name = str(row['group_name']).strip()
+            id_teacher = id_teachers_in_discipline_list[idx] if idx < len(id_teachers_in_discipline_list) else ''
             if not (teacher or discipline or group_name):
                 continue
-            # Save or update
             obj, created = OutputForParcingModuleGrade.objects.update_or_create(
                 teacher=teacher,
                 discipline=discipline,
-                group_name=group_name
+                group_name=group_name,
+                defaults={
+                    'id_teachers_in_discipline': id_teacher
+                }
             )
             count += 1
-        print(f"✅ Parsed and saved {count} rows to OutputForParcingModuleGrade from input_data_for_excel_output.xlsx.")
+        print(f"✅ Parsed and saved {count} rows to OutputForParcingModuleGrade from input_data_for_excel_output.xlsx and Data_for_module_gradebook.xlsx.")
     except Exception as e:
         print(f"❌ Error parsing input_data_for_excel_output.xlsx: {e}")

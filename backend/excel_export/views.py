@@ -104,9 +104,9 @@ class FillTemplateView(View):
 class ExportModuleGradeByTeacherDisciplineView(View):
     """
     GET /api/export/module-grade-by-teacher-discipline/
-    For each unique (teacher, discipline) in OutputForParcingModuleGrade,
+    For each unique (id_teachers_in_discipline, discipline) in OutputForParcingModuleGrade,
     copies the template, creates/fills a sheet for each group, and fills it with students.
-    The file is named: module_grade_{teacher}_{discipline}_{date}.xlsx
+    The file is named: module_grade_{id_teachers_in_discipline}_{discipline}_{date}.xlsx
     """
     TEMPLATE_SUBPATH = 'excel_files/template_for_module.xlsx'
     OUTPUT_DIR = 'output_module_grade_by_teacher_discipline'
@@ -117,10 +117,14 @@ class ExportModuleGradeByTeacherDisciplineView(View):
 
     def get(self, request):
         import shutil
-        # 1. Get all unique (teacher, discipline) pairs
-        pairs = OutputForParcingModuleGrade.objects.values_list('teacher', 'discipline').distinct()
+        # 1. Get all unique (id_teachers_in_discipline, discipline) pairs
+        pairs = (
+            OutputForParcingModuleGrade.objects
+            .values_list('id_teachers_in_discipline', 'discipline')
+            .distinct()
+        )
         if not pairs:
-            return HttpResponse("No teacher/discipline pairs found.", status=404)
+            return HttpResponse("No id_teachers_in_discipline/discipline pairs found.", status=404)
 
         tpl_path = os.path.join(settings.MEDIA_ROOT, self.TEMPLATE_SUBPATH)
         if not os.path.exists(tpl_path):
@@ -131,55 +135,61 @@ class ExportModuleGradeByTeacherDisciplineView(View):
         today = datetime.date.today().strftime('%Y%m%d')
         files_created = []
 
-        for teacher, discipline in pairs:
-            # 2. Get all groups for this teacher+discipline
-            groups = OutputForParcingModuleGrade.objects.filter(
-                teacher=teacher, discipline=discipline
-            ).values_list('group_name', flat=True).distinct()
+        for id_teacher, discipline in pairs:
+            # 2. Get all teachers for this id_teachers_in_discipline+discipline
+            teachers = (
+                OutputForParcingModuleGrade.objects
+                .filter(id_teachers_in_discipline=id_teacher, discipline=discipline)
+                .values_list('teacher', flat=True)
+                .distinct()
+            )
+            teachers_str = ', '.join(teachers)
+            # 3. Get all groups for this id_teachers_in_discipline+discipline
+            groups = (
+                OutputForParcingModuleGrade.objects
+                .filter(id_teachers_in_discipline=id_teacher, discipline=discipline)
+                .values_list('group_name', flat=True)
+                .distinct()
+            )
             if not groups:
                 continue
-            # 3. Load template for this file
+            # 4. Load template for this file
             wb = openpyxl.load_workbook(tpl_path)
-            # Remove all sheets except the first (to avoid template clutter)
             while len(wb.sheetnames) > 1:
                 wb.remove(wb[wb.sheetnames[1]])
-            # 4. For each group, create or reuse a sheet and fill students
             for group in groups:
                 if group in wb.sheetnames:
                     ws = wb[group]
                 else:
                     ws = wb.copy_worksheet(wb.active)
                     ws.title = group
-                # Clear previous student rows (if any)
                 for row in ws.iter_rows(min_row=self.START_ROW, max_row=ws.max_row):
                     for cell in row:
                         cell.value = None
                 # Fill discipline in C4:N4
-                for col in range(3, 15):  # C=3, N=14
-                    _set_cell_value(ws, 4, col, discipline)  # C4:N4 discipline
-                # Fill group_name in C5:N5 and teacher in C7:N7
-                for col in range(3, 15):  # C=3, N=14
-                    _set_cell_value(ws, 5, col, group)      # C5:N5 group_name
-                    _set_cell_value(ws, 7, col, teacher)    # C7:N7 teacher
-                # Fill students
+                for col in range(3, 15):
+                    _set_cell_value(ws, 4, col, discipline)
+                # Fill group_name in C5:N5 and teachers in C7:N7
+                for col in range(3, 15):
+                    _set_cell_value(ws, 5, col, group)
+                    _set_cell_value(ws, 7, col, teachers_str)
                 students = Student.objects.filter(group_name=group).order_by('student_num_in_list')
                 for idx, stu in enumerate(students):
                     row = self.START_ROW + idx
-                    _set_cell_value(ws, row, 1, idx + 1)  # A: student number
-                    _set_cell_value(ws, row, self.COL_FIRST,  stu.first_name)    # B: Имя
-                    _set_cell_value(ws, row, self.COL_MIDDLE, stu.middle_name)   # C: Отчество
-                    _set_cell_value(ws, row, self.COL_LAST,   stu.last_name)     # D: Фамилия
-            # Remove the original template sheet if not a group
+                    _set_cell_value(ws, row, 1, idx + 1)
+                    _set_cell_value(ws, row, self.COL_FIRST,  stu.first_name)
+                    _set_cell_value(ws, row, self.COL_MIDDLE, stu.middle_name)
+                    _set_cell_value(ws, row, self.COL_LAST,   stu.last_name)
             if wb.active.title not in groups:
                 wb.remove(wb.active)
             # 5. Save file with new naming
-            safe_teacher = str(teacher).replace(' ', '_')
+            safe_id_teacher = str(id_teacher).replace(' ', '_') if id_teacher else 'noid'
             safe_discipline = str(discipline).replace(' ', '_')
-            filename = f"module_grade_{safe_teacher}_{safe_discipline}_{today}.xlsx"
+            filename = f"module_grade_{safe_id_teacher}_{safe_discipline}_{today}.xlsx"
             out_path = os.path.join(out_dir, filename)
             counter = 1
             while os.path.exists(out_path):
-                filename = f"module_grade_{safe_teacher}_{safe_discipline}_{today}_{counter}.xlsx"
+                filename = f"module_grade_{safe_id_teacher}_{safe_discipline}_{today}_{counter}.xlsx"
                 out_path = os.path.join(out_dir, filename)
                 counter += 1
             wb.save(out_path)

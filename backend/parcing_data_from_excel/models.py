@@ -67,6 +67,7 @@ class OutputForParcingModuleGrade(models.Model):
     teacher = models.CharField(max_length=255)
     discipline = models.CharField(max_length=255)
     group_name = models.CharField(max_length=100)
+    id_teachers_in_discipline = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
         db_table = 'output_for_parcing_module_grade'
