@@ -132,6 +132,25 @@ class ExportModuleGradeByTeacherDisciplineView(View):
 
         out_dir = os.path.join(settings.MEDIA_ROOT, self.OUTPUT_DIR)
         os.makedirs(out_dir, exist_ok=True)
+        
+        # Delete all existing Excel files in the output directory
+        existing_files = [f for f in os.listdir(out_dir) if f.endswith('.xlsx')]
+        for file in existing_files:
+            file_path = os.path.join(out_dir, file)
+            try:
+                os.remove(file_path)
+            except Exception as e:
+                print(f"Error deleting file {file}: {e}")
+        
+        # Also delete any existing zip files
+        zip_files = [f for f in os.listdir(out_dir) if f.endswith('.zip')]
+        for zip_file in zip_files:
+            zip_path = os.path.join(out_dir, zip_file)
+            try:
+                os.remove(zip_path)
+            except Exception as e:
+                print(f"Error deleting zip file {zip_file}: {e}")
+        
         today = datetime.date.today().strftime('%Y%m%d')
         files_created = []
 
@@ -155,17 +174,27 @@ class ExportModuleGradeByTeacherDisciplineView(View):
                 continue
             # 4. Load template for this file
             wb = openpyxl.load_workbook(tpl_path)
+            
+            # Get the first sheet name (which might be "Поток" or any other name)
+            template_sheet_name = wb.sheetnames[0] if wb.sheetnames else None
+            
+            # Remove all sheets except the first one (template)
             while len(wb.sheetnames) > 1:
                 wb.remove(wb[wb.sheetnames[1]])
+            
+            # Create sheets for each group
+            sheets_created = []
             for group in groups:
-                if group in wb.sheetnames:
-                    ws = wb[group]
-                else:
-                    ws = wb.copy_worksheet(wb.active)
-                    ws.title = group
+                # Copy the template sheet and rename it to the group name
+                ws = wb.copy_worksheet(wb.active)
+                ws.title = group
+                sheets_created.append(group)
+                
+                # Clear existing data in the copied sheet
                 for row in ws.iter_rows(min_row=self.START_ROW, max_row=ws.max_row):
                     for cell in row:
                         cell.value = None
+                
                 # Fill discipline in C4:N4
                 for col in range(3, 15):
                     _set_cell_value(ws, 4, col, discipline)
@@ -180,18 +209,17 @@ class ExportModuleGradeByTeacherDisciplineView(View):
                     _set_cell_value(ws, row, self.COL_FIRST,  stu.first_name)
                     _set_cell_value(ws, row, self.COL_MIDDLE, stu.middle_name)
                     _set_cell_value(ws, row, self.COL_LAST,   stu.last_name)
-            if wb.active.title not in groups:
-                wb.remove(wb.active)
+            
+            # Remove the original template sheet (e.g., "Поток")
+            if template_sheet_name and template_sheet_name in wb.sheetnames and template_sheet_name not in groups:
+                wb.remove(wb[template_sheet_name])
+            
             # 5. Save file with new naming
-            safe_id_teacher = str(id_teacher).replace(' ', '_') if id_teacher else 'noid'
-            safe_discipline = str(discipline).replace(' ', '_')
+            safe_id_teacher = str(id_teacher).replace(' ', '_').replace('/', '_').replace('\\', '_') if id_teacher else 'noid'
+            safe_discipline = str(discipline).replace(' ', '_').replace('/', '_').replace('\\', '_')
             filename = f"module_grade_{safe_id_teacher}_{safe_discipline}_{today}.xlsx"
             out_path = os.path.join(out_dir, filename)
-            counter = 1
-            while os.path.exists(out_path):
-                filename = f"module_grade_{safe_id_teacher}_{safe_discipline}_{today}_{counter}.xlsx"
-                out_path = os.path.join(out_dir, filename)
-                counter += 1
+            
             wb.save(out_path)
             files_created.append(filename)
         if not files_created:

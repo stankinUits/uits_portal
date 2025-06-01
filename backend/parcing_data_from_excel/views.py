@@ -133,7 +133,13 @@ class ParseDataForModuleGrade(APIView):
             response = export_view.get(request)
             
             if response.status_code == 200:
-                return Response({"message": "Output module grade parsed and files generated successfully"})
+                # Count the files created
+                output_dir = os.path.join(settings.MEDIA_ROOT, 'output_module_grade_by_teacher_discipline')
+                if os.path.exists(output_dir):
+                    files_count = len([f for f in os.listdir(output_dir) if f.endswith('.xlsx')])
+                    return Response({"message": f"Old files deleted. Generated {files_count} new Excel files successfully"})
+                else:
+                    return Response({"message": "Output module grade parsed and files generated successfully"})
             else:
                 return Response({"error": "Failed to generate output files"}, status=status.HTTP_400_BAD_REQUEST)
                 

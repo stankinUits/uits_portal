@@ -103,6 +103,8 @@
 <div id="content-main">
     <h1>Curl Commands for Data Operations</h1>
     
+    {% csrf_token %}
+    
     <div class="section-title">Database Initialization Commands</div>
     <div class="description">Use these commands to initialize and populate the database with data from Excel files.</div>
     
@@ -284,7 +286,7 @@ async function runCommand(button, url, method = 'POST') {
     
     try {
         // Get CSRF token
-        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        const csrfToken = getCookie('csrftoken');
         
         // Make the request
         const response = await fetch(url, {
