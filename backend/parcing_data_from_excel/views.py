@@ -9,7 +9,8 @@ from parcing_data_from_excel.services import (
     parse_excel_data_to_groups,
     parse_excel_data_to_semesters,
     parse_excel_data_to_group_courses,
-    parse_students_from_all_excels  # Fixed import
+    parse_students_from_all_excels,  # Fixed import
+    parse_output_for_parcing_module_grade
 )
 
 
@@ -160,3 +161,17 @@ class ParseAllStudentsView(APIView):
             return Response({"status": "error", "message": str(e)}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             return Response({"status": "error", "message": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class ParseDataForModuleGrade(APIView):
+    """
+    API view to trigger parsing of the Excel file for OutputForParcingModuleGrade.
+    """
+    def post(self, request):
+        try:
+            parse_output_for_parcing_module_grade()
+            return Response({"status": "success", "message": "OutputForParcingModuleGrade table parsed successfully!"})
+        except FileNotFoundError as e:
+            return Response({"status": "error", "message": str(e)}, status=404)
+        except Exception as e:
+            return Response({"status": "error", "message": str(e)}, status=400)

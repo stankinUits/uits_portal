@@ -61,3 +61,12 @@ class Student(models.Model):
 
     class Meta:
         db_table = "students"
+
+
+class OutputForParcingModuleGrade(models.Model):
+    teacher = models.CharField(max_length=255)
+    discipline = models.CharField(max_length=255)
+    group_name = models.CharField(max_length=100)
+
+    class Meta:
+        db_table = 'output_for_parcing_module_grade'

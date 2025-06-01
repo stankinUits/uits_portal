@@ -64,4 +64,18 @@ export const ApiConfig = {
     read: 'api/users/events/',
     write: (id: number) => `api/users/events/${id}`,
   },
+
+parcing: {
+  codeDirections: 'api/parse-code-directions/',
+  disciplines: 'api/parse-disciplines/',
+  lessonTypes: 'api/parse-lesson-types/',
+  teachers: 'api/parse-teachers/',
+  groups: 'api/parse-groups/',
+  semesters: 'api/parse-semesters/',
+  groupCourses: 'api/parse-group-courses/',
+  allData: 'api/parse-all/',
+  allStudents: 'api/parse-all-students/',
+},
+
+
 };

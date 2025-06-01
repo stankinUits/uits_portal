@@ -5,7 +5,7 @@ from django.conf import settings
 
 from parcing_data_from_excel.models import (
     CodeDirection, Discipline, LessonType,
-    Teacher, Group, Semester, GroupCourse, Student
+    Teacher, Group, Semester, GroupCourse, Student, OutputForParcingModuleGrade
 )
 
 
@@ -103,12 +103,6 @@ def parse_excel_data_to_group_courses():
     else:
         print("Column 'Курс' not found in the Excel file.")
 
-
-
-import os
-import pandas as pd
-from django.conf import settings
-from parcing_data_from_excel.models import Student
 
 def parse_students_from_all_excels():
     """
@@ -223,3 +217,42 @@ def parse_students_from_all_excels():
             print(f"❌ Error processing file '{excel_file}': {e}")
 
     print("✅ Finished parsing all available Excel files.")
+
+
+def parse_output_for_parcing_module_grade():
+    """
+    Parses 'input_data_for_excel_output.xlsx' for teacher (col B), discipline (col C), and group_name (col G),
+    starting from row 2, and saves them to OutputForParcingModuleGrade.
+    """
+    file_path = os.path.join(settings.MEDIA_ROOT, 'excel_files', 'input_data_for_excel_output.xlsx')
+    if not os.path.exists(file_path):
+        print(f"Excel file not found: {file_path}")
+        return
+    try:
+        df = pd.read_excel(file_path, header=0)
+        # Ensure columns exist by index (B=1, C=2, G=6)
+        required_cols = [1, 2, 6]
+        max_col = df.shape[1] - 1
+        if any(col > max_col for col in required_cols):
+            print("One or more required columns (B, C, G) are missing in the Excel file.")
+            return
+        # Drop rows where all three are NaN
+        data = df.iloc[:, required_cols].dropna(how='all')
+        data.columns = ['teacher', 'discipline', 'group_name']
+        count = 0
+        for _, row in data.iterrows():
+            teacher = str(row['teacher']).strip()
+            discipline = str(row['discipline']).strip()
+            group_name = str(row['group_name']).strip()
+            if not (teacher or discipline or group_name):
+                continue
+            # Save or update
+            obj, created = OutputForParcingModuleGrade.objects.update_or_create(
+                teacher=teacher,
+                discipline=discipline,
+                group_name=group_name
+            )
+            count += 1
+        print(f"✅ Parsed and saved {count} rows to OutputForParcingModuleGrade from input_data_for_excel_output.xlsx.")
+    except Exception as e:
+        print(f"❌ Error parsing input_data_for_excel_output.xlsx: {e}")

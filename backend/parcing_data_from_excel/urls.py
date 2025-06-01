@@ -25,8 +25,7 @@ from django.urls import path
 from .views import (
     ParseExcelView, ParseDisciplinesView, ParseLessonTypesView,
     ParseTeachersView, ParseGroupsView, ParseSemestersView,
-    ParseGroupCoursesView, ParseAllDataView, ParseAllStudentsView,
-    ParseAllStudentsView
+    ParseGroupCoursesView, ParseAllDataView, ParseAllStudentsView, ParseDataForModuleGrade
 )
 
 urlpatterns = [
@@ -40,4 +39,6 @@ urlpatterns = [
     path('parse-all/', ParseAllDataView.as_view(), name='parse-all-data'),
     # path('parse-students/', ParseStudentsView.as_view(), name='parse-students'),
     path('parse-all-students/', ParseAllStudentsView.as_view(), name='parse-all-students'),  # Ensure this line is here
+    path('parse_output_for_parcing_module_grade/', ParseDataForModuleGrade.as_view(), name='parse_output_for_parcing_module_grade'),  # Ensure this line is here
+
 ]

@@ -7,7 +7,8 @@ from django.views import View
 import openpyxl
 from openpyxl.cell.cell import MergedCell
 
-from parcing_data_from_excel.models import Student
+from parcing_data_from_excel.models import Student, OutputForParcingModuleGrade
+import datetime
 
 
 def _set_cell_value(ws, row: int, col: int, value):
@@ -65,11 +66,19 @@ class FillTemplateView(View):
             .order_by('student_num_in_list')
         )
 
+        # Fill discipline in C4:N4
+        for col in range(3, 15):  # C=3, N=14
+            _set_cell_value(ws, 4, col, group_name)  # C4:N4 discipline
+        # Fill group_name in C5:N5 and teacher in C7:N7
+        for col in range(3, 15):  # C=3, N=14
+            _set_cell_value(ws, 5, col, group_name)      # C5:N5 group_name
+            _set_cell_value(ws, 7, col, "Teacher")    # C7:N7 teacher
         for idx, stu in enumerate(students):
             row = self.START_ROW + idx
-            _set_cell_value(ws, row, self.COL_FIRST,  stu.first_name)
-            _set_cell_value(ws, row, self.COL_MIDDLE, stu.middle_name)
-            _set_cell_value(ws, row, self.COL_LAST,   stu.last_name)
+            _set_cell_value(ws, row, 1, idx + 1)  # A: student number
+            _set_cell_value(ws, row, self.COL_FIRST,  stu.first_name)    # B: Имя
+            _set_cell_value(ws, row, self.COL_MIDDLE, stu.middle_name)   # C: Отчество
+            _set_cell_value(ws, row, self.COL_LAST,   stu.last_name)     # D: Фамилия
 
         # 4) Ensure output directory exists
         out_dir = os.path.join(settings.MEDIA_ROOT, self.OUTPUT_DIR)
@@ -90,3 +99,91 @@ class FillTemplateView(View):
         # 6) Save and respond
         wb.save(out_path)
         return HttpResponse(f"Saved: {out_path}", content_type="text/plain")
+
+
+class ExportModuleGradeByTeacherDisciplineView(View):
+    """
+    GET /api/export/module-grade-by-teacher-discipline/
+    For each unique (teacher, discipline) in OutputForParcingModuleGrade,
+    copies the template, creates/fills a sheet for each group, and fills it with students.
+    The file is named: module_grade_{teacher}_{discipline}_{date}.xlsx
+    """
+    TEMPLATE_SUBPATH = 'excel_files/template_for_module.xlsx'
+    OUTPUT_DIR = 'output_module_grade_by_teacher_discipline'
+    START_ROW = 11
+    COL_FIRST = 2  # B
+    COL_MIDDLE = 3 # C
+    COL_LAST = 4   # D
+
+    def get(self, request):
+        import shutil
+        # 1. Get all unique (teacher, discipline) pairs
+        pairs = OutputForParcingModuleGrade.objects.values_list('teacher', 'discipline').distinct()
+        if not pairs:
+            return HttpResponse("No teacher/discipline pairs found.", status=404)
+
+        tpl_path = os.path.join(settings.MEDIA_ROOT, self.TEMPLATE_SUBPATH)
+        if not os.path.exists(tpl_path):
+            return HttpResponse(f"Template not found: {tpl_path}", status=404)
+
+        out_dir = os.path.join(settings.MEDIA_ROOT, self.OUTPUT_DIR)
+        os.makedirs(out_dir, exist_ok=True)
+        today = datetime.date.today().strftime('%Y%m%d')
+        files_created = []
+
+        for teacher, discipline in pairs:
+            # 2. Get all groups for this teacher+discipline
+            groups = OutputForParcingModuleGrade.objects.filter(
+                teacher=teacher, discipline=discipline
+            ).values_list('group_name', flat=True).distinct()
+            if not groups:
+                continue
+            # 3. Load template for this file
+            wb = openpyxl.load_workbook(tpl_path)
+            # Remove all sheets except the first (to avoid template clutter)
+            while len(wb.sheetnames) > 1:
+                wb.remove(wb[wb.sheetnames[1]])
+            # 4. For each group, create or reuse a sheet and fill students
+            for group in groups:
+                if group in wb.sheetnames:
+                    ws = wb[group]
+                else:
+                    ws = wb.copy_worksheet(wb.active)
+                    ws.title = group
+                # Clear previous student rows (if any)
+                for row in ws.iter_rows(min_row=self.START_ROW, max_row=ws.max_row):
+                    for cell in row:
+                        cell.value = None
+                # Fill discipline in C4:N4
+                for col in range(3, 15):  # C=3, N=14
+                    _set_cell_value(ws, 4, col, discipline)  # C4:N4 discipline
+                # Fill group_name in C5:N5 and teacher in C7:N7
+                for col in range(3, 15):  # C=3, N=14
+                    _set_cell_value(ws, 5, col, group)      # C5:N5 group_name
+                    _set_cell_value(ws, 7, col, teacher)    # C7:N7 teacher
+                # Fill students
+                students = Student.objects.filter(group_name=group).order_by('student_num_in_list')
+                for idx, stu in enumerate(students):
+                    row = self.START_ROW + idx
+                    _set_cell_value(ws, row, 1, idx + 1)  # A: student number
+                    _set_cell_value(ws, row, self.COL_FIRST,  stu.first_name)    # B: Имя
+                    _set_cell_value(ws, row, self.COL_MIDDLE, stu.middle_name)   # C: Отчество
+                    _set_cell_value(ws, row, self.COL_LAST,   stu.last_name)     # D: Фамилия
+            # Remove the original template sheet if not a group
+            if wb.active.title not in groups:
+                wb.remove(wb.active)
+            # 5. Save file with new naming
+            safe_teacher = str(teacher).replace(' ', '_')
+            safe_discipline = str(discipline).replace(' ', '_')
+            filename = f"module_grade_{safe_teacher}_{safe_discipline}_{today}.xlsx"
+            out_path = os.path.join(out_dir, filename)
+            counter = 1
+            while os.path.exists(out_path):
+                filename = f"module_grade_{safe_teacher}_{safe_discipline}_{today}_{counter}.xlsx"
+                out_path = os.path.join(out_dir, filename)
+                counter += 1
+            wb.save(out_path)
+            files_created.append(filename)
+        if not files_created:
+            return HttpResponse("No files created (no groups or students found).", status=404)
+        return HttpResponse(f"Files created: {', '.join(files_created)}", content_type="text/plain")
