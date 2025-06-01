@@ -18,6 +18,12 @@ class OutputFilesDummy(models.Model):
         verbose_name = "Output Excel Files"
         verbose_name_plural = "Output Excel Files"
 
+class CurlCommandsDummy(models.Model):
+    class Meta:
+        managed = False
+        verbose_name = "Curl Commands"
+        verbose_name_plural = "Curl Commands"
+
 class OutputFilesAdminView(admin.ModelAdmin):
     change_list_template = "admin/output_files_changelist.html"
 
@@ -67,4 +73,49 @@ class OutputFilesAdminView(admin.ModelAdmin):
     def changelist_view(self, request, extra_context=None):
         return self.output_files_view(request)
 
+class CurlCommandsAdminView(admin.ModelAdmin):
+    change_list_template = "admin/curl_commands_changelist.html"
+
+    def get_urls(self):
+        urls = super().get_urls()
+        custom_urls = [
+            path('curl-commands/', self.admin_site.admin_view(self.curl_commands_view), name='curl-commands'),
+        ]
+        return custom_urls + urls
+
+    def curl_commands_view(self, request):
+        base_url = request.build_absolute_uri('/').rstrip('/')
+        commands = {
+            'parse_code_directions': f'curl -X POST {base_url}/api/parse-code-directions/',
+            'parse_disciplines': f'curl -X POST {base_url}/api/parse-disciplines/',
+            'parse_lesson_types': f'curl -X POST {base_url}/api/parse-lesson-types/',
+            'parse_teachers': f'curl -X POST {base_url}/api/parse-teachers/',
+            'parse_groups': f'curl -X POST {base_url}/api/parse-groups/',
+            'parse_semesters': f'curl -X POST {base_url}/api/parse-semesters/',
+            'parse_group_courses': f'curl -X POST {base_url}/api/parse-group-courses/',
+            'parse_students': f'curl -X POST {base_url}/api/parse-students/',
+            'parse_output_module_grade': f'curl -X POST {base_url}/api/parse-output-module-grade/',
+            'download_output_files': f'curl -X GET {base_url}/api/download-output-files/',
+        }
+
+        context = dict(
+            self.admin_site.each_context(request),
+            commands=commands,
+            base_url=base_url,
+        )
+        return render(request, "admin/curl_commands_changelist.html", context)
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    def changelist_view(self, request, extra_context=None):
+        return self.curl_commands_view(request)
+
 admin.site.register(OutputFilesDummy, OutputFilesAdminView)
+admin.site.register(CurlCommandsDummy, CurlCommandsAdminView)

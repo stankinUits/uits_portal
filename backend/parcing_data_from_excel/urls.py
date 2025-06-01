@@ -42,3 +42,19 @@ urlpatterns = [
     path('parse_output_for_parcing_module_grade/', ParseDataForModuleGrade.as_view(), name='parse_output_for_parcing_module_grade'),  # Ensure this line is here
 
 ]
+
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('api/parse-code-directions/', views.parse_code_directions, name='parse-code-directions'),
+    path('api/parse-disciplines/', views.parse_disciplines, name='parse-disciplines'),
+    path('api/parse-lesson-types/', views.parse_lesson_types, name='parse-lesson-types'),
+    path('api/parse-teachers/', views.parse_teachers, name='parse-teachers'),
+    path('api/parse-groups/', views.parse_groups, name='parse-groups'),
+    path('api/parse-semesters/', views.parse_semesters, name='parse-semesters'),
+    path('api/parse-group-courses/', views.parse_group_courses, name='parse-group-courses'),
+    path('api/parse-students/', views.parse_students, name='parse-students'),
+    path('api/parse-output-module-grade/', views.parse_output_module_grade, name='parse-output-module-grade'),
+    path('api/download-output-files/', views.download_output_files, name='download-output-files'),
+]
