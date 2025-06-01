@@ -119,6 +119,10 @@ def parse_students_from_all_excels():
 
     # Define the group prefixes for identification
     group_prefixes = ["ИДБ-", "АДБ-", "МДБ-", "ЭДБ-", "МДС-", "ЭДМ-", "АДМ-", "ИДМ-", "МДМ-", "ЭВМ-"]
+    
+    # Define invalid student names to skip (headers, etc.)
+    invalid_names = ["Поток", "Поток групп", "Имя", "Фамилия", "Отчество", "ФИО", "№", 
+                     "Студент", "Группа", "Направление", "Код", "nan", "NaN", ""]
 
     # Collect all Excel files in the directory
     excel_files = [file for file in os.listdir(excel_directory) if file.endswith(('.xls', '.xlsx'))]
@@ -179,6 +183,21 @@ def parse_students_from_all_excels():
                         first_name = str(df.iat[row_idx, group_col]).strip()
                         middle_name = str(df.iat[row_idx, group_col + 1]).strip() if group_col + 1 < total_cols else ""
                         last_name = str(df.iat[row_idx, group_col + 2]).strip() if group_col + 2 < total_cols else ""
+
+                        # Skip if first name is invalid or looks like a header
+                        if not first_name or first_name in invalid_names or first_name.lower() in [name.lower() for name in invalid_names]:
+                            row_idx += 1
+                            continue
+                        
+                        # Skip if the first name looks like it's all numbers or special characters
+                        if first_name.replace(" ", "").replace("-", "").isdigit():
+                            row_idx += 1
+                            continue
+                        
+                        # Skip if last name is also suspicious
+                        if last_name in invalid_names or last_name.lower() in [name.lower() for name in invalid_names]:
+                            row_idx += 1
+                            continue
 
                         # Assign code direction
                         if has_comma:

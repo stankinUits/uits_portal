@@ -11,6 +11,12 @@ from django.contrib import messages
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 from django import forms
+from django.db import transaction
+from .models import (
+    CodeDirection, Discipline, LessonType, Teacher,
+    Group, Semester, GroupCourse, Student,
+    OutputForParcingModuleGrade
+)
 
 class ParcinDataFromExcel(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
@@ -271,6 +277,139 @@ class FileUploadsAdminView(admin.ModelAdmin):
     def has_delete_permission(self, request, obj=None):
         return False
 
+class ClearTablesDummy(models.Model):
+    class Meta:
+        managed = False
+        verbose_name = "Clear Tables"
+        verbose_name_plural = "Clear Tables"
+
 admin.site.register(OutputFilesDummy, OutputFilesAdminView)
 admin.site.register(CurlCommandsDummy, CurlCommandsAdminView)
 admin.site.register(FileUploadsDummy, FileUploadsAdminView)
+
+class ClearTablesAdminView(admin.ModelAdmin):
+    change_list_template = 'admin/clear_tables_changelist.html'
+
+    def get_urls(self):
+        urls = super().get_urls()
+        custom_urls = [
+            path('clear-tables/', self.clear_tables_view, name='clear_tables'),
+            path('clear-files/', self.clear_files_view, name='clear_files'),
+            path('clear-all/', self.clear_all_view, name='clear_all'),
+        ]
+        return custom_urls + urls
+
+    def changelist_view(self, request, extra_context=None):
+        extra_context = extra_context or {}
+        
+        # Get table counts
+        table_counts = {
+            'OutputForParcingModuleGrade': OutputForParcingModuleGrade.objects.count(),
+            'Student': Student.objects.count(),
+            'GroupCourse': GroupCourse.objects.count(),
+            'Semester': Semester.objects.count(),
+            'Group': Group.objects.count(),
+            'Teacher': Teacher.objects.count(),
+            'LessonType': LessonType.objects.count(),
+            'Discipline': Discipline.objects.count(),
+            'CodeDirection': CodeDirection.objects.count(),
+        }
+        
+        # Get file count
+        output_dir = os.path.join(settings.MEDIA_ROOT, 'output_module_grade_by_teacher_discipline')
+        file_count = 0
+        if os.path.exists(output_dir):
+            file_count = len([f for f in os.listdir(output_dir) if f.endswith('.xlsx')])
+        
+        extra_context['table_counts'] = table_counts
+        extra_context['total_records'] = sum(table_counts.values())
+        extra_context['file_count'] = file_count
+        
+        return render(request, 'admin/clear_tables_changelist.html', extra_context)
+
+    def clear_tables_view(self, request):
+        if request.method == 'POST':
+            try:
+                with transaction.atomic():
+                    # Clear in reverse order of dependencies
+                    OutputForParcingModuleGrade.objects.all().delete()
+                    Student.objects.all().delete()
+                    GroupCourse.objects.all().delete()
+                    Semester.objects.all().delete()
+                    Group.objects.all().delete()
+                    Teacher.objects.all().delete()
+                    LessonType.objects.all().delete()
+                    Discipline.objects.all().delete()
+                    CodeDirection.objects.all().delete()
+                    
+                    messages.success(request, 'All tables cleared successfully!')
+            except Exception as e:
+                messages.error(request, f'Error clearing tables: {str(e)}')
+        
+        return redirect('../')
+
+    def clear_files_view(self, request):
+        if request.method == 'POST':
+            try:
+                output_dir = os.path.join(settings.MEDIA_ROOT, 'output_module_grade_by_teacher_discipline')
+                if os.path.exists(output_dir):
+                    # Remove all xlsx files
+                    xlsx_files = [f for f in os.listdir(output_dir) if f.endswith('.xlsx')]
+                    for file in xlsx_files:
+                        os.remove(os.path.join(output_dir, file))
+                    
+                    # Remove zip file if exists
+                    zip_file = os.path.join(output_dir, 'all_output_files.zip')
+                    if os.path.exists(zip_file):
+                        os.remove(zip_file)
+                    
+                    messages.success(request, f'Removed {len(xlsx_files)} Excel files')
+                else:
+                    messages.warning(request, 'Output directory not found')
+            except Exception as e:
+                messages.error(request, f'Error clearing files: {str(e)}')
+        
+        return redirect('../')
+
+    def clear_all_view(self, request):
+        if request.method == 'POST':
+            # Clear tables
+            try:
+                with transaction.atomic():
+                    OutputForParcingModuleGrade.objects.all().delete()
+                    Student.objects.all().delete()
+                    GroupCourse.objects.all().delete()
+                    Semester.objects.all().delete()
+                    Group.objects.all().delete()
+                    Teacher.objects.all().delete()
+                    LessonType.objects.all().delete()
+                    Discipline.objects.all().delete()
+                    CodeDirection.objects.all().delete()
+                    
+                # Clear files
+                output_dir = os.path.join(settings.MEDIA_ROOT, 'output_module_grade_by_teacher_discipline')
+                if os.path.exists(output_dir):
+                    xlsx_files = [f for f in os.listdir(output_dir) if f.endswith('.xlsx')]
+                    for file in xlsx_files:
+                        os.remove(os.path.join(output_dir, file))
+                    
+                    zip_file = os.path.join(output_dir, 'all_output_files.zip')
+                    if os.path.exists(zip_file):
+                        os.remove(zip_file)
+                
+                messages.success(request, 'All data and files cleared successfully!')
+            except Exception as e:
+                messages.error(request, f'Error clearing data: {str(e)}')
+        
+        return redirect('../')
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+admin.site.register(ClearTablesDummy, ClearTablesAdminView)

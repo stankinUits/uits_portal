@@ -1,0 +1,89 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls %}
+
+{% block content %}
+<h1>Clear Tables and Files</h1>
+
+<div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+    <h2>Current Data Status</h2>
+    
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px;">
+        {% for table, count in table_counts.items %}
+        <div style="background-color: white; padding: 15px; border-radius: 5px; border: 1px solid #dee2e6;">
+            <strong>{{ table }}:</strong> {{ count }} records
+        </div>
+        {% endfor %}
+    </div>
+    
+    <div style="background-color: #e9ecef; padding: 15px; border-radius: 5px; margin-bottom: 10px;">
+        <strong>Total Records in Database:</strong> {{ total_records }}
+    </div>
+    
+    <div style="background-color: #e9ecef; padding: 15px; border-radius: 5px;">
+        <strong>Output Excel Files:</strong> {{ file_count }} files
+    </div>
+</div>
+
+<div style="background-color: #fff3cd; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #ffeaa7;">
+    <h3 style="color: #856404; margin-top: 0;">⚠️ Warning</h3>
+    <p style="margin-bottom: 0;">These actions are irreversible. Please make sure you have backups if needed.</p>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+    <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; border: 1px solid #dee2e6;">
+        <h3>Clear Database Tables</h3>
+        <p>Remove all data from parsing tables while keeping the output files.</p>
+        <form method="post" action="clear-tables/" onsubmit="return confirm('Are you sure you want to clear all database tables? This action cannot be undone.');">
+            {% csrf_token %}
+            <button type="submit" class="button default" style="background-color: #dc3545; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">
+                Clear All Tables
+            </button>
+        </form>
+    </div>
+    
+    <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; border: 1px solid #dee2e6;">
+        <h3>Clear Output Files</h3>
+        <p>Remove all generated Excel files while keeping the database data.</p>
+        <form method="post" action="clear-files/" onsubmit="return confirm('Are you sure you want to delete all output Excel files? This action cannot be undone.');">
+            {% csrf_token %}
+            <button type="submit" class="button default" style="background-color: #ffc107; color: #212529; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">
+                Clear All Files
+            </button>
+        </form>
+    </div>
+    
+    <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; border: 1px solid #dee2e6;">
+        <h3>Clear Everything</h3>
+        <p>Remove all data from tables AND all generated Excel files.</p>
+        <form method="post" action="clear-all/" onsubmit="return confirm('Are you sure you want to clear ALL data and files? This action cannot be undone.');">
+            {% csrf_token %}
+            <button type="submit" class="button default" style="background-color: #6c757d; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">
+                Clear All Data & Files
+            </button>
+        </form>
+    </div>
+</div>
+
+<div style="margin-top: 30px; padding: 15px; background-color: #d1ecf1; border-radius: 8px; border: 1px solid #bee5eb;">
+    <h3 style="color: #0c5460; margin-top: 0;">💡 Tip</h3>
+    <p style="margin-bottom: 10px;">You can also use the Django management command from the terminal:</p>
+    <code style="background-color: #fff; padding: 5px 10px; border-radius: 3px; display: inline-block; margin-bottom: 5px;">
+        python manage.py clear_parsing_data
+    </code>
+    <br>
+    <code style="background-color: #fff; padding: 5px 10px; border-radius: 3px; display: inline-block;">
+        python manage.py clear_parsing_data --include-files
+    </code>
+</div>
+
+<style>
+    button:hover {
+        opacity: 0.9;
+        transform: translateY(-1px);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    button {
+        transition: all 0.2s ease;
+    }
+</style>
+{% endblock %} 
