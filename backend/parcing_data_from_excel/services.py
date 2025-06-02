@@ -1,6 +1,7 @@
 import os
 import pandas as pd
 from django.conf import settings
+import re
 
 
 from parcing_data_from_excel.models import (
@@ -132,6 +133,11 @@ def parse_students_from_all_excels():
         print("No Excel files found in the specified directory.")
         return
 
+    # Inside parse_students_from_all_excels, before the for excel_file in excel_files loop:
+    name_regex = re.compile(r'^[А-Яа-яЁё\-\s]+$')
+    def is_valid_name(name):
+        return bool(name_regex.match(name)) and len(name) > 1
+
     # Iterate over each Excel file
     for excel_file in excel_files:
         file_path = os.path.join(excel_directory, excel_file)
@@ -182,7 +188,11 @@ def parse_students_from_all_excels():
                         # Extract student data
                         first_name = str(df.iat[row_idx, group_col]).strip()
                         middle_name = str(df.iat[row_idx, group_col + 1]).strip() if group_col + 1 < total_cols else ""
-                        last_name = str(df.iat[row_idx, group_col + 2]).strip() if group_col + 2 < total_cols else ""
+                        raw_last_name = df.iat[row_idx, group_col + 2] if group_col + 2 < total_cols else ""
+                        if pd.isna(raw_last_name):
+                            last_name = ""
+                        else:
+                            last_name = str(raw_last_name).strip()
 
                         # Skip if first name is invalid or looks like a header
                         if not first_name or first_name in invalid_names or first_name.lower() in [name.lower() for name in invalid_names]:
@@ -194,8 +204,22 @@ def parse_students_from_all_excels():
                             row_idx += 1
                             continue
                         
-                        # Skip if last name is also suspicious
-                        if last_name in invalid_names or last_name.lower() in [name.lower() for name in invalid_names]:
+                        # Skip if last name is a header or forbidden value (but allow empty last names)
+                        forbidden_last_names = [name for name in invalid_names if name != ""]
+                        if last_name in forbidden_last_names or last_name.lower() in [name.lower() for name in forbidden_last_names]:
+                            row_idx += 1
+                            continue
+
+                        # Skip if first name is invalid
+                        if not is_valid_name(first_name):
+                            row_idx += 1
+                            continue
+                        # Skip if middle name is invalid
+                        if middle_name and not is_valid_name(middle_name):
+                            row_idx += 1
+                            continue
+                        # Skip if last name is invalid
+                        if last_name and not is_valid_name(last_name):
                             row_idx += 1
                             continue
 
