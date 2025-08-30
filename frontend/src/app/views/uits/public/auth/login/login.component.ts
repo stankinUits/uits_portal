@@ -3,7 +3,6 @@ import {LoginForm} from '@app/shared/types/models/forms';
 import {AuthService} from '@app/shared/services/auth.service';
 import {Router} from '@angular/router';
 import {PagesConfig} from '@app/configs/pages.config';
-import {error} from "protractor";
 
 @Component({
   selector: 'app-login',

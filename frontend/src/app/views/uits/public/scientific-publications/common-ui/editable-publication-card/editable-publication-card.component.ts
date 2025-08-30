@@ -52,7 +52,6 @@ export class EditablePublicationCardComponent implements OnInit {
     this.initForm();
     this.initTags();
     this.initAuthors();
-    console.log(this.publication);
   }
 
   initForm() {
@@ -111,7 +110,6 @@ export class EditablePublicationCardComponent implements OnInit {
   }
 
   onTagsChange(selectedTags: ITag[]) {
-    console.log(selectedTags);
     this.selectedTags = selectedTags;
     this.form.get('tags').setValue(selectedTags);
   }
