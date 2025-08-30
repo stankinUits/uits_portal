@@ -2,7 +2,6 @@ import {NgModule} from '@angular/core';
 import {CommonModule, formatDate, NgOptimizedImage} from '@angular/common';
 
 import {AboutRoutingModule} from './about-routing.module';
-import {PostActionsComponent} from './news/post-actions/post-actions.component';
 import {NewsComponent} from '@app/views/uits/public/about/news/news.component';
 import {FieldsOfStudyComponent} from '@app/views/uits/public/about/fields-of-study/fields-of-study.component';
 import {TeachersComponent} from '@app/views/uits/public/about/employee/teachers/teachers.component';
@@ -77,7 +76,6 @@ class CustomDateFormatter extends CalendarNativeDateFormatter {
     ContactsComponent,
     DepartmentComponent,
     UniversityComponent,
-    PostActionsComponent,
     NewsComponent,
     FieldsOfStudyComponent,
     TeachersComponent,
@@ -97,7 +95,6 @@ class CustomDateFormatter extends CalendarNativeDateFormatter {
     DetailsModalComponent
   ],
   exports: [
-    PostActionsComponent,
     NewsComponent,
   ],
   imports: [
