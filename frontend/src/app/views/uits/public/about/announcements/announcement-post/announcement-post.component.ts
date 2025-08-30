@@ -1,7 +1,7 @@
 import {Component, HostListener, OnInit} from '@angular/core';
 import {BehaviorSubject} from "rxjs";
 import {Post} from "@app/shared/types/models/news";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {AnnouncementsService} from "@app/views/uits/public/about/announcements/announcements.service";
 import {PagesConfig} from "@app/configs/pages.config";
 
@@ -14,15 +14,13 @@ export class AnnouncementPostComponent implements OnInit {
 
   id: number;
   post$: BehaviorSubject<Post>;
-  isMobile: boolean;
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private announcementService: AnnouncementsService,
   ) {
     this.post$ = new BehaviorSubject<Post>(null);
-    this.isMobile = window.innerWidth < 992;
-
   }
 
   get post(): Post {
@@ -36,18 +34,24 @@ export class AnnouncementPostComponent implements OnInit {
     });
   }
 
-  @HostListener('window:resize', ['$event']) onWindowResize(event) {
-    if (event.target.innerWidth < 992) {
-      this.isMobile = true;
-    } else {
-      this.isMobile = false;
-    }
-  }
-
   getPost() {
     this.announcementService.getPost(this.id).subscribe(post => {
       this.post$.next(post);
     });
+  }
+
+  get avatarName() {
+    return this.post.author.firstName.charAt(0) + this.post.author.lastName.charAt(0)
+  }
+
+  goBack(): void {
+    this.router.navigate(['/about/announcements']);
+  }
+
+  redirectToEditPage(): void {
+    if (this.id) {
+      window.open(PagesConfig.admin + '/news/post/' + this.id + '/change', '_blank');
+    }
   }
 
   protected readonly PagesConfig = PagesConfig;

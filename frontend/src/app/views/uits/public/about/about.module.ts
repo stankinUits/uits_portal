@@ -18,8 +18,6 @@ import {NgBootstrapFormValidationModule} from 'ng-bootstrap-form-validation';
 import {CrudActionModule} from '@app/shared/components/crud-action/crud-action.module';
 import {PostComponent} from './news/post/post.component';
 import {DateFnsModule} from 'ngx-date-fns';
-import {PostContentComponent} from './news/post/components/post-content/post-content.component';
-import {PostInfoComponent} from './news/post/components/post-info/post-info.component';
 import {AnnouncementsComponent} from './announcements/announcements.component';
 import {AnnouncementPostComponent} from './announcements/announcement-post/announcement-post.component';
 import {NgSelectModule} from '@ng-select/ng-select';
@@ -85,8 +83,6 @@ class CustomDateFormatter extends CalendarNativeDateFormatter {
     TeachersComponent,
     UVPComponent,
     PostComponent,
-    PostContentComponent,
-    PostInfoComponent,
     AnnouncementsComponent,
     AnnouncementPostComponent,
     TeacherComponent,

@@ -1,51 +1,41 @@
-<ng-container *ngIf="!isMobile">
-  <ng-container *ngTemplateOutlet="desktop"></ng-container>
-</ng-container>
-<ng-container *ngIf="isMobile">
-  <ng-container *ngTemplateOutlet="mobile"></ng-container>
-</ng-container>
+<div class="post-actions-btns">
+  <button
+    class="go-back-news-btn mb-5"
+    (click)="goBack()"
+  >
+    <span class="arrow">&#8592;</span> Вернуться назад
+  </button>
+  <app-edit-button
+    (edit)="redirectToEditPage()">
+  </app-edit-button>
+</div>
 
-<ng-template #desktop>
-  <div class="d-grid gap-3">
-    <div class="row gap-3">
-      <div class="col-3 d-flex align-items-center">
-        <div class="more" style="z-index: 50">
-          {{ 'NAV.ABOUT' | translate }} /
-          <a [routerLink]="PagesConfig.about.announcements">{{ 'NEWS.ANNOUNCEMENTS.TITLE' | translate }}</a>
-        </div>
-      </div>
-      <div class="col-6">
-        <div *ngIf="(post$ | async) as post" class="">
-          <h1>{{ post.title }}</h1>
-        </div>
-      </div>
-    </div>
-    <div class="row gap-3">
-      <div class="col-3">
-        <app-post-info [post]="post$"></app-post-info>
-      </div>
-      <div class="col-6">
-        <app-post-content [post]="post$" [returnTo]="PagesConfig.about.announcements"></app-post-content>
-      </div>
+<div class="news-detail-card">
+  <div class="card-header">
+    <img [src]="post.previewImage" alt="News Image"
+         class="post-image">
+    <div class="card-meta">
+      <h1 class="news-title">{{ post.title }}</h1>
     </div>
   </div>
-</ng-template>
 
-
-<ng-template #mobile>
-  <div class="d-grid gap-3">
-    <div class="row">
-      <div class="col">
-        <div *ngIf="(post$ | async) as post" class="">
-          <h1>{{ post.title }}</h1>
+  <div class="card-content">
+    <div class="article-meta">
+      <div class="author-info">
+        <div class="author-avatar">{{avatarName}}</div>
+        <div class="author-details">
+          <h4>{{ post.author.firstName + " " + post.author.lastName }}</h4>
         </div>
       </div>
+      <div class="post-date">
+        <span>📅</span>
+        <span>{{ post.createdAt | date:'dd MMMM yyyy':'':'ru' }}</span>
+      </div>
     </div>
-    <div class="row">
-      <app-post-info [post]="post$"></app-post-info>
-    </div>
-    <div class="row">
-      <app-post-content [post]="post$" [returnTo]="PagesConfig.about.announcements"></app-post-content>
+
+    <div class="post-details">
+      <div [innerHTML]="post?.content"></div>
     </div>
   </div>
-</ng-template>
+</div>
+
