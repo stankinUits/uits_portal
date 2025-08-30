@@ -43,7 +43,7 @@
 
 
 <ng-template #gridDesktop>
-  <div class="d-grid" *ngIf="(posts$ | async).length !== 0; else empty">
+  <div class="d-grid mb-5" *ngIf="(posts$ | async).length !== 0; else empty">
     <div class="row latest-news-row gap-3">
       <div class="col position-relative" *ngIf="getFirstPost() as firstPost">
         <ng-container *ngTemplateOutlet="cardPost;context:{post: firstPost}"></ng-container>
@@ -67,7 +67,7 @@
 
 
 <ng-template #gridMobile>
-  <div *ngIf="(posts$ | async).length !== 0; else empty">
+  <div class="mb-5" *ngIf="(posts$ | async).length !== 0; else empty">
     <div *ngFor="let post of posts$ | async; let i = index">
       <div class="card">
         <ng-container *ngTemplateOutlet="cardPost;context:{post}"></ng-container>

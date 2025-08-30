@@ -1,15 +1,14 @@
 .main-content {
-  background: white;
-  border-radius: 25px;
-  padding: 30px;
+
   text-align: center;
 }
 
 .header {
-  max-width: 700px;
-  margin: 10px auto 20px;
-  color: black;
-  font-size: 2.5rem;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  background: linear-gradient(90deg, #11a1fd, #5a75f9);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 1rem;
 }
 
 .header-desc {
@@ -25,14 +24,21 @@
   margin: 2rem 0;
 
   .stat__item {
-    text-align: center;
+    background: #f9fbff;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease;
     padding: 1rem;
+  }
+
+  .stat__item:hover {
+    transform: translateY(-5px);
   }
 
   .stat-number {
     font-size: 3rem;
     font-weight: 700;
-    color: #11a1fd;
+    color: #5a75f9;
     display: block;
   }
 
@@ -74,7 +80,7 @@
 
 .card:hover {
   transform: translateY(-8px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 25px rgba(17, 161, 253, 0.25);
 }
 
 .card:hover::before {
@@ -119,7 +125,7 @@
 }
 
 .card-link:hover {
-  color: #8a46f1;
+  color: #2786f3;
   transform: translateX(5px);
 }
 
@@ -131,7 +137,7 @@
 
 .news-section {
   border-radius: 20px;
-  padding: 2rem;
+  padding: 3rem;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
@@ -139,6 +145,11 @@
   border: 1px solid rgba(255, 255, 255, 0.2);
   text-align: left;
   margin-bottom: 25px;
+  background: white;
+}
+
+.news-section:hover {
+  box-shadow: 0 8px 25px rgba(17, 161, 253, 0.25);
 }
 
 .section-title {
@@ -160,4 +171,21 @@
   height: 3px;
   background: linear-gradient(90deg, var(--secondary-color), var(--accent-color));
   border-radius: 2px;
+}
+
+.news-section-btn {
+  background: transparent;
+  outline: none;
+  border: 1px solid #01a0e4;
+  padding: 5px 10px;
+  margin-top: 25px;
+  border-radius: 10px;
+  transition: all .1s ease-in-out;
+  position: absolute;
+  right: 35px;
+  bottom: 30px;
+}
+
+.news-section-btn:hover {
+  transform: scale(1.03);
 }
