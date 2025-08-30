@@ -1,3 +1,4 @@
+<app-create-button (create)="redirectToAdminPanel()"></app-create-button>
 <div *ngIf="isLoading" class="loading-container">
   Загрузка...
 </div>
@@ -6,43 +7,72 @@
   <p>Произошла ошибка при загрузке достижений. Пожалуйста, попробуйте снова.</p>
 </div>
 
-<h1 class="mb-4">Достижения</h1>
+<div class="container">
+  <header class="header">
+    <span class="header__trophy-icon">🏆</span>
+    <h1 class="header__heading">Достижения кафедры</h1>
+    <p class="header__decs">Наши успехи и признание в научном сообществе</p>
+  </header>
 
-<app-create-button (create)="redirectToAdminPanel()"></app-create-button>
-
-<div *ngIf="response$ | async as response" class="achievement-list">
-  <div
-    class="achievement-item"
-    *ngFor="let achievement of response.results; let index = index"
-    (click)="openAchievementById(achievement)"
-    [ngClass]="{'even-item': index % 2 === 0, 'odd-item': index % 2 !== 0}">
-
-    <div class="achievement-image">
-      <img [src]="achievement.image" alt="Achievement Image"/>
+  <div class="stats-bar">
+    <div class="stat-card floating">
+      <div class="stat-number">142</div>
+      <div class="stat-label">Научных публикаций</div>
     </div>
-    <div class="achievement-content">
-      <h2 class="achievement-title">
-        {{ achievement.title }}
-      </h2>
-      <markdown class="achievement-description">
-        {{ achievement.description }}
-      </markdown>
+    <div class="stat-card floating">
+      <div class="stat-number">28</div>
+      <div class="stat-label">Международных наград</div>
     </div>
-     <app-edit-button
-      class="edit-btn"
-      (edit)="redirectToEditPage(achievement.id)"
-      (click)="$event.stopPropagation()"
-     >
-    </app-edit-button>
+    <div class="stat-card floating">
+      <div class="stat-number">15</div>
+      <div class="stat-label">Патентов</div>
+    </div>
+    <div class="stat-card floating">
+      <div class="stat-number">95%</div>
+      <div class="stat-label">Трудоустройство выпускников</div>
+    </div>
   </div>
 
-  <div *ngIf="response.count > itemsPerPage" class="pagination">
-    <app-pagination
-      [totalItems]="response.count"
-      (pageChange)="pageChanged()"
-      [itemsPerPage]="itemsPerPage"
-      [maxSize]="maxSize"
-    ></app-pagination>
+  <div *ngIf="response$ | async as response" class="achievements-grid">
+    <div
+      *ngFor="let achievement of response.results; let i = index"
+      class="achievement-card"
+      (click)="openAchievementById(achievement)"
+    >
+      <div
+        class="achievement-header"
+        [style.background]="gradients[i % gradients.length]"
+      >
+        <div class="header__wrapper">
+          <img [src]="achievement.image" class="achievement-image"/>
+          <h3 class="achievement-title">
+            {{ achievement.title }}
+          </h3>
+        </div>
+        <div class="achievement-details" *ngIf="achievement.teacher">
+          <span class="detail-tag">Чеканин В.А.</span>
+        </div>
+      </div>
+      <div class="achievement-content">
+        <p class="achievement-description">
+          {{ achievement.description }}
+        </p>
+      </div>
+      <app-edit-button
+        class="edit-btn"
+        (edit)="redirectToEditPage(achievement.id)"
+        (click)="$event.stopPropagation()"
+      >
+      </app-edit-button>
+    </div>
+    <div *ngIf="response.count > itemsPerPage" class="pagination">
+      <app-pagination
+        [totalItems]="response.count"
+        (pageChange)="pageChanged()"
+        [itemsPerPage]="itemsPerPage"
+        [maxSize]="maxSize"
+      ></app-pagination>
+    </div>
   </div>
 </div>
 
