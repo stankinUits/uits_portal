@@ -9,9 +9,8 @@
 
 <div class="container">
   <header class="header">
-    <span class="header__trophy-icon">🏆</span>
+    <span class="header__icon">🏆</span>
     <h1 class="header__heading">Достижения кафедры</h1>
-    <p class="header__decs">Наши успехи и признание в научном сообществе</p>
   </header>
 
   <div class="stats-bar">
@@ -49,7 +48,7 @@
           </h3>
         </div>
         <div class="achievement-details" *ngIf="achievement.teacher">
-          <span class="detail-tag">Чеканин В.А.</span>
+          <span class="detail-tag">{{achievement.teacher}}</span>
         </div>
       </div>
       <div class="achievement-content">
@@ -57,7 +56,6 @@
           {{ achievement.description }}
         </p>
         <button class="more-btn" (click)="openAchievementById(achievement)">Подробнее -></button>
-
       </div>
       <app-edit-button
         class="edit-btn"

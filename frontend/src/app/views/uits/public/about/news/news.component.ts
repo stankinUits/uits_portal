@@ -22,6 +22,14 @@ export class NewsComponent extends PostsBaseComponent implements OnInit, OnDestr
   maxSize: number;
   itemsPerPage: number;
 
+  gradients = [
+    'linear-gradient(135deg, #ffd700 0%, #ffed4e 100%)',
+    'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+    'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+    'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)'
+  ];
+
   constructor(private newsService: NewsService,
               private paginationService: PaginationService,
               public authService: AuthService) {
