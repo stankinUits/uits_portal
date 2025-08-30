@@ -21,7 +21,7 @@ export class ContributorsComponent implements OnInit {
     {
       id: 2,
       name: 'Малова Яна',
-      description: 'Аналитик, менеджер, разработчик',
+      description: 'Тимлид, fullstack-разработчик',
       image: 'assets/images/contributors/malova-iana.jpg',
     },
     {

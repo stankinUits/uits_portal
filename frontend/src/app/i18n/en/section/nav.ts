@@ -15,6 +15,7 @@ export const nav = {
       "UNIVERSITY": "University"
     },
     "CONTACTS": "Contacts",
+    "PARTNERS": "Partners",
     "EDUCATION_ACTIVITIES": {
       "TITLE": "Educational Activities",
       "BACHELOR": {

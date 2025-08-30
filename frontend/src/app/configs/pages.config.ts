@@ -16,6 +16,7 @@ export const PagesConfig = {
       schedule: '/about/employee/teachers/schedule/',
     },
     contributors: '/contributors',
+    partners: '/partners'
   },
   admin: '/admin',
   profile: '/corp/personal',

@@ -53,6 +53,7 @@ import {PaginationComponent} from "@app/shared/components/pagination/pagination.
 import {
   ProfileCardComponent
 } from "@app/views/uits/public/scientific-publications/common-ui/profile-card/profile-card.component";
+import { PartnersComponent } from './partners/partners.component';
 
 registerLocaleData(localeRu);
 
@@ -92,7 +93,8 @@ class CustomDateFormatter extends CalendarNativeDateFormatter {
     ManagementComponent,
     PublicationsTeacherComponent,
     AchievementsTeacherComponent,
-    DetailsModalComponent
+    DetailsModalComponent,
+    PartnersComponent
   ],
   exports: [
     NewsComponent,

@@ -30,6 +30,7 @@ import {
 import {
   AchievementsTeacherComponent
 } from '@app/views/uits/public/about/employee/teachers/teacher/components/achievements/achievements-teacher.component';
+import {PartnersComponent} from "@app/views/uits/public/about/partners/partners.component";
 
 const routes: Routes = [
   {path: 'news', component: NewsComponent},
@@ -57,6 +58,7 @@ const routes: Routes = [
   {path: 'contacts', component: ContactsComponent},
   {path: 'history-of-department', component: HistoryOfDepartmentComponent},
   {path: 'contributors', component: ContributorsComponent},
+  {path: 'partners', component: PartnersComponent},
   // {
   //   path: 'page/:slug',
   //   component: CustomPageComponent

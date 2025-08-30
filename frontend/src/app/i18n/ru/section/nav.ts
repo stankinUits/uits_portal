@@ -17,6 +17,7 @@ export const nav = {
       UNIVERSITY: 'Университета'
     },
     CONTACTS: 'Контакты',
+    "PARTNERS": "Партнеры",
     EDUCATION_ACTIVITIES: {
       TITLE: 'Учебная деятельность',
       BACHELOR: {

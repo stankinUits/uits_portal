@@ -137,6 +137,16 @@ const about: NavMenu[] = [
         submenu: []
       },
       {
+        path: 'about/partners',
+        title: 'Partners',
+        translateKey: 'NAV.PARTNERS',
+        type: 'item',
+        iconType: 'feather',
+        icon: 'icon-users',
+        key: 'about/partners',
+        submenu: []
+      },
+      {
         // path: PagesConfig.editable('contributors'),
         path: 'about/contributors',
         title: 'Contributors',
