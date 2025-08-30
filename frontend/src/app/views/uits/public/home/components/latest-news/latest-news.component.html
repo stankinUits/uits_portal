@@ -1,16 +1,9 @@
-<div class="mb-3">
-  <ng-container [ngTemplateOutlet]="titlePage"></ng-container>
-</div>
-
 <ng-container *ngIf="!isMobile">
   <ng-container *ngTemplateOutlet="gridDesktop"></ng-container>
 </ng-container>
 <ng-container *ngIf="isMobile">
   <ng-container *ngTemplateOutlet="gridMobile"></ng-container>
 </ng-container>
-<ng-template #titlePage>
-  <p class="fs-2 fw-bold">{{ 'HOME.LATEST_NEWS.TITLE' | translate }}</p>
-</ng-template>
 
 <ng-template #empty>
   <div class="d-flex justify-content-center">

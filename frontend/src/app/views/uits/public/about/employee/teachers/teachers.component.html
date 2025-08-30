@@ -19,7 +19,7 @@
 <h2 class="mb-4">Сотрудники кафедры</h2>
 
 <div *ngIf="(teacher$ | async).length !== 0; else loading">
-  <div class="row align-center-start gap-5 flex-row">
+  <div class="row align-center-start gap-3 flex-row">
     <div *ngFor="let employee of teacher$ | async" class="card" style="width: 18rem; min-height: 100%">
       <div
         class="d-flex justify-content-center"
