@@ -164,7 +164,7 @@
   .achievement-description {
     color: #4a5568;
     line-height: 1.7;
-    margin-bottom: 25px;
+    margin-bottom: 35px;
     font-size: 1.1rem;
   }
 
@@ -197,6 +197,20 @@
   top: 20px;
 }
 
+.more-btn {
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #00c4ff;
+  font-size: 16px;
+  position: absolute;
+  bottom: 20px;
+  right: 25px;
+}
+
+.more-btn:hover {
+  transform: scale(1.02);
+}
 
 @keyframes slideInDown {
   from {
