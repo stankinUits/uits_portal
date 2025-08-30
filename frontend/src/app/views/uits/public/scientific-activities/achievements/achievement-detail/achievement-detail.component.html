@@ -1,7 +1,7 @@
 
 <div class="achievement-detail">
   <div class="controls">
-    <button class="go-back-btn" (click)="goBack()">
+    <button class="go-back-news-btn" (click)="goBack()">
       <span class="arrow">&#8592;</span> Вернуться назад
     </button>
     <app-edit-button
@@ -22,7 +22,7 @@
       <img [src]="achievement?.image" alt="Achievement Image"/>
     </div>
 
-    <div class="achievement-details">
+    <div class="achievement-details post-details">
       <h1>{{ achievement?.title }}</h1>
       <div [innerHTML]="achievement?.content"></div>
 

@@ -11,20 +11,18 @@ import {BehaviorSubject} from 'rxjs';
 @Component({
   selector: 'app-post',
   templateUrl: './post.component.html',
-  styleUrls: ['./post.component.css']
+  styleUrls: ['./post.component.scss']
 })
 export class PostComponent implements OnInit {
   id: number;
   post$: BehaviorSubject<Post>;
-  isMobile: boolean;
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private newsService: NewsService,
   ) {
     this.post$ = new BehaviorSubject<Post>(null);
-    this.isMobile = window.innerWidth < 992;
-
   }
 
   get post(): Post {
@@ -38,18 +36,25 @@ export class PostComponent implements OnInit {
     });
   }
 
-  @HostListener('window:resize', ['$event']) onWindowResize(event) {
-    if (event.target.innerWidth < 992) {
-      this.isMobile = true;
-    } else {
-      this.isMobile = false;
-    }
-  }
-
   getPost() {
     this.newsService.getPost(this.id).subscribe(post => {
       this.post$.next(post);
+      console.log(post)
     });
+  }
+
+  goBack(): void {
+    this.router.navigate(['/about/news']);
+  }
+
+  redirectToEditPage(): void {
+    if (this.id) {
+      window.open(PagesConfig.admin + '/news/post/' + this.id + '/change', '_blank');
+    }
+  }
+
+  get avatarName() {
+    return this.post.author.firstName.charAt(0) + this.post.author.lastName.charAt(0)
   }
 
   protected readonly PagesConfig = PagesConfig;
