@@ -10,12 +10,12 @@
   </app-edit-button>
 </div>
 
-<div class="news-detail-card">
+<div class="news-detail-card" *ngIf="post$ | async as post">
   <div class="card-header">
-    <img [src]="post.previewImage" alt="News Image"
+    <img [src]="post?.previewImage" alt="News Image"
          class="post-image">
     <div class="card-meta">
-      <h1 class="news-title">{{ post.title }}</h1>
+      <h1 class="news-title">{{ post?.title }}</h1>
     </div>
   </div>
 
@@ -24,12 +24,12 @@
       <div class="author-info">
         <div class="author-avatar">{{avatarName}}</div>
         <div class="author-details">
-          <h4>{{ post.author.firstName + " " + post.author.lastName }}</h4>
+          <h4>{{ post?.author.firstName + " " + post?.author.lastName }}</h4>
         </div>
       </div>
       <div class="post-date">
         <span>📅</span>
-        <span>{{ post.createdAt | date:'dd MMMM yyyy':'':'ru' }}</span>
+        <span>{{ post?.createdAt | date:'dd MMMM yyyy':'':'ru' }}</span>
       </div>
     </div>
 
