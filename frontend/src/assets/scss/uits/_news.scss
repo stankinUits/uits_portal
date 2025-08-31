@@ -74,18 +74,18 @@
 }
 
 // страница новостей
-.container {
+.news-container {
   max-width: 1200px;
   margin: 0 auto;
 }
 
-.header {
+.news-header {
   text-align: center;
   margin-bottom: 3rem;
   padding: 1rem 0;
   border-bottom: 2px solid #e2e8f0;
 
-  .header__heading {
+  .news-header__heading {
     color: #1a202c;
     font-size: 2.25rem;
     font-weight: 700;
@@ -94,7 +94,7 @@
     letter-spacing: -0.025em;
   }
 
-  .header__icon {
+  .news-header__icon {
     font-size: 2.5rem;
     margin-bottom: 1rem;
     color: #3b82f6;
