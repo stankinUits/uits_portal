@@ -36,6 +36,7 @@
     <div
       *ngFor="let achievement of response.results; let i = index"
       class="achievement-card"
+      (click)="openAchievementById(achievement)"
     >
       <div
         class="achievement-header"

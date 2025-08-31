@@ -15,6 +15,7 @@ import { PostsBaseComponent } from '@app/views/uits/base/posts-base/posts-base.c
 import { Pagination } from '@app/shared/types/paginate.interface';
 import { PageChangedEvent } from 'ngx-bootstrap/pagination';
 import { PaginationService } from '@app/shared/services/pagination.service';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-announcements',
@@ -42,7 +43,8 @@ export class AnnouncementsComponent
   constructor(
     private announcementService: AnnouncementsService,
     public authService: AuthService,
-    private paginationService: PaginationService
+    private paginationService: PaginationService,
+    private router: Router
   ) {
     super();
     this.isMobile = window.innerWidth < 992;
@@ -87,6 +89,10 @@ export class AnnouncementsComponent
 
   getDateFromString(dateISO: string): Date {
     return new Date(dateISO);
+  }
+
+  openDetails(id: number) {
+    this.router.navigate([PagesConfig.about.announcements + id]);
   }
 
   pageChanged(): void {

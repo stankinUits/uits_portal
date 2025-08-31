@@ -1,12 +1,13 @@
 <app-create-button (create)="redirectToCreatePage()"></app-create-button>
 
 <div class="container">
-  <header class="header">
-    <span class="header__icon">📢</span>
-    <h1 class="header__heading">Объявления кафедры</h1>
+  <header class="news-header">
+    <span class="news-header__icon">📢</span>
+    <h1 class="news-header__heading">Объявления кафедры</h1>
   </header>
   <div class="news-grid" *ngIf="(response$ | async) as response; else empty">
     <article
+      (click)="openDetails(post.id)"
       class="news-card"
       *ngFor="let post of response.results; let i = index"
     >

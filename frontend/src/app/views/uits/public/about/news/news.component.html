@@ -8,6 +8,7 @@
   <div class="news-grid" *ngIf="(response$ | async) as response; else empty">
     <article
       class="news-card"
+      (click)="openDetails(post.id)"
       *ngFor="let post of response.results; let i = index"
     >
       <div

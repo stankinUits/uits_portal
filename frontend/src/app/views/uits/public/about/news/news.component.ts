@@ -8,6 +8,7 @@ import {PagesConfig} from '@app/configs/pages.config';
 import {PostsBaseComponent} from '@app/views/uits/base/posts-base/posts-base.component';
 import {Pagination} from '@app/shared/types/paginate.interface';
 import {PaginationService} from '@app/shared/services/pagination.service';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-news',
@@ -32,6 +33,7 @@ export class NewsComponent extends PostsBaseComponent implements OnInit, OnDestr
 
   constructor(private newsService: NewsService,
               private paginationService: PaginationService,
+              private router: Router,
               public authService: AuthService) {
     super();
     this.isMobile = window.innerWidth < 992;
@@ -75,6 +77,10 @@ export class NewsComponent extends PostsBaseComponent implements OnInit, OnDestr
 
   getDateFromString(dateISO: string): Date {
     return new Date(dateISO);
+  }
+
+  openDetails(id: number) {
+    this.router.navigate([PagesConfig.about.news + id]);
   }
 
   pageChanged(): void {
