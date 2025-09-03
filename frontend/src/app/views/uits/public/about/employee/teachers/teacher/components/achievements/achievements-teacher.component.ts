@@ -1,7 +1,7 @@
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {EmployeeService} from '@app/views/uits/public/about/employee/employee.service';
 import {TeacherAchievements} from '@app/shared/types/models/teacher-achievements';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-achievements',
@@ -14,6 +14,7 @@ export class AchievementsTeacherComponent implements OnInit {
 
   constructor(private employeeService: EmployeeService,
               private route: ActivatedRoute,
+              private router: Router,
               private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
@@ -23,7 +24,12 @@ export class AchievementsTeacherComponent implements OnInit {
     this.employeeService.getAchievementsByTeacher(this.teacherID).subscribe(achievements => {
       this.achievements = achievements;
       this.cdr.detectChanges();
-      console.log(achievements);
     });
+  }
+
+  openAchievementById(id: number): void {
+    this.router.navigate([
+      '/scientific-activities/achievements', id,
+    ]);
   }
 }

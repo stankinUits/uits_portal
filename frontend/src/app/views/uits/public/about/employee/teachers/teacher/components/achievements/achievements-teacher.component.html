@@ -1,7 +1,11 @@
 <main class="achievements-main">
   <h1 class="achievements-title">Публикации преподавателя</h1>
   <div class="achievements-container">
-    <div *ngFor="let achievement of achievements" class="achievement-card">
+    <div
+      *ngFor="let achievement of achievements"
+      class="achievement-card"
+      (click)="openAchievementById(achievement.id)"
+    >
       <div class="achievement-image">
         <img [src]="achievement.image" alt="Achievement Image">
       </div>
