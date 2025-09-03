@@ -19,12 +19,12 @@
 <h2 class="mb-4">Сотрудники кафедры</h2>
 
 <div *ngIf="(teacher$ | async).length !== 0; else loading">
-  <div class="row align-center-start gap-3 flex-row">
-    <div *ngFor="let employee of teacher$ | async" class="card" style="width: 18rem; min-height: 100%">
+  <div class="teachers__wrapper">
+    <div *ngFor="let employee of teacher$ | async" class="card">
       <div
         class="d-flex justify-content-center"
-        style="min-height: 183px"
-      ><img
+      >
+        <img
         [src]="(!employee.avatar)?AVATAR_DEFAULT_URL : employee.avatar"
         class="card-img-top mx-auto mt-4 mx-5 rounded-circle image"
         alt="...">

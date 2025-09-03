@@ -12,8 +12,8 @@
   gap: 50px;
 
   .head-of-department__info__photo {
-    width: 200px;
-    height: 200px;
+    width: 195px;
+    height: 195px;
     border-radius: 50%;
     border: 3px solid #007bff;
   }
@@ -28,12 +28,20 @@
   }
 }
 
+.teachers__wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  row-gap: 30px;
+  justify-items: center;
+}
+
 .card {
+  width: 290px;
   background: #ffffff;
   padding: 10px;
   //transition: transform 0.2s ease-in-out;
   border-radius: 15px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
   overflow: hidden;
   position: relative;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -83,7 +91,7 @@
 }
 
 .image {
-  height:150px;
+  height: 150px;
   width: 150px;
   border-radius: 50%;
   margin-bottom: 20px;
@@ -92,7 +100,7 @@
 }
 
 .img {
-  height:80px;
+  height: 80px;
   width: 80px;
   border-radius: 50%;
   margin-bottom: 20px;
@@ -109,4 +117,21 @@
 
 .text-name {
   padding-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+  .head-of-department__info {
+    .head-of-department__info__photo {
+      width: 160px;
+      height: 160px;
+    }
+  }
+
+  .head-of-department__wrapper {
+    padding: 0 40px;
+  }
+
+  .head-of-department__info {
+    align-items: start;
+  }
 }
