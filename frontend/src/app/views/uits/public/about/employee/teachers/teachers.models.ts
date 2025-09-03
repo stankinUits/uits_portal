@@ -18,5 +18,5 @@ export enum TeacherDegree {
   DOCTOR_PHYS_MATH = 'доктор физико-математических наук',
   CANDIDATE_PHYS_MATH = 'кандидат физико-математических наук',
   DOCTOR_ECONOM = 'доктор экономических наук',
-  CANDIDATE_ECONOM = 'дандидат экономических наук'
+  CANDIDATE_ECONOM = 'кандидат экономических наук'
 }

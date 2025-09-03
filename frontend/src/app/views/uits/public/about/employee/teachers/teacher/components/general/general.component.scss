@@ -1,0 +1,115 @@
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  gap: 30px;
+  margin-top: 40px;
+}
+
+.info-block, .contacts {
+  background: white;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 15px 35px rgba(102, 126, 234, 0.3);
+  align-self: start;
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  color: #667eea;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.info-title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 30px;
+  padding-left: 20px;
+  position: relative;
+}
+
+.info-title:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 30px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  border-radius: 2px;
+}
+
+.info-section {
+  margin-bottom: 25px;
+  padding: 20px;
+  border-radius: 12px;
+  background: #fdfdff;
+  border: 1px solid #e0e4f8;
+  box-shadow: 0 4px 10px rgba(102, 126, 234, 0.08);
+  transition: transform 0.2s ease-in-out;
+}
+
+.info-section:hover {
+  transform: translateY(-3px);
+}
+
+.info-section.experience h2::before {
+  content: "⏳";
+  margin-right: 8px;
+}
+
+.info-section.education h2::before {
+  content: "🎓";
+  margin-right: 8px;
+}
+
+.info-section.qualification h2::before {
+  content: "📑";
+  margin-right: 8px;
+}
+
+.info-section p,
+.info-section div {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #444;
+}
+
+.contacts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-left: 0;
+
+  list-style: none;
+  margin-top: 25px;
+}
+
+.contact {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+
+  padding: 12px 15px;
+  background: #f8f9fa;
+  border-radius: 15px;
+  font-size: 0.9rem;
+}
+
+.contact-icon {
+  width: 30px;
+  height: 30px;
+  background: linear-gradient(135deg, #889cf6, #2065cc);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  flex-shrink: 0;
+}
+
+.contact strong {
+  color: black;
+}

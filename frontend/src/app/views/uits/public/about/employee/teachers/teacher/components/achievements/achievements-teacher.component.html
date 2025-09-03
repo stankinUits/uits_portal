@@ -1,10 +1,13 @@
-<div class="achievements-container">
-  <div *ngFor="let achievement of achievements" class="achievement-card">
-    <div class="achievement-image">
-      <img [src]="achievement.image" alt="Achievement Image">
-    </div>
-    <div class="achievement-description">
-      <p>{{ achievement.description }}</p>
+<main class="achievements-main">
+  <h1 class="achievements-title">Публикации преподавателя</h1>
+  <div class="achievements-container">
+    <div *ngFor="let achievement of achievements" class="achievement-card">
+      <div class="achievement-image">
+        <img [src]="achievement.image" alt="Achievement Image">
+      </div>
+      <div class="achievement-description">
+        <p>{{ achievement.description }}</p>
+      </div>
     </div>
   </div>
-</div>
+</main>

@@ -1,12 +1,9 @@
-<h2>Дисциплины, читаемые преподавателем</h2>
-
-<div class="subject-grid">
-  <div
-    *ngFor="let subject of disciplines"
-    (click)="openModalWithComponent(subject.name, subject.description)"
-    [ngClass]="{'clickable': subject.description}"
-    class="subject-card">
-    <img src="/assets/images/UITS.png" alt="{{ subject.name }}" class="subject-image">
-    <div class="subject-name">{{ subject.name }}</div>
+<main class="disciplines-main">
+  <h1 class="disciplines-title">Читаемые дисциплины</h1>
+  <div class="disciplines-grid">
+    <div class="disciplines-card" *ngFor="let subject of disciplines">
+      <h2 class="subject-name">{{ subject.name }}</h2>
+      <p class="subject-details">{{ subject.description }}</p>
+    </div>
   </div>
-</div>
+</main>

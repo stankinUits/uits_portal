@@ -1,43 +1,47 @@
-<ng-container *ngIf="teacher$ | async as teacher; else loading">
+<main class="main" *ngIf="teacher$ | async; else loading">
+  <nav class="breadcrumb">
+    <a routerLink="/">Кафедра УИТС</a>
+    <span>→</span>
+    <a routerLink="/about/employee/teachers">Сотрудники</a>
+    <span>→</span>
+    <span>{{ fullName }}</span>
+  </nav>
 
-  <h2>{{ fullName }}</h2>
-  <button class="go-back-btn"
-            routerLink="/about/employee/teachers"
-    >
-      <i class="feather icon-arrow-left go-back-btn__icon"></i>
-      <span class="go-back-btn__text">Вернуться к списку преподавателей</span>
-    </button>
+<!--  <button class="go-back-btn" routerLink="/about/employee/teachers">-->
+<!--    <i class="feather icon-arrow-left go-back-btn__icon"></i>-->
+<!--    <span class="go-back-btn__text">Вернуться к списку преподавателей</span>-->
+<!--  </button>-->
 
-  <div>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link" routerLink="general" routerLinkActive="active">Общая информация</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="schedule" routerLinkActive="active">Расписание</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="disciplines" routerLinkActive="active">Дисциплины</a>
-          </li>
-<!--          <li class="nav-item">-->
-<!--            <a class="nav-link" routerLink="management" routerLinkActive="active">Руководство</a>-->
-<!--          </li>-->
-          <li class="nav-item">
-            <a class="nav-link" routerLink="publications" routerLinkActive="active">Публикации</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="achievements" routerLinkActive="active">Достижения</a>
-          </li>
-        </ul>
+  <header class="profile-header">
+    <img class="profile-photo" [src]="avatar" [alt]="fullName">
+    <div class="profile-info">
+      <h1 class="profile-name">{{ fullName }}</h1>
+      <p class="profile-position">
+        {{ position }}
+      </p>
+      <p class="profile-degree">{{ degree }}, {{ rank }}</p>
+
+      <div class="contacts">
+        <a [href]="email" class="contact" *ngIf="email">📧 Почта </a>
+        <a [href]="tel" class="contact" *ngIf="tel"> 📞 Телефон </a>
+        <a [href]="messanger" class="contact" *ngIf="messanger"> 💬 Мессенджер </a>
       </div>
-    </nav>
-  </div>
+    </div>
+  </header>
+
+  <nav class="section-nav">
+    <div class="nav-tabs">
+      <a routerLink="general" routerLinkActive="active" class="nav-tab">Общая информация</a>
+      <a routerLink="schedule" routerLinkActive="active" class="nav-tab">Расписание</a>
+      <a routerLink="disciplines" routerLinkActive="active" class="nav-tab">Дисциплины</a>
+      <a routerLink="publications" routerLinkActive="active" class="nav-tab">Публикации</a>
+      <a routerLink="achievements" routerLinkActive="active" class="nav-tab">Достижения</a>
+    </div>
+  </nav>
 
   <router-outlet></router-outlet>
+</main>
 
-</ng-container>
 <ng-template #loading>
   Загрузка
 </ng-template>

@@ -1,0 +1,90 @@
+.publications-main {
+  background: white;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 15px 35px rgba(102, 126, 234, 0.3);
+  margin-top: 40px;
+}
+
+.publications-title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 30px;
+  padding-left: 20px;
+  position: relative;
+}
+
+.publications-title:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 30px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  border-radius: 2px;
+}
+
+.publications-grid {
+
+}
+
+.publications-card {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  padding: 25px;
+  border-radius: 15px;
+  border-left: 5px solid #667eea;
+  transition: all 0.3s ease;
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.publications-card:hover {
+	transform: translateX(5px);
+	box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.publication-name {
+  font-size: 1.2rem;
+	font-weight: 600;
+	color: #2c3e50;
+	margin-bottom: 10px;
+}
+
+.subject-details {
+  color: #666;
+	font-size: 0.9rem;
+}
+
+.publication-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.publication-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.publication-year {
+  background: #667eea;
+	color: white;
+	padding: 4px 12px;
+	border-radius: 12px;
+	font-size: 0.8rem;
+	font-weight: 600;
+  width: fit-content;
+}
+
+.publication-tag {
+  background: #28a745;
+	color: white;
+	padding: 4px 12px;
+	border-radius: 12px;
+	font-size: 0.8rem;
+	font-weight: 600;
+}

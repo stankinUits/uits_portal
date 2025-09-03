@@ -1,76 +1,63 @@
-<ng-container>
-  <ng-container *ngIf="schedule | async">
-    <ng-container *ngTemplateOutlet="title"></ng-container>
-  </ng-container>
+<ng-container *ngIf="schedule | async">
   <ng-container *ngTemplateOutlet="content"></ng-container>
 </ng-container>
 
-
-<!--Templates-->
-
-<ng-template #title>
-  <h2 class="mb-3">Расписание</h2>
-</ng-template>
-
 <ng-template #content>
-  <div class="mb-3">
-    <ng-container *ngTemplateOutlet="actionPanel"></ng-container>
-    <div class="d-flex flex-column gap-1"
-         [ngStyle]="{
-            'max-width': '300px'
-         }"
-         *ngIf="schedule | async">
-      <div class="fw-semibold">
-        Выбор недели
-      </div>
-      <div class="btn-group">
-        <div
-          class="btn btn-primary"
-          mwlCalendarPreviousView
+  <div class="schedule-wrapper">
+    <h1 class="title">Расписание занятий</h1>
+    <div class="d-flex justify-content-between">
+      <div class="d-flex flex-column gap-1 justify-content-center"
+           [ngStyle]="{
+            'max-width': '280px'
+         }">
+        <div class="btn-group schedule-buttons">
+          <div
+            class="btn btn-primary"
+            mwlCalendarPreviousView
 
-          view="week"
-          [(viewDate)]="viewDate"
-        >
-          Предыдущая
-        </div>
-        <div
-          class="btn btn-outline-secondary"
-          mwlCalendarToday
-          [(viewDate)]="viewDate"
-        >
-          Сейчас
-        </div>
-        <div
-          class="btn btn-primary"
-          mwlCalendarNextView
-          view="week"
-          [(viewDate)]="viewDate"
-        >
-          Следующая
+            view="week"
+            [(viewDate)]="viewDate"
+          >
+            ←
+          </div>
+          <div
+            class="btn btn-outline-secondary"
+            mwlCalendarToday
+            [(viewDate)]="viewDate"
+          >
+            Сейчас
+          </div>
+          <div
+            class="btn btn-primary"
+            mwlCalendarNextView
+            view="week"
+            [(viewDate)]="viewDate"
+          >
+            →
+          </div>
         </div>
       </div>
+      <ng-container *ngTemplateOutlet="actionPanel"></ng-container>
     </div>
 
-
-  </div>
-  <div *ngIf="schedule | async">
-
-    <mwl-calendar-week-view
-      #view
-      [viewDate]="viewDate"
-      [events]="getEvents()"
-      locale="ru"
-      weekStartsOn="1"
-      [excludeDays]="[0,7]"
-      dayStartHour="8"
-      dayEndHour="22"
-      [eventTitleTemplate]="eventTitleTemplate"
-      dayEndMinute="50"
-      [hourSegments]="3"
-      [hourSegmentTemplate]="weekViewHourSegment"
-      (eventClicked)="onCalendarEventClick($event)"
-    >
-    </mwl-calendar-week-view>
+    <div *ngIf="schedule | async">
+      <mwl-calendar-week-view
+        #view
+        [viewDate]="viewDate"
+        [events]="getEvents()"
+        locale="ru"
+        weekStartsOn="1"
+        [excludeDays]="[0,7]"
+        dayStartHour="8"
+        dayEndHour="22"
+        [eventTitleTemplate]="eventTitleTemplate"
+        dayEndMinute="50"
+        [hourSegments]="3"
+        [hourSegmentTemplate]="weekViewHourSegment"
+        (eventClicked)="onCalendarEventClick($event)"
+      >
+      </mwl-calendar-week-view>
+    </div>
   </div>
 </ng-template>
 
@@ -173,11 +160,6 @@
 
     <div class="d-flex flex-column gap-1  mb-3"
          *ngIf="(profile | async) && ((profile | async).isModerator || (profile | async).isSuperuser)">
-
-      <div class="fw-semibold">
-        Администрирование
-      </div>
-
       <div class="d-flex gap-3">
         <button class="btn btn-primary" (click)="navigateToScheduleEdit()">Редактировать</button>
 
@@ -196,8 +178,8 @@
 
 
 <ng-template
-    #confirmImportSchedule
-    bsModal
+  #confirmImportSchedule
+  bsModal
 >
   <div class="modal-header">
     <h4 class="modal-title">Импорт расписания</h4>

@@ -1,67 +1,49 @@
-<ng-container *ngIf="teacher$ | async as teacher; else loading">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-4">
-        <div class="card mb-4 personal-info__wrapper">
-          <img [src]="avatar" class="card-img-top avatar image" [alt]="fullName">
-          <div class="card-body">
-            <h5 class="card-title">{{ fullName }}</h5>
-            <p class="card-text">{{ position }}</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-8">
-        <div class="card mb-4">
-          <div class="card-body">
-            <h4 class="card-title color-heading">Общая информация</h4>
-            <p><b>Должность</b>: {{ position }}</p>
-            <p><b>Ученая степень</b>: {{ degree }}</p>
-            <p><b>Ученое звание</b>: {{ rank }}</p>
-            <p><b>Общий стаж работы</b>: {{ experience }}</p>
-            <p><b>Стаж работы по специальности</b>: {{ professional_experience }}</p>
-          </div>
-        </div>
+<ng-container *ngIf="teacher$ | async">
+  <main class="info-grid">
+    <div class="info-block">
+      <h1 class="info-title">Общая информация</h1>
 
-        <div class="card mb-4">
-          <div class="card-body">
-            <h4 class="card-title color-heading">Контакты</h4>
-            <p><b>Телефон</b>: {{ phone }}</p>
-            <p><b>Почта</b>: {{ email }}</p>
-            <p><b>Мессенджер</b>: {{ messenger }}</p>
-          </div>
-        </div>
+      <div class="info-section experience">
+        <h2 class="subtitle">Стаж работы</h2>
+        <p><b>Общий стаж:</b> {{ experience }}</p>
+        <p><b>По специальности:</b> {{ professional_experience }}</p>
       </div>
-    </div>
 
-    <div *ngIf="teacher.education" class="card mb-4">
-      <div class="card-body">
-        <h4 class="card-title color-heading">Образование</h4>
-<!--        <p>{{ education }}</p>-->
+      <div class="info-section education">
+        <h2 class="subtitle">Образование</h2>
         <div [innerHTML]="education"></div>
       </div>
-    </div>
 
-    <div *ngIf="teacher.qualification" class="card mb-4">
-      <div class="card-body">
-        <h4 class="card-title color-heading">Данные о повышении квалификации и (или) профессиональной переподготовке (за последние 5 лет)</h4>
-<!--        <p>{{ qualification }}</p>-->
+      <div class="info-section qualification">
+        <h2 class="subtitle">Повышение квалификации</h2>
         <div [innerHTML]="qualification"></div>
       </div>
     </div>
-
-    <div *ngIf="teacher.bio" class="card mb-4">
-      <div class="card-body">
-        <h4 class="card-title color-heading">Биография</h4>
-        <p>{{ bio }}</p>
-      </div>
+    <div class="contacts">
+      <h2 class="subtitle">Контактная информация</h2>
+      <ul class="contacts-list">
+        <li class="contact">
+          <div class="contact-icon">📧</div>
+          <div>
+            <strong>Email:</strong><br/>
+            <a [href]="'mailto:' + email">{{ email }}</a>
+          </div>
+        </li>
+        <li class="contact">
+          <div class="contact-icon">📞</div>
+          <div>
+            <strong>Телефон:</strong><br/>
+            <a [href]="'tel:' + phone">{{ phone }}</a>
+          </div>
+        </li>
+        <li class="contact">
+          <div class="contact-icon">💬</div>
+          <div>
+            <strong>Мессенджер:</strong><br/>
+            {{ messenger }}
+          </div>
+        </li>
+      </ul>
     </div>
-  </div>
+  </main>
 </ng-container>
-
-<ng-template #loading>
-  <div class="text-center">
-    <div class="spinner-border" role="status">
-      <span class="sr-only">Загрузка...</span>
-    </div>
-  </div>
-</ng-template>

@@ -6,7 +6,7 @@ import {ActivatedRoute} from '@angular/router';
 @Component({
   selector: 'app-achievements',
   templateUrl: './achievements-teacher.component.html',
-  styleUrls: ['./achievements-teacher.component.css']
+  styleUrls: ['./achievements-teacher.component.scss']
 })
 export class AchievementsTeacherComponent implements OnInit {
   teacherID: number;

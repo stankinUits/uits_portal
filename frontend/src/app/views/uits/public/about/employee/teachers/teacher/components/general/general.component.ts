@@ -9,7 +9,7 @@ import {TeacherDegree, TeacherRank} from '@app/views/uits/public/about/employee/
 @Component({
   selector: 'app-general',
   templateUrl: './general.component.html',
-  styleUrls: ['./general.component.css']
+  styleUrls: ['./general.component.scss']
 })
 export class GeneralComponent implements OnInit {
   teacherID: number;

@@ -39,7 +39,6 @@ export class PostComponent implements OnInit {
   getPost() {
     this.newsService.getPost(this.id).subscribe(post => {
       this.post$.next(post);
-      console.log(post)
     });
   }
 
