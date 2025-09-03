@@ -2,21 +2,24 @@
   (create)="onCreateTeacher()">
 </app-create-button>
 
-<div class="head-of-department__wrapper">
-  <h2>Заведующий кафедрой управления и информатики в технических системах</h2>
-  <div class="head-of-department__info">
-    <img class="head-of-department__info__photo" src="/assets/images/contributors/chekanin-vladislav.jpg" alt="">
-    <div>
-      <h3 class="head-of-department__info__name">Чеканин Владислав Александрович</h3>
-      <div class="head-of-department__info__contacts">
-        <p><b>Почта:</b> v.chekanin@stankin.ru</p>
-        <p><b>Телефон:</b> +7 (499) 973-39-13</p>
-      </div>
+<div class="department-head-section">
+  <img class="department-head-photo" src="/assets/images/contributors/chekanin-vladislav.jpg">
+  <div class="department-head-info">
+    <h3 class="department-head-name">Чеканин Владислав Александрович</h3>
+    <p class="department-head-position">Заведующий кафедрой</p>
+    <div class="degree">Доктор технических наук, доцент</div>
+    <div class="contact-info">
+      <a href="mailto:v.chekanin@stankin.ru" class="contact-item">
+        v.chekanin@stankin.ru
+      </a>
+      <a href="tel:+74999733913" class="contact-item">
+        +7 (499) 973-39-13
+      </a>
     </div>
   </div>
 </div>
 
-<h2 class="mb-4">Сотрудники кафедры</h2>
+<h2 class="section-title">Профессорско-преподавательский состав</h2>
 
 <div *ngIf="(teacher$ | async).length !== 0; else loading">
   <div class="teachers__wrapper">
@@ -25,9 +28,9 @@
         class="d-flex justify-content-center"
       >
         <img
-        [src]="(!employee.avatar)?AVATAR_DEFAULT_URL : employee.avatar"
-        class="card-img-top mx-auto mt-4 mx-5 rounded-circle image"
-        alt="...">
+          [src]="(!employee.avatar)?AVATAR_DEFAULT_URL : employee.avatar"
+          class="card-img-top mx-auto mt-4 mx-5 rounded-circle image"
+          alt="...">
       </div>
       <div class="card-body">
         <h4
@@ -49,7 +52,7 @@
             alt="avatar"
           >
 
-<!--          <p class="text">Дополнительная информация</p>-->
+          <!--          <p class="text">Дополнительная информация</p>-->
           <p class="text">{{ employee.last_name }} {{ employee.first_name }} {{ employee.patronymic }}</p>
           <button class="btn btn-primary" (click)="moveToEmployee(employee.id)">Подробнее</button>
         </div>
@@ -62,4 +65,3 @@
 <ng-template #loading>
   <h3>Сотрудников пока нет</h3>
 </ng-template>
-

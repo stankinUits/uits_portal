@@ -1,31 +1,88 @@
-.head-of-department__wrapper {
-  display: flex;
-  flex-direction: column;
-  margin: 20px 0 50px;
+.department-head-section {
+  background: rgba(80, 158, 248, 0.89);
+  color: white;
+  border-radius: 25px;
+  padding: 40px;
+  margin-bottom: 40px;
+  text-align: center;
 }
 
-.head-of-department__info {
-  padding: 20px 0 0;
+.department-head-photo {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  margin-bottom: 15px;
+}
+
+.department-head-name {
+  color: white;
+  font-size: 1.8rem;
+}
+
+.department-head-position {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.2rem;
+}
+
+.department-head-degree {
+  font-size: 0.9rem;
+}
+
+.degree {
+  display: inline-block;
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin: 5px auto 10px;
+}
+
+.contact-info {
+  margin-top: 15px;
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 50px;
+  justify-content: center;
+  gap: 20px;
+}
 
-  .head-of-department__info__photo {
-    width: 195px;
-    height: 195px;
-    border-radius: 50%;
-    border: 3px solid #007bff;
-  }
+.contact-item {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  backdrop-filter: blur(10px);
+  padding: 8px 12px;
+  border-radius: 25px;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+}
 
-  .head-of-department__info__name {
-    margin-bottom: 15px;
-  }
+.contact-item:hover {
+  background: #667eea;
+  color: white;
+  transform: scale(1.02);
+}
 
-  .head-of-department__info__contacts {
-    font-size: 18px;
-    line-height: 1;
-  }
+.section-title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #2c3e50;
+  text-align: center;
+  margin-bottom: 50px;
+  margin-top: 30px;
+  position: relative;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  border-radius: 2px;
 }
 
 .teachers__wrapper {
@@ -39,7 +96,6 @@
   width: 290px;
   background: #ffffff;
   padding: 10px;
-  //transition: transform 0.2s ease-in-out;
   border-radius: 15px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
   overflow: hidden;
