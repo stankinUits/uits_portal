@@ -1,21 +1,25 @@
-<h1>Экзамены у невыпускных курсов</h1>
-<div class="schedule-grid">
-  <div *ngFor="let teacher of teachersWithNonGraduationExam" class="teacher-card">
-    <h3>{{ teacher.last_name }} {{ teacher.first_name }}</h3>
-    <iframe *ngIf="teacher.exam_schedule_non_graduation"
-        [src]="teacher.exam_schedule_non_graduation | safeURL"
-        class="schedule-iframe">
-</iframe>
+<ng-container *ngIf="teachersWithNonGraduationExam.length > 0">
+  <h1>Экзамены у невыпускных курсов</h1>
+  <div class="schedule-grid">
+    <div *ngFor="let teacher of teachersWithNonGraduationExam" class="teacher-card">
+      <h3>{{ teacher.last_name }} {{ teacher.first_name }}</h3>
+      <iframe *ngIf="teacher.exam_schedule_non_graduation"
+              [src]="teacher.exam_schedule_non_graduation | safeURL"
+              class="schedule-iframe">
+      </iframe>
+    </div>
   </div>
-</div>
+</ng-container>
 
-<h1>Экзамены у выпускных курсов</h1>
-<div class="schedule-grid">
-  <div *ngFor="let teacher of teachersWithGraduationExam" class="teacher-card">
-    <h3>{{ teacher.last_name }} {{ teacher.first_name }}</h3>
-    <iframe *ngIf="teacher.exam_schedule_graduation"
-        [src]="teacher.exam_schedule_graduation | safeURL"
-        class="schedule-iframe">
-</iframe>
+<ng-container *ngIf="teachersWithGraduationExam.length > 0">
+  <h1>Экзамены у выпускных курсов</h1>
+  <div class="schedule-grid">
+    <div *ngFor="let teacher of teachersWithGraduationExam" class="teacher-card">
+      <h3>{{ teacher.last_name }} {{ teacher.first_name }}</h3>
+      <iframe *ngIf="teacher.exam_schedule_graduation"
+              [src]="teacher.exam_schedule_graduation | safeURL"
+              class="schedule-iframe">
+      </iframe>
+    </div>
   </div>
-</div>
+</ng-container>
