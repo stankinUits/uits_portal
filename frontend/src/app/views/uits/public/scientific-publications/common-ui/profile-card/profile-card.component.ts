@@ -40,7 +40,7 @@ import {DeleteButtonComponent} from "@app/shared/components/delete-button/delete
     DeleteButtonComponent
   ],
   templateUrl: './profile-card.component.html',
-  styleUrls: ['./profile-card.component.css']
+  styleUrls: ['./profile-card.component.scss']
 })
 export class ProfileCardComponent implements OnInit {
   scienceService: RegisterScienceService = inject(RegisterScienceService);

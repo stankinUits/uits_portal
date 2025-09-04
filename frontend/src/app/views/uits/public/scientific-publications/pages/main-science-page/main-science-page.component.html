@@ -9,7 +9,7 @@
       </h1>
     </div>
     <hr class="line">
-    <div>
+    <div class="input-wrapper">
       <input
         id="search-tag_input"
         (keyup)="searchScienceCards()"
@@ -25,9 +25,10 @@
     <hr class="line" *ngIf="authService.canEdit() | async">
     <div class="admin-menu" *ngIf="authService.canEdit() | async">
       <p class="sub-heading">Перейти на страницы: </p>
-      <ul>
+      <ul class="links-wrapper">
         <li *ngFor="let menuItem of adminMenu">
           <a
+            class="link-item"
             [routerLink]="menuItem.route"
             routerLinkActive="active"
           >
@@ -40,7 +41,7 @@
       </ul>
     </div>
     <hr class="line">
-    <div>
+    <div class="filters-wrapper">
       <p class="sub-heading">Фильтровать публикации: </p>
       <div class="buttons" #filterContainer>
         <div class="button-select-wrapper">

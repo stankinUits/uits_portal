@@ -37,7 +37,7 @@ interface adminMenu {
     JsonPipe, NgStyle
   ],
   templateUrl: './main-science-page.component.html',
-  styleUrls: ['./main-science-page.component.css']
+  styleUrls: ['./main-science-page.component.scss']
 })
 export class MainSciencePageComponent implements OnInit {
   scienceService = inject(RegisterScienceService);
