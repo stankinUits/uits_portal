@@ -32,11 +32,13 @@
           class="card-img-top mx-auto mt-4 mx-5 rounded-circle image"
           alt="...">
       </div>
-      <div class="card-body">
+      <div class="card-body teacher-card">
         <h4
           class="card-title text-center">{{ employee.last_name }} {{ employee.first_name }} {{ employee.patronymic }}</h4>
         <p
-          class="card-text text-center">{{ getEmployeePositions(employee) }}</p>
+          class="card-text text-center">{{ getEmployeePositions(employee) }}
+        </p>
+        <button class="btn btn-primary teacher-more" (click)="moveToEmployee(employee.id)">Подробнее</button>
       </div>
       <div class="overlay">
         <div>
