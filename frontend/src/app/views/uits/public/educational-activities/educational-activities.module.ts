@@ -20,6 +20,7 @@ import {
 import { AboutModule } from '../about/about.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ExamScheduleComponent } from './schedule/exam-schedule/exam-schedule.component';
+import {SharedModule} from "@app/shared/shared.module";
 
 @NgModule({
   declarations: [
@@ -32,20 +33,21 @@ import { ExamScheduleComponent } from './schedule/exam-schedule/exam-schedule.co
     MasterPracticesComponent,
     ExamScheduleComponent
   ],
-    imports: [
-        CommonModule,
-        EducationalActivitiesRoutingModule,
-        LayoutModule,
-        CalendarModule.forRoot({
-            provide: DateAdapter,
-            useFactory: adapterFactory
-        }),
-        NgSelectModule,
-        DateFnsModule,
-        ModalModule.forRoot(),
-        AboutModule,
-        FormsModule,
-        ReactiveFormsModule,
-    ]
+  imports: [
+    CommonModule,
+    EducationalActivitiesRoutingModule,
+    LayoutModule,
+    CalendarModule.forRoot({
+      provide: DateAdapter,
+      useFactory: adapterFactory
+    }),
+    NgSelectModule,
+    DateFnsModule,
+    ModalModule.forRoot(),
+    AboutModule,
+    FormsModule,
+    ReactiveFormsModule,
+    SharedModule,
+  ]
 })
 export class EducationalActivitiesModule { }

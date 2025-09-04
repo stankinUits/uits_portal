@@ -22,7 +22,9 @@ class TeacherSerializer(serializers.ModelSerializer):
             'phone_number',
             'email',
             'messenger',
-            'avatar'
+            'avatar',
+            'exam_schedule_graduation',
+            'exam_schedule_non_graduation'
         ]
 
 

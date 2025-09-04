@@ -1,43 +1,21 @@
 <h1>Экзамены у невыпускных курсов</h1>
 <div class="schedule-grid">
-<!--  <div *ngFor="let teacher of teachersWithNonGraduationExam" class="teacher-card">-->
-<!--    <h3>{{ teacher.last_name }} {{ teacher.first_name }}</h3>-->
-<!--    <iframe [src]="getSafeUrl(teacher.exam_schedule_non_graduation)"-->
-<!--            class="schedule-iframe">-->
-<!--    </iframe>-->
-<!--  </div>-->
-  <div class="teacher-card">
-    <h3>Бычкова Наталья Александровна</h3>
-    <iframe class="schedule-iframe" src="https://drive.google.com/file/d/1F5dIAxHZzrJB8YuBOa7u9JlaRQ9pzPPR/preview">
-
-    </iframe>
-  </div>
-  <div class="teacher-card">
-    <h3>Елисеева Наталья Владимировна</h3>
-    <iframe class="schedule-iframe" src="https://drive.google.com/file/d/1XzPGjfgR4hQv-NCsvqKqmJ0yMreDOi_S/preview">
-
-    </iframe>
+  <div *ngFor="let teacher of teachersWithNonGraduationExam" class="teacher-card">
+    <h3>{{ teacher.last_name }} {{ teacher.first_name }}</h3>
+    <iframe *ngIf="teacher.exam_schedule_non_graduation"
+        [src]="teacher.exam_schedule_non_graduation | safeURL"
+        class="schedule-iframe">
+</iframe>
   </div>
 </div>
 
 <h1>Экзамены у выпускных курсов</h1>
 <div class="schedule-grid">
-<!--  <div *ngFor="let teacher of teachersWithGraduationExam" class="teacher-card">-->
-<!--    <h3>{{ teacher.last_name }} {{ teacher.first_name }}</h3>-->
-<!--    <iframe [src]="teacher.exam_schedule_graduation"-->
-<!--            class="schedule-iframe">-->
-<!--    </iframe>-->
-<!--  </div>-->
-  <div class="teacher-card">
-    <h3>Ибатулин Михаил Юрьевич</h3>
-    <iframe class="schedule-iframe" src="https://drive.google.com/file/d/1y_fsIpn-Cxr_159KERILqi700VYcpXhV/preview">
-
-    </iframe>
-  </div>
-  <div class="teacher-card">
-    <h3>Петров Валерий Евгеньевич</h3>
-    <iframe class="schedule-iframe" src="https://drive.google.com/file/d/1xp3y_9h8Rhnp7E4tqePYAgGdkmkP4puF/preview">
-
-    </iframe>
+  <div *ngFor="let teacher of teachersWithGraduationExam" class="teacher-card">
+    <h3>{{ teacher.last_name }} {{ teacher.first_name }}</h3>
+    <iframe *ngIf="teacher.exam_schedule_graduation"
+        [src]="teacher.exam_schedule_graduation | safeURL"
+        class="schedule-iframe">
+</iframe>
   </div>
 </div>

@@ -16,8 +16,7 @@ export class ExamScheduleComponent implements OnInit {
   teachersWithNonGraduationExam: IEmployee[] = [];
 
   constructor(private educationActivitiesService: EducationalActivitiesService,
-              private cdr: ChangeDetectorRef,
-              private sanitizer: DomSanitizer) {
+              private cdr: ChangeDetectorRef) {
   }
 
   ngOnInit(): void {
@@ -32,25 +31,10 @@ export class ExamScheduleComponent implements OnInit {
       next: (results: { graduationTeachers: IEmployee[], nonGraduationTeachers: IEmployee[] }) => {
         this.teachersWithGraduationExam = results.graduationTeachers;
         this.teachersWithNonGraduationExam = results.nonGraduationTeachers;
+        console.log(results.graduationTeachers)
+        console.log(results.nonGraduationTeachers)
         this.cdr.detectChanges();
       }
     })
-  }
-
-  getSafeUrl(url: string): SafeResourceUrl {
-    try {
-      const parsedUrl = new URL(url);
-      const allowedHost = 'drive.google.com';
-
-      if (parsedUrl.hostname === allowedHost) {
-        return this.sanitizer.bypassSecurityTrustResourceUrl(url);
-      } else {
-        console.warn('URL отклонён: недопустимый домен', parsedUrl.hostname);
-        return '';
-      }
-    } catch (e) {
-      console.warn('Некорректный URL');
-      return '';
-    }
   }
 }
