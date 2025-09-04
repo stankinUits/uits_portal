@@ -5,7 +5,7 @@ import {GraduateStudents} from '@app/shared/types/models/graduate-students';
 @Component({
   selector: 'app-postgraduate-info',
   templateUrl: './postgraduate-info.component.html',
-  styleUrls: ['./postgraduate-info.component.css']
+  styleUrls: ['./postgraduate-info.component.scss']
 })
 export class PostgraduateInfoComponent implements OnInit, AfterViewInit {
   @ViewChild('indexColumnTemplate', {static: true}) indexColumnTemplate: TemplateRef<any>;

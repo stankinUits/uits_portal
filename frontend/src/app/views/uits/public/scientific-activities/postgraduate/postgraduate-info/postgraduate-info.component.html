@@ -10,7 +10,8 @@
     placeholder="Введите для поиска..."
     (keyup)="search(searchInput.value)"
 />
-<ngx-datatable
+<div class="datatable-wrapper">
+  <ngx-datatable
     #table
     [columns]="columns"
     columnMode="force"
@@ -29,3 +30,4 @@
 <ng-template #indexColumnTemplate let-rowIndex="rowIndex">
   {{ rowIndex + 1 }}
 </ng-template>
+</div>
