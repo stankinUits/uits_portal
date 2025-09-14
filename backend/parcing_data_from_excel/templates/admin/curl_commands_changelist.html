@@ -1,0 +1,361 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block extrastyle %}
+{{ block.super }}
+<style>
+    .command-container {
+        margin: 20px 0;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 4px;
+    }
+    .command-title {
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #333;
+    }
+    .command-box {
+        background-color: #2b2b2b;
+        color: #fff;
+        padding: 10px;
+        border-radius: 4px;
+        font-family: monospace;
+        position: relative;
+        margin-bottom: 5px;
+    }
+    .action-buttons {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        display: flex;
+        gap: 10px;
+    }
+    .run-button, .copy-button {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+    .run-button:hover, .copy-button:hover {
+        background-color: #45a049;
+    }
+    .run-button.running {
+        background-color: #ffa500;
+        cursor: not-allowed;
+    }
+    .run-button.success {
+        background-color: #4CAF50;
+    }
+    .run-button.error {
+        background-color: #f44336;
+    }
+    .section-title {
+        margin-top: 30px;
+        margin-bottom: 15px;
+        color: #2c3e50;
+        border-bottom: 2px solid #eee;
+        padding-bottom: 10px;
+    }
+    .description {
+        color: #666;
+        margin-bottom: 10px;
+        font-style: italic;
+    }
+    .result-box {
+        margin-top: 10px;
+        padding: 10px;
+        border-radius: 4px;
+        display: none;
+    }
+    .result-box.success {
+        background-color: #e8f5e9;
+        color: #2e7d32;
+        border: 1px solid #a5d6a7;
+    }
+    .result-box.error {
+        background-color: #ffebee;
+        color: #c62828;
+        border: 1px solid #ef9a9a;
+    }
+    .loading-spinner {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 3px solid #f3f3f3;
+        border-top: 3px solid #3498db;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin-right: 10px;
+        vertical-align: middle;
+    }
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div id="content-main">
+    <h1>Curl Commands for Data Operations</h1>
+    
+    {% csrf_token %}
+    
+    <div class="section-title">Database Initialization Commands</div>
+    <div class="description">Use these commands to initialize and populate the database with data from Excel files.</div>
+    
+    <div class="command-container">
+        <div class="command-title">Parse Code Directions</div>
+        <div class="command-box">
+            curl -X POST http://localhost:8000/api/grades/parse-code-directions/
+            <div class="action-buttons">
+                <button class="run-button" onclick="runCommand(this, '/api/grades/parse-code-directions/')">Run</button>
+                <button class="copy-button" onclick="copyCommand(this)">Copy</button>
+            </div>
+            <div class="result-box"></div>
+        </div>
+    </div>
+
+    <div class="command-container">
+        <div class="command-title">Parse Disciplines</div>
+        <div class="command-box">
+            curl -X POST http://localhost:8000/api/grades/parse-disciplines/
+            <div class="action-buttons">
+                <button class="run-button" onclick="runCommand(this, '/api/grades/parse-disciplines/')">Run</button>
+                <button class="copy-button" onclick="copyCommand(this)">Copy</button>
+            </div>
+            <div class="result-box"></div>
+        </div>
+    </div>
+
+    <div class="command-container">
+        <div class="command-title">Parse Lesson Types</div>
+        <div class="command-box">
+            curl -X POST http://localhost:8000/api/grades/parse-lesson-types/
+            <div class="action-buttons">
+                <button class="run-button" onclick="runCommand(this, '/api/grades/parse-lesson-types/')">Run</button>
+                <button class="copy-button" onclick="copyCommand(this)">Copy</button>
+            </div>
+            <div class="result-box"></div>
+        </div>
+    </div>
+
+    <div class="command-container">
+        <div class="command-title">Parse Teachers</div>
+        <div class="command-box">
+            curl -X POST http://localhost:8000/api/grades/parse-teachers/
+            <div class="action-buttons">
+                <button class="run-button" onclick="runCommand(this, '/api/grades/parse-teachers/')">Run</button>
+                <button class="copy-button" onclick="copyCommand(this)">Copy</button>
+            </div>
+            <div class="result-box"></div>
+        </div>
+    </div>
+
+    <div class="command-container">
+        <div class="command-title">Parse Groups</div>
+        <div class="command-box">
+            curl -X POST http://localhost:8000/api/grades/parse-groups/
+            <div class="action-buttons">
+                <button class="run-button" onclick="runCommand(this, '/api/grades/parse-groups/')">Run</button>
+                <button class="copy-button" onclick="copyCommand(this)">Copy</button>
+            </div>
+            <div class="result-box"></div>
+        </div>
+    </div>
+
+    <div class="command-container">
+        <div class="command-title">Parse Semesters</div>
+        <div class="command-box">
+            curl -X POST http://localhost:8000/api/grades/parse-semesters/
+            <div class="action-buttons">
+                <button class="run-button" onclick="runCommand(this, '/api/grades/parse-semesters/')">Run</button>
+                <button class="copy-button" onclick="copyCommand(this)">Copy</button>
+            </div>
+            <div class="result-box"></div>
+        </div>
+    </div>
+
+    <div class="command-container">
+        <div class="command-title">Parse Group Courses</div>
+        <div class="command-box">
+            curl -X POST http://localhost:8000/api/grades/parse-group-courses/
+            <div class="action-buttons">
+                <button class="run-button" onclick="runCommand(this, '/api/grades/parse-group-courses/')">Run</button>
+                <button class="copy-button" onclick="copyCommand(this)">Copy</button>
+            </div>
+            <div class="result-box"></div>
+        </div>
+    </div>
+
+    <div class="command-container">
+        <div class="command-title">Parse All Data</div>
+        <div class="command-box">
+            curl -X POST http://localhost:8000/api/grades/parse-all/
+            <div class="action-buttons">
+                <button class="run-button" onclick="runCommand(this, '/api/grades/parse-all/')">Run</button>
+                <button class="copy-button" onclick="copyCommand(this)">Copy</button>
+            </div>
+            <div class="result-box"></div>
+        </div>
+    </div>
+
+    <div class="command-container">
+        <div class="command-title">Parse Students</div>
+        <div class="command-box">
+            curl -X POST http://localhost:8000/api/grades/parse-students/
+            <div class="action-buttons">
+                <button class="run-button" onclick="runCommand(this, '/api/grades/parse-students/')">Run</button>
+                <button class="copy-button" onclick="copyCommand(this)">Copy</button>
+            </div>
+            <div class="result-box"></div>
+        </div>
+    </div>
+
+    <div class="section-title">Output Generation Commands</div>
+    <div class="description">Use these commands to generate and download output files.</div>
+
+    <div class="command-container">
+        <div class="command-title">Parse Output Module Grade</div>
+        <div class="description">This command will parse the input data and generate Excel files for each teacher-discipline combination. The files will be saved in the output directory.</div>
+        <div class="command-box">
+            curl -X POST http://localhost:8000/api/grades/parse-output-module-grade/
+            <div class="action-buttons">
+                <button class="run-button" onclick="runCommand(this, '/api/grades/parse-output-module-grade/')">Run</button>
+                <button class="copy-button" onclick="copyCommand(this)">Copy</button>
+            </div>
+            <div class="result-box"></div>
+        </div>
+    </div>
+
+    <div class="command-container">
+        <div class="command-title">Download Output Files</div>
+        <div class="description">Download all generated Excel files as a ZIP archive.</div>
+        <div class="command-box">
+            curl -X GET http://localhost:8000/api/grades/download-output-files/
+            <div class="action-buttons">
+                <button class="run-button" onclick="runCommand(this, '/api/grades/download-output-files/', 'GET')">Run</button>
+                <button class="copy-button" onclick="copyCommand(this)">Copy</button>
+            </div>
+            <div class="result-box"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+function copyCommand(button) {
+    const commandBox = button.closest('.command-box');
+    const command = commandBox.textContent.trim();
+    
+    // Create a temporary textarea element
+    const textarea = document.createElement('textarea');
+    textarea.value = command;
+    document.body.appendChild(textarea);
+    
+    // Select and copy the text
+    textarea.select();
+    document.execCommand('copy');
+    
+    // Remove the temporary textarea
+    document.body.removeChild(textarea);
+    
+    // Visual feedback
+    const originalText = button.textContent;
+    button.textContent = 'Copied!';
+    button.style.backgroundColor = '#45a049';
+    
+    // Reset button after 2 seconds
+    setTimeout(() => {
+        button.textContent = originalText;
+        button.style.backgroundColor = '#4CAF50';
+    }, 2000);
+}
+
+async function runCommand(button, url, method = 'POST') {
+    const resultBox = button.closest('.command-box').querySelector('.result-box');
+    const originalText = button.textContent;
+    
+    // Disable button and show loading state
+    button.disabled = true;
+    button.classList.add('running');
+    button.innerHTML = '<span class="loading-spinner"></span>Running...';
+    
+    try {
+        // Get CSRF token
+        const csrfToken = getCookie('csrftoken');
+        
+        // Make the request
+        const response = await fetch(url, {
+            method: method,
+            headers: {
+                'X-CSRFToken': csrfToken,
+                'Content-Type': 'application/json',
+            },
+        });
+        
+        // Check if the response is JSON
+        const contentType = response.headers.get('content-type');
+        let resultMessage;
+        
+        if (contentType && contentType.includes('application/json')) {
+            const data = await response.json();
+            resultMessage = data.message || 'Command executed successfully!';
+        } else {
+            // Handle non-JSON response
+            const text = await response.text();
+            if (response.ok) {
+                resultMessage = 'Command executed successfully!';
+            } else {
+                throw new Error(text || 'An error occurred while executing the command.');
+            }
+        }
+        
+        // Show success message
+        resultBox.style.display = 'block';
+        resultBox.className = 'result-box success';
+        resultBox.textContent = resultMessage;
+        
+        button.classList.remove('running');
+        button.classList.add('success');
+        button.textContent = 'Success';
+        
+    } catch (error) {
+        // Show error message
+        resultBox.style.display = 'block';
+        resultBox.className = 'result-box error';
+        resultBox.textContent = error.message || 'An error occurred while executing the command.';
+        
+        button.classList.remove('running');
+        button.classList.add('error');
+        button.textContent = 'Error';
+    }
+    
+    // Reset button after 3 seconds
+    setTimeout(() => {
+        button.disabled = false;
+        button.classList.remove('success', 'error');
+        button.textContent = originalText;
+    }, 3000);
+}
+
+// Helper function to get CSRF token
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+</script>
+{% endblock %} 
