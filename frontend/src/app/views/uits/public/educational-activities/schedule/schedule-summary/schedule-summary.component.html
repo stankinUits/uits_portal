@@ -1,165 +1,76 @@
 <ng-container>
-  <h2 class="mb-3">Сводное расписание</h2>
   <ng-container *ngTemplateOutlet="content"></ng-container>
 </ng-container>
 
 <!-- Templates -->
 <ng-template #content>
-  <div class="mb-3">
-    <div class="mb-4 d-flex gap-4 align-items-center">
-      <!-- Фильтр преподавателей -->
-      <div class="d-flex gap-3 align-items-center">
-        <label for="teacherSelect" class="form-label fw-semibold mb-2">Выберите преподавателей:</label>
-        <ng-select
-          id="teacherSelect"
-          [items]="teachersForSelect"
-          bindLabel="fullName"
-          bindValue="id"
-          [multiple]="true"
-          placeholder="Список преподавателей"
-          [(ngModel)]="selectedTeacherIds"
-          (change)="onFilterChange()">
-        </ng-select>
-      </div>
-
-      <div class="form-check d-flex gap-2">
-        <input
-          type="checkbox"
-          id="onlyOffline"
-          class="form-check-input"
-          [(ngModel)]="onlyOffline"
-          (change)="onFilterChange()"
-        />
-        <label for="onlyOffline" class="form-check-label">
-          Только очные занятия
-        </label>
-      </div>
-    </div>
-
-    <div class="mb-4">
-      <div class="fw-semibold mb-2">Выберите вид календаря:</div>
-      <div class="btn-group" role="group" aria-label="Вид календаря">
-        <button
-          type="button"
-          class="btn"
-          [ngClass]="{'btn-primary': currentView === 'week', 'btn-outline-primary': currentView !== 'week'}"
-          (click)="onViewChange('week')">
-          Недельный вид
-        </button>
-        <button
-          type="button"
-          class="btn"
-          [ngClass]="{'btn-primary': currentView === 'day', 'btn-outline-primary': currentView !== 'day'}"
-          (click)="onViewChange('day')">
-          Дневной вид
-        </button>
-      </div>
-    </div>
-
-    <div *ngIf="currentView === 'week'">
-      <div class="d-flex flex-column gap-1"
-           [ngStyle]="{ 'max-width': '300px' }"
-           *ngIf="schedules$">
-        <div class="fw-semibold">
-          Выбор недели
+  <div class="schedule-wrapper">
+    <h2 class="title">Сводное расписание</h2>
+    <div class="mb-3">
+      <div class="mb-4 d-flex gap-4 align-items-center">
+        <!-- Фильтр преподавателей -->
+        <div class="d-flex gap-3 align-items-center">
+          <label for="teacherSelect" class="form-label fw-semibold mb-2">Выберите преподавателей:</label>
+          <ng-select
+            id="teacherSelect"
+            [items]="teachersForSelect"
+            bindLabel="fullName"
+            bindValue="id"
+            [multiple]="true"
+            placeholder="Список преподавателей"
+            [(ngModel)]="selectedTeacherIds"
+            (change)="onFilterChange()">
+          </ng-select>
         </div>
-        <div class="btn-group">
-          <div class="btn btn-primary"
-               mwlCalendarPreviousView
-               view="week"
-               [(viewDate)]="viewDate">
-            Предыдущая
-          </div>
-          <div class="btn btn-outline-secondary"
-               mwlCalendarToday
-               [(viewDate)]="viewDate">
-            Сейчас
-          </div>
-          <div class="btn btn-primary"
-               mwlCalendarNextView
-               view="week"
-               [(viewDate)]="viewDate">
-            Следующая
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div *ngIf="filteredEvents$ | async as events; else loading">
-    <!-- Недельный вид -->
-    <div *ngIf="currentView === 'week'">
 
-      <mwl-calendar-week-view
-        #view
-        [viewDate]="viewDate"
-        [events]="events"
-        locale="ru"
-        weekStartsOn="1"
-        [excludeDays]="[0,7]"
-        dayStartHour="8"
-        dayEndHour="22"
-        [eventTitleTemplate]="eventTitleTemplate"
-        dayEndMinute="50"
-        [hourSegments]="3"
-        [hourSegmentTemplate]="weekViewHourSegment"
-      >
-      </mwl-calendar-week-view>
-    </div>
-
-    <!-- Дневной вид -->
-    <div *ngIf="currentView === 'day'">
-      <!-- Кнопки управления днем -->
-      <div class="d-flex flex-column gap-1"
-           [ngStyle]="{ 'max-width': '300px' }">
-        <div class="fw-semibold">
-          Выбор дня
-        </div>
-        <div class="btn-group">
-          <div class="btn btn-primary"
-               mwlCalendarPreviousView
-               view="day"
-               [(viewDate)]="viewDate">
-            Предыдущий
-          </div>
-          <div class="btn btn-outline-secondary"
-               mwlCalendarToday
-               [(viewDate)]="viewDate">
-            Сегодня
-          </div>
-          <div class="btn btn-primary"
-               mwlCalendarNextView
-               view="day"
-               [(viewDate)]="viewDate">
-            Следующий
-          </div>
+        <div class="form-check d-flex gap-2">
+          <input
+            type="checkbox"
+            id="onlyOffline"
+            class="form-check-input"
+            [(ngModel)]="onlyOffline"
+            (change)="onFilterChange()"
+          />
+          <label for="onlyOffline" class="form-check-label">
+            Только очные занятия
+          </label>
         </div>
       </div>
 
-      <!-- Отображение текущей даты -->
-      <div class="mb-3 text-center">
-        <h4>{{ viewDate | date: 'EEEE, d MMMM yyyy':'':'ru' }}</h4>
+      <div class="d-flex gap-5 align-items-end mt-4">
+        <div class="mb-4">
+          <div class="btn-group" role="group" aria-label="Вид календаря">
+            <button
+              type="button"
+              class="btn"
+              [ngClass]="{'btn-primary': currentView === 'week', 'btn-outline-primary': currentView !== 'week'}"
+              (click)="onViewChange('week')">
+              Неделя
+            </button>
+            <button
+              type="button"
+              class="btn"
+              [ngClass]="{'btn-primary': currentView === 'day', 'btn-outline-primary': currentView !== 'day'}"
+              (click)="onViewChange('day')">
+              День
+            </button>
+          </div>
+        </div>
+
+        <div *ngIf="currentView === 'week'">
+          <ng-container *ngTemplateOutlet="calendarNavigation; context: { viewType: 'week' }"></ng-container>
+        </div>
+
+        <div *ngIf="currentView === 'day'">
+          <ng-container *ngTemplateOutlet="calendarNavigation; context: { viewType: 'day' }"></ng-container>
+        </div>
       </div>
 
-      <mwl-calendar-day-view
-        [viewDate]="viewDate"
-        [events]="events"
-        locale="ru"
-        dayStartHour="8"
-        dayEndHour="22"
-        dayEndMinute="50"
-        [hourSegments]="3"
-        [eventTitleTemplate]="eventTitleTemplate"
-        [hourSegmentTemplate]="weekViewHourSegment"
-      >
-      </mwl-calendar-day-view>
     </div>
+
+    <ng-container *ngTemplateOutlet="calendarView; context: { viewType: currentView }"></ng-container>
   </div>
 </ng-template>
-
-<ng-template #loading>
-  <p>Загрузка расписания...</p>
-</ng-template>
-
 
 <!-- Шаблон для отображения события -->
 <ng-template #eventTitleTemplate let-event="event" let-view="view">
@@ -199,3 +110,78 @@
   <div>Загрузка...</div>
 </ng-template>
 
+<ng-template #calendarNavigation let-viewType="viewType">
+  <div class="d-flex flex-column gap-1" [ngStyle]="{ 'max-width': '300px' }" *ngIf="schedules$">
+    <div class="d-flex flex-column gap-1 justify-content-center" [ngStyle]="{ 'max-width': '200px' }">
+      <div class="btn-group schedule-buttons">
+        <div
+          class="btn btn-primary"
+          mwlCalendarPreviousView
+          [view]="viewType"
+          [(viewDate)]="viewDate"
+        >
+          ←
+        </div>
+        <div
+          class="btn btn-outline-secondary"
+          mwlCalendarToday
+          [(viewDate)]="viewDate"
+        >
+          Сейчас
+        </div>
+        <div
+          class="btn btn-primary"
+          mwlCalendarNextView
+          [view]="viewType"
+          [(viewDate)]="viewDate"
+        >
+          →
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #calendarView let-viewType="viewType">
+  <ng-container *ngIf="filteredEvents$ | async as events; else loading">
+    <ng-container [ngSwitch]="viewType">
+      <mwl-calendar-week-view
+        *ngSwitchCase="'week'"
+        [viewDate]="viewDate"
+        [events]="events"
+        locale="ru"
+        weekStartsOn="1"
+        [excludeDays]="[0,7]"
+        dayStartHour="8"
+        dayEndHour="22"
+        [eventTitleTemplate]="eventTitleTemplate"
+        dayEndMinute="50"
+        [hourSegments]="3"
+        [hourSegmentTemplate]="weekViewHourSegment"
+      >
+      </mwl-calendar-week-view>
+
+      <div *ngSwitchCase="'day'">
+        <div class="mb-3 text-center">
+          <h4>{{ viewDate | date: 'EEEE, d MMMM yyyy':'':'ru' }}</h4>
+        </div>
+        <mwl-calendar-day-view
+          [viewDate]="viewDate"
+          [events]="events"
+          locale="ru"
+          dayStartHour="8"
+          dayEndHour="22"
+          dayEndMinute="50"
+          [hourSegments]="3"
+          [eventTitleTemplate]="eventTitleTemplate"
+          [hourSegmentTemplate]="weekViewHourSegment"
+        >
+        </mwl-calendar-day-view>
+      </div>
+    </ng-container>
+  </ng-container>
+</ng-template>
+
+<ng-template #loading>
+  <p>Загрузка расписания...</p>
+</ng-template>

@@ -46,3 +46,36 @@
   border-radius: 4px;
   max-width: 300px;
 }
+
+.schedule-wrapper {
+  margin-top: 40px;
+  background: white;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 15px 35px rgba(102, 126, 234, 0.3);
+}
+
+.title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 30px;
+  padding-left: 20px;
+  position: relative;
+}
+
+.title:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 30px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  border-radius: 2px;
+}
+
+.schedule-buttons {
+  margin-bottom: 25px;
+}

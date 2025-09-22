@@ -1,4 +1,4 @@
-<ng-container *ngIf="schedule | async">
+<ng-container>
   <ng-container *ngTemplateOutlet="content"></ng-container>
 </ng-container>
 
@@ -7,6 +7,7 @@
     <h1 class="title">Расписание занятий</h1>
     <div class="d-flex flex-md-row flex-column justify-content-between ">
       <div class="d-flex flex-column gap-1 justify-content-center"
+           *ngIf="schedule | async"
            [ngStyle]="{
             'max-width': '280px'
          }">
@@ -161,7 +162,7 @@
     <div class="d-flex flex-column gap-1  mb-3"
          *ngIf="(profile | async) && ((profile | async).isModerator || (profile | async).isSuperuser)">
       <div class="d-flex gap-3">
-        <button class="btn btn-primary" (click)="navigateToScheduleEdit()">Редактировать</button>
+        <button *ngIf="schedule | async" class="btn btn-primary" (click)="navigateToScheduleEdit()">Редактировать</button>
 
         <div>
           <input #inputSchedulePDF type="file" accept="application/pdf"
