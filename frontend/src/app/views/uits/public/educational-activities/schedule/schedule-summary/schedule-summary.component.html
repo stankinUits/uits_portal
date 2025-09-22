@@ -155,7 +155,7 @@
 
     <div class="cal-event-description">
       <p>
-        Преподаватель: {{ teacherMap[event.meta.teacherId] || 'Неизвестный преподаватель' }} <br>
+        Преподаватель: {{ teacherMap[event.meta.teacherId] }} <br>
         Кабинет: {{ event.meta.cabinet }} <br>
         Группа: {{ event.meta.group }} {{ event.meta.subgroup }} <br>
         Время: {{ event.start | date: 'HH:mm' }} - {{ event.end | date: 'HH:mm' }} <br>
@@ -183,15 +183,3 @@
   <div>Загрузка...</div>
 </ng-template>
 
-<div *ngIf="selectedEvent"
-     class="event-popup"
->
-  <h5>{{ selectedEvent.title }}</h5>
-  <p>
-    Преподаватель: {{ teacherMap[selectedEvent.meta.teacherId] || 'Неизвестный преподаватель' }} <br>
-    Кабинет: {{ selectedEvent.meta.cabinet }} <br>
-    Группа: {{ selectedEvent.meta.group }} {{ selectedEvent.meta.subgroup }} <br>
-    Время: {{ selectedEvent.start | date: 'HH:mm' }} - {{ selectedEvent.end | date: 'HH:mm' }}
-  </p>
-  <button class="btn btn-outline-secondary btn-sm" (click)="selectedEvent = null">Закрыть</button>
-</div>

@@ -23,7 +23,6 @@ export class ScheduleSummaryComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   schedule: BehaviorSubject<Schedule>;
   teachersForSelect: { id: number, fullName: string }[] = [];
-  selectedEvent: CalendarEvent | null = null; // Хранит выбранное событие
   currentView: string = 'week'; // Устанавливаем вид по умолчанию
   teacherMap: { [id: number]: string } = {};
   uniqTeachersIds: number[];
