@@ -7,11 +7,6 @@
     <span>{{ fullName }}</span>
   </nav>
 
-<!--  <button class="go-back-btn" routerLink="/about/employee/teachers">-->
-<!--    <i class="feather icon-arrow-left go-back-btn__icon"></i>-->
-<!--    <span class="go-back-btn__text">Вернуться к списку преподавателей</span>-->
-<!--  </button>-->
-
   <header class="profile-header">
     <img class="profile-photo" [src]="avatar" [alt]="fullName">
     <div class="profile-info">
@@ -19,7 +14,7 @@
       <p class="profile-position">
         {{ position }}
       </p>
-      <p class="profile-degree">{{ degree }}, {{ rank }}</p>
+      <p class="profile-degree">{{ degree }} {{degree ? ',' : ''}} {{ rank }}</p>
 
       <div class="contacts">
         <a [href]="email" class="contact" *ngIf="email">📧 Почта </a>
