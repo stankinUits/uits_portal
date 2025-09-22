@@ -1,0 +1,31 @@
+{% extends "admin/base_site.html" %}
+{% block content %}
+<h1>Output Excel Files</h1>
+<div style="margin-bottom: 20px;">
+    <form method="get" action="download/" style="display: inline;">
+        <button type="submit" class="button default">Download All as ZIP</button>
+    </form>
+</div>
+
+{% if output_files %}
+<table style="width: 100%; border-collapse: collapse;">
+    <thead>
+        <tr>
+            <th style="text-align: left; padding: 8px; border-bottom: 2px solid #ddd;">File Name</th>
+            <th style="text-align: left; padding: 8px; border-bottom: 2px solid #ddd;">Size</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for file in output_files %}
+        <tr>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;">{{ file.name }}</td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;">{{ file.size }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<p style="margin-top: 10px;">Total files: {{ output_files|length }}</p>
+{% else %}
+<p>No output files found. Run the "Parse Data for Module Grade" command to generate files.</p>
+{% endif %}
+{% endblock %} 

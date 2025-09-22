@@ -26,8 +26,12 @@ urlpatterns = [
     path('api/editable-pages/', include('editable_pages.urls')),
     path('api/telegram/', include('tg_bot.urls')),
     path('api/events/', include('events.urls')),
-    path('mdeditor/', include('mdeditor.urls')),  
+    path('api/grades/', include('parcing_data_from_excel.urls')),
+    path('api/export/', include('excel_export.urls')),
+    path('mdeditor/', include('mdeditor.urls')),
+    path('', include('parcing_data_from_excel.urls')),
 ]
+
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

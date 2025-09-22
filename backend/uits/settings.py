@@ -60,6 +60,8 @@ LOCAL_INSTALLED_APPS = [
     'editable_pages.apps.EditablePagesConfig',
     'events',
     'tg_bot',
+    'parcing_data_from_excel',
+    'excel_export',
 ]
 
 # Application definition
