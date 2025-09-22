@@ -1,6 +1,6 @@
 import {Component, OnInit, OnDestroy, ChangeDetectorRef} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Subscription, BehaviorSubject, interval, takeUntil, Subject, forkJoin, Observable} from 'rxjs';
+import {Subscription, BehaviorSubject, Subject} from 'rxjs';
 import {CalendarEvent} from 'angular-calendar';
 import {startOfWeek} from 'date-fns';
 import {EmployeeService} from '../../../about/employee/employee.service';
@@ -26,6 +26,7 @@ export class ScheduleSummaryComponent implements OnInit, OnDestroy {
   currentView: string = 'week'; // Устанавливаем вид по умолчанию
   teacherMap: { [id: number]: string } = {};
   uniqTeachersIds: number[];
+  onlyOffline: boolean = false;
 
   constructor(private http: HttpClient, private employeeService: EmployeeService, private cdr: ChangeDetectorRef) {
   }
@@ -86,34 +87,23 @@ export class ScheduleSummaryComponent implements OnInit, OnDestroy {
     });
     this.events$.next(events); // Обновляем все события
     this.filteredEvents$.next(events); // По умолчанию показываем все события
-    console.log('updatedCalendarEvents', events);
   }
 
   onFilterChange(): void {
-    if (this.selectedTeacherIds.length === 0) {
-      this.updateCalendarEvents(this.schedules$.value);
-    } else {
-      const requests = this.selectedTeacherIds.map((teacherId) => {
-        return this.employeeService.retrieveSchedule(teacherId);
-      });
+    console.log(this.onlyOffline);
+    const allSchedules = this.schedules$.value;
 
-      forkJoin(requests).subscribe({
-        next: (schedules) => {
-          const events: CalendarEvent[] = [];
-          schedules.forEach((schedule) => {
-            events.push(...schedule.toCalendarEvents());
-          });
+    const filtered = this.selectedTeacherIds.length === 0
+      ? allSchedules
+      : allSchedules.filter(s => this.selectedTeacherIds.includes(s.teacher));
 
-          // После того как все данные загружены и обработаны, обновляем события
-          this.events$.next(events);
-          this.filteredEvents$.next(events);
-          console.log('Обновленные события', events);
-        },
-        error: (err) => {
-          console.error('Ошибка при загрузке расписаний:', err);
-        }
-      });
+    let events = filtered.flatMap(s => s.toCalendarEvents());
+
+    if (this.onlyOffline) {
+      events = events.filter(ev => (ev.meta?.cabinet != ""));
     }
+
+    this.filteredEvents$.next(events);
   }
 
   onViewChange(view: string): void {
