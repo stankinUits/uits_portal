@@ -28,6 +28,25 @@ export class ScheduleSummaryComponent implements OnInit, OnDestroy {
   uniqTeachersIds: number[];
   onlyOffline: boolean = false;
 
+  teacherColors: Record<number, { primary: string; secondary: string }> = {};
+
+  assignTeacherColors() {
+    const colors = [
+      {primary: '#1e90ff', secondary: '#D1E8FF'},
+      {primary: '#ff4500', secondary: '#FFD1D1'},
+      {primary: '#32cd32', secondary: '#C8FACC'},
+      {primary: '#ff1493', secondary: '#FFD1F0'},
+      {primary: '#ffa500', secondary: '#FFE5B4'},
+      {primary: '#8a2be2', secondary: '#E0D1FF'},
+      {primary: '#00ced1', secondary: '#D1F7F7'},
+      {primary: '#ff69b4', secondary: '#FFD1E5'}
+    ];
+
+    this.teachersForSelect.forEach((teacher, idx) => {
+      this.teacherColors[teacher.id] = colors[idx % colors.length];
+    });
+  }
+
   constructor(private http: HttpClient, private employeeService: EmployeeService, private cdr: ChangeDetectorRef) {
   }
 
@@ -76,6 +95,8 @@ export class ScheduleSummaryComponent implements OnInit, OnDestroy {
         fullName: this.teacherMap[teacher.id]
       }));
 
+      this.assignTeacherColors();
+      this.updateCalendarEvents(this.schedules$.value);
       this.cdr.detectChanges();
     });
   }
@@ -85,8 +106,14 @@ export class ScheduleSummaryComponent implements OnInit, OnDestroy {
     schedules.forEach((schedule) => {
       events.push(...schedule.toCalendarEvents());
     });
-    this.events$.next(events); // Обновляем все события
-    this.filteredEvents$.next(events); // По умолчанию показываем все события
+
+    const coloredEvents = events.map(e => ({
+      ...e,
+      color: this.teacherColors[e.meta.teacherId] || {primary: '#808080', secondary: '#e0e0e0'}
+    }));
+
+    this.events$.next(coloredEvents); // Обновляем все события
+    this.filteredEvents$.next(coloredEvents); // По умолчанию показываем все события
   }
 
   onFilterChange(): void {
@@ -103,7 +130,12 @@ export class ScheduleSummaryComponent implements OnInit, OnDestroy {
       events = events.filter(ev => (ev.meta?.cabinet != ""));
     }
 
-    this.filteredEvents$.next(events);
+    const coloredEvents = events.map(e => ({
+      ...e,
+      color: this.teacherColors[e.meta.teacherId] || {primary: '#808080', secondary: '#e0e0e0'}
+    }));
+
+    this.filteredEvents$.next(coloredEvents);
   }
 
   onViewChange(view: string): void {
