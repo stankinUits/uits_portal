@@ -29,7 +29,8 @@ urlpatterns = [
     path('api/grades/', include('parcing_data_from_excel.urls')),
     path('api/export/', include('excel_export.urls')),
     path('mdeditor/', include('mdeditor.urls')),
-    path('', include('parcing_data_from_excel.urls')),
+    path('api/', include('parcing_data_from_excel.urls')),
+    path('api/archive', include('archive.urls')),
 ]
 
 
