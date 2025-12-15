@@ -25,10 +25,10 @@ environ.Env.read_env(BASE_DIR / os.environ.get('DB_ENVIRONMENT_FILE', 'db.local.
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-95rc)10zgr)+px@hl=h_5*3h3ab6rmt3esf@p#gw(ez^+7m9%*'
+SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env("DEBUG", default="False").lower() == "true"
 
 ALLOWED_HOSTS = ['*']
 
@@ -270,9 +270,12 @@ DEFAULT_EDITABLE_PAGES = [
     'home-after'
 ]
 
+REDIS_HOST = env("REDIS_HOST")
+REDIS_PORT = env("REDIS_PORT")
+
 # CELERY SETTINGS
-CELERY_BROKER_URL = "redis://localhost:6379/0"
-CELERY_RESULT_BACKEND = "redis://localhost:6379/1"
+CELERY_BROKER_URL = f"redis://{REDIS_HOST}:{REDIS_PORT}/0"
+CELERY_RESULT_BACKEND = f"redis://{REDIS_HOST}:{REDIS_PORT}/1"
 CELERY_TIMEZONE = "Europe/Moscow"
 CELERY_BEAT_SCHEDULE = {
     'notify-daily': {

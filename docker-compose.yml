@@ -20,7 +20,76 @@ services:
       - ./backend/db.local.env
     volumes:
       - /var/postgres_data:/var/lib/postgresql/data/
-  
+      - ./backend/dumps:/code/dumps
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: ./docker/django/Dockerfile
+    env_file:
+      - ./backend/db.local.env
+    environment:
+      POSTGRES_HOST: host.docker.internal
+      REDIS_HOST: host.docker.internal
+    volumes:
+      - ./backend:/code
+    ports:
+      - '8000:8000'
+    depends_on:
+      - db
+      - redis
+
+  celery:
+    build:
+      context: ./backend
+      dockerfile: ./docker/celery/Dockerfile
+    command: sh -c "celery -A uits worker -l info --pool=solo"
+    volumes:
+      - ./backend:/code
+      - ./backend/dumps:/code/dumps
+    depends_on:
+      - redis
+      - db
+    env_file:
+      - ./backend/db.local.env
+    environment:
+      - POSTGRES_HOST=host.docker.internal
+      - REDIS_HOST=host.docker.internal
+
+  celery-beat:
+    build:
+      context: ./backend
+      dockerfile: ./docker/celery/Dockerfile
+    command: sh -c "celery -A uits beat --scheduler django_celery_beat.schedulers:DatabaseScheduler -l info"
+    volumes:
+      - ./backend:/code
+    depends_on:
+      - redis
+      - db
+    env_file:
+      - ./backend/db.local.env
+    environment:
+      - POSTGRES_HOST=host.docker.internal
+      - REDIS_HOST=host.docker.internal
+
+  flower:
+    build:
+      context: ./backend
+      dockerfile: ./docker/celery/Dockerfile
+    command: celery -A uits flower --conf=flowerconfig.py
+    ports:
+      - "5555:5555"
+    volumes:
+      - ./backend/docker/celery/flowerconfig.py:/code/flowerconfig.py
+    depends_on:
+      - redis
+      - celery
+    env_file:
+      - ./backend/db.local.env
+    environment:
+      - POSTGRES_HOST=host.docker.internal
+      - REDIS_HOST=host.docker.internal
+
   redis:
     image: "redis:7.2.4-alpine"
     container_name: uits-redis
