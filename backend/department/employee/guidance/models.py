@@ -46,3 +46,8 @@ class Student(models.Model):
     @property
     def full_name(self):
         return self.last_name + ' ' + (self.first_name if self.first_name else '') + ' ' + (self.patronymic if self.patronymic else '')
+
+
+    class Meta:
+        verbose_name = "Студент"
+        verbose_name_plural = "Студенты"

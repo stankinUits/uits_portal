@@ -1,4 +1,6 @@
 from django.contrib import admin
+
+from archive.admin_tools.admin_utils import archive_objects
 from department.employee.guidance.models import Student
 
 @admin.register(Student)
@@ -13,3 +15,5 @@ class StudentAdmin(admin.ModelAdmin):
         'diploma_theme'
     )
     search_fields = ('full_name',)
+
+    actions = [archive_objects]

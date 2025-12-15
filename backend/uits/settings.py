@@ -14,6 +14,8 @@ from pathlib import Path
 
 import environ
 
+from uits.constance_config import Constance
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -44,7 +46,9 @@ THIRD_INSTALLED_APPS = [
     # 'corsheaders',  # Добавлено
     'mdeditor',
     'django_celery_beat',
-    'rangefilter'
+    'rangefilter',
+    'constance',
+    'constance.backends.database',
 ]
 
 # Local application definition
@@ -136,6 +140,11 @@ DATABASES = {
         },
     }
 }
+
+CONSTANCE_BACKEND = 'constance.backends.database.DatabaseBackend'
+CONSTANCE_CONFIG = Constance.CONSTANCE_CONFIG
+CONSTANCE_CONFIG_FIELDSETS = Constance.CONSTANCE_CONFIG_FIELDSETS
+CONSTANCE_VERBOSE_NAME = 'Настройки'
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
