@@ -1,10 +1,15 @@
 import logging
 import datetime
+import os
+import subprocess
+from pathlib import Path
+
 import pytz
 from celery import shared_task
 from django.utils import timezone
 from events.models import UserEvent, NotificationFrequency
 from tg_bot.models import TelegramUser
+from uits.settings import BASE_DIR, POSTGRES_USER, POSTGRES_DB, POSTGRES_HOST
 
 logger = logging.getLogger(__name__)
 
@@ -88,3 +93,71 @@ def send_notifications_for_event(event):
                 logger.warning(f"No TelegramUser found for {user.username}")
     except Exception as e:
         logger.error(f"Error processing event notifications: {str(e)}")
+
+
+def cleanup_old_backups(backup_dir: Path, keep_last: int = 3):
+    dumps = sorted(backup_dir.glob("db_dump_*.dump"), key=lambda f: f.stat().st_mtime, reverse=True)
+    for old_file in dumps[keep_last:]:
+        old_file.unlink()
+
+
+def get_latest_backup(backup_dir: Path) -> str | None:
+    dumps = sorted(backup_dir.glob("db_dump_*.dump"), key=lambda f: f.stat().st_mtime, reverse=True)
+    if dumps:
+        latest_dump_path = dumps[0]
+        latest_dump_file_name = latest_dump_path.name
+        return latest_dump_file_name
+
+
+BACKUP_DIR = os.path.join(BASE_DIR, "dumps")
+
+
+@shared_task
+def create_db_backup():
+    """
+    Создаёт дамп базы данных PostgreSQL.
+    """
+    os.makedirs(BACKUP_DIR, exist_ok=True)
+    dump_file = os.path.join(BACKUP_DIR, f"db_dump_{datetime.datetime.now():%Y-%m-%d_%H-%M-%S}.dump")
+
+    # Команда pg_dump
+    command = [
+        "pg_dump",
+        "-h", POSTGRES_HOST,
+        "-U", POSTGRES_USER,
+        "-d", POSTGRES_DB,
+    ]
+
+    env = os.environ.copy()
+    env["PGPASSWORD"] = env["POSTGRES_PASSWORD"]
+    try:
+        with open(dump_file, "w") as f:
+            subprocess.run(command, stdout=f, check=True, env=env)
+
+        cleanup_old_backups(Path(BACKUP_DIR))
+        return f"Backup created: {dump_file}"
+    except subprocess.CalledProcessError as e:
+        return f"Backup failed: {e}"
+
+
+@shared_task
+def restore_db_dump_file(selected_dump_file_name: str = None):
+    if not selected_dump_file_name:
+        selected_dump_file_name = get_latest_backup(Path(BACKUP_DIR))
+
+    dump_file_path = f"/code/dumps/{selected_dump_file_name}"
+    command = [
+        "psql",
+        "-h", POSTGRES_HOST,
+        "-U", POSTGRES_USER,
+        "-d", POSTGRES_DB,
+        "-f", dump_file_path
+    ]
+    env = os.environ.copy()
+    env["PGPASSWORD"] = env["POSTGRES_PASSWORD"]
+
+    try:
+        subprocess.run(command, check=True, env=env)
+        return f"Backup applied: {selected_dump_file_name}"
+    except subprocess.CalledProcessError as e:
+        return f"Backup failed: {e}"

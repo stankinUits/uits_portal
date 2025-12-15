@@ -42,7 +42,9 @@ THIRD_INSTALLED_APPS = [
     'django_quill',
     'django_filters',
     # 'corsheaders',  # Добавлено
-    'mdeditor'
+    'mdeditor',
+    'django_celery_beat',
+    'rangefilter'
 ]
 
 # Local application definition
@@ -62,6 +64,7 @@ LOCAL_INSTALLED_APPS = [
     'tg_bot',
     'parcing_data_from_excel',
     'excel_export',
+    'archive'
 ]
 
 # Application definition
@@ -114,14 +117,20 @@ WSGI_APPLICATION = 'uits.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+POSTGRES_DB = env('POSTGRES_DB')
+POSTGRES_USER = env('POSTGRES_USER')
+POSTGRES_PASSWORD = env('POSTGRES_PASSWORD')
+POSTGRES_HOST = env('POSTGRES_HOST')
+POSTGRES_PORT = env('POSTGRES_PORT')
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': env('POSTGRES_DB'),
-        'USER': env('POSTGRES_USER'),
-        'PASSWORD': env('POSTGRES_PASSWORD'),
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'NAME': POSTGRES_DB,
+        'USER': POSTGRES_USER,
+        'PASSWORD': POSTGRES_PASSWORD,
+        'HOST': POSTGRES_HOST,
+        'PORT': POSTGRES_PORT,
         'OPTIONS': {
             'client_encoding': 'UTF8'
         },
@@ -151,7 +160,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'ru-ru'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Moscow'
 
 USE_I18N = True
 
@@ -277,20 +286,7 @@ REDIS_PORT = env("REDIS_PORT")
 CELERY_BROKER_URL = f"redis://{REDIS_HOST}:{REDIS_PORT}/0"
 CELERY_RESULT_BACKEND = f"redis://{REDIS_HOST}:{REDIS_PORT}/1"
 CELERY_TIMEZONE = "Europe/Moscow"
-CELERY_BEAT_SCHEDULE = {
-    'notify-daily': {
-        'task': 'events.tasks.notify_daily',
-        'schedule': 86400.0,  # раз в день
-    },
-    'notify-weekly': {
-        'task': 'events.tasks.notify_weekly',
-        'schedule': 604800.0,  # раз в неделю
-    },
-    'notify-monthly': {
-        'task': 'events.tasks.notify_monthly',
-        'schedule': 2419200.0,  # раз в месяц (приблизительно 28 дней)
-    },
-}
+CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 
 TELEGRAM_BOT = {
     'TOKEN': env('TG_BOT_TOKEN'),
