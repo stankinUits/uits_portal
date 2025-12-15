@@ -1,5 +1,15 @@
 version: "3.7"
 services:
+  frontend:
+    build:
+      context: .
+      dockerfile: ./frontend/Dockerfile
+    ports:
+      - "4200:4200"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+
   db:
     image: postgres:15.0-alpine
     container_name: uits-postgres
