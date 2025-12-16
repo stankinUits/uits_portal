@@ -1,5 +1,6 @@
 from django.contrib.admin import SimpleListFilter
 from constance import config
+from django.utils.functional import cached_property
 from django.utils.timezone import now
 
 from archive.admin_tools.admin_utils import is_date_in_semester, semester_year
@@ -9,18 +10,21 @@ class SemesterFilter(SimpleListFilter):
     title = 'Семестр'
     parameter_name = 'semester'
 
-    SEMESTERS = {
-        'autumn': {
-            'label': 'Осенний',
-            'start': config.ARCHIVE_AUTUMN_SEMESTER_START,
-            'end': config.ARCHIVE_AUTUMN_SEMESTER_END,
-        },
-        'spring': {
-            'label': 'Весенний',
-            'start': config.ARCHIVE_SPRING_SEMESTER_START,
-            'end': config.ARCHIVE_SPRING_SEMESTER_END,
-        },
-    }
+    @cached_property
+    def semesters(self) -> dict:
+        semesters_dict = {
+            'autumn': {
+                'label': 'Осенний',
+                'start': config.ARCHIVE_AUTUMN_SEMESTER_START,
+                'end': config.ARCHIVE_AUTUMN_SEMESTER_END,
+            },
+            'spring': {
+                'label': 'Весенний',
+                'start': config.ARCHIVE_SPRING_SEMESTER_START,
+                'end': config.ARCHIVE_SPRING_SEMESTER_END,
+            },
+        }
+        return semesters_dict
 
     def lookups(self, request, model_admin):
         years_back = config.ARCHIVE_FILTER_YEARS_BACK
@@ -29,7 +33,7 @@ class SemesterFilter(SimpleListFilter):
         lookups = []
 
         for year in range(current_year, current_year - years_back, -1):
-            for key, semester in self.SEMESTERS.items():
+            for key, semester in self.semesters.items():
                 value = f'{key}_{year}'
                 label = f'{semester["label"]} {year}'
                 lookups.append((value, label))
@@ -47,7 +51,7 @@ class SemesterFilter(SimpleListFilter):
         except ValueError:
             return queryset
 
-        semester = self.SEMESTERS.get(semester_key)
+        semester = self.semesters.get(semester_key)
         if not semester:
             return queryset
 
