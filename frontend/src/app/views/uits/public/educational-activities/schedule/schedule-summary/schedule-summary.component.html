@@ -150,14 +150,15 @@
         [viewDate]="viewDate"
         [events]="events"
         locale="ru"
-        weekStartsOn="1"
+        [weekStartsOn]="1"
         [excludeDays]="[0,7]"
-        dayStartHour="8"
-        dayEndHour="22"
+        [dayStartHour]=8
+        [dayEndHour]="22"
         [eventTitleTemplate]="eventTitleTemplate"
-        dayEndMinute="50"
+        [dayEndMinute]="50"
         [hourSegments]="3"
         [hourSegmentTemplate]="weekViewHourSegment"
+        (eventClicked)="onEventClick($event)"
       >
       </mwl-calendar-week-view>
 
@@ -169,12 +170,13 @@
           [viewDate]="viewDate"
           [events]="events"
           locale="ru"
-          dayStartHour="8"
-          dayEndHour="22"
-          dayEndMinute="50"
+          [dayStartHour]=8
+          [dayEndHour]="22"
+          [dayEndMinute]="50"
           [hourSegments]="3"
           [eventTitleTemplate]="eventTitleTemplate"
           [hourSegmentTemplate]="weekViewHourSegment"
+          (eventClicked)="onEventClick($event)"
         >
         </mwl-calendar-day-view>
       </div>
@@ -185,3 +187,14 @@
 <ng-template #loading>
   <p>Загрузка расписания...</p>
 </ng-template>
+
+<div *ngIf="selectedEvent"
+     class="event-popup"
+     [ngStyle]="{ top: popupPosition.top, left: popupPosition.left }">
+  <h4>{{ selectedEvent.title }}</h4>
+  <p>Преподаватель: {{ selectedEvent.meta.teacherId }}</p>
+  <p>Группа: {{ selectedEvent.meta.group }} {{ selectedEvent.meta.subgroup }}</p>
+  <p>Кабинет: {{ selectedEvent.meta.cabinet }}</p>
+  <p>Время: {{ selectedEvent.start | date: 'HH:mm' }} - {{ selectedEvent.end | date: 'HH:mm' }}</p>
+  <button (click)="closePopup()" class="btn btn-primary">Закрыть</button>
+</div>
