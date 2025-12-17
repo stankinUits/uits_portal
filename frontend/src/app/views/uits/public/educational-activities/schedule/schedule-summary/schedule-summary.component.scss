@@ -36,16 +36,16 @@
   background-color: #f9f9f9;
 }
 
-.event-popup {
-  position: fixed;
-  z-index: 1000;
-  background: white;
-  border: 1px solid #ccc;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  padding: 10px;
-  border-radius: 4px;
-  max-width: 300px;
-}
+//.event-popup {
+//  position: fixed;
+//  z-index: 1000;
+//  background: white;
+//  border: 1px solid #ccc;
+//  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+//  padding: 10px;
+//  border-radius: 4px;
+//  max-width: 300px;
+//}
 
 .schedule-wrapper {
   margin-top: 40px;
@@ -78,4 +78,19 @@
 
 .schedule-buttons {
   margin-bottom: 25px;
+}
+
+//::ng-deep .cal-week-view .cal-time-events .cal-day-column {
+//  width: 300px !important;
+//}
+
+.event-popup {
+  position: fixed;
+  z-index: 1000;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  min-width: 200px;
 }

@@ -30,6 +30,9 @@ export class ScheduleSummaryComponent implements OnInit, OnDestroy {
 
   teacherColors: Record<number, { primary: string; secondary: string }> = {};
 
+  selectedEvent: CalendarEvent | null = null;
+  popupPosition = {top: '0px', left: '0px'};
+
   assignTeacherColors() {
     const colors = [
       {primary: '#1e90ff', secondary: '#D1E8FF'},
@@ -140,5 +143,21 @@ export class ScheduleSummaryComponent implements OnInit, OnDestroy {
 
   onViewChange(view: string): void {
     this.currentView = view;
+  }
+
+  onEventClick({event, sourceEvent}: { event: CalendarEvent; sourceEvent: MouseEvent }) {
+    this.selectedEvent = event;
+
+    // позиция попапа относительно клика
+    const offset = 10; // чтобы курсор не перекрывал
+    this.popupPosition = {
+      top: `${sourceEvent.clientY + offset}px`,
+      left: `${sourceEvent.clientX + offset}px`
+    };
+  }
+
+  // Закрыть попап
+  closePopup() {
+    this.selectedEvent = null;
   }
 }
