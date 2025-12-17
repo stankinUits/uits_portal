@@ -76,6 +76,4 @@ parcing: {
   allData: 'api/parse-all/',
   allStudents: 'api/parse-all-students/',
 },
-
-
 };
