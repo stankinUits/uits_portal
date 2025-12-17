@@ -291,7 +291,7 @@ CELERY_BEAT_SCHEDULE = {
 
 TELEGRAM_BOT = {
     'TOKEN': env('TG_BOT_TOKEN'),
-    'WEBHOOK_URL': env('TG_WEBHOOK_HOST') + 'api/telegram/webhook/' + env('TG_SECRET_TOKEN'),
+    'WEBHOOK_URL': env('TG_WEBHOOK_HOST') + 'api/telegram/webhook',
     'WEBHOOK_SECRET': env('TG_SECRET_TOKEN')
 }
 

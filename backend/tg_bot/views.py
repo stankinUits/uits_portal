@@ -46,6 +46,13 @@ def telegram_webhook_service(update: Update):
 @csrf_exempt
 def telegram_webhook(request):
     if request.method == 'POST':
+        secret_token = request.headers.get('X-Telegram-Bot-Api-Secret-Token')
+        expected_token = settings.TELEGRAM_BOT.get('WEBHOOK_SECRET')
+
+        if secret_token != expected_token:
+            logger.warning(f"Invalid secret token received: {secret_token}")
+            return HttpResponseForbidden("Invalid secret token")
+
         logger.info("Received update from Telegram!")
         update_json_string = request.body.decode('utf-8')
         update = telebot.types.Update.de_json(update_json_string)
@@ -67,8 +74,8 @@ class TelegramUserDestroyAPIView(DestroyAPIView):
 
 
 class UserEventsNotificationsAPIView(GenericAPIView):
-
     def post(self, request, *args, **kwargs):
+        print('666')
         logger.info("Received request for sending notifications.")
         logger.debug(f"Request data: {request.data}")
 
